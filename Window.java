@@ -39,9 +39,7 @@ public class Window
 
     private void readXML (String path)
     {
-        /*List<String> id = new ArrayList<>(),
-                value = new ArrayList<>(),
-                color = new ArrayList<>();*/
+    
         try
         {
             File file = new File(path);
@@ -49,46 +47,31 @@ public class Window
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document document = documentBuilder.parse(file);
 
-            NodeList nodeList = document.getElementsByTagName("*");
-
-            //l'elemento 0 è il root, che non ci interessa
-            id =   Integer.parseInt(nodeList.item(1).getTextContent());
-            name = nodeList.item(2).getTextContent();
-            difficult = Integer.parseInt(nodeList.item(3).getTextContent());
+            int id = Integer.parseInt(document.getElementsByTagName("id").item(0).getTextContent());
+            String name = document.getElementsByTagName("name").item(0).getTextContent();
+            int difficult = Integer.parseInt(document.getElementsByTagName("difficulty").item(0).getTextContent());
 
             System.out.println("---" + id + " " + name + " " + difficult + "---");
+            
+            
+            NodeList values = document.getElementsByTagName("value");
+            NodeList colors = document.getElementsByTagName("color");
+            //NodeList imgs = document.getElementsByTagName("img_source");
+            
 
-            ///Servirebbe il codice Da qui in poi
-
-            /*for(int i = 4; i < nodeList.getLength(); i++) {
-                Node currentNode = nodeList.item(i);
-                switch(currentNode.getNodeName()) {
-                    case "grid":
-                        break;
-                    case "cell":
-                        id.add(String.valueOf(currentNode.getAttributes().getNamedItem("number").getNodeValue()));
-                        break;
-                    case "value":
-                        value.add(String.valueOf(currentNode.getTextContent()));
-                        break;
-                    case "color":
-                        color.add(String.valueOf(currentNode.getTextContent()));
-                        break;
-                    default:
-                        break;
-                }
-
-            }
-
-            for(int i = 0, v = 0; i < id.size(); i++) {
-                System.out.println("cella numero: " + id.get(i) +
-                        "\nvalore:\t" + value.get(i) +
-                        "\ncolore:\t" + color.get(i) + "\n");
-            }*/
+            for(int i = 0, k = 0; i < rows; i++) 
+            	for(int j = 0; j < cols; j++) {
+            		int currentValue = Integer.parseInt(values.item(k).getTextContent());
+                    String currentColor = colors.item(k).getTextContent();
+                    board[i][j] = new Cell(new Dice(currentValue, currentColor));
+                    k++;
+            	}
+            		
 
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+        
     }
 }
