@@ -46,19 +46,21 @@ public class Window
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document document = documentBuilder.parse(file);
+            
 
+            //ora è un po' più efficiente anche qui
             int id = Integer.parseInt(document.getElementsByTagName("id").item(0).getTextContent());
             String name = document.getElementsByTagName("name").item(0).getTextContent();
             int difficult = Integer.parseInt(document.getElementsByTagName("difficulty").item(0).getTextContent());
 
             System.out.println("---" + id + " " + name + " " + difficult + "---");
             
-            
+            //sono due liste che contengono l'elenco0 dei tag del file (hanno stessa lunghezza)
             NodeList values = document.getElementsByTagName("value");
             NodeList colors = document.getElementsByTagName("color");
             //NodeList imgs = document.getElementsByTagName("img_source");
             
-
+            //il parametro k mi serve come indice delle due liste valori e colori
             for(int i = 0, k = 0; i < rows; i++) 
             	for(int j = 0; j < cols; j++) {
             		int currentValue = Integer.parseInt(values.item(k).getTextContent());
