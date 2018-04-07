@@ -48,14 +48,15 @@ public class Window
             Document document = documentBuilder.parse(file);
             
 
-            //ora è un po' più efficiente anche qui
+            //ora è un po' più efficiente anche qui (prendo solo i tag che mi servono, senza fare la lista di tutti
             int id = Integer.parseInt(document.getElementsByTagName("id").item(0).getTextContent());
             String name = document.getElementsByTagName("name").item(0).getTextContent();
             int difficult = Integer.parseInt(document.getElementsByTagName("difficulty").item(0).getTextContent());
 
             System.out.println("---" + id + " " + name + " " + difficult + "---");
             
-            //sono due liste che contengono l'elenco0 dei tag del file (hanno stessa lunghezza)
+            //sono due liste che contengono l'elenco dei tag del file (hanno stessa lunghezza)
+            //in questo modo posso leggere in parallelo i valori delle celle
             NodeList values = document.getElementsByTagName("value");
             NodeList colors = document.getElementsByTagName("color");
             //NodeList imgs = document.getElementsByTagName("img_source");
@@ -63,10 +64,14 @@ public class Window
             //il parametro k mi serve come indice delle due liste valori e colori
             for(int i = 0, k = 0; i < rows; i++) 
             	for(int j = 0; j < cols; j++) {
+            		/*non ho fatto il controllo di quello che legge,
+            		quindi mancanza di colore è dc (don't care)
+            		e mancanza di numero è 0, come da file xml
+            		*/
             		int currentValue = Integer.parseInt(values.item(k).getTextContent());
-                    String currentColor = colors.item(k).getTextContent();
-                    board[i][j] = new Cell(new Dice(currentValue, currentColor));
-                    k++;
+                String currentColor = colors.item(k).getTextContent();
+                board[i][j] = new Cell(new Dice(currentValue, currentColor));
+                k++;
             	}
             		
 
