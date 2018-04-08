@@ -70,9 +70,7 @@ public class Window
             		*/
             		int currentValue = Integer.parseInt(values.item(k).getTextContent());
                     String currentColor = colors.item(k).getTextContent();
-                    if(currentColor.equals("dc"))
-            			currentColor = "black";
-            		board[i][j] = new Cell(new Dice(currentValue, Color.valueOf(currentColor)));
+            		board[i][j] = new Cell(new Dice(currentValue, currentColor));
             		k++;
             	}
             		
