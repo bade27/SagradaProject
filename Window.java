@@ -69,9 +69,11 @@ public class Window
             		e mancanza di numero è 0, come da file xml
             		*/
             		int currentValue = Integer.parseInt(values.item(k).getTextContent());
-                String currentColor = colors.item(k).getTextContent();
-                board[i][j] = new Cell(new Dice(currentValue, currentColor));
-                k++;
+                    String currentColor = colors.item(k).getTextContent();
+                    if(currentColor.equals("dc"))
+            			currentColor = "black";
+            		board[i][j] = new Cell(new Dice(currentValue, Color.valueOf(currentColor)));
+            		k++;
             	}
             		
 
