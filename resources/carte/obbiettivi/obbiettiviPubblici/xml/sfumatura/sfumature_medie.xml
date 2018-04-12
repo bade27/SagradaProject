@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<card>
+	<name>Sfumature Medie</name>
+	<value>2</value>
+	<pattern p = "pair">
+		<tag>3 4</tag>
+	</pattern>
+  <description>Set di 3 e 4 ovunque</description>
+</card>

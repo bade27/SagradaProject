@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<card>
+	<name>Sfumature Diverse</name>
+	<value>5</value>
+	<pattern p = "var">
+		<tag>shade</tag>
+	</pattern>
+	<description>Set di dadi di ogni valore ovunque</description>
+</card>

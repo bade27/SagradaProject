@@ -1,0 +1,9 @@
+di seguito è riportata la struttura dei documenti xml che rappresentano gli obbiettivi pubblici
+<card>
+	<name></name>
+	<value></value>
+	<pattern p = "">
+		<tag></tag>
+	</pattern>
+  <description></description>
+</card>
