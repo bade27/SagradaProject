@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<card>
+	<name>Sfumature Chiare</name>
+	<value>2</value>
+	<pattern p = "pair">
+		<tag>1 2</tag>
+	</pattern>
+	<description>Set di 1 e 2 ovunque</description>
+</card>
