@@ -1,0 +1,35 @@
+
+K
+src/main/java/Test/App.java,1/f/1f39edaa90c3f763e5605e860efca11546912a85
+R
+"src/main/java/Test/ServerMain.java,2/f/2f8a4b1fe428dd66af0451b9dc49c7acbed25471
+O
+src/main/java/Test/Graphic.java,7/b/7ba3d87427024ffd839f183ab804aa915b8928d7
+O
+src/main/java/Test/Partita.java,5/7/57379dc61feb1ca5fc15713fe49dd601ff77cb77
+g
+7src/main/java/Obbiettivi/Privati/ObbiettivoPrivato.java,4/6/4629923439492323eaab6879013fb51d6d637be7
+T
+$src/main/java/Test/Model/Window.java,8/4/8465474fd7f9e3d3d1c1d554927b285a814660c1
+N
+src/main/java/Test/Player.java,8/e/8eef382ce7832ee51334ca455631f4fafbb8d5d2
+i
+9src/main/java/Obbiettivi/Pubblici/PunteggioInterface.java,9/d/9d6aff8ab1b0a8c1194a2193d908dedd80fc7976
+f
+6src/main/java/Obbiettivi/Pubblici/PunteggioCoppia.java,f/3/f3eb081bb795701314301d0be3cdd024343bddce
+h
+8src/main/java/Obbiettivi/Pubblici/PunteggioVarietà.java,8/e/8eed7d6fb0a5924ea4dc90be75b558a59da6477f
+i
+9src/main/java/Obbiettivi/Pubblici/ObbiettivoPubblico.java,3/4/34e28794cdff8320e1abda807e4354bf4e373df7
+g
+7src/main/java/Obbiettivi/Pubblici/PunteggioColonna.java,a/b/ab9562750cc70771531bacb3e7064ae960a38771
+_
+/src/main/java/Obbiettivi/ObbiettiviFactory.java,5/3/53b22a904048a4e15d2444a9614226324ffb82c4
+i
+9src/main/java/Obbiettivi/Pubblici/PunteggioDiagonale.java,7/d/7de3ddae85c1ed8fcc9521e54ad922741cf7e0a8
+d
+4src/main/java/Obbiettivi/Pubblici/PunteggioRiga.java,4/a/4a7b4daa957c0c3daf37710be440df0084ccf0d8
+7
+pom.xml,4/4/442292b8a7efeabbe4cc176709b833b1792140ec
+G
+SagradaProject_LM18.iml,b/0/b0aafcb29a40dede63b2b89dcd8683d97366b469
