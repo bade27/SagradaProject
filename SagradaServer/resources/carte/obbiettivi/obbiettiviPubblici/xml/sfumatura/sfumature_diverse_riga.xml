@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<card>
+	<name>Sfumature Diverse - Riga</name>
+	<value>5</value>
+	<pattern p = "row">
+		<tag>shade</tag>
+	</pattern>
+	<description>Righe senza sfumature ripetute</description>
+</card>
