@@ -1,0 +1,16 @@
+J2 è un progetto maven che simula lo scambio di informazioni tra un client e un server socket in forma di json.
+le uniche cose importanti in questo file sono:
+1) il metodo 
+                public static Move parserJSON(String move)
+   all'interno della classe client, che trasforma una mossa in un file json (che deve essere trasformato in stringa prima di
+   essere mandato al server)
+2) il metodo
+              public static JSONObject toJSON(Move m)
+   all'interno della classe server, che fa il parsing della strnga json ricevuta e la ritrasforma in una mossa
+3) le classi Pair e Move, che per quanto inutili nel resto del gioco, mi sono servite per costruire il file json in modo più efficiente
+    e leggibile per un essere umano (quindi le terrei, magari come classi interne)
+4) la dipendenza org.json inserita nel file pom.
+    ho già provveduto a sistemarla anche nella repo ufficiale del progetto, ma almeno così sapete che esiste
+    
+piccola nota: i due medoti di cu sopra sono statici perché ho voluto implementare un client e un server molto semplici, con solo il main
+nel progetto ufficiale non serve che siano statici, anzi è meglio che non lo siano
