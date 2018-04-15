@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="008348eb-67b9-401c-8bd6-79cafa4f8e65" name="Default" comment="" />
+    <list default="true" id="008348eb-67b9-401c-8bd6-79cafa4f8e65" name="Default" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/4/a/4a7b4daa957c0c3daf37710be440df0084ccf0d8" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/4/a/4a7b4daa957c0c3daf37710be440df0084ccf0d8" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/5/3/53b22a904048a4e15d2444a9614226324ffb82c4" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/5/3/53b22a904048a4e15d2444a9614226324ffb82c4" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/7/d/7de3ddae85c1ed8fcc9521e54ad922741cf7e0a8" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/7/d/7de3ddae85c1ed8fcc9521e54ad922741cf7e0a8" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/a/b/ab9562750cc70771531bacb3e7064ae960a38771" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/a/b/ab9562750cc70771531bacb3e7064ae960a38771" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -16,7 +22,7 @@
       <file leaf-file-name="PunteggioDiagonale.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Obbiettivi/Pubblici/PunteggioDiagonale.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1962">
+            <state relative-caret-position="1890">
               <caret line="111" column="34" selection-start-line="111" selection-start-column="34" selection-end-line="111" selection-end-column="34" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -28,7 +34,7 @@
       <file leaf-file-name="ObbiettiviFactory.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/Obbiettivi/ObbiettiviFactory.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
+            <state relative-caret-position="18">
               <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -58,7 +64,7 @@
       <file leaf-file-name="PunteggioRiga.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Obbiettivi/Pubblici/PunteggioRiga.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="175">
+            <state relative-caret-position="396">
               <caret line="29" column="49" selection-start-line="29" selection-start-column="49" selection-end-line="29" selection-end-column="49" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -162,7 +168,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -196,30 +201,13 @@
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="Obbiettivi" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="SagradaProject_LM18" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SagradaProject_LM18" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="Obbiettivi" type="462c0819:PsiDirectoryNode" />
-              <item name="Privati" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="SagradaProject_LM18" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SagradaProject_LM18" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="Obbiettivi" type="462c0819:PsiDirectoryNode" />
-              <item name="Pubblici" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
+      <pane id="AndroidView" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -351,20 +339,34 @@
       <updated>1523742053177</updated>
       <workItem from="1523742061779" duration="2175000" />
       <workItem from="1523744345600" duration="122000" />
-      <workItem from="1523744507908" duration="304000" />
+      <workItem from="1523744507908" duration="720000" />
+      <workItem from="1523746027767" duration="10000" />
     </task>
+    <task id="LOCAL-00001" summary="aggiunte le classi obbiettivo">
+      <created>1523744858540</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1523744858540</updated>
+    </task>
+    <task id="LOCAL-00002" summary="uniti i due progetti">
+      <created>1523745030861</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1523745030861</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="2601000" />
+    <option name="totallyTimeSpent" value="3027000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1216" y="-11" width="1217" height="1036" extended-state="6" />
-    <editor active="true" />
+    <frame x="64" y="-11" width="1217" height="1036" extended-state="6" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Messages" order="7" weight="0.32912844" />
       <window_info anchor="right" id="Palette&#9;" order="3" />
       <window_info id="Image Layers" order="2" />
       <window_info anchor="right" id="Capture Analysis" order="4" />
@@ -372,7 +374,7 @@
       <window_info anchor="right" id="Maven Projects" order="3" />
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32912844" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32912844" />
       <window_info anchor="bottom" id="Terminal" order="8" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
@@ -385,6 +387,7 @@
       <window_info anchor="right" id="Theme Preview" order="4" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Messages" order="7" weight="0.32912844" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" order="0" weight="0.4" />
       <window_info anchor="bottom" id="SonarQube" order="7" />
@@ -431,6 +434,11 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="aggiunte le classi obbiettivo" />
+    <MESSAGE value="uniti i due progetti" />
+    <option name="LAST_COMMIT_MESSAGE" value="uniti i due progetti" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -735,7 +743,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Obbiettivi/Pubblici/PunteggioRiga.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="175">
+        <state relative-caret-position="396">
           <caret line="29" column="49" selection-start-line="29" selection-start-column="49" selection-end-line="29" selection-end-column="49" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -759,7 +767,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Obbiettivi/Pubblici/PunteggioDiagonale.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1962">
+        <state relative-caret-position="1890">
           <caret line="111" column="34" selection-start-line="111" selection-start-column="34" selection-end-line="111" selection-end-column="34" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -769,7 +777,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Obbiettivi/ObbiettiviFactory.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
+        <state relative-caret-position="18">
           <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
