@@ -1,4 +1,6 @@
 package json.prova;
 
-public class RemoteClient {
+import java.rmi.Remote;
+
+public interface RemoteClient extends Remote {
 }

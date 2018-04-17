@@ -15,3 +15,9 @@ R
 "src/main/java/json/prova/Pair.java,7/2/72e68512745e05fedbe005a4fad5881b9d3a20c9
 R
 "src/main/java/json/prova/Move.java,7/b/7bb738d1e70531a5bcf6031270b3d17b2da32ae6
+Z
+*src/main/java/json/prova/RemoteClient.java,4/e/4e708e8a348c3aa669c949769c976e10e3e2c095
+]
+-src/main/java/json/prova/ServerInterface.java,8/8/88b99cedbea918a4ae7ed15d4b506ad3c4bb2762
+e
+5src/main/java/json/prova/ClientConnectionHandler.java,5/6/5665fb165811547cdd63540061b41bc26e5675d4

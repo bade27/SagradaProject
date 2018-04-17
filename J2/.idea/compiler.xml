@@ -9,5 +9,8 @@
         <module name="J2" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="J2" target="1.7" />
+    </bytecodeTargetLevel>
   </component>
 </project>
