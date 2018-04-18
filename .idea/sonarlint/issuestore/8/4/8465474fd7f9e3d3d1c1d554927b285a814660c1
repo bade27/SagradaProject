@@ -1,26 +1,26 @@
 
 Csquid:S1481".Remove this unused "difficult" local variable.(…‹°õ
-<squid:S1481"'Remove this unused "id" local variable.(¾°‹”
-Vsquid:HiddenFieldCheck"6Rename "id" which hides the field declared at line 14.(¾°‹”
-Isquid:S1066"/Merge this if statement with the enclosing one.(þ„ëþÿÿÿÿ
-]squid:HiddenFieldCheck"=Rename "difficult" which hides the field declared at line 13.(…‹°õ
-;squid:S1170"!Make this final field static too.(æÖ¸…ùÿÿÿÿ
-=squid:S1068"(Remove this unused "name" private field.(Ë¥¼
-Hsquid:UselessParenthesesCheck"!Remove these useless parentheses.(¯Ã¹õ
-esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(ÒÌâ–øÿÿÿÿ
 ;squid:S1170"!Make this final field static too.(ô¬•Ýþÿÿÿÿ
-gsquid:S3776"RRefactor this method to reduce its Cognitive Complexity from 42 to the 15 allowed.(”¶ÄÓ
-esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(¬Üß¿øÿÿÿÿ
-=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ýÿÿÿÿ
-‡ squid:ForLoopCounterChangedCheck"XRefactor the code in order to not assign to this loop counter from within the loop body.(­–„úÿÿÿÿ
+;squid:S1170"!Make this final field static too.(æÖ¸…ùÿÿÿÿ
+<squid:S1481"'Remove this unused "id" local variable.(¾°‹”
 Msquid:S1197"8Move the array designator from the variable to the type.(±ŒÍ
-gsquid:S3776"RRefactor this method to reduce its Cognitive Complexity from 28 to the 15 allowed.(ƒáúš
-Rsquid:S1854"8Remove this useless assignment to local variable "name".(‚¥Áµúÿÿÿÿ
-Ksquid:S1854"6Remove this useless assignment to local variable "id".(¾°‹”
-@squid:S1068"&Remove this unused "id" private field.(ôç¼Óþÿÿÿÿ
-Gsquid:S1068"-Remove this unused "boardPath" private field.(£Ûì–øÿÿÿÿ
-Csquid:S1481")Remove this unused "name" local variable.(‚¥Áµúÿÿÿÿ
-Gsquid:S1068"-Remove this unused "difficult" private field.(È¹Çªùÿÿÿÿ
-Rsquid:S1854"=Remove this useless assignment to local variable "difficult".(…‹°õ
 ]squid:HiddenFieldCheck"8Rename "name" which hides the field declared at line 16.(‚¥Áµúÿÿÿÿ
+]squid:HiddenFieldCheck"=Rename "difficult" which hides the field declared at line 13.(…‹°õ
+Ksquid:S1854"6Remove this useless assignment to local variable "id".(¾°‹”
+Vsquid:HiddenFieldCheck"6Rename "id" which hides the field declared at line 14.(¾°‹”
+Csquid:S1481")Remove this unused "name" local variable.(‚¥Áµúÿÿÿÿ
+Rsquid:S1854"=Remove this useless assignment to local variable "difficult".(…‹°õ
+esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(ÒÌâ–øÿÿÿÿ
+=squid:S1068"(Remove this unused "name" private field.(Ë¥¼
+esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(¬Üß¿øÿÿÿÿ
+@squid:S1068"&Remove this unused "id" private field.(ôç¼Óþÿÿÿÿ
+Hsquid:UselessParenthesesCheck"!Remove these useless parentheses.(¯Ã¹õ
+=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ýÿÿÿÿ
+Gsquid:S1068"-Remove this unused "boardPath" private field.(£Ûì–øÿÿÿÿ
+gsquid:S3776"RRefactor this method to reduce its Cognitive Complexity from 42 to the 15 allowed.(”¶ÄÓ
 rsquid:S00120"WRename this package name to match the regular expression '^[a-z]+(\.[a-z][a-z0-9]*)*$'.(‡äÿ¥ûÿÿÿÿ
+‡ squid:ForLoopCounterChangedCheck"XRefactor the code in order to not assign to this loop counter from within the loop body.(­–„úÿÿÿÿ
+Isquid:S1066"/Merge this if statement with the enclosing one.(þ„ëþÿÿÿÿ
+gsquid:S3776"RRefactor this method to reduce its Cognitive Complexity from 28 to the 15 allowed.(ƒáúš
+Gsquid:S1068"-Remove this unused "difficult" private field.(È¹Çªùÿÿÿÿ
+Rsquid:S1854"8Remove this useless assignment to local variable "name".(‚¥Áµúÿÿÿÿ

@@ -18,7 +18,7 @@ public class Partita
         dadiera = new Dadiera(n*2 + 1);
         for (int i = 0;i< nGioc;i++)
         {
-            Window w = new Window("kaleidoscopic_dream.xml");
+            Window w = new Window("resources/vetrate/xml/kaleidoscopic_dream.xml");
             player[i] = new Player (w,dadiera);
         }
     }
