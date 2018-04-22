@@ -1,5 +1,6 @@
-package Test;
-import javafx.scene.text.FontSmoothingType;
+package Test.Client;
+import Test.Model.Cell;
+import Test.Model.Dice;
 
 import javax.swing.JButton;
 import java.awt.*;
@@ -28,7 +29,9 @@ public class CellGraphic extends JButton
         cella = c;
     }
 
-
+    /**
+     * Funzione che si occupa di aggiornare la grafica corrispondente al currentDice dell'oggetto cell
+     */
     public void updateGrpahic ()
     {
         Integer aa = cella.getCurrentDice().getValue();

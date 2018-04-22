@@ -1,16 +1,19 @@
-package Test;
+package Test.Client;
+import Test.Exceptions.IllegalDiceException;
+import Test.Model.Cell;
+import Test.Model.Dadiera;
+import Test.Model.Dice;
+import Test.Model.Window;
+
 import java.awt.*;
 import javax.swing.*;
 
 import java.awt.event.*;
-import javax.swing.border.Border;
 
-public class Partita extends JFrame
+public class Graphic extends JFrame
 {
-    private Window finestra;
-    private Dadiera dadiera;
+    ClientPlayer giocatore;
     private JPanel boardPanel,textPanel,dicePanel;
-    private JLabel title;
     private int rows,cols;
     private CellGraphic board [][];
     private CellGraphic dices[];
@@ -18,24 +21,28 @@ public class Partita extends JFrame
     //Dado selezionato da quelli sopra
     private Dice selectedDice;
 
-    public Partita (Window w,Dadiera d)
+    public Graphic(ClientPlayer p)
     {
-        finestra = w;
-        dadiera = d;
+        giocatore = p;
         initGraphic();
     }
 
 
+    /**
+     * Inizializza la grafica di partita
+     */
     private void initGraphic ()
     {
+        Window finestra = giocatore.getWindow();
+        Dadiera dadiera = giocatore.getDadiera();
+
         rows = finestra.getRows();
         cols = finestra.getCols();
         boardPanel = new JPanel();
         textPanel = new JPanel();
         dicePanel = new JPanel();
-        title = new JLabel();
         board = new CellGraphic[rows][cols];
-        dices = new CellGraphic[dadiera.getLength()];
+        dices = new CellGraphic[dadiera.getDim()];
 
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -53,15 +60,13 @@ public class Partita extends JFrame
             }
         }
 
-        for (int i=0;i<dadiera.getLength();i++)
+        for (int i=0;i<dadiera.getDim();i++)
         {
-            dices[i] = new CellGraphic(new Cell (dadiera.getDice(i)),i,0);
+            dices[i] = new CellGraphic(new Cell(dadiera.getDice(i)),i,0);
             dices [i].updateGrpahic();
             dices[i].addActionListener(new DicesListener(dices[i]));
             dicePanel.add(dices[i]);
         }
-        title.setText("Wecocme to Forza Quattro... Waiting for opponent player");
-        textPanel.add(title);
 
         this.add(boardPanel);
         this.add(textPanel,BorderLayout.NORTH);
@@ -70,24 +75,31 @@ public class Partita extends JFrame
         this.setVisible(true);
     }
 
-    public void updateGraphic ()
+    /**
+     * Aggiorna la grafica di partita
+     */
+    private void updateGraphic ()
     {
-        System.out.println("aas");
+        //Aggiorna la grafica della board coi nuovi dadi selezionati
         for (int i=0;i < rows;i++)
             for (int j = 0; j < cols; j++)
                 board[i][j].updateGrpahic();
 
-        for (int i=0;i < rows;i++)
-            dices[i].updateGrpahic();
+        //Aggiorna la grafica della dadiera eliminando i dadi scelti
+        //In teoria quando viene chiamata la funzione selectedDice non è stato ancora rimesso a null
+        for (int i=0;i<dices.length;i++)
+            if (dices[i].getCurrentDice().equals(selectedDice))
+                dicePanel.remove(dices[i]);
 
+        dicePanel.updateUI();
     }
 
     class BoardListener implements ActionListener
     {
-        private CellGraphic cell;
+        private CellGraphic cellGraph;
         public BoardListener( CellGraphic c )
         {
-            cell = c;
+            cellGraph = c;
         }
 
         public void actionPerformed(ActionEvent arg)
@@ -96,8 +108,9 @@ public class Partita extends JFrame
             {
                 try
                 {
-                    finestra.addDice(cell.getPosX(),cell.getPosY(),selectedDice);
-                    System.out.println("-------------");
+                    giocatore.addDiceToBoard(cellGraph.getPosX(),cellGraph.getPosY(),selectedDice);
+                    giocatore.deleteDiceFromDadiera(selectedDice);
+
                     updateGraphic();
                 }
                 catch (IllegalDiceException ex)
@@ -114,10 +127,10 @@ public class Partita extends JFrame
 
     class DicesListener implements ActionListener
     {
-        private CellGraphic cell;
+        private CellGraphic cellGraph;
         public DicesListener( CellGraphic c )
         {
-            cell = c;
+            cellGraph = c;
         }
 
         public void actionPerformed(ActionEvent arg)
@@ -125,7 +138,7 @@ public class Partita extends JFrame
             if (selectedDice != null)
                 JOptionPane.showMessageDialog(null, "Dice already selected", "Error", JOptionPane.INFORMATION_MESSAGE);
             else
-                selectedDice = cell.getCurrentDice();
+                selectedDice = cellGraph.getCurrentDice();
         }
     }
 }

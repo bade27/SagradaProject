@@ -1,6 +1,4 @@
-package Test;
-
-import java.awt.*;
+package Test.Model;
 
 public class Cell
 {
@@ -28,6 +26,8 @@ public class Cell
         imgPath = path;
         frontDice = null;
     }
+
+
 
     /**
      * Setta il front dice col dado passato se esso è compatibile con il back dice
@@ -62,6 +62,21 @@ public class Cell
     {
         imgPath = path;
     }
+
+    public Cell clone ()
+    {
+        Cell copy = new Cell(backDice.clone(),frontDice.clone(),imgPath);
+        return copy;
+    }
+
+
+    private Cell (Dice backD,Dice frontD,String p)
+    {
+        frontDice = frontD;
+        backDice = backD;
+        imgPath = p;
+    }
+
 }
 
 

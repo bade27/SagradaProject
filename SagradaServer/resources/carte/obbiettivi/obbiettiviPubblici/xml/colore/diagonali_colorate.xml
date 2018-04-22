@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<card>
+	<name>Diagonali Colorate</name>
+  <!--il -1 è solo di comodo, non verrà mai usato-->
+	<value>-1</value>
+	<pattern p = "diag">
+		<tag>color</tag>
+	</pattern>
+  <description>Numero di dadi dello stesso colore diagonalmente adiacenti</description>
+</card>

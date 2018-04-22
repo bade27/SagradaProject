@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<list>
+
+    <numberOfCards>5</numberOfCards>
+
+    <card n = "1">sfumature_blue.xml</card>
+    <card n = "2">sfumature_gialle.xml</card>
+    <card n = "3">sfumature_rosse.xml</card>
+    <card n = "4">sfumature_verdi.xml</card>
+    <card n = "5">sfumature_viola.xml</card>
+
+</list>

@@ -1,9 +1,10 @@
-package Test;
+package Test.Model;
+
+import Test.Exceptions.IllegalDiceException;
+import Test.Model.Dice;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
 
 public class Dadiera
 {
@@ -12,11 +13,14 @@ public class Dadiera
     private int dim;
     private int length;
 
-    //Da aggiungere la diminuzione dei dadi
+    /**
+     * Genera una nuova dadiera per il numero di fiocatori passati
+     * @param n numero di giocatori
+     */
     public Dadiera (int n)
     {
-        dim = n;
-        length = n;
+        dim = (n * 2) + 1;
+        length = dim;
         listaDadi = new ArrayList<Dice>(dim);
         mix();
     }
@@ -35,13 +39,25 @@ public class Dadiera
         }
     }
 
+    public void deleteDice (Dice d) throws IllegalDiceException
+    {
+        for (int i=0;i < length;i++)
+            if (listaDadi.get(i).isEqual(d))
+            {
+                listaDadi.remove(i);
+                return;
+            }
+        throw new IllegalDiceException("Dado selezionato non esistente");
+
+    }
+
     public Dice getDice (int i)
     {
         return listaDadi.get(i);
     }
 
-    public int getLength ()
+    public int getDim ()
     {
-        return length;
+        return dim;
     }
 }

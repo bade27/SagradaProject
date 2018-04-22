@@ -1,10 +1,10 @@
-package Test;
+package Test.Exceptions;
 
 public class IllegalDiceException extends Exception
 {
     public IllegalDiceException()
     {
-        super("Dice In Wrong Position");
+        super("Dice Exception");
     }
 
     public IllegalDiceException(String msg)

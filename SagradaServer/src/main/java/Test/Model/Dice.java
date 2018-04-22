@@ -1,4 +1,4 @@
-package Test;
+package Test.Model;
 import java.awt.*;
 
 public class Dice
@@ -45,6 +45,8 @@ public class Dice
      */
     public boolean isEqual (Dice d)
     {
+        if (d == null)
+            return false;
         if (d.getColor() == color && d.getValue() == value)
             return true;
         return false;
@@ -57,9 +59,17 @@ public class Dice
      */
     public boolean isSimilar (Dice d)
     {
+        if (d == null)
+            return false;
         if (d.getColor() == color || d.getValue() == value || (d.getColor() == null && d.getValue() == 0))
             return true;
         return false;
+    }
+
+    public Dice clone()
+    {
+        Dice copy = new Dice(this.value,this.color);
+        return copy;
     }
 }
 
