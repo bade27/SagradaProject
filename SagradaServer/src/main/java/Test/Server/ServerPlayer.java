@@ -60,6 +60,11 @@ public class ServerPlayer implements Runnable
         //com.initialize ();
     }
 
+    /**
+     *
+     * @param c1 carta 1 della possibile scelta: c1[0] front_card.xml c1[1] back_card.xml
+     * @param c2 carta 2 della possibile scelta: c2[0] front_card.xml c2[1] back_card.xml
+     */
     public void initializeWindow (String[] c1,String[] c2)
     {
         //Comunicazione col client per la sua scelta della window
