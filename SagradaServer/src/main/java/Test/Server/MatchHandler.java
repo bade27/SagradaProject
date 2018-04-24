@@ -23,13 +23,11 @@ public class MatchHandler implements Runnable
 
     private final static int MAXGIOC =2;//Da modificare a 4
 
-    public void run ()
+    public synchronized void run ()
     {
         acceptConnection();
-        if (initiliazeWindowPlayers() && initalizePrivateObjectiveCards() && initializePublicObjectiveCards())
-        {
-            //startGame();
-        }
+        initiliazeWindowPlayers();
+        waitInitialition();
     }
 
     /**
@@ -44,13 +42,15 @@ public class MatchHandler implements Runnable
         try
         {
             tok = new TokenTurn(MAXGIOC);
+            //Per ogni giocatore initzializza la comunicazione attendendo che qualche client si connetta
             for (int i =0 ;i< MAXGIOC;i ++)
             {
                 player[i] = new ServerPlayer (tok);
                 player[i].initializeComunication();
-                /*Thread t = new Thread(player[i]); //Da modificare quando pronta la comunicazione
-                t.start();*/
+                Thread t = new Thread(player[i]);
+                t.start();
                 nConn++;
+                System.out.println(">>>Client connected:" + nConn);
             }
         }
         catch (Exception e)
@@ -79,49 +79,29 @@ public class MatchHandler implements Runnable
             return false;
         }
 
-        try
+        for (int i = 0; i < nConn ; i++)
         {
-            //Thread is used for parallel choosing cards by client
-            Thread t[] = new Thread[nConn];
-            for (int i = 0; i < nConn ; i++)
-            {
-                //Pick up 2 random cards
-                if (cards.size() > 2)
-                {
-                    c1 = (int)(Math.random()* (cards.size()));
-                    do {
-                        c2 = (int)(Math.random()* (cards.size()));
-                    }while (c1 == c2);
-                }
-                else
-                {
-                    c1=0;
-                    c2=1;
-                }
-
-                //Initialize Client with Picked cards
-                t[i] = new Thread(new InitWindow(player[i],cards.get(c1),cards.get(c2)));
-                t[i].start();
-
-                //Remove picked cards from list
-                if (c1 > c2)
-                {
-                    cards.remove(c1);
-                    cards.remove(c2);
-                }
-                else
-                {
-                    cards.remove(c2);
-                    cards.remove(c1);
-                }
+            //Pick up 2 random cards
+            if (cards.size() > 2) {
+                c1 = (int) (Math.random() * (cards.size()));
+                do {
+                    c2 = (int) (Math.random() * (cards.size()));
+                } while (c1 == c2);
+            } else {
+                c1 = 0;
+                c2 = 1;
             }
-            //Waiting for client's response
-            for (int i = 0; i < nConn ; i++)
-                t[i].join();
-        }
-        catch (InterruptedException ex){
-            System.out.println(ex.getMessage());
-            return false;
+
+            player[i].setWindowCards(cards.get(c1), cards.get(c2));
+
+            //Remove picked cards from list
+            if (c1 > c2) {
+                cards.remove(c1);
+                cards.remove(c2);
+            } else {
+                cards.remove(c2);
+                cards.remove(c1);
+            }
         }
         return true;
     }
@@ -149,7 +129,7 @@ public class MatchHandler implements Runnable
             for (int i=0;i<nConn;i++)
             {
                 c = (int)(Math.random()* (cards.size()));
-                player[i].initializePrivateObjectives(cards.get(c));
+                player[i].setPrivateObjCard(cards.get(c));
                 cards.remove(c);
             }
         }
@@ -189,8 +169,7 @@ public class MatchHandler implements Runnable
             }
             //For each players initialize public objective already selected
             for (int i=0;i<nConn;i++)
-                player[i].initializePublicObjectives(objs);
-
+                player[i].setPublicObjCard(objs);
         }
         catch (Exception ex) {
             System.out.println(ex.getMessage());
@@ -227,25 +206,32 @@ public class MatchHandler implements Runnable
     }
 
 
-    /**
-     * This class is used to run parallel comunication with client on window initialization
-     */
-    class InitWindow implements Runnable
+    private synchronized void waitInitialition ()
     {
-        ServerPlayer pl;
-        String c1[],c2[];
+        for (int i=0;i<nConn;i++)
+            player[i].setOnSetup();
 
-        public InitWindow(ServerPlayer p,String[] c1,String[] c2)
+        synchronized (tok)
         {
-            pl = p;
-            this.c1 = c1;
-            this.c2 = c2;
+            try
+            {
+                tok.notifyAll();
+                for (int i = 0; i < nConn ; i++)
+                {
+                    if (player[i].getOnSetup())
+                        tok.wait();
+                    System.out.println(">>>Player" + i + "Window initialized");
+                }
+            }
+            catch (InterruptedException ex)
+            {
+                System.out.println(ex.getMessage());
+                ex.printStackTrace();
+            }
         }
-        public  void run ()
-        {
-            pl.initializeWindow(c1,c2);
-        }
+
     }
+
 
     public static void main(String[] args)
     {

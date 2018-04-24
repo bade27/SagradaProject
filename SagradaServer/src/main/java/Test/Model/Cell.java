@@ -42,6 +42,11 @@ public class Cell
         return true;
     }
 
+    public void setFrontDice (Dice d)
+    {
+        frontDice = d;
+    }
+
     public Dice getFrontDice ()
     {
         return frontDice;

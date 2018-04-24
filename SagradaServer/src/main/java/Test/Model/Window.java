@@ -43,10 +43,16 @@ public class Window
      * @param i Riga in cui aggiungere il Dice
      * @param j Colonna in cui aggiungere il Dice
      * @param d Dice da Aggiungere
+     * @param level livello di controllo da adottare nell'inseriemnto (-1: nessun controllo ; 0:tutti controlli)
      * @throws IllegalDiceException
      */
-    public void addDice (int i , int j , Dice d) throws IllegalDiceException
+    public void addDice (int i , int j , Dice d,int level) throws IllegalDiceException
     {
+        if (level == -1)
+        {
+            board[i][j].setFrontDice(d);
+            return;
+        }
         //Controllo se il primo dado immesso sia inserito sul bordo
         if (firstTurn)
         {

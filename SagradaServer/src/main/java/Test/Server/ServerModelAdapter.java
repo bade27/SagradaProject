@@ -43,7 +43,7 @@ public class ServerModelAdapter
     public void addDiceToBoard (int i,int j,Dice d) throws ModelException
     {
         try {
-            board.addDice(i,j,d);
+            board.addDice(i,j,d,0);
         }
         catch (IllegalDiceException ex) {
             throw new ModelException("Impossible to place dice: " + ex.getMessage());

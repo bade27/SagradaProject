@@ -1,3 +1,6 @@
+package Test.Server;
+
+import Test.Model.Dice;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -71,7 +74,7 @@ public class JSONFacilities {
     }
 
     public static void decodeStringArrays(String message) throws JSONException{
-        ArrayList<String[]> list = new ArrayList<>();
+        ArrayList<String[]> list = new ArrayList<String[]>();
         JSONArray arrayOfArray = new JSONArray(message);
         for(int i = 0; i < arrayOfArray.length(); i++) {
             JSONArray array = arrayOfArray.getJSONArray(i);

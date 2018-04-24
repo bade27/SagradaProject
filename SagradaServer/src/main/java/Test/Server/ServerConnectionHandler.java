@@ -1,3 +1,5 @@
+package Test.Server;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -34,11 +36,7 @@ public class ServerConnectionHandler {
         try {
             serverSocket = new ServerSocket(PORT);
             System.out.println("\nServer waiting for client on port " +  serverSocket.getLocalPort());
-
-            // server infinite loop
-            for(int i = 0; i < 1000; i++) {
-                client = serverSocket.accept();
-            }
+            client = serverSocket.accept();
         }
         catch(Exception e) {
             System.out.println(e);

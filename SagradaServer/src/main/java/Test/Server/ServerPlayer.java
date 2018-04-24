@@ -1,8 +1,6 @@
 package Test.Server;
 
-import Test.Model.Dadiera;
-import Test.Model.Window;
-
+import Test.Exceptions.ModelException;
 
 /**
  * Cose da aggiungere:
@@ -14,19 +12,21 @@ import Test.Model.Window;
 
 public class ServerPlayer implements Runnable
 {
-    //private Comunicator com;
+    private ServerConnectionHandler com;
     private int idTurn;
     private TokenTurn token;
-    ServerModelAdapter adapter;
-    //private boolean onComunication;
+    private ServerModelAdapter adapter;
+    private Boolean onSetup;
 
+    private String[] windowCard1,windowCard2,publicObjCard;
+    private String privateObjCard;
 
     public ServerPlayer(TokenTurn tok)
     {
-        //com = new Comunicator ();
         adapter = new ServerModelAdapter();
         idTurn = -1;
         token = tok;
+        onSetup = false;
     }
 
     public synchronized void run ()
@@ -37,6 +37,21 @@ public class ServerPlayer implements Runnable
             {
                 try
                 {
+                    //Inizializzazione Partita
+                    while (!onSetup)
+                        token.wait();
+
+                    //Inizializza il client
+                    initializeWindow();
+
+
+                    onSetup = false;
+                    token.notifyAll();
+
+
+                    //Partita vera e propria
+
+                    //Attende che è il prorpio turno di gioco
                     while (!token.isMyTurn(idTurn))
                         token.wait();
 
@@ -57,17 +72,19 @@ public class ServerPlayer implements Runnable
 
     public void initializeComunication ()
     {
-        //com.initialize ();
+        com = new ServerConnectionHandler ();
     }
 
-    /**
-     *
-     * @param c1 carta 1 della possibile scelta: c1[0] front_card.xml c1[1] back_card.xml
-     * @param c2 carta 2 della possibile scelta: c2[0] front_card.xml c2[1] back_card.xml
-     */
-    public void initializeWindow (String[] c1,String[] c2)
+    private void initializeWindow ()
     {
-        //Comunicazione col client per la sua scelta della window
+        String s1 = com.chooseWindow(windowCard1,windowCard2);
+        try {
+            adapter.initializeWindow("resources/vetrate/xml/" + s1);
+            System.out.println(">>>Window initialized");
+        }
+        catch (ModelException ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
     public void initializePrivateObjectives (String card)
@@ -89,5 +106,32 @@ public class ServerPlayer implements Runnable
     {
         idTurn = id;
         //Comunica col client il cambio di idTurn
+    }
+
+
+    public void setWindowCards (String c1[],String c2 [])
+    {
+        windowCard1 = c1;
+        windowCard2 = c2;
+    }
+
+    public void setPublicObjCard (String[] c)
+    {
+        publicObjCard = c;
+    }
+
+    public void setPrivateObjCard (String c)
+    {
+        privateObjCard = c;
+    }
+
+    public synchronized void setOnSetup ()
+    {
+        onSetup = true;
+    }
+
+    public synchronized boolean getOnSetup ()
+    {
+        return onSetup;
     }
 }

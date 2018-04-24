@@ -1,5 +1,5 @@
 package Test.Client;
-import Test.Exceptions.IllegalDiceException;
+import Test.Exceptions.ModelException;
 import Test.Model.Cell;
 import Test.Model.Dadiera;
 import Test.Model.Dice;
@@ -12,7 +12,7 @@ import java.awt.event.*;
 
 public class Graphic extends JFrame
 {
-    ClientPlayer giocatore;
+    ClientModelAdapter giocatore;
     private JPanel boardPanel,textPanel,dicePanel;
     private int rows,cols;
     private CellGraphic board [][];
@@ -21,12 +21,17 @@ public class Graphic extends JFrame
     //Dado selezionato da quelli sopra
     private Dice selectedDice;
 
-    public Graphic(ClientPlayer p)
+    public Graphic()
     {
-        giocatore = p;
+        giocatore = new ClientModelAdapter();
+        initailizeComunication();
         initGraphic();
     }
 
+    private void initailizeComunication ()
+    {
+
+    }
 
     /**
      * Inizializza la grafica di partita
@@ -113,7 +118,7 @@ public class Graphic extends JFrame
 
                     updateGraphic();
                 }
-                catch (IllegalDiceException ex)
+                catch (ModelException ex)
                 {
                     JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
                 }
@@ -140,5 +145,10 @@ public class Graphic extends JFrame
             else
                 selectedDice = cellGraph.getCurrentDice();
         }
+    }
+
+    public static void main(String[] args)
+    {
+        Graphic g = new Graphic();
     }
 }
