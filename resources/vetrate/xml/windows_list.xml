@@ -2,61 +2,19 @@
 
 <list>
 
-  <card n = "1">
-    <side s = "a"> kaleidoscopic_dream.xml </side>
-    <side s = "b"> virtus </side>
-  </card>
+  <numberOfCards>4</numberOfCards>
 
-  <card n = "2">
-    <side s = "a"> aurorae_magnificus.xml </side>
-    <side s = "b"> via_lux.xml </side>
-  </card>
+  <card n = "1">kaleidoscopic_dream.xml</card>
+  <card n = "2">virtus.xml</card>
 
-<!--
-  <card n = "1">
-    <side s = "a"> kaleidoscopic_dream.xml </side>
-    <side s = "b"> virtus </side>
-  </card>
+  <card n = "3">aurorae_magnificus.xml</card>
+  <card n = "4">via_lux.xml</card>
 
-  <card n = "1">
-    <side s = "a"> kaleidoscopic_dream.xml </side>
-    <side s = "b"> virtus </side>
-  </card>
+  <card n = "5">kaleidoscopic_dream.xml</card>
+  <card n = "6">virtus.xml</card>
 
-  <card n = "1">
-    <side s = "a"> kaleidoscopic_dream.xml </side>
-    <side s = "b"> virtus </side>
-  </card>
+  <card n = "7">aurorae_magnificus.xml</card>
+  <card n = "8">via_lux.xml</card>
 
-  <card n = "1">
-    <side s = "a"> kaleidoscopic_dream.xml </side>
-    <side s = "b"> virtus </side>
-  </card>
-
-  <card n = "1">
-    <side s = "a"> kaleidoscopic_dream.xml </side>
-    <side s = "b"> virtus </side>
-  </card>
-
-  <card n = "1">
-    <side s = "a"> kaleidoscopic_dream.xml </side>
-    <side s = "b"> virtus </side>
-  </card>
-
-  <card n = "1">
-    <side s = "a"> kaleidoscopic_dream.xml </side>
-    <side s = "b"> virtus </side>
-  </card>
-
-  <card n = "1">
-    <side s = "a"> kaleidoscopic_dream.xml </side>
-    <side s = "b"> virtus </side>
-  </card>
-
-  <card n = "1">
-    <side s = "a"> kaleidoscopic_dream.xml </side>
-    <side s = "b"> virtus </side>
-  </card>
--->
 
 </list>

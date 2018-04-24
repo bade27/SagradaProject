@@ -1,12 +1,7 @@
 package Test.Model;
 
 import Test.Exceptions.IllegalDiceException;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import java.awt.*;
-import java.io.File;
+import Test.Exceptions.ParserXMLException;
 
 public class Window
 {
@@ -14,9 +9,9 @@ public class Window
     private int id;
     private Cell board [][];
     private String name;
-    private final int rows = 4;
-    private final int cols = 5;
-    private boolean firstTurn;
+    public final int rows = 4;
+    public final int cols = 5;
+    private boolean firstTurn;//Indica se il dado da inserire deve per forza stare sul bordo (primo inserimento)
     private String boardPath;
 
     /*public Window ()
@@ -35,12 +30,12 @@ public class Window
      * Genera una nuova window da file xml
      * @param path path del file xml per la generazione della window+
      */
-    public Window (String path)
+    public Window (String path) throws ParserXMLException
     {
         boardPath = path;
         firstTurn = true;
-        board =new Cell [rows][cols];
-        readXML(path);
+        board = new Cell [rows][cols];
+        board = ParserXML.readWindowFromPath(boardPath,board);
     }
 
     /**
@@ -48,10 +43,16 @@ public class Window
      * @param i Riga in cui aggiungere il Dice
      * @param j Colonna in cui aggiungere il Dice
      * @param d Dice da Aggiungere
+     * @param level livello di controllo da adottare nell'inseriemnto (-1: nessun controllo ; 0:tutti controlli)
      * @throws IllegalDiceException
      */
-    public void addDice (int i , int j , Dice d) throws IllegalDiceException
+    public void addDice (int i , int j , Dice d,int level) throws IllegalDiceException
     {
+        if (level == -1)
+        {
+            board[i][j].setFrontDice(d);
+            return;
+        }
         //Controllo se il primo dado immesso sia inserito sul bordo
         if (firstTurn)
         {
@@ -102,10 +103,6 @@ public class Window
     }
 
 
-    public Cell[][] getGrid() {
-        return this.board;
-    }
-
     public Dice getDice (int i , int j)
     {
         return board[i][j].getCurrentDice();
@@ -116,6 +113,10 @@ public class Window
         return board[i][j];
     }
 
+    public void initializeWindow (String path) throws ParserXMLException
+    {
+        board = ParserXML.readWindowFromPath(path,board);
+    }
 
     public int getRows ()
     {
@@ -127,59 +128,5 @@ public class Window
         return cols;
     }
 
-    /**
-     * Legge il file xml passato come parametro e inizializza la board di gioco
-     * @param path path del file xml di inizializzazione
-     */
-    private void readXML (String path)
-    {
-        try
-        {
-            File file = new File(path);
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document document = documentBuilder.parse(file);
 
-            //ora è un po' più efficiente anche qui (prendo solo i tag che mi servono, senza fare la lista di tutti
-            int id = Integer.parseInt(document.getElementsByTagName("id").item(0).getTextContent());
-            String name = document.getElementsByTagName("name").item(0).getTextContent();
-            int difficult = Integer.parseInt(document.getElementsByTagName("difficulty").item(0).getTextContent());
-
-            //sono due liste che contengono l'elenco dei tag del file (hanno stessa lunghezza)
-            //in questo modo posso leggere in parallelo i valori delle celle
-            NodeList values = document.getElementsByTagName("value");
-            NodeList colors = document.getElementsByTagName("color");
-            //NodeList imgs = document.getElementsByTagName("img_source");
-
-            //il parametro k mi serve come indice delle due liste valori e colori
-            for(int i = 0, k = 0; i < rows; i++)
-            {
-                for(int j = 0; j < cols; j++)
-                {
-                    int currentValue = Integer.parseInt(values.item(k).getTextContent());
-                    String currentColor = colors.item(k).getTextContent();
-                    if (currentColor.equals("dc"))
-                        board[i][j] = new Cell(new Dice(currentValue));
-                    else
-                    {
-                        if (currentColor.equals("rosso"))
-                            board[i][j] = new Cell(new Dice(currentValue,Color.red));
-                        if (currentColor.equals("verde"))
-                            board[i][j] = new Cell(new Dice(currentValue,Color.green));
-                        if (currentColor.equals("giallo"))
-                            board[i][j] = new Cell(new Dice(currentValue,Color.yellow));
-                        if (currentColor.equals("azzurro"))
-                            board[i][j] = new Cell(new Dice(currentValue,Color.blue));
-                        if (currentColor.equals("viola"))
-                            board[i][j] = new Cell(new Dice(currentValue,Color.magenta));
-                    }
-                    k++;
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
 }
