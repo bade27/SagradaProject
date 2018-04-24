@@ -5,6 +5,8 @@ import java.util.ArrayList;
 public class Client {
 
     private ClientConnectionHandler cch;
+    private Graphic gr;
+    private ClientModelAdapter model;
 
     public Client() {
         cch = new ClientConnectionHandler(this);
@@ -18,9 +20,4 @@ public class Client {
         System.out.println(obj);
         return "ok";
     }
-
-    public static void main(String[] args) {
-        new Client();
-    }
-
 }

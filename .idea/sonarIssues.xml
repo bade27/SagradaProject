@@ -8,6 +8,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/LM18.iml">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/pom.xml">
           <value>
             <set />
@@ -24,6 +29,21 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/main/java/Test/CellGraphic.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/Test/Client/Client.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/Test/Client/ClientConnectionHandler.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/Test/Client/Graphic.java">
           <value>
             <set />
           </value>
@@ -74,6 +94,21 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/main/java/Test/SagradaIntefaceTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/Test/Server/JSONFacilities.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/Test/Server/MatchHandler.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/Test/Server/ServerConnectionHandler.java">
           <value>
             <set />
           </value>

@@ -12,11 +12,12 @@ import java.awt.event.*;
 
 public class Graphic extends JFrame
 {
-    ClientModelAdapter giocatore;
+    private ClientModelAdapter giocatore;
     private JPanel boardPanel,textPanel,dicePanel;
     private int rows,cols;
     private CellGraphic board [][];
     private CellGraphic dices[];
+    private ClientConnectionHandler cch;
 
     //Dado selezionato da quelli sopra
     private Dice selectedDice;
@@ -25,7 +26,7 @@ public class Graphic extends JFrame
     {
         giocatore = new ClientModelAdapter();
         initailizeComunication();
-        initGraphic();
+        //initGraphic();
     }
 
     private void initailizeComunication ()
@@ -36,7 +37,7 @@ public class Graphic extends JFrame
     /**
      * Inizializza la grafica di partita
      */
-    private void initGraphic ()
+    public void initGraphic ()
     {
         Window finestra = giocatore.getWindow();
         Dadiera dadiera = giocatore.getDadiera();
