@@ -16,7 +16,6 @@ public class ServerPlayer implements Runnable
     private int idTurn;
     private TokenTurn token;
     private ServerModelAdapter adapter;
-    private Boolean onSetup;
 
     private String[] windowCard1,windowCard2,publicObjCard;
     private String privateObjCard;
@@ -26,7 +25,6 @@ public class ServerPlayer implements Runnable
         adapter = new ServerModelAdapter();
         idTurn = -1;
         token = tok;
-        onSetup = false;
     }
 
     public synchronized void run ()
@@ -37,15 +35,15 @@ public class ServerPlayer implements Runnable
             {
                 try
                 {
+                    System.out.println("eii");
                     //Inizializzazione Partita
-                    while (!onSetup)
+                    while (!token.getOnSetup())
                         token.wait();
 
                     //Inizializza il client
                     initializeWindow();
 
-
-                    onSetup = false;
+                    token.endSetup();
                     token.notifyAll();
 
 
@@ -72,15 +70,16 @@ public class ServerPlayer implements Runnable
 
     public void initializeComunication ()
     {
-        com = new ServerConnectionHandler ();
+        //com = new ServerConnectionHandler ();
     }
 
     private void initializeWindow ()
     {
-        String s1 = com.chooseWindow(windowCard1,windowCard2);
+        //String s1 = com.chooseWindow(windowCard1,windowCard2);
+        String s1 = windowCard1[0];
         try {
             adapter.initializeWindow("resources/vetrate/xml/" + s1);
-            System.out.println(">>>Window initialized");
+            System.out.println(">>>Window initialized: " + s1);
         }
         catch (ModelException ex) {
             System.out.println(ex.getMessage());
@@ -125,13 +124,4 @@ public class ServerPlayer implements Runnable
         privateObjCard = c;
     }
 
-    public synchronized void setOnSetup ()
-    {
-        onSetup = true;
-    }
-
-    public synchronized boolean getOnSetup ()
-    {
-        return onSetup;
-    }
 }

@@ -28,6 +28,7 @@ public class MatchHandler implements Runnable
         acceptConnection();
         initiliazeWindowPlayers();
         waitInitialition();
+        System.out.println(">>>Initialization ended");
     }
 
     /**
@@ -50,7 +51,6 @@ public class MatchHandler implements Runnable
                 Thread t = new Thread(player[i]);
                 t.start();
                 nConn++;
-                System.out.println(">>>Client connected:" + nConn);
             }
         }
         catch (Exception e)
@@ -208,8 +208,7 @@ public class MatchHandler implements Runnable
 
     private synchronized void waitInitialition ()
     {
-        for (int i=0;i<nConn;i++)
-            player[i].setOnSetup();
+        tok.startSetup();
 
         synchronized (tok)
         {
@@ -217,11 +216,8 @@ public class MatchHandler implements Runnable
             {
                 tok.notifyAll();
                 for (int i = 0; i < nConn ; i++)
-                {
-                    if (player[i].getOnSetup())
+                    if (tok.getOnSetup())
                         tok.wait();
-                    System.out.println(">>>Player" + i + "Window initialized");
-                }
             }
             catch (InterruptedException ex)
             {

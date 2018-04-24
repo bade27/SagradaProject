@@ -34,7 +34,7 @@ public class Window
     {
         boardPath = path;
         firstTurn = true;
-        board =new Cell [rows][cols];
+        board = new Cell [rows][cols];
         board = ParserXML.readWindowFromPath(boardPath,board);
     }
 

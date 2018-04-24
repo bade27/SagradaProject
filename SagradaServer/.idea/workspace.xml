@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/src/main/java/Test/Server/ServerPlayer.java" description="package Test.Server;&#10;&#10;import Test.Exceptions.Model..." line="117" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="008348eb-67b9-401c-8bd6-79cafa4f8e65" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
@@ -16,8 +19,8 @@
       <file leaf-file-name="MatchHandler.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Test/Server/MatchHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1581">
-              <caret line="214" column="9" lean-forward="false" selection-start-line="214" selection-start-column="9" selection-end-line="214" selection-end-column="9" />
+            <state relative-caret-position="289">
+              <caret line="219" column="35" lean-forward="false" selection-start-line="219" selection-start-column="35" selection-end-line="219" selection-end-column="35" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="method#initiliazeWindowPlayers#0;class#MatchHandler#0" expanded="false" />
@@ -29,38 +32,27 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ServerPlayer.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ServerPlayer.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/Test/Server/ServerPlayer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="77" column="36" lean-forward="true" selection-start-line="77" selection-start-column="36" selection-end-line="77" selection-end-column="36" />
+            <state relative-caret-position="510">
+              <caret line="81" column="55" lean-forward="false" selection-start-line="81" selection-start-column="55" selection-end-line="81" selection-end-column="55" />
               <folding>
-                <element signature="e#1943#1944#0" expanded="true" />
-                <element signature="e#1995#1996#0" expanded="true" />
-                <element signature="e#3006#3007#0" expanded="true" />
-                <element signature="e#3039#3040#0" expanded="true" />
-                <element signature="e#3091#3092#0" expanded="true" />
-                <element signature="e#3125#3126#0" expanded="true" />
-                <element signature="e#3175#3176#0" expanded="true" />
-                <element signature="e#3205#3206#0" expanded="true" />
-                <element signature="e#3258#3259#0" expanded="true" />
-                <element signature="e#3288#3289#0" expanded="true" />
+                <element signature="e#3057#3058#0" expanded="true" />
+                <element signature="e#3090#3091#0" expanded="true" />
+                <element signature="e#3142#3143#0" expanded="true" />
+                <element signature="e#3176#3177#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ClientModelAdapter.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Test/Client/ClientModelAdapter.java">
+      <file leaf-file-name="ServerModelAdapter.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/Test/Server/ServerModelAdapter.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="9" column="13" lean-forward="false" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-              <folding>
-                <element signature="e#1243#1244#0" expanded="true" />
-                <element signature="e#1271#1272#0" expanded="true" />
-                <element signature="e#1306#1307#0" expanded="true" />
-                <element signature="e#1336#1337#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="255">
+              <caret line="29" column="37" lean-forward="false" selection-start-line="29" selection-start-column="37" selection-end-line="29" selection-end-column="37" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -112,7 +104,6 @@
         <option value="$PROJECT_DIR$/src/main/java/Test/TokenTurn.java" />
         <option value="$PROJECT_DIR$/src/main/java/Test/ServerPlayer.java" />
         <option value="$PROJECT_DIR$/src/main/java/Test/MatchHandler.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Test/Server/TokenTurn.java" />
         <option value="$PROJECT_DIR$/src/main/java/Test/Client/ClientPlayer.java" />
         <option value="$PROJECT_DIR$/src/main/java/Test/Exceptions/ParserXMLException.java" />
         <option value="$PROJECT_DIR$/src/main/java/Test/Exceptions/ModelException.java" />
@@ -122,14 +113,15 @@
         <option value="$PROJECT_DIR$/src/main/java/Test/Model/ParserXML.java" />
         <option value="$PROJECT_DIR$/resources/carte/obbiettivi/obbiettiviPubblici/xml/publicObjectiveList.xml" />
         <option value="$PROJECT_DIR$/src/main/java/Test/Model/Cell.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Test/Server/ServerModelAdapter.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Test/Model/Window.java" />
         <option value="$PROJECT_DIR$/src/main/java/Test/Client/ClientModelAdapter.java" />
         <option value="$PROJECT_DIR$/src/main/java/Test/Client/ClientConnectionHandler.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
         <option value="$PROJECT_DIR$/src/main/java/Test/Server/JSONFacilities.java" />
         <option value="$PROJECT_DIR$/src/main/java/Test/Server/ServerConnectionHandler.java" />
         <option value="$PROJECT_DIR$/src/main/java/Test/Client/Graphic.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Test/Model/Window.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Test/Server/ServerModelAdapter.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Test/Server/TokenTurn.java" />
         <option value="$PROJECT_DIR$/src/main/java/Test/Server/MatchHandler.java" />
         <option value="$PROJECT_DIR$/src/main/java/Test/Server/ServerPlayer.java" />
       </list>
@@ -355,6 +347,7 @@
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32913387" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32913387" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -368,7 +361,6 @@
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32913387" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -406,7 +398,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="45" />
+      <option name="time" value="53" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -636,14 +628,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Test/Model/Window.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="111">
-          <caret line="45" column="112" lean-forward="false" selection-start-line="45" selection-start-column="112" selection-end-line="45" selection-end-column="112" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Test/Model/ParserXML.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="527">
@@ -656,13 +640,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="40" lean-forward="true" selection-start-line="0" selection-start-column="40" selection-end-line="0" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Test/Server/ServerModelAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="680">
-          <caret line="45" column="33" lean-forward="false" selection-start-line="45" selection-start-column="33" selection-end-line="45" selection-end-column="33" />
           <folding />
         </state>
       </provider>
@@ -671,6 +648,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="465">
           <caret line="76" column="57" lean-forward="false" selection-start-line="76" selection-start-column="57" selection-end-line="76" selection-end-column="57" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -681,17 +661,62 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Test/Client/Graphic.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-433">
+          <caret line="26" column="33" lean-forward="true" selection-start-line="26" selection-start-column="33" selection-end-line="26" selection-end-column="33" />
+          <folding>
+            <element signature="imports" expanded="false" />
+            <element signature="e#4351#4352#0" expanded="false" />
+            <element signature="e#4392#4393#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Test/Model/Window.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="36" column="16" lean-forward="false" selection-start-line="36" selection-start-column="16" selection-end-line="36" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Test/Client/ClientModelAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-136">
+          <caret line="9" column="13" lean-forward="false" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+          <folding>
+            <element signature="e#1243#1244#0" expanded="true" />
+            <element signature="e#1271#1272#0" expanded="true" />
+            <element signature="e#1306#1307#0" expanded="true" />
+            <element signature="e#1336#1337#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Test/Server/ServerModelAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="29" column="37" lean-forward="false" selection-start-line="29" selection-start-column="37" selection-end-line="29" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Test/Server/TokenTurn.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="13" lean-forward="false" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
+        <state relative-caret-position="465">
+          <caret line="63" column="23" lean-forward="false" selection-start-line="63" selection-start-column="23" selection-end-line="63" selection-end-column="23" />
+          <folding>
+            <element signature="e#1294#1295#0" expanded="true" />
+            <element signature="e#1324#1325#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Test/Server/MatchHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1581">
-          <caret line="214" column="9" lean-forward="false" selection-start-line="214" selection-start-column="9" selection-end-line="214" selection-end-column="9" />
+        <state relative-caret-position="289">
+          <caret line="219" column="35" lean-forward="false" selection-start-line="219" selection-start-column="35" selection-end-line="219" selection-end-column="35" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#initiliazeWindowPlayers#0;class#MatchHandler#0" expanded="false" />
@@ -702,46 +727,15 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Test/Client/Graphic.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-433">
-          <caret line="26" column="33" lean-forward="true" selection-start-line="26" selection-start-column="33" selection-end-line="26" selection-end-column="33" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#4351#4352#0" expanded="true" />
-            <element signature="e#4392#4393#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Test/Server/ServerPlayer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="77" column="36" lean-forward="true" selection-start-line="77" selection-start-column="36" selection-end-line="77" selection-end-column="36" />
+        <state relative-caret-position="510">
+          <caret line="81" column="55" lean-forward="false" selection-start-line="81" selection-start-column="55" selection-end-line="81" selection-end-column="55" />
           <folding>
-            <element signature="e#1943#1944#0" expanded="true" />
-            <element signature="e#1995#1996#0" expanded="true" />
-            <element signature="e#3006#3007#0" expanded="true" />
-            <element signature="e#3039#3040#0" expanded="true" />
-            <element signature="e#3091#3092#0" expanded="true" />
-            <element signature="e#3125#3126#0" expanded="true" />
-            <element signature="e#3175#3176#0" expanded="true" />
-            <element signature="e#3205#3206#0" expanded="true" />
-            <element signature="e#3258#3259#0" expanded="true" />
-            <element signature="e#3288#3289#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Test/Client/ClientModelAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="9" column="13" lean-forward="false" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-          <folding>
-            <element signature="e#1243#1244#0" expanded="true" />
-            <element signature="e#1271#1272#0" expanded="true" />
-            <element signature="e#1306#1307#0" expanded="true" />
-            <element signature="e#1336#1337#0" expanded="true" />
+            <element signature="e#3057#3058#0" expanded="true" />
+            <element signature="e#3090#3091#0" expanded="true" />
+            <element signature="e#3142#3143#0" expanded="true" />
+            <element signature="e#3176#3177#0" expanded="true" />
           </folding>
         </state>
       </provider>

@@ -5,12 +5,15 @@ public class TokenTurn
     private int currentTurn;
     private int numPlayer;
     private boolean clockwise;
+    private boolean onSetup;
+    private int playerEndSetup;
 
     public TokenTurn (int n)
     {
         numPlayer = n;
         currentTurn = 0;
         clockwise = true;
+        onSetup = false;
     }
 
     public synchronized boolean isMyTurn (int t)
@@ -41,9 +44,24 @@ public class TokenTurn
             else
                 clockwise = true;
         }
-
-
     }
 
+    public synchronized void startSetup ()
+    {
+        onSetup = true;
+        playerEndSetup = 0;
+    }
+
+    public synchronized void endSetup ()
+    {
+        playerEndSetup ++ ;
+        if (playerEndSetup == numPlayer)
+            onSetup = false;
+    }
+
+    public synchronized boolean getOnSetup ()
+    {
+        return onSetup;
+    }
 
 }

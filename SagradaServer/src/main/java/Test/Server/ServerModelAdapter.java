@@ -27,7 +27,7 @@ public class ServerModelAdapter
     public void initializeWindow (String path) throws ModelException
     {
         try {
-            board.initializeWindow(path);
+            board = new Window(path);
         }
         catch (ParserXMLException ex) {
             throw new ModelException("Impossible to read XML: " + ex.getMessage());
