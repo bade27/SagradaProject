@@ -128,5 +128,9 @@ public class Window
         return cols;
     }
 
+    public Cell[][] getGrid ()
+    {
+        return board;
+    }
 
 }
