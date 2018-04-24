@@ -1,18 +1,8 @@
 
-K
-src/main/java/Test/App.java,1/f/1f39edaa90c3f763e5605e860efca11546912a85
-R
-"src/main/java/Test/ServerMain.java,2/f/2f8a4b1fe428dd66af0451b9dc49c7acbed25471
-O
-src/main/java/Test/Graphic.java,7/b/7ba3d87427024ffd839f183ab804aa915b8928d7
-O
-src/main/java/Test/Partita.java,5/7/57379dc61feb1ca5fc15713fe49dd601ff77cb77
 g
 7src/main/java/Obbiettivi/Privati/ObbiettivoPrivato.java,4/6/4629923439492323eaab6879013fb51d6d637be7
 T
 $src/main/java/Test/Model/Window.java,8/4/8465474fd7f9e3d3d1c1d554927b285a814660c1
-N
-src/main/java/Test/Player.java,8/e/8eef382ce7832ee51334ca455631f4fafbb8d5d2
 i
 9src/main/java/Obbiettivi/Pubblici/PunteggioInterface.java,9/d/9d6aff8ab1b0a8c1194a2193d908dedd80fc7976
 f

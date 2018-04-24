@@ -1,5 +1,6 @@
 package Test.Server;
 
+import Test.Server.JSONFacilities;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -12,7 +13,7 @@ public class ServerConnectionHandler {
     private Socket client;
     private BufferedReader inSocket;
     private PrintWriter outSocket;
-    public static int PORT=3000;
+    private static int PORT=3000;
     private ServerSocket serverSocket;
 
     public ServerConnectionHandler() {
@@ -36,6 +37,8 @@ public class ServerConnectionHandler {
         try {
             serverSocket = new ServerSocket(PORT);
             System.out.println("\nServer waiting for client on port " +  serverSocket.getLocalPort());
+
+            // server infinite loop
             client = serverSocket.accept();
         }
         catch(Exception e) {
@@ -60,6 +63,7 @@ public class ServerConnectionHandler {
 
         try {
             JSONArray jsonArray = JSONFacilities.encodeStringArrays(s1, s2); //creo il json da inviare
+            outSocket.println("windowinit"); //dico al client che azione voglio eseguire
             outSocket.println("Scegli la vetrata");
             outSocket.println(jsonArray.toString());    //invio le due coppie di vetrate
             response = inSocket.readLine();  //mi aspetto il nome della vetrata scelta
@@ -73,8 +77,17 @@ public class ServerConnectionHandler {
 
     }
 
-    public void sendPrivateObjective() {
+    public boolean sendPrivateObjective(String privObj) {
         //mi aspetto un ok come risposta
+        try {
+            outSocket.println("privobj"); //dico al client che azione voglio eseguire
+            outSocket.println(privObj);
+            if(inSocket.readLine().equals("ok"))
+                return true;//mi aspetto il nome della vetrata scelta
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public void sendCards(String[]... s) {

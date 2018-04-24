@@ -9,9 +9,8 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class JSONFacilities {
-
     //moves
-    public static Move decodeMove(String move) throws JSONException{
+    public static Move decodeMove(String move) throws JSONException {
 
         //oggetto mossa
         JSONObject obj = new JSONObject(move);
@@ -60,12 +59,12 @@ public class JSONFacilities {
     }
 
     //string arrays
-    public static JSONArray encodeStringArrays(String[]... s) throws JSONException{
+    public static JSONArray encodeStringArrays(String[]... s) throws JSONException {
         JSONArray msg = new JSONArray();
-        for(int i = 0; i < s.length; i++) {
+        for (int i = 0; i < s.length; i++) {
             JSONArray item = new JSONArray();
             String[] strArr = s[i];
-            for(int j = 0; j < strArr.length; j++) {
+            for (int j = 0; j < strArr.length; j++) {
                 item.put(strArr[j]);
             }
             msg.put(item);
@@ -73,17 +72,18 @@ public class JSONFacilities {
         return msg;
     }
 
-    public static void decodeStringArrays(String message) throws JSONException{
-        ArrayList<String[]> list = new ArrayList<String[]>();
+    public static ArrayList<String[]> decodeStringArrays(String message) throws JSONException {
+        ArrayList<String[]> list = new ArrayList<>();
         JSONArray arrayOfArray = new JSONArray(message);
-        for(int i = 0; i < arrayOfArray.length(); i++) {
+        for (int i = 0; i < arrayOfArray.length(); i++) {
             JSONArray array = arrayOfArray.getJSONArray(i);
             String[] strArray = new String[array.length()];
-            for(int j = 0; j < array.length(); j++) {
+            for (int j = 0; j < array.length(); j++) {
                 strArray[j] = array.optString(j);
             }
             list.add(strArray);
         }
+        return list;
     }
 }
 
