@@ -1,9 +1,8 @@
 package Test.Server;
+import Test.Model.Dadiera;
 import Test.Model.ParserXML;
 import Test.Exceptions.ParserXMLException;
 
-import java.net.*;
-import java.io.*;
 import java.util.ArrayList;
 
 /**
@@ -18,8 +17,8 @@ public class MatchHandler implements Runnable
     private ServerPlayer[] player;
 
     private int nConn;
-    private int currentPlayer;
     private TokenTurn tok;
+    private Dadiera dices;
 
     private final static int MAXGIOC =2;//Da modificare a 4
 
@@ -38,15 +37,15 @@ public class MatchHandler implements Runnable
     {
         System.out.println(">>>Server Started");
         nConn = 0;
-        currentPlayer = 0;
         player = new ServerPlayer[4];
         try
         {
             tok = new TokenTurn(MAXGIOC);
+            dices = new Dadiera(MAXGIOC);
             //Per ogni giocatore initzializza la comunicazione attendendo che qualche client si connetta
             for (int i =0 ;i< MAXGIOC;i ++)
             {
-                player[i] = new ServerPlayer (tok);
+                player[i] = new ServerPlayer (tok,new ServerModelAdapter(dices));
                 player[i].initializeComunication();
                 Thread t = new Thread(player[i]);
                 t.start();
@@ -189,6 +188,7 @@ public class MatchHandler implements Runnable
                 {
                     tok.nextTurn();
                     tok.notifyAll();
+                    //Controllo se devo fare mix della dadiera
                     try {
                         tok.wait();
                     }

@@ -10,8 +10,8 @@ public class Dadiera
 {
     private ArrayList<Dice> listaDadi;
     private final Color [] listaColori = {null,Color.red,Color.blue,Color.magenta,Color.yellow,Color.green};
-    private int dim;
-    private int length;
+    private DiceBag bag;
+    private int numGioc;
 
     /**
      * Genera una nuova dadiera per il numero di fiocatori passati
@@ -19,10 +19,9 @@ public class Dadiera
      */
     public Dadiera (int n)
     {
-        dim = (n * 2) + 1;
-        length = dim;
-        listaDadi = new ArrayList<Dice>(dim);
-        mix();
+        numGioc = n;
+        bag = new DiceBag();
+        listaDadi = null;
     }
 
     /**
@@ -30,34 +29,28 @@ public class Dadiera
      */
     public void mix ()
     {
-        int v,c;
-        for (int i=0;i<dim;i++)
-        {
-            v = (int)(Math.random()*6) + 1;
-            c = (int)(Math.random()*5) + 1;
-            listaDadi.add(new Dice (v,listaColori[c]));
-        }
+        listaDadi = bag.pickDices(numGioc*2 + 1);
     }
 
-    public void deleteDice (Dice d) throws IllegalDiceException
+    public void deleteDice (Dice d)
     {
-        for (int i=0;i < length;i++)
+        for (int i=0;i < listaDadi.size();i++)
             if (listaDadi.get(i).isEqual(d))
             {
                 listaDadi.remove(i);
                 return;
             }
-        throw new IllegalDiceException("Dado selezionato non esistente");
-
     }
 
-    public Dice getDice (int i)
+    public Dice getDice (int i) throws IllegalDiceException
     {
-        return listaDadi.get(i);
+        try {
+            return listaDadi.get(i);
+        }
+        catch (Exception ex) {
+            throw new IllegalDiceException("Dice not init");
+        }
+
     }
 
-    public int getDim ()
-    {
-        return dim;
-    }
 }

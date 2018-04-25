@@ -12,11 +12,6 @@ public class CellGraphic extends JButton
     private int x;
     private int y;
 
-    public CellGraphic ()
-    {
-        cella = new Cell ();
-    }
-
     public CellGraphic (Cell c,int i,int j)
     {
         cella = c;
@@ -34,10 +29,16 @@ public class CellGraphic extends JButton
      */
     public void updateGrpahic ()
     {
-        Integer aa = cella.getCurrentDice().getValue();
+        Dice d;
+        if (cella.getFrontDice() == null)
+            d = new Dice (cella.getPlacement().getValue(),cella.getPlacement().getColor());
+        else
+            d = cella.getFrontDice();
+
+        Integer aa = d.getValue();
         if (aa != 0)
             this.setText(aa.toString());
-        this.setBackground(cella.getCurrentDice().getColor());
+        this.setBackground(d.getColor());
         if (cella.getFrontDice() != null)
             this.setFont(new Font("TimesRoman", Font.BOLD, 50));
     }
@@ -45,7 +46,12 @@ public class CellGraphic extends JButton
 
     public Dice getCurrentDice ()
     {
-        return cella.getCurrentDice();
+        Dice d;
+        if (cella.getFrontDice() != null)
+            d = new Dice (cella.getPlacement().getValue(),cella.getPlacement().getColor());
+        else
+            d = cella.getFrontDice();
+        return d;
     }
 
     public int getPosX ()

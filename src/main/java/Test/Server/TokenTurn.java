@@ -46,12 +46,18 @@ public class TokenTurn
         }
     }
 
+    /**
+     * put onSetup = true and starts initialization phase
+     */
     public synchronized void startSetup ()
     {
         onSetup = true;
         playerEndSetup = 0;
     }
 
+    /**
+     * increase number of client who finished setup
+     */
     public synchronized void endSetup ()
     {
         playerEndSetup ++ ;
@@ -59,6 +65,9 @@ public class TokenTurn
             onSetup = false;
     }
 
+    /**
+     * @return if setup phase is running
+     */
     public synchronized boolean getOnSetup ()
     {
         return onSetup;

@@ -6,25 +6,11 @@ import Test.Exceptions.ParserXMLException;
 public class Window
 {
     private int difficult;
-    private int id;
     private Cell board [][];
-    private String name;
     public final int rows = 4;
     public final int cols = 5;
     private boolean firstTurn;//Indica se il dado da inserire deve per forza stare sul bordo (primo inserimento)
     private String boardPath;
-
-    /*public Window ()
-    {
-        board =new Cell [rows][cols];
-        difficult = 0;
-        name = "";
-        id = 0;
-        for (int i =0;i < rows ; i++)
-            for (int j = 0;j < cols;j++)
-                board[i][j] = new Cell ();
-        firstTurn = true;
-    }*/
 
     /**
      * Genera una nuova window da file xml
@@ -103,19 +89,9 @@ public class Window
     }
 
 
-    public Dice getDice (int i , int j)
-    {
-        return board[i][j].getCurrentDice();
-    }
-
     public Cell getCell (int i , int j)
     {
         return board[i][j];
-    }
-
-    public void initializeWindow (String path) throws ParserXMLException
-    {
-        board = ParserXML.readWindowFromPath(path,board);
     }
 
     public int getRows ()

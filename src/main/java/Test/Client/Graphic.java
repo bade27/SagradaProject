@@ -48,7 +48,7 @@ public class Graphic extends JFrame
     public void initGraphic (ClientModelAdapter giocatore)
     {
         Window finestra = giocatore.getWindow();
-        Dadiera dadiera = giocatore.getDadiera();
+        //Dadiera dadiera = giocatore.getDadiera();
 
         rows = finestra.getRows();
         cols = finestra.getCols();
@@ -56,8 +56,7 @@ public class Graphic extends JFrame
         textPanel = new JPanel();
         dicePanel = new JPanel();
         board = new CellGraphic[rows][cols];
-        if (dadiera !=  null)
-            dices = new CellGraphic[dadiera.getDim()];
+        //dices = new CellGraphic[dadiera.getDim()];
 
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -75,16 +74,13 @@ public class Graphic extends JFrame
             }
         }
 
-        if (dadiera !=  null)
+        /*for (int i=0;i<dadiera.getDim();i++)
         {
-            for (int i=0;i<dadiera.getDim();i++)
-            {
-                dices[i] = new CellGraphic(new Cell(dadiera.getDice(i)),i,0);
-                dices [i].updateGrpahic();
-                //dices[i].addActionListener(new DicesListener(dices[i]));
-                dicePanel.add(dices[i]);
-            }
-        }
+            dices[i] = new CellGraphic(new Cell(dadiera.getDice(i)),i,0);
+            dices [i].updateGrpahic();
+            //dices[i].addActionListener(new DicesListener(dices[i]));
+            dicePanel.add(dices[i]);
+        }*/
 
 
         this.add(boardPanel);

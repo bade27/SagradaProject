@@ -66,7 +66,7 @@ public class ClientConnectionHandler implements Runnable {
             String json = inSocket.readLine();
             String choice = graph.chooseWindow(JSONFacilities.decodeStringArrays(json));
             try {
-                adp.initializeWindow("resources/vetrate/xml/" + choice);
+                adp.initializeWindow(choice);
             }catch (ModelException ex) {
                 System.out.println(ex.getMessage());
             }

@@ -10,14 +10,11 @@ public class ServerModelAdapter
 {
     private Window board;
     private Dadiera dadiera;
-    //parserXML
-    //obbiettivi
-    //tools
 
-    public ServerModelAdapter ()
+    public ServerModelAdapter (Dadiera d)
     {
         board = null;
-        dadiera = null;
+        dadiera = d;
     }
 
     /**

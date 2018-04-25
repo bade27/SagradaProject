@@ -2,14 +2,6 @@ package Test.Server;
 
 import Test.Exceptions.ModelException;
 
-/**
- * Cose da aggiungere:
- *  -Gestione del comunicator nel costruttore
- *  -nella funzione setIdTurn comunicare il cambio al server
- *  -l'intera funzione initializePlayer per comunicare al client l'inizializzazione del player (board,dadiera ecc...)
- *  -la partita vera e propria nella funzione run()
- */
-
 public class ServerPlayer implements Runnable
 {
     private ServerConnectionHandler com;
@@ -20,9 +12,9 @@ public class ServerPlayer implements Runnable
     private String[] windowCard1,windowCard2,publicObjCard;
     private String privateObjCard;
 
-    public ServerPlayer(TokenTurn tok)
+    public ServerPlayer(TokenTurn tok,ServerModelAdapter adp)
     {
-        adapter = new ServerModelAdapter();
+        adapter = adp;
         idTurn = -1;
         token = tok;
     }
@@ -82,7 +74,7 @@ public class ServerPlayer implements Runnable
         String s1 = com.chooseWindow(windowCard1,windowCard2);
         //String s1 = windowCard1[0];
         try {
-            adapter.initializeWindow("resources/vetrate/xml/" + s1);
+            adapter.initializeWindow(s1);
             System.out.println(">>>Window initialized: " + s1);
         }
         catch (ModelException ex) {

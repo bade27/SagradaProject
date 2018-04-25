@@ -35,7 +35,6 @@ public class ClientModelAdapter
         catch (Exception ex){
             System.out.println(ex.getMessage());
         }
-
     }
 
     public void addDiceToBoard(int x,int y,Dice d) throws ModelException
@@ -48,15 +47,6 @@ public class ClientModelAdapter
         }
     }
 
-    public void deleteDiceFromDadiera (Dice d) throws ModelException
-    {
-        try {
-            dadiera.deleteDice(d);
-        }
-        catch (IllegalDiceException ex) {
-            throw new ModelException (ex.getMessage());
-        }
-    }
 
     public Window getWindow() {
         return board;

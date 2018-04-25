@@ -47,19 +47,19 @@ public class ParserXML
                     int currentValue = Integer.parseInt(values.item(k).getTextContent());
                     String currentColor = colors.item(k).getTextContent();
                     if (currentColor.equals("dc"))
-                        board[i][j] = new Cell(new Dice(currentValue));
+                        board[i][j] = new Cell(new Placement(currentValue));
                     else
                     {
                         if (currentColor.equals("rosso"))
-                            board[i][j] = new Cell(new Dice(currentValue, Color.red));
+                            board[i][j] = new Cell(new Placement(currentValue, Color.red));
                         if (currentColor.equals("verde"))
-                            board[i][j] = new Cell(new Dice(currentValue,Color.green));
+                            board[i][j] = new Cell(new Placement(currentValue,Color.green));
                         if (currentColor.equals("giallo"))
-                            board[i][j] = new Cell(new Dice(currentValue,Color.yellow));
+                            board[i][j] = new Cell(new Placement(currentValue,Color.yellow));
                         if (currentColor.equals("azzurro"))
-                            board[i][j] = new Cell(new Dice(currentValue,Color.blue));
+                            board[i][j] = new Cell(new Placement(currentValue,Color.blue));
                         if (currentColor.equals("viola"))
-                            board[i][j] = new Cell(new Dice(currentValue,Color.magenta));
+                            board[i][j] = new Cell(new Placement(currentValue,Color.magenta));
                     }
                     k++;
                 }

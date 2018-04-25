@@ -4,10 +4,10 @@
 
     <numberOfCards>5</numberOfCards>
 
-    <card n = "1">sfumature_blue.xml</card>
-    <card n = "2">sfumature_gialle.xml</card>
-    <card n = "3">sfumature_rosse.xml</card>
-    <card n = "4">sfumature_verdi.xml</card>
-    <card n = "5">sfumature_viola.xml</card>
+    <card n = "1">resources/carte/obbiettivi/obbiettiviPrivati/xml/sfumature_blue.xml</card>
+    <card n = "2">resources/carte/obbiettivi/obbiettiviPrivati/xml/sfumature_gialle.xml</card>
+    <card n = "3">resources/carte/obbiettivi/obbiettiviPrivati/xml/sfumature_rosse.xml</card>
+    <card n = "4">resources/carte/obbiettivi/obbiettiviPrivati/xml/sfumature_verdi.xml</card>
+    <card n = "5">resources/carte/obbiettivi/obbiettiviPrivati/xml/sfumature_viola.xml</card>
 
 </list>
