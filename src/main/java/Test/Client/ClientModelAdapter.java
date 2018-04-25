@@ -12,10 +12,12 @@ public class ClientModelAdapter
     private Window board;
     private Dadiera dadiera;
     private int idTurn;
+    private Graphic graph;
 
 
-    public ClientModelAdapter ()
+    public ClientModelAdapter (Graphic g)
     {
+        graph = g;
         board = null;
         dadiera = null;
         idTurn = -1;
@@ -24,11 +26,16 @@ public class ClientModelAdapter
     public void initializeWindow (String path) throws ModelException
     {
         try {
-            board.initializeWindow(path);
+            board = new Window(path);
+            graph.initGraphic(this);
         }
         catch (ParserXMLException ex) {
             throw new ModelException (ex.getMessage());
         }
+        catch (Exception ex){
+            System.out.println(ex.getMessage());
+        }
+
     }
 
     public void addDiceToBoard(int x,int y,Dice d) throws ModelException

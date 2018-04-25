@@ -74,13 +74,13 @@ public class ServerPlayer implements Runnable
 
     public void initializeComunication ()
     {
-        //com = new ServerConnectionHandler ();
+        com = new ServerConnectionHandler ();
     }
 
     private void initializeWindow ()
     {
-        //String s1 = com.chooseWindow(windowCard1,windowCard2);
-        String s1 = windowCard1[0];
+        String s1 = com.chooseWindow(windowCard1,windowCard2);
+        //String s1 = windowCard1[0];
         try {
             adapter.initializeWindow("resources/vetrate/xml/" + s1);
             System.out.println(">>>Window initialized: " + s1);

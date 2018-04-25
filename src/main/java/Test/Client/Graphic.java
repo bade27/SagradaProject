@@ -9,10 +9,10 @@ import java.awt.*;
 import javax.swing.*;
 
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class Graphic extends JFrame
 {
-    private ClientModelAdapter giocatore;
     private JPanel boardPanel,textPanel,dicePanel;
     private int rows,cols;
     private CellGraphic board [][];
@@ -24,20 +24,28 @@ public class Graphic extends JFrame
 
     public Graphic()
     {
-        giocatore = new ClientModelAdapter();
         initailizeComunication();
         //initGraphic();
     }
 
     private void initailizeComunication ()
     {
+        cch = new ClientConnectionHandler(this);
+    }
 
+    public String chooseWindow(ArrayList<String[]> list) {
+        return list.get(0)[0];
+    }
+
+    public String myPrivateObj(String obj) {
+        System.out.println(obj);
+        return "ok";
     }
 
     /**
      * Inizializza la grafica di partita
      */
-    public void initGraphic ()
+    public void initGraphic (ClientModelAdapter giocatore)
     {
         Window finestra = giocatore.getWindow();
         Dadiera dadiera = giocatore.getDadiera();
@@ -48,7 +56,8 @@ public class Graphic extends JFrame
         textPanel = new JPanel();
         dicePanel = new JPanel();
         board = new CellGraphic[rows][cols];
-        dices = new CellGraphic[dadiera.getDim()];
+        if (dadiera !=  null)
+            dices = new CellGraphic[dadiera.getDim()];
 
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -61,18 +70,22 @@ public class Graphic extends JFrame
             {
                 board[i][j] = new CellGraphic(finestra.getCell(i,j),i,j);
                 board[i][j].updateGrpahic();
-                board[i][j].addActionListener(new BoardListener(board[i][j]));
+                //board[i][j].addActionListener(new BoardListener(board[i][j]));
                 boardPanel.add(board[i][j]);
             }
         }
 
-        for (int i=0;i<dadiera.getDim();i++)
+        if (dadiera !=  null)
         {
-            dices[i] = new CellGraphic(new Cell(dadiera.getDice(i)),i,0);
-            dices [i].updateGrpahic();
-            dices[i].addActionListener(new DicesListener(dices[i]));
-            dicePanel.add(dices[i]);
+            for (int i=0;i<dadiera.getDim();i++)
+            {
+                dices[i] = new CellGraphic(new Cell(dadiera.getDice(i)),i,0);
+                dices [i].updateGrpahic();
+                //dices[i].addActionListener(new DicesListener(dices[i]));
+                dicePanel.add(dices[i]);
+            }
         }
+
 
         this.add(boardPanel);
         this.add(textPanel,BorderLayout.NORTH);
@@ -100,7 +113,7 @@ public class Graphic extends JFrame
         dicePanel.updateUI();
     }
 
-    class BoardListener implements ActionListener
+    /*class BoardListener implements ActionListener
     {
         private CellGraphic cellGraph;
         public BoardListener( CellGraphic c )
@@ -146,7 +159,7 @@ public class Graphic extends JFrame
             else
                 selectedDice = cellGraph.getCurrentDice();
         }
-    }
+    }*/
 
     public static void main(String[] args)
     {

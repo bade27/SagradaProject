@@ -1,7 +1,7 @@
 package Test.Client;
 
+import Test.Exceptions.ModelException;
 import Test.Server.JSONFacilities;
-import Test.Client.Client;
 import org.json.JSONException;
 
 import java.io.*;
@@ -13,11 +13,14 @@ public class ClientConnectionHandler implements Runnable {
     private Socket socket;
     private BufferedReader inSocket;
     private PrintWriter outSocket;
-    private Client c;
     private Thread deamon;
 
-    public ClientConnectionHandler(Client c) {
-        this.c = c;
+    private Graphic graph;
+    ClientModelAdapter adp;
+
+    public ClientConnectionHandler(Graphic c) {
+        this.graph = c;
+        adp = new ClientModelAdapter(graph);
         System.out.println("connecting...");
         try{
             socket = new Socket(address, PORT);
@@ -55,11 +58,18 @@ public class ClientConnectionHandler implements Runnable {
 
     }
 
-    public synchronized void chooseWindow() {
+    public synchronized void chooseWindow()
+    {
+        int r = 3;
         try {
             System.out.println(inSocket.readLine());
             String json = inSocket.readLine();
-            String choice = c.chooseWindow(JSONFacilities.decodeStringArrays(json));
+            String choice = graph.chooseWindow(JSONFacilities.decodeStringArrays(json));
+            try {
+                adp.initializeWindow("resources/vetrate/xml/" + choice);
+            }catch (ModelException ex) {
+                System.out.println(ex.getMessage());
+            }
             outSocket.println(choice);
         } catch (IOException e) {
             e.printStackTrace();
@@ -70,7 +80,7 @@ public class ClientConnectionHandler implements Runnable {
 
     public synchronized void myPrivateObj() {
         try {
-            String response = c.myPrivateObj(inSocket.readLine()).toLowerCase();
+            String response = graph.myPrivateObj(inSocket.readLine()).toLowerCase();
             outSocket.println(response);
         } catch (IOException e) {
             e.printStackTrace();
