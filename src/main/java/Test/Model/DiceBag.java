@@ -141,7 +141,23 @@ public class DiceBag {
      *
      * @return *il numero di dadi rimasti*
      */
-    public int getRemaining_dice() {
+    public int getRemainingDice() {
         return dice.size();
+    }
+
+    /**
+     *
+     * @return *la rappresentazione in formato String del contenuto del sacchetto*
+     */
+    @Override
+    public String toString() {
+        String str =  "DiceBag{";
+        for(int i = 0; i < dice.size(); i++) {
+            str += dice.get(i).toString();
+            if (i != (dice.size() - 1))
+                str += ", ";
+        }
+        str += '}';
+        return str;
     }
 }

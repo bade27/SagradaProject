@@ -66,10 +66,18 @@ public class Dice
         return false;
     }
 
-    public Dice clone()
+    public Dice cloneDice()
     {
         Dice copy = new Dice(this.value,this.color);
         return copy;
+    }
+
+    @Override
+    public String toString() {
+        return "Dice{" +
+                "value=" + value +
+                ", color=" + color.toString() +
+                '}';
     }
 }
 

@@ -27,10 +27,14 @@ class DiceBagTest {
     }
 
     @org.junit.jupiter.api.Test
-    void getRemaining_dice() {
+    void getRemainingDice() {
         int pick = 10;
         diceBag.pickDices(pick);
-        assertEquals(N_OF_DICE - pick, diceBag.getRemaining_dice());
+        assertEquals(N_OF_DICE - pick, diceBag.getRemainingDice());
     }
 
+    @org.junit.jupiter.api.Test
+    void toStringTest() {
+        assertNotNull(diceBag.toString());
+    }
 }
