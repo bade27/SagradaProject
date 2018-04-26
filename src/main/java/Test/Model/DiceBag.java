@@ -1,5 +1,6 @@
 package Test.Model;
 
+import Test.Client.NotEnoughDiceException;
 import Test.Model.Dice;
 
 import java.awt.*;
@@ -12,7 +13,6 @@ public class DiceBag {
     private final int DICE_PER_COLOR = 18;
     private final int N_OF_DICE = 90;
     private List<Dice> dice;
-    private int remaining_dice;
 
     public DiceBag() {
         dice = new ArrayList<>();
@@ -77,7 +77,6 @@ public class DiceBag {
             }
             Dice d = new Dice(value.nextInt(6) + 1, col);
             dice.add(d);
-            remaining_dice++;
         }
     }
 
@@ -100,7 +99,6 @@ public class DiceBag {
      * al numero di dadi presenti nel sacchetto
      */
     private void checkNumDice() {
-        assert dice.size() == remaining_dice;
         assert numberOfDicePerColor(Color.red) + numberOfDicePerColor(Color.green)
                 + numberOfDicePerColor(Color.blue) + numberOfDicePerColor(Color.yellow)
                 + numberOfDicePerColor(Color.magenta) == dice.size();
@@ -110,12 +108,12 @@ public class DiceBag {
      * controllo del rep dopo il costruttore
      */
     private void checkConstructor() {
-        assert dice.size() == 90;
-        assert numberOfDicePerColor(Color.red) == 18;
-        assert numberOfDicePerColor(Color.green) == 18;
-        assert numberOfDicePerColor(Color.blue) == 18;
-        assert numberOfDicePerColor(Color.yellow) == 18;
-        assert numberOfDicePerColor(Color.magenta) == 18;
+        assert dice.size() == N_OF_DICE;
+        assert numberOfDicePerColor(Color.red) == DICE_PER_COLOR;
+        assert numberOfDicePerColor(Color.green) == DICE_PER_COLOR;
+        assert numberOfDicePerColor(Color.blue) == DICE_PER_COLOR;
+        assert numberOfDicePerColor(Color.yellow) == DICE_PER_COLOR;
+        assert numberOfDicePerColor(Color.magenta) == DICE_PER_COLOR;
     }
 
     //public methods
@@ -127,13 +125,14 @@ public class DiceBag {
      * (i dadi estratti vengono rimossi)
      */
     public ArrayList<Dice> pickDices(int n) {
+        if(n > dice.size())
+            throw new NotEnoughDiceException("non sono rimasti abbastanza dadi");
         ArrayList<Dice> choosenDice = new ArrayList<>();
         while(n > 0) {
             choosenDice.add(dice.get(0));
             dice.remove(0);
             n--;
         }
-        remaining_dice -= n;
         //checkNumDice();
         return choosenDice;
     }
@@ -143,6 +142,6 @@ public class DiceBag {
      * @return *il numero di dadi rimasti*
      */
     public int getRemaining_dice() {
-        return remaining_dice;
+        return dice.size();
     }
 }
