@@ -1,0 +1,20 @@
+Andrea Bionda:
+-Test: Window,Placement,Cell
+-Aggiungere toString()
+-Aggiungere la creazione delle carte obbiettivo
+ 
+Matteo Badenchini:
+-Test:Dice,Dadiera,DiceBag
+-Aggiungere toString()
+-Aggiungere i messaggi di chiusura comunicazione ed errore
+-Comunicazione mossa
+
+Federico Carafa:
+-Completare UML parte grafica
+-Grafica della board di gioco interattiva
+
+
+UML:
+-Completarlo con la parte client
+-Aggiungere il collegamento Dadiera-MatchHandler
+-Aggiungere le funzioni significative all'UML
