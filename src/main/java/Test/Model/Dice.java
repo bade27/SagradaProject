@@ -47,7 +47,7 @@ public class Dice
     {
         if (d == null)
             return false;
-        if (d.getColor() == color && d.getValue() == value)
+        if (d.getColor().getRGB() == color.getRGB() && d.getValue() == value)
             return true;
         return false;
     }
@@ -61,17 +61,26 @@ public class Dice
     {
         if (d == null)
             return false;
-        if (d.getColor() == color || d.getValue() == value || (d.getColor() == null && d.getValue() == 0))
+        if (d.getColor().getRGB() == color.getRGB()
+                || d.getValue() == value || (d.getColor() == null && d.getValue() == 0))
             return true;
         return false;
     }
 
+    /**
+     *
+     * @return * una copia del dado*
+     */
     public Dice cloneDice()
     {
         Dice copy = new Dice(this.value,this.color);
         return copy;
     }
 
+    /**
+     *
+     * @return *la rappresentazione in formato String del dado*
+     */
     @Override
     public String toString() {
         return "Dice{" +

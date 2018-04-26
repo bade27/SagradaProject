@@ -2,6 +2,9 @@ package Test.Model;
 
 import Test.Client.NotEnoughDiceException;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class DiceBagTest {
@@ -36,5 +39,14 @@ class DiceBagTest {
     @org.junit.jupiter.api.Test
     void toStringTest() {
         assertNotNull(diceBag.toString());
+    }
+
+    @org.junit.jupiter.api.Test
+    void noIllegalValues() {
+        int pick = N_OF_DICE;
+        ArrayList<Dice> list = diceBag.pickDices(pick);
+        assertTrue(list.stream()
+                .map(dice -> dice.getValue())
+                .allMatch(value -> value > 0 && value <= 6));
     }
 }

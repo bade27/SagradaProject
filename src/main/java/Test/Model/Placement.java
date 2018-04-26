@@ -41,7 +41,8 @@ public class Placement
     {
         if (d == null)
             return false;
-        if (d.getColor() == color && d.getValue() == value)
+        if (d.getColor().getRGB() == color.getRGB()
+                && d.getValue() == value)
             return true;
         return false;
     }
@@ -55,7 +56,8 @@ public class Placement
     {
         if (d == null)
             return false;
-        if (d.getColor() == color || d.getValue() == value || (d.getColor() == null && d.getValue() == 0))
+        if (d.getColor().getRGB() == color.getRGB()
+                || d.getValue() == value || (d.getColor() == null && d.getValue() == 0))
             return true;
         return false;
     }
