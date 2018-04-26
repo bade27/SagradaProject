@@ -7,17 +7,6 @@ public class Placement
     private int value;
     private Color color;
 
-    public Placement (int v)
-    {
-        value = v;
-        color = null;
-    }
-    public Placement (Color c)
-    {
-        value = 0;
-        color = c;
-    }
-
     public Placement (int v,Color c)
     {
         value = v;
@@ -41,8 +30,7 @@ public class Placement
     {
         if (d == null)
             return false;
-        if (d.getColor().getRGB() == color.getRGB()
-                && d.getValue() == value)
+        if (d.getColor() == color && d.getValue() == value)
             return true;
         return false;
     }
@@ -56,11 +44,20 @@ public class Placement
     {
         if (d == null)
             return false;
-        if (d.getColor().getRGB() == color.getRGB()
-                || d.getValue() == value || (d.getColor() == null && d.getValue() == 0))
+        if (d.getColor() == color|| d.getValue() == value || (color == null && value == 0))
             return true;
         return false;
     }
 
-
+    /**
+     *
+     * @return *la rappresentazione in formato String del placement
+     */
+    @Override
+    public String toString() {
+        return "Dice{" +
+                "value=" + value +
+                ", color=" + color.toString() +
+                '}';
+    }
 }

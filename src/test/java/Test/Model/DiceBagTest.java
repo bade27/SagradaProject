@@ -1,9 +1,8 @@
 package Test.Model;
 
-import Test.Client.NotEnoughDiceException;
+import Test.Exceptions.NotEnoughDiceException;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 

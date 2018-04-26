@@ -7,21 +7,6 @@ public class Dice
     private int value;
     private Color color;
 
-    public Dice ()
-    {
-        value = 0;
-        color = null;
-    }
-    public Dice (int v)
-    {
-        value = v;
-        color = null;
-    }
-    public Dice (Color c)
-    {
-        value = 0;
-        color = c;
-    }
     public Dice (int v,Color c)
     {
         value = v;
@@ -47,7 +32,7 @@ public class Dice
     {
         if (d == null)
             return false;
-        if (d.getColor().getRGB() == color.getRGB() && d.getValue() == value)
+        if (d.getColor() == color && d.getValue() == value)
             return true;
         return false;
     }
@@ -61,8 +46,7 @@ public class Dice
     {
         if (d == null)
             return false;
-        if (d.getColor().getRGB() == color.getRGB()
-                || d.getValue() == value || (d.getColor() == null && d.getValue() == 0))
+        if (d.getColor() == color || d.getValue() == value || (color == null && value == 0))
             return true;
         return false;
     }

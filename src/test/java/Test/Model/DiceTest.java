@@ -12,31 +12,42 @@ class DiceTest {
 
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
-        d = new Dice(5, new Color(255, 230, 152));
+        d = new Dice(3, Color.BLUE);
     }
 
     @Test
-    void isEqualTrue() {
-        Dice d1 = new Dice(5, new Color(255, 230, 152));
-        assertTrue(d1.isEqual(d));
+    void isEqualTrue () {
+        assertTrue(d.isEqual(new Dice (3,Color.BLUE)));
     }
 
     @Test
-    void isEqualFasle() {
-        Dice d1 = new Dice(3, new Color(255, 230, 152));
-        assertFalse(d1.isEqual(d));
+    void isEqualValueFalse () {
+        assertFalse(d.isEqual(new Dice (5,Color.BLUE)));
     }
 
     @Test
-    void isSimilarTrue() {
-        Dice d1 = new Dice(3, new Color(255, 230, 152));
-        assertTrue(d1.isSimilar(d));
+    void isEqualColorFalse () {
+        assertFalse(d.isEqual(new Dice (3,Color.RED)));
     }
 
     @Test
-    void isSimilarFalse() {
-        Dice d1 = new Dice(1, new Color(15, 230, 152));
-        assertFalse(d1.isSimilar(d));
+    void isSimilarValueColorTrue () {
+        assertTrue(d.isSimilar(new Dice (3,Color.BLUE)));
+    }
+
+    @Test
+    void isSimilarValueTrue () {
+        assertTrue(d.isSimilar(new Dice (3,Color.RED)));
+    }
+
+    @Test
+    void isSimilarColorTrue () {
+        assertTrue(d.isSimilar(new Dice (5,Color.BLUE)));
+    }
+
+    @Test
+    void isSimilarFalse () {
+        assertFalse(d.isSimilar(new Dice (5,Color.RED)));
     }
 
     @Test

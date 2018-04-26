@@ -8,17 +8,12 @@
             <set />
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../../GitHub Repos/SagradaProject/LM18.iml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../../GitHub Repos/SagradaProject/SagradaProject_LM18.iml">
-          <value>
-            <set />
-          </value>
-        </entry>
         <entry key="$PROJECT_DIR$/LM18.iml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/SagradaProject_LM18.iml">
           <value>
             <set />
           </value>
@@ -118,6 +113,16 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/Test/Model/Dice.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/Test/Model/DiceBag.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/main/java/Test/Model/ParserXML.java">
           <value>
             <set />
@@ -184,6 +189,26 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/main/java/Test/Window.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/test/java/Test/Model/CellTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/test/java/Test/Model/DiceBagTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/test/java/Test/Model/DiceTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/test/java/Test/Model/PlacementTest.java">
           <value>
             <set />
           </value>

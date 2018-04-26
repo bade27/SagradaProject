@@ -47,7 +47,7 @@ public class ParserXML
                     int currentValue = Integer.parseInt(values.item(k).getTextContent());
                     String currentColor = colors.item(k).getTextContent();
                     if (currentColor.equals("dc"))
-                        board[i][j] = new Cell(new Placement(currentValue));
+                        board[i][j] = new Cell(new Placement(currentValue,null));
                     else
                     {
                         if (currentColor.equals("rosso"))

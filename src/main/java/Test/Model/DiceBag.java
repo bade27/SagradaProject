@@ -1,7 +1,6 @@
 package Test.Model;
 
-import Test.Client.NotEnoughDiceException;
-import Test.Model.Dice;
+import Test.Exceptions.NotEnoughDiceException;
 
 import java.awt.*;
 import java.util.ArrayList;
