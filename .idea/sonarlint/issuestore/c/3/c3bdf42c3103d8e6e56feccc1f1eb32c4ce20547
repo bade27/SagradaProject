@@ -1,5 +1,5 @@
 
 Vsquid:S1126"AReplace this if-then-else statement by a single return statement.(ÕÊË±
-vsquid:S1488"\Immediately return this expression instead of assigning it to the temporary variable "copy".(ââ«Èüÿÿÿÿ
 rsquid:S00120"WRename this package name to match the regular expression '^[a-z]+(\.[a-z][a-z0-9]*)*$'.(‡äÿ¥ûÿÿÿÿ
 Vsquid:S1126"AReplace this if-then-else statement by a single return statement.(±™š
+vsquid:S1488"\Immediately return this expression instead of assigning it to the temporary variable "copy".(ââ«Èüÿÿÿÿ
