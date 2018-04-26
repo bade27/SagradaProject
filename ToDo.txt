@@ -1,10 +1,10 @@
 Andrea Bionda:
--Test: Window,Placement,Cell
+-Test: Window
 -Aggiungere toString()
 -Aggiungere la creazione delle carte obbiettivo
  
 Matteo Badenchini:
--Test:Dice,Dadiera,DiceBag
+-Test: Dadiera
 -Aggiungere toString()
 -Aggiungere i messaggi di chiusura comunicazione ed errore
 -Comunicazione mossa
