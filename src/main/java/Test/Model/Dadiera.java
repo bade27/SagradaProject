@@ -30,6 +30,7 @@ public class Dadiera
     public void mix ()
     {
         listaDadi = bag.pickDices(numGioc*2 + 1);
+        assert listaDadi != null;
     }
 
     public void deleteDice (Dice d)
@@ -53,4 +54,26 @@ public class Dadiera
 
     }
 
+    public ArrayList<Dice> getListaDadi() {
+        return listaDadi;
+    }
+
+    /**
+     *
+     * @return i dadi presenti sull'area di gioco in formato String
+     */
+    @Override
+    public String toString() {
+        String str =  "Dadiera vuota!";
+        if(listaDadi != null) {
+            str = "Dadiera{";
+            for (int i = 0; i < listaDadi.size(); i++) {
+                str += listaDadi.get(i).toString();
+                if (i != (listaDadi.size() - 1))
+                    str += ", ";
+            }
+            str += '}';
+        }
+        return str;
+    }
 }
