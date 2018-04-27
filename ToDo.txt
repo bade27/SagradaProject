@@ -4,8 +4,6 @@ Andrea Bionda:
 -Aggiungere la creazione delle carte obbiettivo
  
 Matteo Badenchini:
--Test: Dadiera
--Aggiungere toString()
 -Aggiungere i messaggi di chiusura comunicazione ed errore
 -Comunicazione mossa
 
