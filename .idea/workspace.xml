@@ -24,21 +24,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="CellTest.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/Model/CellTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="8" column="6" lean-forward="false" selection-start-line="8" selection-start-column="6" selection-end-line="8" selection-end-column="6" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="WindowTest.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="WindowTest.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/Model/WindowTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="143">
-              <caret line="33" column="70" lean-forward="false" selection-start-line="33" selection-start-column="70" selection-end-line="33" selection-end-column="70" />
+            <state relative-caret-position="434">
+              <caret line="189" column="75" lean-forward="false" selection-start-line="189" selection-start-column="75" selection-end-line="189" selection-end-column="75" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -46,12 +36,14 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Cell.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Model/Cell.java">
+      <file leaf-file-name="Window.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/Model/Window.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="2" column="14" lean-forward="false" selection-start-line="2" selection-start-column="14" selection-end-line="2" selection-end-column="14" />
-              <folding />
+            <state relative-caret-position="477">
+              <caret line="37" column="4" lean-forward="false" selection-start-line="37" selection-start-column="4" selection-end-line="37" selection-end-column="4" />
+              <folding>
+                <element signature="method#addDice#0;class#Window#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -81,6 +73,8 @@
       <find>getCurrentDice</find>
       <find>NotEnoughDiceException</find>
       <find>BLUE</find>
+      <find>GREEN</find>
+      <find>MAGENTA</find>
     </findStrings>
     <replaceStrings>
       <replace>player</replace>
@@ -97,7 +91,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/Test/Window.java" />
         <option value="$PROJECT_DIR$/src/main/java/Test/Graphic.java" />
         <option value="$PROJECT_DIR$/src/main/java/Test/App.java" />
         <option value="$PROJECT_DIR$/src/main/java/Test/Player.java" />
@@ -145,9 +138,10 @@
         <option value="$PROJECT_DIR$/src/main/java/Obbiettivi/Privati/ObbiettivoPrivato.java" />
         <option value="$PROJECT_DIR$/src/test/java/Test/Model/DiceBagTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/Model/CellTest.java" />
-        <option value="$PROJECT_DIR$/src/test/java/Model/WindowTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/Model/DadieraTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/Model/Dadiera.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Model/Window.java" />
+        <option value="$PROJECT_DIR$/src/test/java/Model/WindowTest.java" />
       </list>
     </option>
   </component>
@@ -164,7 +158,7 @@
       </MavenImportingSettings>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="64" />
     <option name="y" value="-11" />
     <option name="width" value="1217" />
@@ -567,34 +561,34 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="CellTest - 2018.04.28 at 11h 15m 17s.xml">
-      <configuration name="CellTest" configurationId="JUnit" />
+    <history-entry file="WindowTest - 2018.04.28 at 13h 57m 13s.xml">
+      <configuration name="WindowTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="DadieraTest - 2018.04.28 at 11h 16m 27s.xml">
-      <configuration name="DadieraTest" configurationId="JUnit" />
+    <history-entry file="WindowTest - 2018.04.28 at 14h 05m 42s.xml">
+      <configuration name="WindowTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="DadieraTest - 2018.04.28 at 11h 17m 41s.xml">
-      <configuration name="DadieraTest" configurationId="JUnit" />
+    <history-entry file="WindowTest - 2018.04.28 at 14h 09m 14s.xml">
+      <configuration name="WindowTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="DadieraTest - 2018.04.28 at 11h 17m 53s.xml">
-      <configuration name="DadieraTest" configurationId="JUnit" />
+    <history-entry file="WindowTest - 2018.04.28 at 14h 09m 49s.xml">
+      <configuration name="WindowTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="DadieraTest - 2018.04.28 at 11h 17m 56s.xml">
-      <configuration name="DadieraTest" configurationId="JUnit" />
+    <history-entry file="WindowTest - 2018.04.28 at 14h 10m 00s.xml">
+      <configuration name="WindowTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="DadieraTest - 2018.04.28 at 11h 17m 59s.xml">
-      <configuration name="DadieraTest" configurationId="JUnit" />
+    <history-entry file="WindowTest - 2018.04.28 at 14h 14m 15s.xml">
+      <configuration name="WindowTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="DadieraTest - 2018.04.28 at 11h 18m 02s.xml">
-      <configuration name="DadieraTest" configurationId="JUnit" />
+    <history-entry file="WindowTest - 2018.04.28 at 14h 14m 26s.xml">
+      <configuration name="WindowTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="DadieraTest - 2018.04.28 at 11h 18m 05s.xml">
-      <configuration name="DadieraTest" configurationId="JUnit" />
+    <history-entry file="WindowTest - 2018.04.28 at 14h 16m 15s.xml">
+      <configuration name="WindowTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="PlacementTest - 2018.04.28 at 11h 15m 09s.xml">
-      <configuration name="PlacementTest" configurationId="JUnit" />
+    <history-entry file="WindowTest - 2018.04.28 at 14h 17m 13s.xml">
+      <configuration name="WindowTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="WindowTest - 2018.04.28 at 11h 20m 13s.xml">
+    <history-entry file="WindowTest - 2018.04.28 at 14h 18m 54s.xml">
       <configuration name="WindowTest" configurationId="JUnit" />
     </history-entry>
   </component>
@@ -602,8 +596,7 @@
     <option name="totallyTimeSpent" value="3027000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -694,7 +687,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$USER_HOME$/GitHub Repos/SagradaProject/SagradaProject_LM18.iml" />
     <entry file="file://$PROJECT_DIR$/src/main/java/Test/Client/ClientModelAdapter.java" />
     <entry file="file://$PROJECT_DIR$/src/test/java/Test/AppTest.java" />
     <entry file="file://$PROJECT_DIR$/pom.xml">
@@ -832,6 +824,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="202">
           <caret line="234" column="18" lean-forward="false" selection-start-line="234" selection-start-column="18" selection-end-line="234" selection-end-column="18" />
+          <folding>
+            <element signature="e#10065#10066#0" expanded="false" />
+            <element signature="e#10148#10149#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1031,10 +1027,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/Model/WindowTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="143">
-          <caret line="33" column="70" lean-forward="false" selection-start-line="33" selection-start-column="70" selection-end-line="33" selection-end-column="70" />
+        <state relative-caret-position="434">
+          <caret line="189" column="75" lean-forward="false" selection-start-line="189" selection-start-column="75" selection-end-line="189" selection-end-column="75" />
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Model/Window.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="477">
+          <caret line="37" column="4" lean-forward="false" selection-start-line="37" selection-start-column="4" selection-end-line="37" selection-end-column="4" />
+          <folding>
+            <element signature="method#addDice#0;class#Window#0" expanded="false" />
           </folding>
         </state>
       </provider>

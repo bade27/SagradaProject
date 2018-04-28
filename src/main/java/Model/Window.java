@@ -49,20 +49,20 @@ public class Window
         {
             if ((i == 0 || i == rows - 1 || j == 0 || j == cols - 1))
             {
-                //Controllo se il backDice è compatibile con il FrontDice
+                //Controllo se il placement è compatibile con il FrontDice
                 if (!board[i][j].setDice(d))
-                    throw new IllegalDiceException("Dado posizionato su una casella non compatibile");
+                    throw new IllegalDiceException("Die not placed on compatible cell");
                 else
                     firstTurn = false;
             }
             else
-                throw new IllegalDiceException("First die not put on board");
+                throw new IllegalDiceException("First die not placed on edge");
         }
         else
         {
             //Controllo se già presente un currentDice
             if (board[i][j].getFrontDice() != null)
-                throw new IllegalDiceException("Dado posizionato sopra ad un altro");
+                throw new IllegalDiceException("Die placed on another one");
 
             boolean near=false;
             boolean noSimilar = true;
@@ -85,11 +85,11 @@ public class Window
             if (near && noSimilar)
             {
                 if (!board[i][j].setDice(d))
-                    throw new IllegalDiceException("Dado posizionato su una casella non compatibile");
+                    throw new IllegalDiceException("Die not placed on compatible cell");
                 return;
             }
             else
-                throw new IllegalDiceException("Dado posizionato in prossimità di nessun altro compatibile");
+                throw new IllegalDiceException("Die not placed near a compatible one");
         }
     }
 
