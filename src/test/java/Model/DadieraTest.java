@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.function.BiFunction;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -34,10 +35,31 @@ class DadieraTest {
         d.mix();
         int which_Die = new Random().nextInt(expectedDice);
         ArrayList<Dice> playableDice = d.getListaDadi();
+
+        //lunghezza di partenza
         int oldLen = playableDice.size();
+
+        //estrazione di un dado a caso
         Dice dice = playableDice.get(which_Die);
+
+        //funzione per il conto dei dadi uguali a quello selezionato
+        BiFunction<ArrayList<Dice>, Dice, Integer> counter = (list, d) -> {
+            Long t = list.stream()
+                    .filter(currentDice -> currentDice.isEqual(d))
+                    .count();
+            return t.intValue();
+        };
+
+        //numero dei dadi uguali a quello selezionato
+        int oldEquals = counter.apply(playableDice, dice);
+
+        //rimozione del dado selezionato
         d.deleteDice(dice);
-        assertTrue(!playableDice.contains(dice));
+
+        //numero dei dadi uguali rimasti uguali a quello rimosso
+        int newEquals = counter.apply(playableDice, dice);
+
+        assertEquals(oldEquals - 1, newEquals);
         assertEquals(oldLen - 1, playableDice.size());
     }
 
