@@ -1,6 +1,6 @@
 package Obbiettivi.Pubblici;
 
-import Test.Model.Window;
+import Model.Window;
 
 public class ObbiettivoPubblico {
 

@@ -1,8 +1,8 @@
 package Obbiettivi.Pubblici;
 
-import Test.Model.Dice;
-import Test.Model.Window;
-import Test.Model.Cell;
+import Model.Dice;
+import Model.Window;
+import Model.Cell;
 
 import java.awt.*;
 import java.util.Arrays;

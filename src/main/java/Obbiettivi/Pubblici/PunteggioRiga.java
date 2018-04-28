@@ -1,8 +1,8 @@
 package Obbiettivi.Pubblici;
 
-import Test.Model.Cell;
-import Test.Model.Dice;
-import Test.Model.Window;
+import Model.Cell;
+import Model.Dice;
+import Model.Window;
 
 import java.util.HashSet;
 import java.util.Set;

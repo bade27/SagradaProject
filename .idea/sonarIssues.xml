@@ -38,6 +38,51 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/Model/Dadiera.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/Obbiettivi/Privati/ObbiettivoPrivato.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/Obbiettivi/Pubblici/ObbiettivoPubblico.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/Obbiettivi/Pubblici/PunteggioColonna.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/Obbiettivi/Pubblici/PunteggioCoppia.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/Obbiettivi/Pubblici/PunteggioDiagonale.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/Obbiettivi/Pubblici/PunteggioInterface.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/Obbiettivi/Pubblici/PunteggioRiga.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/Obbiettivi/Pubblici/PunteggioVarietà.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/main/java/Test/App.java">
           <value>
             <set />
@@ -193,6 +238,21 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/test/java/Model/CellTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/test/java/Model/DadieraTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/test/java/Model/WindowTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/test/java/Test/Model/CellTest.java">
           <value>
             <set />
@@ -209,6 +269,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/test/java/Test/Model/PlacementTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/test/java/Test/Model/WindowTest.java">
           <value>
             <set />
           </value>

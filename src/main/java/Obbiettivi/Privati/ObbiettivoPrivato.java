@@ -1,7 +1,7 @@
 package Obbiettivi.Privati;
 
-import Test.Model.Window;
-import Test.Model.Cell;
+import Model.Window;
+import Model.Cell;
 
 import java.awt.*;
 

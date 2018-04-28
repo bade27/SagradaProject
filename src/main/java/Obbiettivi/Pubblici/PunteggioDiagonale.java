@@ -1,7 +1,7 @@
 package Obbiettivi.Pubblici;
 
-import Test.Model.Cell;
-import Test.Model.Window;
+import Model.Cell;
+import Model.Window;
 
 import java.awt.*;
 import java.util.*;
