@@ -1,0 +1,25 @@
+
+hsquid:UnusedPrivateMethod"@Remove this unused private "initializePrivateObjectives" method.(¦ŽìÅýÿÿÿÿ
+bsquid:UnusedPrivateMethod"?Remove this unused private "initializePublicObjectives" method.(ØçáÚ
+<squid:S2189""Add an end condition to this loop.(Î¬®ýÿÿÿÿ
+=squid:S1659")Declare "windowCard2" on a separate line.(¿Ÿ“
+?squid:S1659"+Declare "publicObjCard" on a separate line.(¿Ÿ“
+Lsquid:S1197"8Move the array designator from the variable to the type.(€¼¤
+Lsquid:S1197"8Move the array designator from the variable to the type.(€¼¤
+Esquid:S1068"1Remove this unused "publicObjCard" private field.(¿Ÿ“
+Lsquid:S1068"2Remove this unused "privateObjCard" private field.(š•¶þÿÿÿÿ
+psquid:S1450"\Remove the "publicObjCard" field and declare it as a local variable in the relevant methods.(¿Ÿ“
+wsquid:S1450"]Remove the "privateObjCard" field and declare it as a local variable in the relevant methods.(š•¶þÿÿÿÿ
+`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(£µ¶—
+`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(–ùìñ
+R
+squid:S106"9Replace this use of System.out or System.err by a logger.(ý™øøÿÿÿÿ
+R
+squid:S106"9Replace this use of System.out or System.err by a logger.(µÝ úÿÿÿÿ
+R
+squid:S106"9Replace this use of System.out or System.err by a logger.(ý™øøÿÿÿÿ
+Esquid:S1172"+Remove this unused method parameter "card".(¦ŽìÅýÿÿÿÿ
+Asquid:S1172",Remove this unused method parameter "cards".(ØçáÚ
+`squid:S2142"FEither re-interrupt this method or rethrow the "InterruptedException".(ÖÅ×ÿÿÿÿÿ
+rsquid:S00120"WRename this package name to match the regular expression '^[a-z]+(\.[a-z][a-z0-9]*)*$'.(ßÊÈÉÿÿÿÿÿ
+8squid:S1148"#Use a logger to log this exception.(Ç’Çê

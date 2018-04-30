@@ -2,22 +2,29 @@ package Server;
 
 import Exceptions.ModelException;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 public class ServerPlayer implements Runnable
 {
     private ServerConnectionHandler com;
-    private int idTurn;
     private TokenTurn token;
     private ServerModelAdapter adapter;
+    private String user;
+
+    private ArrayList<String> possibleUsers;
 
     private String[] windowCard1,windowCard2,publicObjCard;
     private String privateObjCard;
 
-    public ServerPlayer(TokenTurn tok, ServerModelAdapter adp)
+    public ServerPlayer(TokenTurn tok, ServerModelAdapter adp, ArrayList ps)
     {
         adapter = adp;
-        idTurn = -1;
         token = tok;
+        possibleUsers = ps;
     }
+
+
 
     public synchronized void run ()
     {
@@ -46,7 +53,7 @@ public class ServerPlayer implements Runnable
                     //Partita vera e propria
 
                     //Attende che è il prorpio turno di gioco
-                    while (!token.isMyTurn(idTurn))
+                    while (!token.isMyTurn(user))
                         token.wait();
 
                     //Comunica al client che è il suo turno e attende le mosse del client
@@ -66,13 +73,19 @@ public class ServerPlayer implements Runnable
 
     public void initializeComunication ()
     {
+        String u;
         com = new ServerConnectionHandler();
+
+        do{
+            u = com.login();
+        } while (!possibleUsers.contains(u));
+        possibleUsers.remove(u);
+        user = u;
     }
 
     private void initializeWindow ()
     {
         String s1 = com.chooseWindow(windowCard1,windowCard2);
-        //String s1 = windowCard1[0];
         try {
             adapter.initializeWindow(s1);
             System.out.println(">>>Window initialized: " + s1);
@@ -97,17 +110,16 @@ public class ServerPlayer implements Runnable
         //com.close ();
     }
 
-    public void setIdTurn (int id)
-    {
-        idTurn = id;
-        //Comunica col client il cambio di idTurn
-    }
-
 
     public void setWindowCards (String c1[],String c2 [])
     {
         windowCard1 = c1;
         windowCard2 = c2;
+    }
+
+
+    public String getUser() {
+        return user;
     }
 
     public void setPublicObjCard (String[] c)

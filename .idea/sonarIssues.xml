@@ -38,6 +38,16 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/Client/ClientConnectionHandler.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/Client/Graphic.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/src/main/java/Model/Dadiera.java">
           <value>
             <set />
@@ -84,6 +94,21 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/main/java/Obbiettivi/Pubblici/PunteggioVarietà.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/Server/MatchHandler.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/Server/ServerPlayer.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/main/java/Server/TokenTurn.java">
           <value>
             <set />
           </value>
@@ -254,6 +279,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/src/test/java/Model/WindowTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/src/test/java/Server/TokenTurnTest.java">
           <value>
             <set />
           </value>

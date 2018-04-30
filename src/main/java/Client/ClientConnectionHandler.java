@@ -120,6 +120,7 @@ public class ClientConnectionHandler implements Runnable {
 
     public void login() {
         try {
+            //Da modificare con finestra a popup con username
             Scanner cli = new Scanner(System.in);
             System.out.println(inSocket.readLine());
             String username = cli.nextLine();

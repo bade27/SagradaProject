@@ -15,7 +15,7 @@ import java.util.ArrayList;
  */
 public class MatchHandler implements Runnable
 {
-    private ServerPlayer[] player;
+    private ArrayList<ServerPlayer> player;
 
     private int nConn;
     private TokenTurn tok;
@@ -38,19 +38,29 @@ public class MatchHandler implements Runnable
     {
         System.out.println(">>>Server Started");
         nConn = 0;
-        player = new ServerPlayer[4];
+        player = new ArrayList<ServerPlayer>();
         try
         {
-            tok = new TokenTurn(MAXGIOC);
+            tok = new TokenTurn();
             dices = new Dadiera(MAXGIOC);
+            ArrayList possibleUsrs = initializPossibleUsers();
             //Per ogni giocatore initzializza la comunicazione attendendo che qualche client si connetta
             for (int i =0 ;i< MAXGIOC;i ++)
             {
-                player[i] = new ServerPlayer(tok,new ServerModelAdapter(dices));
-                player[i].initializeComunication();
-                Thread t = new Thread(player[i]);
-                t.start();
+                ServerPlayer pl = new ServerPlayer(tok,new ServerModelAdapter(dices),possibleUsrs);
+                pl.initializeComunication();
+                player.add(pl);
                 nConn++;
+                //n = CheckAlive();
+                //if (n > 0)
+                //  i = i-n;
+            }
+            for (int i = 0; i <nConn ; i++)
+            {
+                //tok.addPlayer(player.get(i).getUser());
+                tok.addPlayer("a" + i);
+                Thread t = new Thread(player.get(i));
+                t.start();
             }
         }
         catch (Exception e)
@@ -92,7 +102,7 @@ public class MatchHandler implements Runnable
                 c2 = 1;
             }
 
-            player[i].setWindowCards(cards.get(c1), cards.get(c2));
+            player.get(i).setWindowCards(cards.get(c1), cards.get(c2));
 
             //Remove picked cards from list
             if (c1 > c2) {
@@ -129,7 +139,7 @@ public class MatchHandler implements Runnable
             for (int i=0;i<nConn;i++)
             {
                 c = (int)(Math.random()* (cards.size()));
-                player[i].setPrivateObjCard(cards.get(c));
+                player.get(i).setPrivateObjCard(cards.get(c));
                 cards.remove(c);
             }
         }
@@ -169,7 +179,7 @@ public class MatchHandler implements Runnable
             }
             //For each players initialize public objective already selected
             for (int i=0;i<nConn;i++)
-                player[i].setPublicObjCard(objs);
+                player.get(i).setPublicObjCard(objs);
         }
         catch (Exception ex) {
             System.out.println(ex.getMessage());
@@ -178,6 +188,19 @@ public class MatchHandler implements Runnable
         return true;
     }
 
+    /**
+     * To modify in reading from XML or DB possible users
+     * @return
+     */
+    private ArrayList initializPossibleUsers ()
+    {
+        ArrayList<String> arr = new ArrayList();
+        arr.add("A");
+        arr.add("B");
+        arr.add("C");
+        arr.add("D");
+        return arr;
+    }
 
     private void startGame ()
     {
@@ -185,23 +208,18 @@ public class MatchHandler implements Runnable
         {
             synchronized (tok)
             {
-                for (int i = 0 ; i < (nConn * 2); i++)
-                {
-                    tok.nextTurn();
-                    tok.notifyAll();
-                    //Controllo se devo fare mix della dadiera
-                    try {
-                        tok.wait();
-                    }
-                    catch (InterruptedException ex)
-                    {
-                        System.out.println(ex.getMessage());
-                        ex.printStackTrace();
-                    }
-
-                    //Aggiornamento ai client della mossa appena fatta
-
+                tok.nextTurn();
+                tok.notifyAll();
+                //Controllo se devo fare mix della dadiera
+                try {
+                    tok.wait();
                 }
+                catch (InterruptedException ex)
+                {
+                    System.out.println(ex.getMessage());
+                    ex.printStackTrace();
+                }
+                //update dadiera se fine turno
             }
         }
     }

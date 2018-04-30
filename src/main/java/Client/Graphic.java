@@ -21,7 +21,6 @@ public class Graphic extends JFrame
     public Graphic()
     {
         initailizeComunication();
-        //initGraphic();
     }
 
     private void initailizeComunication ()
