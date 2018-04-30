@@ -2,18 +2,35 @@ package Server;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ServerConnectionHandler {
 
+    //contiene informazioni su indirizzo e porta del server
+    private static final String settings = "resources/settings.xml";
+
+    private static int PORT;
+
     private Socket client;
     private BufferedReader inSocket;
     private PrintWriter outSocket;
-    private static int PORT=3000;
     private ServerSocket serverSocket;
+
+    private static void initializer() throws ParserConfigurationException, IOException, SAXException {
+        File file = new File(settings);
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document document = documentBuilder.parse(file);
+        PORT = Integer.parseInt(document.getElementsByTagName("portNumber").item(0).getTextContent());
+    }
 
     public ServerConnectionHandler() {
         try {
@@ -34,6 +51,7 @@ public class ServerConnectionHandler {
     private void init_connection() {
         serverSocket=null;
         try {
+            initializer();
             serverSocket = new ServerSocket(PORT);
             System.out.println("\nServer waiting for client on port " +  serverSocket.getLocalPort());
 

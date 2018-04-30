@@ -3,36 +3,58 @@ package Client;
 import Exceptions.ModelException;
 import Server.JSONFacilities;
 import org.json.JSONException;
+import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.net.Socket;
 
 public class ClientConnectionHandler implements Runnable {
-    private final String address = "localhost";
-    private final int PORT = 3000;
+
+    //contiene informazioni su indirizzo e porta del server
+    private static final String settings = "resources/settings.xml";
+
+    private static String address;
+    private static int PORT;
+    private static boolean initialized = false;
+
     private Socket socket;
     private BufferedReader inSocket;
     private PrintWriter outSocket;
-    private Thread deamon;
 
     private Graphic graph;
     ClientModelAdapter adp;
+
+    private static void initializer() throws ParserConfigurationException, IOException, SAXException {
+        File file = new File(settings);
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document document = documentBuilder.parse(file);
+        address = document.getElementsByTagName("hostName").item(0).getTextContent();
+        PORT = Integer.parseInt(document.getElementsByTagName("portNumber").item(0).getTextContent());
+    }
 
     public ClientConnectionHandler(Graphic c) {
         this.graph = c;
         adp = new ClientModelAdapter(graph);
         System.out.println("connecting...");
         try{
+            if(!initialized)
+                initializer();
             socket = new Socket(address, PORT);
             inSocket = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             outSocket = new PrintWriter(new BufferedWriter(
                     new OutputStreamWriter(socket.getOutputStream())), true);
         } catch (Exception e) {
+            System.out.println("initialization gone wrong");
             e.printStackTrace();
         }
         System.out.println("connected");
-        deamon = new Thread(this);
-        deamon.start();
     }
 
     @Override
@@ -60,7 +82,6 @@ public class ClientConnectionHandler implements Runnable {
 
     public synchronized void chooseWindow()
     {
-        int r = 3;
         try {
             System.out.println(inSocket.readLine());
             String json = inSocket.readLine();
