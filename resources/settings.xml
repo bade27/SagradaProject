@@ -2,5 +2,5 @@
 
 <server>
     <hostName>localhost</hostName>
-    <portNumber>5000</portNumber>
+    <portNumber>6000</portNumber>
 </server>

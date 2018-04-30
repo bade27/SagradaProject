@@ -1,0 +1,26 @@
+
+esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(ÒÌâ–øÿÿÿÿ
+<squid:S1659"'Declare "textPanel" on a separate line.(ù­š
+hsquid:MaximumInheritanceDepth"<This class has 6 parents which is greater than 5 authorized.(Ëëžéûÿÿÿÿ
+msquid:S1450"XRemove the "textPanel" field and declare it as a local variable in the relevant methods.(ù­š
+@squid:S1481"&Remove this unused "g" local variable.(ÁÒççýÿÿÿÿ
+Osquid:S1854"5Remove this useless assignment to local variable "g".(ÁÒççýÿÿÿÿ
+Csquid:S1948".Make "selectedDice" transient or serializable.(Ê±öç
+M
+squid:S106"9Replace this use of System.out or System.err by a logger.(Áªø
+<squid:S1068"'Remove this unused "cch" private field.(×•ü…
+Msquid:S1197"8Move the array designator from the variable to the type.(ì†¼
+<squid:S1659""Declare "cols" on a separate line.(“µˆßøÿÿÿÿ
+nsquid:S1450"YRemove the "boardPanel" field and declare it as a local variable in the relevant methods.(ù­š
+`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(ýãîý
+Zsquid:UnusedPrivateMethod"2Remove this unused private "updateGraphic" method.(˜é¨ñúÿÿÿÿ
+`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(­™ÛÉ
+Msquid:S1197"8Move the array designator from the variable to the type.(Ì›’
+:squid:S1948"%Make "cch" transient or serializable.(×•ü…
+<squid:S1659"'Declare "dicePanel" on a separate line.(ù­š
+esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(³ÜÁÖùÿÿÿÿ
+rsquid:S00120"WRename this package name to match the regular expression '^[a-z]+(\.[a-z][a-z0-9]*)*$'.(•ÝÈ‚ýÿÿÿÿ
+„squid:S1319"oThe type of the "list" object should be an interface such as "List" rather than the implementation "ArrayList".(­¨Ž„
+esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(“­Ž¨ýÿÿÿÿ
+`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(äžØ•
+gsquid:S1450"RRemove the "cch" field and declare it as a local variable in the relevant methods.(×•ü…

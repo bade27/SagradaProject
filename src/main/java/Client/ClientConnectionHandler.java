@@ -13,6 +13,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.net.Socket;
+import java.util.Scanner;
 
 public class ClientConnectionHandler implements Runnable {
 
@@ -26,6 +27,8 @@ public class ClientConnectionHandler implements Runnable {
     private Socket socket;
     private BufferedReader inSocket;
     private PrintWriter outSocket;
+
+    private Thread deamon;
 
     private Graphic graph;
     ClientModelAdapter adp;
@@ -44,8 +47,10 @@ public class ClientConnectionHandler implements Runnable {
         adp = new ClientModelAdapter(graph);
         System.out.println("connecting...");
         try{
-            if(!initialized)
+            if(!initialized) {
                 initializer();
+                initialized = true;
+            }
             socket = new Socket(address, PORT);
             inSocket = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             outSocket = new PrintWriter(new BufferedWriter(
@@ -54,6 +59,8 @@ public class ClientConnectionHandler implements Runnable {
             System.out.println("initialization gone wrong");
             e.printStackTrace();
         }
+        deamon = new Thread(this);
+        deamon.start();
         System.out.println("connected");
     }
 
@@ -62,13 +69,16 @@ public class ClientConnectionHandler implements Runnable {
 
         try {
             String action = "";
-            while( (action = inSocket.readLine()) != null )  {
+            while( (action = inSocket.readLine()) != "stop" )  {
                 switch (action) {
                     case "windowinit":
                         chooseWindow();
                         continue;
                     case "privobj":
                         myPrivateObj();
+                        continue;
+                    case "login":
+                        login();
                         continue;
                     default:
                         return;
@@ -80,7 +90,7 @@ public class ClientConnectionHandler implements Runnable {
 
     }
 
-    public synchronized void chooseWindow()
+    public void chooseWindow()
     {
         try {
             System.out.println(inSocket.readLine());
@@ -99,10 +109,22 @@ public class ClientConnectionHandler implements Runnable {
         }
     }
 
-    public synchronized void myPrivateObj() {
+    public void myPrivateObj() {
         try {
             String response = graph.myPrivateObj(inSocket.readLine()).toLowerCase();
             outSocket.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void login() {
+        try {
+            Scanner cli = new Scanner(System.in);
+            System.out.println(inSocket.readLine());
+            String username = cli.nextLine();
+            outSocket.println(username);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -123,5 +145,4 @@ public class ClientConnectionHandler implements Runnable {
             }
         }
     }
-
 }

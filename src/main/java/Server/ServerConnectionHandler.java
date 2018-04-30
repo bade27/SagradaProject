@@ -1,5 +1,7 @@
 package Server;
 
+import Client.ClientConnectionHandler;
+import Client.Graphic;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.w3c.dom.Document;
@@ -74,6 +76,18 @@ public class ServerConnectionHandler {
         }
     }
 
+    public String login() {
+        String user = "";
+        try {
+            outSocket.println("login");
+            outSocket.println("Inserisci username");
+            user = inSocket.readLine();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
     public String chooseWindow(String[] s1, String[] s2) {
 
         String response = "";
@@ -129,6 +143,4 @@ public class ServerConnectionHandler {
             }
         }
     }
-
-
 }
