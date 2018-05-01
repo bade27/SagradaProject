@@ -31,64 +31,33 @@
       <file leaf-file-name="MatchHandler.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Server/MatchHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1363">
-              <caret line="200" column="18" lean-forward="false" selection-start-line="200" selection-start-column="18" selection-end-line="200" selection-end-column="18" />
+            <state relative-caret-position="0">
+              <caret line="225" column="0" lean-forward="false" selection-start-line="225" selection-start-column="0" selection-end-line="225" selection-end-column="0" />
               <folding>
                 <element signature="method#initiliazeWindowPlayers#0;class#MatchHandler#0" expanded="false" />
                 <element signature="method#initalizePrivateObjectiveCards#0;class#MatchHandler#0" expanded="false" />
                 <element signature="method#initializePublicObjectiveCards#0;class#MatchHandler#0" expanded="false" />
+                <element signature="method#initializPossibleUsers#0;class#MatchHandler#0" expanded="false" />
+                <element signature="method#waitInitialition#0;class#MatchHandler#0" expanded="false" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Graphic.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Client/Graphic.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="22" column="33" lean-forward="false" selection-start-line="22" selection-start-column="33" selection-end-line="22" selection-end-column="33" />
-              <folding>
-                <element signature="e#451#452#0" expanded="true" />
-                <element signature="e#491#492#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ServerPlayer.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ServerPlayer.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/Server/ServerPlayer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="493">
-              <caret line="82" column="17" lean-forward="false" selection-start-line="82" selection-start-column="17" selection-end-line="82" selection-end-column="17" />
+            <state relative-caret-position="363">
+              <caret line="64" column="51" lean-forward="false" selection-start-line="64" selection-start-column="51" selection-end-line="64" selection-end-column="51" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#2998#2999#0" expanded="true" />
-                <element signature="e#3025#3026#0" expanded="true" />
-                <element signature="e#3078#3079#0" expanded="true" />
-                <element signature="e#3111#3112#0" expanded="true" />
-                <element signature="e#3163#3164#0" expanded="true" />
-                <element signature="e#3197#3198#0" expanded="true" />
+                <element signature="e#3185#3186#0" expanded="true" />
+                <element signature="e#3212#3213#0" expanded="true" />
+                <element signature="e#3265#3266#0" expanded="true" />
+                <element signature="e#3298#3299#0" expanded="true" />
+                <element signature="e#3350#3351#0" expanded="true" />
+                <element signature="e#3384#3385#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ClientConnectionHandler.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Client/ClientConnectionHandler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="272">
-              <caret line="122" column="61" lean-forward="false" selection-start-line="122" selection-start-column="61" selection-end-line="122" selection-end-column="61" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ServerConnectionHandler.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Server/ServerConnectionHandler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-697">
-              <caret line="23" column="26" lean-forward="true" selection-start-line="23" selection-start-column="26" selection-end-line="23" selection-end-column="26" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -96,45 +65,28 @@
       <file leaf-file-name="TokenTurn.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Server/TokenTurn.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="295">
-              <caret line="83" column="66" lean-forward="false" selection-start-line="83" selection-start-column="66" selection-end-line="83" selection-end-column="66" />
+            <state relative-caret-position="918">
+              <caret line="132" column="24" lean-forward="false" selection-start-line="132" selection-start-column="24" selection-end-line="132" selection-end-column="24" />
               <folding>
-                <element signature="e#1821#1822#0" expanded="true" />
-                <element signature="e#1885#1886#0" expanded="true" />
-                <element signature="e#2763#2764#0" expanded="true" />
-                <element signature="e#2800#2801#0" expanded="true" />
+                <element signature="e#1980#1981#0" expanded="true" />
+                <element signature="e#2044#2045#0" expanded="true" />
+                <element signature="e#2922#2923#0" expanded="true" />
+                <element signature="e#2959#2960#0" expanded="true" />
                 <element signature="method#toString#0;class#TokenTurn#0" expanded="false" />
+                <element signature="e#3245#3246#0" expanded="true" />
+                <element signature="e#3276#3277#0" expanded="true" />
                 <element signature="class#Player#0;class#TokenTurn#0" expanded="false" />
                 <element signature="method#Player#0;class#Player#0;class#TokenTurn#0" expanded="false" />
-                <element signature="e#3311#3312#0" expanded="true" />
-                <element signature="e#3343#3344#0" expanded="true" />
-                <element signature="e#3378#3379#0" expanded="true" />
-                <element signature="e#3413#3414#0" expanded="true" />
-                <element signature="e#3447#3448#0" expanded="true" />
-                <element signature="e#3482#3483#0" expanded="true" />
+                <element signature="e#3539#3540#0" expanded="true" />
+                <element signature="e#3571#3572#0" expanded="true" />
+                <element signature="e#3606#3607#0" expanded="true" />
+                <element signature="e#3641#3642#0" expanded="true" />
+                <element signature="e#3675#3676#0" expanded="true" />
+                <element signature="e#3710#3711#0" expanded="true" />
                 <element signature="method#startSetup#0;class#TokenTurn#0" expanded="false" />
                 <element signature="method#endSetup#0;class#TokenTurn#0" expanded="false" />
-                <element signature="e#4036#4037#0" expanded="true" />
-                <element signature="e#4066#4067#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TokenTurnTest.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/Server/TokenTurnTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="111" column="4" lean-forward="false" selection-start-line="111" selection-start-column="4" selection-end-line="111" selection-end-column="4" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="method#checkInitTest#0;class#TokenTurnTest#0" expanded="false" />
-                <element signature="method#roundTestWithoutExits#0;class#TokenTurnTest#0" expanded="false" />
-                <element signature="method#roundTestWithExits#0;class#TokenTurnTest#0" expanded="false" />
-                <element signature="method#assertTurnA#0;class#TokenTurnTest#0" expanded="false" />
-                <element signature="method#assertTurnB#0;class#TokenTurnTest#0" expanded="false" />
-                <element signature="method#assertTurnC#0;class#TokenTurnTest#0" expanded="false" />
-                <element signature="method#assertTurnD#0;class#TokenTurnTest#0" expanded="false" />
+                <element signature="e#4264#4265#0" expanded="true" />
+                <element signature="e#4294#4295#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -224,17 +176,17 @@
         <option value="$PROJECT_DIR$/src/main/java/Obbiettivi/Privati/ObbiettivoPrivato.java" />
         <option value="$PROJECT_DIR$/src/test/java/Test/Model/DiceBagTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/Model/CellTest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Model/Dadiera.java" />
         <option value="$PROJECT_DIR$/src/main/java/Model/Window.java" />
         <option value="$PROJECT_DIR$/src/test/java/Model/WindowTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/Model/DiceBagTest.java" />
-        <option value="$PROJECT_DIR$/src/test/java/Model/DadieraTest.java" />
-        <option value="$PROJECT_DIR$/src/test/java/Server/TokenTurnTest.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Server/TokenTurn.java" />
         <option value="$PROJECT_DIR$/src/main/java/Client/Graphic.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Server/ServerPlayer.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Server/MatchHandler.java" />
         <option value="$PROJECT_DIR$/src/main/java/Client/ClientConnectionHandler.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Server/TokenTurn.java" />
+        <option value="$PROJECT_DIR$/src/test/java/Server/TokenTurnTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Model/Dadiera.java" />
+        <option value="$PROJECT_DIR$/src/test/java/Model/DadieraTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Server/MatchHandler.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Server/ServerPlayer.java" />
       </list>
     </option>
   </component>
@@ -274,6 +226,8 @@
     </navigator>
     <panes>
       <pane id="Scratches" />
+      <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -298,14 +252,6 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="SagradaProject" type="b2602c69:ProjectViewProjectNode" />
-              <item name="SagradaProject" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="Client" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="SagradaProject" type="b2602c69:ProjectViewProjectNode" />
@@ -340,8 +286,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="Scope" />
       <pane id="AndroidView" />
     </panes>
   </component>
@@ -615,9 +559,9 @@
       <list size="5">
         <item index="0" class="java.lang.String" itemvalue="Application.Graphic" />
         <item index="1" class="java.lang.String" itemvalue="Application.MatchHandler" />
-        <item index="2" class="java.lang.String" itemvalue="JUnit.TokenTurnTest" />
-        <item index="3" class="java.lang.String" itemvalue="JUnit.WindowTest" />
-        <item index="4" class="java.lang.String" itemvalue="JUnit.DadieraTest" />
+        <item index="2" class="java.lang.String" itemvalue="JUnit.DadieraTest" />
+        <item index="3" class="java.lang.String" itemvalue="JUnit.TokenTurnTest" />
+        <item index="4" class="java.lang.String" itemvalue="JUnit.WindowTest" />
       </list>
     </recent_temporary>
   </component>
@@ -657,14 +601,8 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="TokenTurnTest - 2018.04.30 at 17h 00m 34s.xml">
-      <configuration name="TokenTurnTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="TokenTurnTest - 2018.04.30 at 17h 02m 29s.xml">
-      <configuration name="TokenTurnTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="TokenTurnTest - 2018.04.30 at 17h 03m 37s.xml">
-      <configuration name="TokenTurnTest" configurationId="JUnit" />
+    <history-entry file="DadieraTest - 2018.05.01 at 14h 32m 51s.xml">
+      <configuration name="DadieraTest" configurationId="JUnit" />
     </history-entry>
     <history-entry file="TokenTurnTest - 2018.04.30 at 17h 07m 18s.xml">
       <configuration name="TokenTurnTest" configurationId="JUnit" />
@@ -687,6 +625,12 @@
     <history-entry file="TokenTurnTest - 2018.04.30 at 17h 15m 40s.xml">
       <configuration name="TokenTurnTest" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="TokenTurnTest - 2018.05.01 at 14h 27m 27s.xml">
+      <configuration name="TokenTurnTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="TokenTurnTest - 2018.05.01 at 14h 27m 53s.xml">
+      <configuration name="TokenTurnTest" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
     <option name="totallyTimeSpent" value="3027000" />
@@ -696,7 +640,6 @@
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32913387" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32913387" sideWeight="0.5030303" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -715,6 +658,7 @@
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32913387" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -885,7 +829,6 @@
     <entry file="file://$PROJECT_DIR$/src/test/java/Model/CellTest.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/Model/Cell.java" />
     <entry file="file://$PROJECT_DIR$/src/test/java/Model/CellTest.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/Model/Dadiera.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/Model/Window.java" />
     <entry file="file://$PROJECT_DIR$/src/test/java/Model/DiceBagTest.java">
       <provider selected="true" editor-type-id="text-editor">
@@ -909,13 +852,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/Model/DadieraTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="23" column="5" lean-forward="true" selection-start-line="18" selection-start-column="4" selection-end-line="23" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_73/src.zip!/java/util/stream/ForEachOps.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="139">
@@ -923,10 +859,67 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Client/Graphic.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="22" column="33" lean-forward="false" selection-start-line="22" selection-start-column="33" selection-end-line="22" selection-end-column="33" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Client/ClientConnectionHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="122" column="61" lean-forward="false" selection-start-line="122" selection-start-column="61" selection-end-line="122" selection-end-column="61" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Server/ServerConnectionHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="23" column="26" lean-forward="false" selection-start-line="23" selection-start-column="26" selection-end-line="23" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Model/Dadiera.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="25" column="32" lean-forward="false" selection-start-line="25" selection-start-column="32" selection-end-line="25" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/Model/DadieraTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="27" column="15" lean-forward="false" selection-start-line="27" selection-start-column="15" selection-end-line="27" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Server/MatchHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="225" column="0" lean-forward="false" selection-start-line="225" selection-start-column="0" selection-end-line="225" selection-end-column="0" />
+          <folding>
+            <element signature="method#initiliazeWindowPlayers#0;class#MatchHandler#0" expanded="false" />
+            <element signature="method#initalizePrivateObjectiveCards#0;class#MatchHandler#0" expanded="false" />
+            <element signature="method#initializePublicObjectiveCards#0;class#MatchHandler#0" expanded="false" />
+            <element signature="method#initializPossibleUsers#0;class#MatchHandler#0" expanded="false" />
+            <element signature="method#waitInitialition#0;class#MatchHandler#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/LM18.iml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/Server/TokenTurnTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="111" column="4" lean-forward="false" selection-start-line="111" selection-start-column="4" selection-end-line="111" selection-end-column="4" />
+        <state relative-caret-position="229">
+          <caret line="118" column="4" lean-forward="false" selection-start-line="118" selection-start-column="4" selection-end-line="118" selection-end-column="4" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="method#checkInitTest#0;class#TokenTurnTest#0" expanded="false" />
@@ -940,92 +933,47 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/LM18.iml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Server/TokenTurn.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="295">
-          <caret line="83" column="66" lean-forward="false" selection-start-line="83" selection-start-column="66" selection-end-line="83" selection-end-column="66" />
+        <state relative-caret-position="918">
+          <caret line="132" column="24" lean-forward="false" selection-start-line="132" selection-start-column="24" selection-end-line="132" selection-end-column="24" />
           <folding>
-            <element signature="e#1821#1822#0" expanded="true" />
-            <element signature="e#1885#1886#0" expanded="true" />
-            <element signature="e#2763#2764#0" expanded="true" />
-            <element signature="e#2800#2801#0" expanded="true" />
+            <element signature="e#1980#1981#0" expanded="true" />
+            <element signature="e#2044#2045#0" expanded="true" />
+            <element signature="e#2922#2923#0" expanded="true" />
+            <element signature="e#2959#2960#0" expanded="true" />
             <element signature="method#toString#0;class#TokenTurn#0" expanded="false" />
+            <element signature="e#3245#3246#0" expanded="true" />
+            <element signature="e#3276#3277#0" expanded="true" />
             <element signature="class#Player#0;class#TokenTurn#0" expanded="false" />
             <element signature="method#Player#0;class#Player#0;class#TokenTurn#0" expanded="false" />
-            <element signature="e#3311#3312#0" expanded="true" />
-            <element signature="e#3343#3344#0" expanded="true" />
-            <element signature="e#3378#3379#0" expanded="true" />
-            <element signature="e#3413#3414#0" expanded="true" />
-            <element signature="e#3447#3448#0" expanded="true" />
-            <element signature="e#3482#3483#0" expanded="true" />
+            <element signature="e#3539#3540#0" expanded="true" />
+            <element signature="e#3571#3572#0" expanded="true" />
+            <element signature="e#3606#3607#0" expanded="true" />
+            <element signature="e#3641#3642#0" expanded="true" />
+            <element signature="e#3675#3676#0" expanded="true" />
+            <element signature="e#3710#3711#0" expanded="true" />
             <element signature="method#startSetup#0;class#TokenTurn#0" expanded="false" />
             <element signature="method#endSetup#0;class#TokenTurn#0" expanded="false" />
-            <element signature="e#4036#4037#0" expanded="true" />
-            <element signature="e#4066#4067#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Server/ServerConnectionHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-697">
-          <caret line="23" column="26" lean-forward="true" selection-start-line="23" selection-start-column="26" selection-end-line="23" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Client/Graphic.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="22" column="33" lean-forward="false" selection-start-line="22" selection-start-column="33" selection-end-line="22" selection-end-column="33" />
-          <folding>
-            <element signature="e#451#452#0" expanded="true" />
-            <element signature="e#491#492#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Server/MatchHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1363">
-          <caret line="200" column="18" lean-forward="false" selection-start-line="200" selection-start-column="18" selection-end-line="200" selection-end-column="18" />
-          <folding>
-            <element signature="method#initiliazeWindowPlayers#0;class#MatchHandler#0" expanded="false" />
-            <element signature="method#initalizePrivateObjectiveCards#0;class#MatchHandler#0" expanded="false" />
-            <element signature="method#initializePublicObjectiveCards#0;class#MatchHandler#0" expanded="false" />
+            <element signature="e#4264#4265#0" expanded="true" />
+            <element signature="e#4294#4295#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Server/ServerPlayer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="82" column="17" lean-forward="false" selection-start-line="82" selection-start-column="17" selection-end-line="82" selection-end-column="17" />
+        <state relative-caret-position="363">
+          <caret line="64" column="51" lean-forward="false" selection-start-line="64" selection-start-column="51" selection-end-line="64" selection-end-column="51" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#2998#2999#0" expanded="true" />
-            <element signature="e#3025#3026#0" expanded="true" />
-            <element signature="e#3078#3079#0" expanded="true" />
-            <element signature="e#3111#3112#0" expanded="true" />
-            <element signature="e#3163#3164#0" expanded="true" />
-            <element signature="e#3197#3198#0" expanded="true" />
+            <element signature="e#3185#3186#0" expanded="true" />
+            <element signature="e#3212#3213#0" expanded="true" />
+            <element signature="e#3265#3266#0" expanded="true" />
+            <element signature="e#3298#3299#0" expanded="true" />
+            <element signature="e#3350#3351#0" expanded="true" />
+            <element signature="e#3384#3385#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Client/ClientConnectionHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="122" column="61" lean-forward="false" selection-start-line="122" selection-start-column="61" selection-end-line="122" selection-end-column="61" />
-          <folding />
         </state>
       </provider>
     </entry>

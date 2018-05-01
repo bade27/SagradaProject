@@ -29,6 +29,34 @@ public class MatchHandler implements Runnable
         initiliazeWindowPlayers();
         waitInitialition();
         System.out.println(">>>Initialization ended");
+        startGame();
+    }
+
+    private void startGame ()
+    {
+        dices.mix(tok.getNumPlayers());
+        while (true)
+        {
+            synchronized (tok)
+            {
+                if (tok.isEndRound())
+                {
+                    dices.mix(tok.getNumPlayers());
+                    System.out.println(">>>Dadiera mixed");
+                }
+                tok.nextTurn();
+                tok.notifyAll();
+
+                try {
+                    tok.wait();
+                }
+                catch (InterruptedException ex)
+                {
+                    System.out.println(ex.getMessage());
+                    ex.printStackTrace();
+                }
+            }
+        }
     }
 
     /**
@@ -42,29 +70,31 @@ public class MatchHandler implements Runnable
         try
         {
             tok = new TokenTurn();
-            dices = new Dadiera(MAXGIOC);
+            dices = new Dadiera();
             ArrayList possibleUsrs = initializPossibleUsers();
             //Per ogni giocatore initzializza la comunicazione attendendo che qualche client si connetta
             for (int i =0 ;i< MAXGIOC;i ++)
             {
                 ServerPlayer pl = new ServerPlayer(tok,new ServerModelAdapter(dices),possibleUsrs);
-                pl.initializeComunication();
-                player.add(pl);
-                nConn++;
+                if (pl.initializeComunication())
+                {
+                    player.add(pl);
+                    nConn++;
+                }
+                else
+                    i--;
                 //n = CheckAlive();
                 //if (n > 0)
                 //  i = i-n;
             }
             for (int i = 0; i <nConn ; i++)
             {
-                //tok.addPlayer(player.get(i).getUser());
-                tok.addPlayer("a" + i);
+                tok.addPlayer(player.get(i).getUser());
                 Thread t = new Thread(player.get(i));
                 t.start();
             }
         }
-        catch (Exception e)
-        {
+        catch (Exception e) {
             System.out.println("Exception: "+e);
             e.printStackTrace();
 
@@ -200,28 +230,6 @@ public class MatchHandler implements Runnable
         arr.add("C");
         arr.add("D");
         return arr;
-    }
-
-    private void startGame ()
-    {
-        while (true)
-        {
-            synchronized (tok)
-            {
-                tok.nextTurn();
-                tok.notifyAll();
-                //Controllo se devo fare mix della dadiera
-                try {
-                    tok.wait();
-                }
-                catch (InterruptedException ex)
-                {
-                    System.out.println(ex.getMessage());
-                    ex.printStackTrace();
-                }
-                //update dadiera se fine turno
-            }
-        }
     }
 
 

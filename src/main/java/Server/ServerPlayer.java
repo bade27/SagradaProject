@@ -28,38 +28,46 @@ public class ServerPlayer implements Runnable
 
     public synchronized void run ()
     {
+        //Setup Phase
+        synchronized (token)
+        {
+            try
+            {
+                //Wait until matchHandler signal start setup
+                while (!token.getOnSetup())
+                    token.wait();
+
+                //Initialization of client
+                initializeWindow();
+
+                //End Setup phase comunication
+                token.endSetup();
+                token.notifyAll();
+            }
+            catch (InterruptedException ex) {
+                System.out.println(ex.getMessage());
+                ex.printStackTrace();
+            }
+        }
+
+        //Game Phase
         while (true)//Da cambiare con la condizione di fine partita
         {
             synchronized (token)
             {
                 try
                 {
-                    /////Inizializzazione Partita
-
-                    //Attende che il MatchHandler faccia partire la fase di inizializzazione
-                    while (!token.getOnSetup())
-                        token.wait();
-
-                    //Inizializza il client
-                    initializeWindow();
-
-                    //Comunica che ha terminato la fase di inizializzazione
-                    token.endSetup();
-                    token.notifyAll();
-
-                    /////Inizializzazione Partita
-
-
-                    //Partita vera e propria
-
-                    //Attende che è il prorpio turno di gioco
+                    //Wait his turn
                     while (!token.isMyTurn(user))
                         token.wait();
 
-                    //Comunica al client che è il suo turno e attende le mosse del client
+                    //Simulazione del turno
+                    System.out.println(">>>Turn of:" + user);
+                    Thread.sleep(2000);
 
-
+                    //End turn comunication
                     token.notifyAll();
+                    token.wait();
                 }
                 catch (InterruptedException ex)
                 {
@@ -71,7 +79,7 @@ public class ServerPlayer implements Runnable
         }
     }
 
-    public void initializeComunication ()
+    public boolean initializeComunication ()
     {
         String u;
         com = new ServerConnectionHandler();
@@ -81,6 +89,7 @@ public class ServerPlayer implements Runnable
         } while (!possibleUsers.contains(u));
         possibleUsers.remove(u);
         user = u;
+        return true;
     }
 
     private void initializeWindow ()

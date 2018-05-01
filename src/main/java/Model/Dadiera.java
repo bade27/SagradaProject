@@ -10,15 +10,12 @@ public class Dadiera
     private ArrayList<Dice> listaDadi;
     private final Color [] listaColori = {null,Color.red,Color.blue,Color.magenta,Color.yellow,Color.green};
     private DiceBag bag;
-    private int numGioc;
 
     /**
      * Genera una nuova dadiera per il numero di fiocatori passati
-     * @param n numero di giocatori
      */
-    public Dadiera (int n)
+    public Dadiera ()
     {
-        numGioc = n;
         bag = new DiceBag();
         listaDadi = null;
     }
@@ -26,7 +23,7 @@ public class Dadiera
     /**
      * Genera un nuovo set di dadi casualmente
      */
-    public void mix ()
+    public void mix (int numGioc)
     {
         listaDadi = bag.pickDices(numGioc*2 + 1);
         assert listaDadi != null;

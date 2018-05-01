@@ -19,20 +19,20 @@ class DadieraTest {
     @BeforeEach
     void setUp() {
         n = new Random().nextInt(9) + 1;
-        d = new Dadiera(n);
+        d = new Dadiera();
         expectedDice = 2*n + 1;
     }
 
     @Test
     void mix() {
-        d.mix();
+        d.mix(n);
         assertNotNull(d.getListaDadi());
         assertEquals(expectedDice, d.getListaDadi().size());
     }
 
     @Test
     void deleteDice() {
-        d.mix();
+        d.mix(n);
         int which_Die = new Random().nextInt(expectedDice);
         ArrayList<Dice> playableDice = d.getListaDadi();
 
@@ -71,7 +71,7 @@ class DadieraTest {
 
     @Test
     void getDiceNoException() throws IllegalDiceException {
-        d.mix();
+        d.mix(n);
         int which_Die = new Random().nextInt(expectedDice);
         assertNotNull(d.getDice(which_Die));
         assertEquals(d.getListaDadi().get(which_Die), d.getDice(which_Die));
@@ -85,7 +85,7 @@ class DadieraTest {
 
     @Test
     void toStringNnEmptyTest() {
-        d.mix();
+        d.mix(n);
         assertNotNull(d.toString());
         assertNotEquals("Dadiera vuota!", d.toString());
     }

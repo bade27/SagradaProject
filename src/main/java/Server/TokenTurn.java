@@ -9,6 +9,7 @@ public class TokenTurn
     //Game Phase
     private int currentTurn;
     private boolean clockwise;
+    private boolean endRound;
 
     //Setup Phase
     private boolean onSetup;
@@ -44,6 +45,7 @@ public class TokenTurn
       */
     public synchronized void nextTurn ()
     {
+        endRound = false;
         if (clockwise)
         {
             if (currentTurn < players.size() )
@@ -54,7 +56,11 @@ public class TokenTurn
         else
         {
             if (currentTurn > 1)
+            {
                 currentTurn --;
+                if (currentTurn == 1)
+                    endRound = true;
+            }
             else
             {
                 clockwise = true;
@@ -122,7 +128,10 @@ public class TokenTurn
     }
 
 
-
+    public boolean isEndRound ()
+    {
+        return endRound;
+    }
 
     /**
      * Class that associates username to player turn
