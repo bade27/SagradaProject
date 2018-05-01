@@ -46,7 +46,7 @@ public class ServerPlayer implements Runnable
             }
             catch (InterruptedException ex) {
                 System.out.println(ex.getMessage());
-                ex.printStackTrace();
+                LogFile.addLog(ex.getStackTrace().toString());
             }
         }
 
@@ -62,6 +62,7 @@ public class ServerPlayer implements Runnable
                         token.wait();
 
                     //Simulazione del turno
+                    LogFile.addLog("Turn of:" + user);
                     System.out.println(">>>Turn of:" + user);
                     Thread.sleep(2000);
 
@@ -72,7 +73,7 @@ public class ServerPlayer implements Runnable
                 catch (InterruptedException ex)
                 {
                     System.out.println(ex.getMessage());
-                    ex.printStackTrace();
+                    LogFile.addLog(ex.getStackTrace().toString());
                 }
 
             }
@@ -97,7 +98,7 @@ public class ServerPlayer implements Runnable
         String s1 = com.chooseWindow(windowCard1,windowCard2);
         try {
             adapter.initializeWindow(s1);
-            System.out.println(">>>Window initialized: " + s1);
+            LogFile.addLog("User: " + user + " Window initialized: " + s1);
         }
         catch (ModelException ex) {
             System.out.println(ex.getMessage());

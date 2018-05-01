@@ -25,6 +25,8 @@ public class MatchHandler implements Runnable
 
     public synchronized void run ()
     {
+        LogFile.cleanFile();
+
         acceptConnection();
         initiliazeWindowPlayers();
         waitInitialition();
@@ -34,7 +36,10 @@ public class MatchHandler implements Runnable
 
     private void startGame ()
     {
+        LogFile.addLog("Game Phase started");
+
         dices.mix(tok.getNumPlayers());
+        LogFile.addLog("Dadiera Mixed");
         while (true)
         {
             synchronized (tok)
@@ -42,7 +47,8 @@ public class MatchHandler implements Runnable
                 if (tok.isEndRound())
                 {
                     dices.mix(tok.getNumPlayers());
-                    System.out.println(">>>Dadiera mixed");
+                    System.out.println(">>>Dadiera Mixed");
+                    LogFile.addLog("Dadiera Mixed");
                 }
                 tok.nextTurn();
                 tok.notifyAll();
@@ -65,6 +71,7 @@ public class MatchHandler implements Runnable
     private void acceptConnection()
     {
         System.out.println(">>>Server Started");
+        LogFile.addLog("Server Started");
         nConn = 0;
         player = new ArrayList<ServerPlayer>();
         try
@@ -80,6 +87,7 @@ public class MatchHandler implements Runnable
                 {
                     player.add(pl);
                     nConn++;
+                    LogFile.addLog("Client accepted");
                 }
                 else
                     i--;
@@ -87,19 +95,20 @@ public class MatchHandler implements Runnable
                 //if (n > 0)
                 //  i = i-n;
             }
+            LogFile.addLog("Number of Client connected:" + nConn);
             for (int i = 0; i <nConn ; i++)
             {
                 tok.addPlayer(player.get(i).getUser());
+                LogFile.addLog("Client " + player.get(i).getUser() + " Added");
                 Thread t = new Thread(player.get(i));
                 t.start();
             }
         }
         catch (Exception e) {
             System.out.println("Exception: "+e);
+            LogFile.addLog(e.getStackTrace().toString());
             e.printStackTrace();
-
         }
-        System.out.println(">>>Number of client connected:" + nConn);
     }
 
     /**
@@ -116,6 +125,7 @@ public class MatchHandler implements Runnable
         }
         catch (ParserXMLException ex){
             System.out.println(ex.getMessage());
+            LogFile.addLog(ex.getStackTrace().toString());
             return false;
         }
 
@@ -245,17 +255,19 @@ public class MatchHandler implements Runnable
         {
             try
             {
+                LogFile.addLog("Setup Phase started");
                 //Sveglia tutti i client in attesa di inizializzarsi
                 tok.notifyAll();
                 //Attende che tutti i client siano inizializzati
                 for (int i = 0; i < nConn ; i++)
                     if (tok.getOnSetup())
                         tok.wait();
+                LogFile.addLog("Setup Phase ended");
             }
             catch (InterruptedException ex)
             {
                 System.out.println(ex.getMessage());
-                ex.printStackTrace();
+                LogFile.addLog(ex.getStackTrace().toString());
             }
         }
 

@@ -1,7 +1,6 @@
 ﻿Andrea Bionda:
 -Aggiungere la creazione delle carte obbiettivo
 -Gestire la partita dei giocatori lato server
--Creare un file.log
 -Creare (DB/XML/file) giocatori
 -Gestire gli errori di comunicazione che arrivano e gli errori interni
  
