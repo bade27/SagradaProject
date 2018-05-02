@@ -1,8 +1,11 @@
 ﻿Andrea Bionda:
 -Aggiungere la creazione delle carte obbiettivo
 -Gestire la partita dei giocatori lato server
--Creare (DB/XML/file) giocatori
 -Gestire gli errori di comunicazione che arrivano e gli errori interni
+-Gestire fine partita (un client rimasto)
+-Mettere la richiesta username in thread separato in qualche modo
+(successivamente)
+-Creare (DB/XML/file) giocatori
  
 Matteo Badenchini:
 -Aggiungere i messaggi di chiusura comunicazione

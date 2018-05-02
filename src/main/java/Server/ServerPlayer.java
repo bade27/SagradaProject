@@ -1,8 +1,9 @@
 package Server;
 
+import Exceptions.ClientOutOfReachException;
 import Exceptions.ModelException;
+import Utilities.LogFile;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class ServerPlayer implements Runnable
@@ -38,7 +39,15 @@ public class ServerPlayer implements Runnable
                     token.wait();
 
                 //Initialization of client
-                initializeWindow();
+                boolean b = initializeWindow();
+                //DA TESTAREEE!!!!!
+                if (!b)
+                {
+                    //Notify token that client is dead
+                    token.deletePlayer(user);
+                    token.notifyAll();
+                    return;
+                }
 
                 //End Setup phase comunication
                 token.endSetup();
@@ -47,6 +56,7 @@ public class ServerPlayer implements Runnable
             catch (InterruptedException ex) {
                 System.out.println(ex.getMessage());
                 LogFile.addLog(ex.getStackTrace().toString());
+                return;
             }
         }
 
@@ -74,6 +84,7 @@ public class ServerPlayer implements Runnable
                 {
                     System.out.println(ex.getMessage());
                     LogFile.addLog(ex.getStackTrace().toString());
+                    return;
                 }
 
             }
@@ -83,26 +94,42 @@ public class ServerPlayer implements Runnable
     public boolean initializeComunication ()
     {
         String u;
-        com = new ServerConnectionHandler();
+        try{
+            com = new ServerConnectionHandler();
 
-        do{
-            u = com.login();
-        } while (!possibleUsers.contains(u));
-        possibleUsers.remove(u);
-        user = u;
-        return true;
+            do{
+                u = com.login();
+            } while (!possibleUsers.contains(u));
+            possibleUsers.remove(u);
+            user = u;
+            return true;
+        }
+        catch (ClientOutOfReachException e) {
+            LogFile.addLog(e.getMessage() , e.getStackTrace());
+            return false;
+        }
     }
 
-    private void initializeWindow ()
+    private boolean initializeWindow ()
     {
-        String s1 = com.chooseWindow(windowCard1,windowCard2);
+        String s1 ="";
+        try {
+            s1 = com.chooseWindow(windowCard1, windowCard2);
+        }
+        catch (ClientOutOfReachException e) {
+            LogFile.addLog("(User:" + user + ")" + e.getMessage() , e.getStackTrace());
+            return false;
+        }
+
         try {
             adapter.initializeWindow(s1);
             LogFile.addLog("User: " + user + " Window initialized: " + s1);
         }
         catch (ModelException ex) {
-            System.out.println(ex.getMessage());
+            LogFile.addLog(ex.getMessage());
+            return false;
         }
+        return true;
     }
 
     private void initializePrivateObjectives (String card)

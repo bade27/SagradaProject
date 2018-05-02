@@ -1,7 +1,9 @@
 package Server;
 
-import Client.ClientConnectionHandler;
-import Client.Graphic;
+import Utilities.JSONFacilities;
+import Utilities.LogFile;
+import Exceptions.ClientOutOfReachException;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.w3c.dom.Document;
@@ -34,40 +36,44 @@ public class ServerConnectionHandler {
         PORT = Integer.parseInt(document.getElementsByTagName("portNumber").item(0).getTextContent());
     }
 
-    public ServerConnectionHandler() {
+    public ServerConnectionHandler() throws ClientOutOfReachException
+    {
         try {
             init_connection();
             inSocket = new BufferedReader(new InputStreamReader(client.getInputStream()));
             outSocket = new PrintWriter(new BufferedWriter(
                     new OutputStreamWriter(client.getOutputStream())), true);
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             try {
                 client.close();
             } catch(Exception ex) {
                 ex.printStackTrace();
             }
+            throw new ClientOutOfReachException("Impossible to create Socket Buffer");
         }
 
     }
 
-    private void init_connection() {
+    private void init_connection() throws ClientOutOfReachException
+    {
         serverSocket=null;
         try {
             initializer();
             serverSocket = new ServerSocket(PORT);
-            System.out.println("\nServer waiting for client on port " +  serverSocket.getLocalPort());
+            LogFile.addLog("\nServer waiting for client on port " +  serverSocket.getLocalPort());
 
             // server infinite loop
             client = serverSocket.accept();
         }
-        catch(Exception e) {
-            System.out.println(e);
+        catch(Exception e)
+        {
             try {
                 serverSocket.close();
-            } catch(Exception ex) {
-
-            }
-        } finally {
+            } catch(Exception ex) { }
+            //throw new ClientOutOfReachException("Impossible to accept client connection \n\r" + e.getStackTrace().toString());
+        }
+        finally {
             try {
                 serverSocket.close();
             } catch (IOException e) {
@@ -76,20 +82,21 @@ public class ServerConnectionHandler {
         }
     }
 
-    public String login() {
+    public String login() throws ClientOutOfReachException
+    {
         String user = "";
         try {
             outSocket.println("login");
             outSocket.println("Inserisci username");
             user = inSocket.readLine();
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new ClientOutOfReachException("Client is out of reach");
         }
         return user;
     }
 
-    public String chooseWindow(String[] s1, String[] s2) {
-
+    public String chooseWindow(String[] s1, String[] s2)  throws ClientOutOfReachException
+    {
         String response = "";
 
         try {
@@ -98,10 +105,12 @@ public class ServerConnectionHandler {
             outSocket.println("Scegli la vetrata");
             outSocket.println(jsonArray.toString());    //invio le due coppie di vetrate
             response = inSocket.readLine();  //mi aspetto il nome della vetrata scelta
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException je) {
-            je.printStackTrace();
+        }
+        catch (IOException e) {
+            throw new ClientOutOfReachException("Client is out of reach");
+        }
+        catch (JSONException je) {
+            throw new ClientOutOfReachException("JSON can't decrypt client message");
         }
 
         return response;

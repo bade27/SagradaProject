@@ -177,6 +177,14 @@ class TokenTurnTest {
         assertTurnB();
 
         assertTrue(token.isEndRound());
+
+        //delete(A) B - B - ....
+        token.deletePlayer("A");
+
+        token.nextTurn();
+        assertTurnB();
+        token.nextTurn();
+        assertTurnB();
     }
 
     //System.out.println(token.toString());

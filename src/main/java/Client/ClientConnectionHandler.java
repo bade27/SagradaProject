@@ -1,11 +1,9 @@
 package Client;
 
 import Exceptions.ModelException;
-import Server.JSONFacilities;
+import Utilities.JSONFacilities;
 import org.json.JSONException;
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -126,6 +124,13 @@ public class ClientConnectionHandler implements Runnable {
             String username = cli.nextLine();
             outSocket.println(username);
 
+            //SOLO PER TEST
+            /*if (username.equals("B"))
+            {
+                socket.close();
+                outSocket.close();
+                inSocket.close();
+            }*/
         } catch (IOException e) {
             e.printStackTrace();
         }

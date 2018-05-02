@@ -2,6 +2,7 @@ package Model;
 
 import Exceptions.IllegalDiceException;
 import Exceptions.ParserXMLException;
+import Utilities.ParserXML;
 
 import java.awt.*;
 

@@ -2,7 +2,8 @@ package Server;
 
 import Exceptions.ParserXMLException;
 import Model.Dadiera;
-import Model.ParserXML;
+import Utilities.ParserXML;
+import Utilities.LogFile;
 
 import java.util.ArrayList;
 
@@ -44,6 +45,11 @@ public class MatchHandler implements Runnable
         {
             synchronized (tok)
             {
+                /*if (tok.getNumPlayers() < 2)
+                {
+                    System.out.println(">>>Game finished");
+                    LogFile.addLog("Game finished");
+                }*/
                 if (tok.isEndRound())
                 {
                     dices.mix(tok.getNumPlayers());
@@ -106,7 +112,7 @@ public class MatchHandler implements Runnable
         }
         catch (Exception e) {
             System.out.println("Exception: "+e);
-            LogFile.addLog(e.getStackTrace().toString());
+            LogFile.addLog("",e.getStackTrace());
             e.printStackTrace();
         }
     }
@@ -125,7 +131,7 @@ public class MatchHandler implements Runnable
         }
         catch (ParserXMLException ex){
             System.out.println(ex.getMessage());
-            LogFile.addLog(ex.getStackTrace().toString());
+            LogFile.addLog("" , ex.getStackTrace());
             return false;
         }
 
@@ -264,10 +270,8 @@ public class MatchHandler implements Runnable
                         tok.wait();
                 LogFile.addLog("Setup Phase ended");
             }
-            catch (InterruptedException ex)
-            {
-                System.out.println(ex.getMessage());
-                LogFile.addLog(ex.getStackTrace().toString());
+            catch (InterruptedException ex) {
+                LogFile.addLog("" , ex.getStackTrace());
             }
         }
 
