@@ -1,0 +1,15 @@
+
+nsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(†¶¼8´é†²¬,
+Zsquid:S1155">Use isEmpty() to check whether the collection is empty or not.(Ì¬›8´é†²¬,
+@squid:S1659"Declare "y" on a separate line.(¡Ê²‘şÿÿÿÿ8´é†²¬,
+Csquid:S1068"'Remove this unused "tag" private field.(šàÆ¯8´é†²¬,
+ssquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÕöÕïøÿÿÿÿ8´é†²¬,
+;squid:S1659" Declare "l2" on a separate line.(Ú‚Ò8´é†²¬,
+squid:S1488"`Immediately return this expression instead of assigning it to the temporary variable "finalFoo".(€Ğ»™şÿÿÿÿ8´é†²¬,
+tsquid:S00120"WRename this package name to match the regular expression '^[a-z]+(\.[a-z][a-z0-9]*)*$'.(âà‡¸8´é†²¬,
+Psquid:S1066"/Merge this if statement with the enclosing one.(‰™Êºúÿÿÿÿ8´é†²¬,
+Psquid:S1066"/Merge this if statement with the enclosing one.(ç«¿½øÿÿÿÿ8´é†²¬,
+ssquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(òÑúøÿÿÿÿ8´é†²¬,
+Hsquid:S1612",Replace this lambda with a method reference.(—Ì£©8´é†²¬,
+@squid:S1659"Declare "y" on a separate line.(ÁŸÌŸüÿÿÿÿ8´é†²¬,
+ssquid:S3776"RRefactor this method to reduce its Cognitive Complexity from 22 to the 15 allowed.(‚¼¼üÿÿÿÿ8´é†²¬,

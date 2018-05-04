@@ -1,0 +1,28 @@
+2018/05/02 18:07:42 Server Started
+2018/05/02 18:07:42 
+Server waiting for client on port 6000
+2018/05/02 18:07:49 Client accepted
+2018/05/02 18:07:49 
+Server waiting for client on port 6000
+2018/05/02 18:07:57 Client accepted
+2018/05/02 18:07:57 Number of Client connected:2
+2018/05/02 18:07:57 Client A Added
+2018/05/02 18:07:57 Client B Added
+2018/05/02 18:07:57 Setup Phase started
+2018/05/02 18:07:57 (User:B)Client is out of reach
+	Server.ServerConnectionHandler.chooseWindow(ServerConnectionHandler.java:110)
+	Server.ServerPlayer.initializeWindow(ServerPlayer.java:117)
+	Server.ServerPlayer.run(ServerPlayer.java:42)
+	java.lang.Thread.run(Thread.java:745)
+2018/05/02 18:07:57 User: A Window initialized: resources/vetrate/xml/kaleidoscopic_dream.xml
+2018/05/02 18:07:57 Setup Phase ended
+2018/05/02 18:07:57 Game Phase started
+2018/05/02 18:07:57 Dadiera Mixed
+2018/05/02 18:07:57 Turn of:A
+2018/05/02 18:07:59 Turn of:A
+2018/05/02 18:08:01 Turn of:A
+2018/05/02 18:08:03 Turn of:A
+2018/05/02 18:08:05 Turn of:A
+2018/05/02 18:08:07 Turn of:A
+2018/05/02 18:08:09 Turn of:A
+2018/05/02 18:08:11 Turn of:A

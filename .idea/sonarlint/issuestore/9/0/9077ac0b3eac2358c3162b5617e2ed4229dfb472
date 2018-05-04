@@ -1,0 +1,23 @@
+
+Dsquid:S00108")Either remove or fill this block of code.(±Ÿ—±ÿÿÿÿÿ
+dsquid:S00100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(åıæ
+_squid:S2259"JA "NullPointerException" could be thrown; "serverSocket" is nullable here.(§ˆïó
+_squid:S2259"JA "NullPointerException" could be thrown; "serverSocket" is nullable here.(§ˆïó
+ksquid:S3008"ORename this field "PORT" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÔÀóÙ8ÕŸñ·±,
+|squid:S00115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(áî¤šúÿÿÿÿ8ÁÀğ·±,
+=squid:S1148"#Use a logger to log this exception.(•ÅÁşÿÿÿÿ
+=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ
+L
+squid:S106"9Replace this use of System.out or System.err by a logger.(¨€è.
+8squid:S1148"#Use a logger to log this exception.(Ç’Çê
+R
+squid:S106"9Replace this use of System.out or System.err by a logger.(ÎÇ‘çùÿÿÿÿ
+=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ
+msquid:S00120"WRename this package name to match the regular expression '^[a-z]+(\.[a-z][a-z0-9]*)*$'.(¾©ò¹
+=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ
+usquid:S1450"[Remove the "serverSocket" field and declare it as a local variable in the relevant methods.(“—Ó¿ıÿÿÿÿ
+R
+squid:S106"9Replace this use of System.out or System.err by a logger.(¨¶ÑÍşÿÿÿÿ
+=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ
+Dsquid:S2093"*Change this "try" to a try-with-resources.(¡»¢üùÿÿÿÿ
+8squid:S1148"#Use a logger to log this exception.(Ç’Çê

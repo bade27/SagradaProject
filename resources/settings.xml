@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<server>
+    <hostName>localhost</hostName>
+    <portNumber>6000</portNumber>
+</server>
