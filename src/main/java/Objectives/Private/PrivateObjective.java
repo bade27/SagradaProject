@@ -1,17 +1,17 @@
-package Obbiettivi.Privati;
+package Objectives.Private;
 
 import Model.Window;
 import Model.Cell;
 
 import java.awt.*;
 
-public class ObbiettivoPrivato {
+public class PrivateObjective {
 
     private String nome;
     private String descrizione;
     private Color colore;
 
-    public ObbiettivoPrivato(String nome, String colore, String descrizione) {
+    public PrivateObjective(String nome, String colore, String descrizione) {
         this.nome = nome;
         this.descrizione = descrizione;
         switch (colore) {

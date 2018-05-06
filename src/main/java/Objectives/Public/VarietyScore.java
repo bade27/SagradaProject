@@ -1,4 +1,4 @@
-package Obbiettivi.Pubblici;
+package Objectives.Public;
 
 import Model.Dice;
 import Model.Window;
@@ -8,24 +8,23 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.OptionalInt;
 
-public class PunteggioVarietà implements PunteggioInterface {
+public class VarietyScore implements ScoreInterface {
 
     private String tag;
 
-    public PunteggioVarietà(String tag) {
+    public VarietyScore(String tag) {
         this.tag = tag;
     }
 
     /**
      *
      * @param valore
-     * @param vetrata
+     * @param grid
      * @return *il punteggio totalizzato dal giocatore*
      */
-    public int calcola(int valore, Window vetrata) {
+    public int calcScore(int valore, Cell[][] grid) {
         int[] frequency = tag.equals("color") ? new int[5]
                 : new int[6];
-        Cell[][] grid = vetrata.getGrid();
 
         for (int column = 0; column < grid[0].length; column++) {
             for (int row = 0; row < grid.length; row++) {

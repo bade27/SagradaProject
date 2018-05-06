@@ -1,4 +1,4 @@
-package Obbiettivi.Pubblici;
+package Objectives.Public;
 
 import Model.Cell;
 import Model.Window;
@@ -6,21 +6,21 @@ import Model.Window;
 import java.awt.*;
 import java.util.*;
 
-public class PunteggioDiagonale implements PunteggioInterface {
+public class DiagonalScore implements ScoreInterface {
 
     private String tag;
 
-    public PunteggioDiagonale(String tag) {
+    public DiagonalScore(String tag) {
         this.tag = tag;
     }
 
     /**
      *
      * @param valore
-     * @param vetrata
+     * @param grid
      * @return **il punteggio totalizzato dal giocatore
      */
-    public int calcola(int valore, Window vetrata) {
+    public int calcScore(int valore, Cell[][] grid) {
         //0 red, 1 green, 2 blue, 3 yellow, 4 magenta
         Map<Integer, Color> colors = new HashMap<>();
         colors.put(0, Color.red);
@@ -31,7 +31,6 @@ public class PunteggioDiagonale implements PunteggioInterface {
 
         int points = 0;
 
-        Cell[][] grid = vetrata.getGrid();
         for(int i = 0; i < colors.size(); i++) {
 
             //lista che contiene le liste di celle (adiacenti in diagonale)

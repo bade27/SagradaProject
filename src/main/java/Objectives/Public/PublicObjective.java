@@ -1,16 +1,17 @@
-package Obbiettivi.Pubblici;
+package Objectives.Public;
 
+import Model.Cell;
 import Model.Window;
 
-public class ObbiettivoPubblico {
+public class PublicObjective {
 
     private String nome;
     private String descrizione;
     private int valore;
-    PunteggioInterface punteggio;
+    ScoreInterface punteggio;
 
-    public ObbiettivoPubblico(String nome, String descrizione,
-                              int valore, PunteggioInterface punteggio) {
+    public PublicObjective(String nome, String descrizione,
+                           int valore, ScoreInterface punteggio) {
         this.nome = nome;
         this.descrizione = descrizione;
         this.valore = valore;
@@ -22,8 +23,9 @@ public class ObbiettivoPubblico {
      * @param vetrata
      *@return *restituisce il punteggio (relativo all'obbiettivo) che il giocatore ha totalizzato*
      */
-    public int calcolaPunteggio(Window vetrata) {
-        return punteggio.calcola(valore, vetrata);
+    public int getScore(Window vetrata) {
+        Cell[][] grid = vetrata.getGrid();
+        return punteggio.calcScore(valore, grid);
     }
 
     /**
@@ -40,7 +42,7 @@ public class ObbiettivoPubblico {
 
     public int getValore() {
         //punteggio diagonale non ha un valore predefinito, ma varia da partita a partita
-        return punteggio.getClass().getSimpleName().equals("PunteggioDiagonale") ?
+        return punteggio.getClass().getSimpleName().equals("DiagonalScore") ?
                 0 : valore;
     }
 }

@@ -1,36 +1,51 @@
-package Obbiettivi.Pubblici;
+package Objectives.Public;
 
 import Model.Cell;
 import Model.Dice;
-import Model.Window;
 
 import java.util.HashSet;
 import java.util.Set;
 
-public class PunteggioColonna implements PunteggioInterface {
+public class ColRowScore {
 
     String tag;
+    String pattern;
+    int maxi;
+    int maxj;
 
-    public PunteggioColonna(String tag) {
+    public ColRowScore(String pattern, String tag) {
+        this.pattern = pattern;
         this.tag = tag;
     }
 
     /**
      *
-     * @param valore
-     * @param vetrata
+     * @param value
+     * @param grid
      * @return *il punteggio totalizzato dal giocatore*
      */
-    public int calcola(int valore, Window vetrata) {
+    public int calcScore(int value, Cell[][] grid) {
         int colonne_valide = 0;
         boolean flag;
-        Cell[][] grid = vetrata.getGrid();
+        switch (pattern) {
+            case "row":
+                maxi = 4;
+                maxj = 5;
+                break;
+            case "col" :
+                maxi = 5;
+                maxj = 4;
+                break;
+        }
 
-        for (int column = 0; column < grid[0].length; column++) {
+        for (int i = 0; i < maxi; i++) {
             flag = true;
             Set<Integer> foundElem = new HashSet<>();
-            for (int row = 0; row < grid.length; row++) {
-                Cell current = grid[row][column];
+            for (int j = 0; j < maxj; j++) {
+                Cell current;
+                if(pattern.equals("row"))
+                    current = grid[i][j];
+                else current = grid[j][i];
                 if(current.getFrontDice() != null) {
                     Integer element = getElement(current.getFrontDice());
                     if (foundElem.contains(element)) {
@@ -46,7 +61,7 @@ public class PunteggioColonna implements PunteggioInterface {
             if(flag)
                 colonne_valide++;
         }
-        return valore * colonne_valide;
+        return value * colonne_valide;
     }
 
     /**

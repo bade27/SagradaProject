@@ -1,4 +1,4 @@
-package Obbiettivi.Pubblici;
+package Objectives.Public;
 
 import Model.Cell;
 import Model.Window;
@@ -6,11 +6,11 @@ import Model.Window;
 import java.util.Arrays;
 import java.util.OptionalInt;
 
-public class PunteggioCoppia implements PunteggioInterface {
+public class PairScore implements ScoreInterface {
 
     private int[] couple;
 
-    public PunteggioCoppia(String tag) {
+    public PairScore(String tag) {
         couple = new int[2];
         String[] result = tag.split("\\s");
         couple[0] = Integer.parseInt(result[0]);
@@ -20,12 +20,11 @@ public class PunteggioCoppia implements PunteggioInterface {
     /**
      *
      * @param valore
-     * @param vetrata
+     * @param grid
      * @return *il numero delle coppie trovate moltiplicato per il valore della carta*
      */
-    public int calcola(int valore, Window vetrata) {
+    public int calcScore(int valore, Cell[][] grid) {
         int[] frequency = new int[2];
-        Cell[][] grid = vetrata.getGrid();
 
         for (int column = 0; column < grid[0].length; column++) {
             for (int row = 0; row < grid.length; row++) {
