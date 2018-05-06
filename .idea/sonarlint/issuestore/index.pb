@@ -1,6 +1,8 @@
 
 g
 7src/main/java/Obbiettivi/Privati/ObbiettivoPrivato.java,4/6/4629923439492323eaab6879013fb51d6d637be7
+T
+$src/main/java/Test/Model/Window.java,8/4/8465474fd7f9e3d3d1c1d554927b285a814660c1
 i
 9src/main/java/Obbiettivi/Pubblici/PunteggioInterface.java,9/d/9d6aff8ab1b0a8c1194a2193d908dedd80fc7976
 f
@@ -21,3 +23,21 @@ d
 pom.xml,4/4/442292b8a7efeabbe4cc176709b833b1792140ec
 G
 SagradaProject_LM18.iml,b/0/b0aafcb29a40dede63b2b89dcd8683d97366b469
+U
+%src/main/java/Test/Model/DiceBag.java,2/5/25e23c30b81560ef1b641c250859865d402d755a
+[
++src/main/java/Test/Server/MatchHandler.java,5/f/5f4aa9bcbddc01b6dd1bb1141909ee096564d342
+[
++src/main/java/Test/Server/ServerPlayer.java,d/7/d793e5d88ed9cd6af699b3ba6e1726a70caf80d2
+a
+1src/main/java/Test/Client/ClientModelAdapter.java,3/5/35ba1dd46de45865e961637b458d139658c617b0
+e
+5src/main/java/Test/Client/NotEnoughDiceException.java,5/a/5aba0f144b31c53e746d95d94c3e5992f4d24c36
+Y
+)src/test/java/Test/Model/DiceBagTest.java,0/a/0a84d9ebb68ecbb5fda040ed68d8ba6090d4aa9c
+R
+"src/main/java/Test/Model/Dice.java,c/3/c3bdf42c3103d8e6e56feccc1f1eb32c4ce20547
+W
+'src/main/java/Test/Model/Placement.java,4/2/424235a155debd8eef5e431737562d668308c093
+V
+&src/test/java/Test/Model/DiceTest.java,c/3/c32760bd68c804eff1d7a1cf044b7e0e767dd814

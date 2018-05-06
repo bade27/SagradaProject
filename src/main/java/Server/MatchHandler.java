@@ -84,7 +84,7 @@ public class MatchHandler implements Runnable
         {
             tok = new TokenTurn();
             dices = new Dadiera();
-            ArrayList possibleUsrs = initializPossibleUsers();
+            ArrayList possibleUsrs = initializePossibleUsers();
             //Per ogni giocatore initzializza la comunicazione attendendo che qualche client si connetta
             for (int i =0 ;i< MAXGIOC;i ++)
             {
@@ -102,12 +102,12 @@ public class MatchHandler implements Runnable
                 //  i = i-n;
             }
             LogFile.addLog("Number of Client connected:" + nConn);
+            tok.setInitNumberOfPlayers(nConn);
             for (int i = 0; i <nConn ; i++)
             {
-                tok.addPlayer(player.get(i).getUser());
-                LogFile.addLog("Client " + player.get(i).getUser() + " Added");
                 Thread t = new Thread(player.get(i));
                 t.start();
+                LogFile.addLog("Thread ServerPlayer " + i + " Started");
             }
         }
         catch (Exception e) {
@@ -238,7 +238,7 @@ public class MatchHandler implements Runnable
      * To modify in reading from XML or DB possible users
      * @return
      */
-    private ArrayList initializPossibleUsers ()
+    private ArrayList initializePossibleUsers ()
     {
         ArrayList<String> arr = new ArrayList();
         arr.add("A");
@@ -254,7 +254,7 @@ public class MatchHandler implements Runnable
      */
     private synchronized void waitInitialition ()
     {
-        //Partenza della fase di inizializzazione
+        //Signal to start setup phase
         tok.startSetup();
 
         synchronized (tok)
@@ -262,11 +262,11 @@ public class MatchHandler implements Runnable
             try
             {
                 LogFile.addLog("Setup Phase started");
-                //Sveglia tutti i client in attesa di inizializzarsi
+                //Wake Up all ServerPlayers to start setup phase
                 tok.notifyAll();
-                //Attende che tutti i client siano inizializzati
-                for (int i = 0; i < nConn ; i++)
-                    if (tok.getOnSetup())
+
+                //Wait until end setup phase
+                while (tok.getOnSetup())
                         tok.wait();
                 LogFile.addLog("Setup Phase ended");
             }
