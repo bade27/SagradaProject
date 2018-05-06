@@ -2,51 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="008348eb-67b9-401c-8bd6-79cafa4f8e65" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/0/a/0a84d9ebb68ecbb5fda040ed68d8ba6090d4aa9c" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/2/5/25e23c30b81560ef1b641c250859865d402d755a" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/3/4/34e28794cdff8320e1abda807e4354bf4e373df7" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/3/5/35ba1dd46de45865e961637b458d139658c617b0" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/4/2/424235a155debd8eef5e431737562d668308c093" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/4/6/4629923439492323eaab6879013fb51d6d637be7" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/4/a/4a7b4daa957c0c3daf37710be440df0084ccf0d8" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/5/3/53b22a904048a4e15d2444a9614226324ffb82c4" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/5/a/5aba0f144b31c53e746d95d94c3e5992f4d24c36" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/5/f/5f4aa9bcbddc01b6dd1bb1141909ee096564d342" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/7/d/7de3ddae85c1ed8fcc9521e54ad922741cf7e0a8" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/8/4/8465474fd7f9e3d3d1c1d554927b285a814660c1" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/8/e/8eed7d6fb0a5924ea4dc90be75b558a59da6477f" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/9/d/9d6aff8ab1b0a8c1194a2193d908dedd80fc7976" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/a/b/ab9562750cc70771531bacb3e7064ae960a38771" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/c/3/c32760bd68c804eff1d7a1cf044b7e0e767dd814" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/c/3/c3bdf42c3103d8e6e56feccc1f1eb32c4ce20547" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/d/7/d793e5d88ed9cd6af699b3ba6e1726a70caf80d2" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/f/3/f3eb081bb795701314301d0be3cdd024343bddce" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Obbiettivi/ObbiettiviFactory.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Obbiettivi/Privati/ObbiettivoPrivato.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Obbiettivi/Pubblici/ObbiettivoPubblico.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Obbiettivi/Pubblici/PunteggioColonna.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Obbiettivi/Pubblici/PunteggioCoppia.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Obbiettivi/Pubblici/PunteggioDiagonale$Coppia.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Obbiettivi/Pubblici/PunteggioDiagonale.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Obbiettivi/Pubblici/PunteggioInterface.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Obbiettivi/Pubblici/PunteggioRiga.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Obbiettivi/Pubblici/PunteggioVarietà.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/Obbiettivi/Pubblici/tmp/ColRowScore.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/test-classes/Obbiettivi/Pubblici/tmp/ColRowScoreTest.class" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/3/8/38a0bd7642d098274e9a23cfde9bf4f2abdebe76" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/3/8/38a0bd7642d098274e9a23cfde9bf4f2abdebe76" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/8/6/8613f4ef796f2f1ffc2ea078aa25c0d55852b9c7" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/8/6/8613f4ef796f2f1ffc2ea078aa25c0d55852b9c7" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/9/0/9077ac0b3eac2358c3162b5617e2ed4229dfb472" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/9/0/9077ac0b3eac2358c3162b5617e2ed4229dfb472" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/e/6/e6522fdeaba92a9604f205b8c3012c4b5ce5e8ed" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/e/6/e6522fdeaba92a9604f205b8c3012c4b5ce5e8ed" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/f/e/fec662d791c56a7a5e74e88ab5941a5f913afca9" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/f/e/fec662d791c56a7a5e74e88ab5941a5f913afca9" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/Server/MatchHandler.class" afterPath="$PROJECT_DIR$/target/classes/Server/MatchHandler.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/Server/ServerPlayer.class" afterPath="$PROJECT_DIR$/target/classes/Server/ServerPlayer.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/Server/TokenTurn.class" afterPath="$PROJECT_DIR$/target/classes/Server/TokenTurn.class" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/target/test-classes/Objectives/Public/PairScoreTest.class" afterPath="" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/src/test/java/Objectives/Public/PairScoreTest.java" afterPath="$PROJECT_DIR$/src/test/java/Objectives/Public/CoordinatesScoreTest.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LogFile.log" afterPath="$PROJECT_DIR$/LogFile.log" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/Objectives/ObjectivesFactory.java" afterPath="$PROJECT_DIR$/src/main/java/Objectives/ObjectivesFactory.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/Objectives/Public/ColRowScore.java" afterPath="$PROJECT_DIR$/src/main/java/Objectives/Public/ColRowScore.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/test/java/Objectives/Public/PairScoreTest.java" afterPath="$PROJECT_DIR$/src/test/java/Objectives/Public/PairScoreTest.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -59,75 +17,28 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="ColRowScoreTest.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/Objectives/Public/ColRowScoreTest.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="11" column="6" lean-forward="false" selection-start-line="11" selection-start-column="6" selection-end-line="11" selection-end-column="6" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PairScore.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="PairScore.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/Objectives/Public/PairScore.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+            <state relative-caret-position="391">
+              <caret line="27" column="0" lean-forward="false" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PairScoreTest.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/test/java/Objectives/Public/PairScoreTest.java">
+      <file leaf-file-name="CoordinatesScoreTest.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/test/java/Objectives/Public/CoordinatesScoreTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="224">
-              <caret line="74" column="41" lean-forward="false" selection-start-line="74" selection-start-column="41" selection-end-line="74" selection-end-column="41" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ServerPlayer.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Server/ServerPlayer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1122">
-              <caret line="66" column="37" lean-forward="false" selection-start-line="66" selection-start-column="37" selection-end-line="66" selection-end-column="37" />
+            <state relative-caret-position="-142">
+              <caret line="91" column="34" lean-forward="false" selection-start-line="91" selection-start-column="34" selection-end-line="91" selection-end-column="34" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="method#initializeComunication#0;class#ServerPlayer#0" expanded="false" />
-                <element signature="method#login#0;class#ServerPlayer#0" expanded="false" />
-                <element signature="method#initializeWindow#0;class#ServerPlayer#0" expanded="false" />
-                <element signature="method#setWindowCards#0;class#ServerPlayer#0" expanded="false" />
-                <element signature="e#5315#5316#0" expanded="true" />
-                <element signature="e#5348#5349#0" expanded="true" />
-                <element signature="e#5400#5401#0" expanded="true" />
-                <element signature="e#5434#5435#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TokenTurn.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Server/TokenTurn.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2261">
-              <caret line="170" column="23" lean-forward="false" selection-start-line="170" selection-start-column="23" selection-end-line="170" selection-end-column="23" />
-              <folding>
-                <element signature="method#toString#0;class#TokenTurn#0" expanded="false" />
-                <element signature="class#Player#0;class#TokenTurn#0" expanded="false" />
-                <element signature="method#Player#0;class#Player#0;class#TokenTurn#0" expanded="false" />
-                <element signature="e#3713#3714#0" expanded="true" />
-                <element signature="e#3745#3746#0" expanded="true" />
-                <element signature="e#3780#3781#0" expanded="true" />
-                <element signature="e#3815#3816#0" expanded="true" />
-                <element signature="e#3849#3850#0" expanded="true" />
-                <element signature="e#3884#3885#0" expanded="true" />
-                <element signature="e#4024#4025#0" expanded="true" />
-                <element signature="e#4062#4063#0" expanded="true" />
-                <element signature="method#startSetup#0;class#TokenTurn#0" expanded="false" />
-                <element signature="method#endSetup#0;class#TokenTurn#0" expanded="false" />
+                <element signature="class#Coordinates#0;class#CoordinatesScoreTest#0" expanded="false" />
+                <element signature="e#3496#3497#0" expanded="true" />
+                <element signature="e#3528#3529#0" expanded="true" />
+                <element signature="e#3557#3558#0" expanded="true" />
+                <element signature="e#3589#3590#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -182,8 +93,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/Test/Model/Cell.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Test/Client/CellGraphic.java" />
         <option value="$PROJECT_DIR$/src/main/java/Test/Server/MatchHandler.java" />
         <option value="$PROJECT_DIR$/src/main/java/Test/Server/ServerPlayer.java" />
         <option value="$PROJECT_DIR$/resources/vetrate/xml/windows_list.xml" />
@@ -233,6 +142,8 @@
         <option value="$PROJECT_DIR$/src/main/java/Server/ServerPlayer.java" />
         <option value="$PROJECT_DIR$/src/main/java/Server/MatchHandler.java" />
         <option value="$PROJECT_DIR$/src/test/java/Objectives/Public/PairScoreTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Objectives/Public/PairScore.java" />
+        <option value="$PROJECT_DIR$/src/test/java/Objectives/Public/CoordinatesScoreTest.java" />
       </list>
     </option>
   </component>
@@ -303,6 +214,23 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="Client" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SagradaProject" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SagradaProject" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="Objectives" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SagradaProject" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SagradaProject" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="Objectives" type="462c0819:PsiDirectoryNode" />
+              <item name="Public" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="SagradaProject" type="b2602c69:ProjectViewProjectNode" />
@@ -506,7 +434,7 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <option name="PACKAGE_NAME" value="Objectives.Public" />
-      <option name="MAIN_CLASS_NAME" value="Objectives.Public.PairScoreTest" />
+      <option name="MAIN_CLASS_NAME" value="Objectives.Public.CoordinatesScoreTest" />
       <option name="METHOD_NAME" value="" />
       <option name="TEST_OBJECT" value="class" />
       <option name="VM_PARAMETERS" value="-ea" />
@@ -697,35 +625,35 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="ColRowScoreTest - 2018.05.06 at 18h 30m 03s.xml">
-      <configuration name="ColRowScoreTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="PairScoreTest - 2018.05.06 at 18h 31m 13s.xml">
+    <history-entry file="PairScoreTest - 2018.05.06 at 20h 29m 45s.xml">
       <configuration name="PairScoreTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="PairScoreTest - 2018.05.06 at 18h 39m 38s.xml">
+    <history-entry file="PairScoreTest - 2018.05.06 at 20h 31m 09s.xml">
       <configuration name="PairScoreTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="PairScoreTest - 2018.05.06 at 18h 41m 00s.xml">
+    <history-entry file="PairScoreTest - 2018.05.06 at 20h 31m 40s.xml">
       <configuration name="PairScoreTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="PairScoreTest - 2018.05.06 at 18h 47m 31s.xml">
+    <history-entry file="PairScoreTest - 2018.05.06 at 20h 34m 55s.xml">
       <configuration name="PairScoreTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="PairScoreTest - 2018.05.06 at 18h 48m 05s.xml">
+    <history-entry file="PairScoreTest - 2018.05.06 at 20h 38m 49s.xml">
       <configuration name="PairScoreTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="TokenTurnTest - 2018.04.30 at 17h 15m 40s.xml">
-      <configuration name="TokenTurnTest" configurationId="JUnit" />
+    <history-entry file="PairScoreTest - 2018.05.06 at 20h 39m 18s.xml">
+      <configuration name="PairScoreTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="TokenTurnTest - 2018.05.01 at 14h 27m 27s.xml">
-      <configuration name="TokenTurnTest" configurationId="JUnit" />
+    <history-entry file="PairScoreTest - 2018.05.06 at 20h 41m 29s.xml">
+      <configuration name="PairScoreTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="TokenTurnTest - 2018.05.01 at 14h 27m 53s.xml">
-      <configuration name="TokenTurnTest" configurationId="JUnit" />
+    <history-entry file="PairScoreTest - 2018.05.06 at 20h 41m 47s.xml">
+      <configuration name="PairScoreTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="TokenTurnTest - 2018.05.02 at 12h 33m 42s.xml">
-      <configuration name="TokenTurnTest" configurationId="JUnit" />
+    <history-entry file="PairScoreTest - 2018.05.06 at 20h 45m 13s.xml">
+      <configuration name="PairScoreTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="PairScoreTest - 2018.05.06 at 20h 48m 25s.xml">
+      <configuration name="PairScoreTest" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
@@ -737,7 +665,7 @@
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32913387" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3277592" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -755,7 +683,7 @@
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37254903" sideWeight="0.4924357" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37123746" sideWeight="0.4924357" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -819,7 +747,7 @@
           <option name="timeStamp" value="11" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="36" />
+      <option name="time" value="37" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -1006,15 +934,15 @@
         <state relative-caret-position="1122">
           <caret line="66" column="37" lean-forward="false" selection-start-line="66" selection-start-column="37" selection-end-line="66" selection-end-column="37" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
             <element signature="method#initializeComunication#0;class#ServerPlayer#0" expanded="false" />
             <element signature="method#login#0;class#ServerPlayer#0" expanded="false" />
             <element signature="method#initializeWindow#0;class#ServerPlayer#0" expanded="false" />
             <element signature="method#setWindowCards#0;class#ServerPlayer#0" expanded="false" />
-            <element signature="e#5315#5316#0" expanded="true" />
-            <element signature="e#5348#5349#0" expanded="true" />
-            <element signature="e#5400#5401#0" expanded="true" />
-            <element signature="e#5434#5435#0" expanded="true" />
+            <element signature="e#5315#5316#0" expanded="false" />
+            <element signature="e#5348#5349#0" expanded="false" />
+            <element signature="e#5400#5401#0" expanded="false" />
+            <element signature="e#5434#5435#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1027,14 +955,14 @@
             <element signature="method#toString#0;class#TokenTurn#0" expanded="false" />
             <element signature="class#Player#0;class#TokenTurn#0" expanded="false" />
             <element signature="method#Player#0;class#Player#0;class#TokenTurn#0" expanded="false" />
-            <element signature="e#3713#3714#0" expanded="true" />
-            <element signature="e#3745#3746#0" expanded="true" />
-            <element signature="e#3780#3781#0" expanded="true" />
-            <element signature="e#3815#3816#0" expanded="true" />
-            <element signature="e#3849#3850#0" expanded="true" />
-            <element signature="e#3884#3885#0" expanded="true" />
-            <element signature="e#4024#4025#0" expanded="true" />
-            <element signature="e#4062#4063#0" expanded="true" />
+            <element signature="e#3713#3714#0" expanded="false" />
+            <element signature="e#3745#3746#0" expanded="false" />
+            <element signature="e#3780#3781#0" expanded="false" />
+            <element signature="e#3815#3816#0" expanded="false" />
+            <element signature="e#3849#3850#0" expanded="false" />
+            <element signature="e#3884#3885#0" expanded="false" />
+            <element signature="e#4024#4025#0" expanded="false" />
+            <element signature="e#4062#4063#0" expanded="false" />
             <element signature="method#startSetup#0;class#TokenTurn#0" expanded="false" />
             <element signature="method#endSetup#0;class#TokenTurn#0" expanded="false" />
           </folding>
@@ -1056,25 +984,32 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/Objectives/Public/ColRowScoreTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
+        <state relative-caret-position="-1615">
           <caret line="11" column="6" lean-forward="false" selection-start-line="11" selection-start-column="6" selection-end-line="11" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/Objectives/Public/PairScoreTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="224">
-          <caret line="74" column="41" lean-forward="false" selection-start-line="74" selection-start-column="41" selection-end-line="74" selection-end-column="41" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Objectives/Public/PairScore.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+        <state relative-caret-position="391">
+          <caret line="27" column="0" lean-forward="false" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/Objectives/Public/CoordinatesScoreTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-142">
+          <caret line="91" column="34" lean-forward="false" selection-start-line="91" selection-start-column="34" selection-end-line="91" selection-end-column="34" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="class#Coordinates#0;class#CoordinatesScoreTest#0" expanded="false" />
+            <element signature="e#3496#3497#0" expanded="true" />
+            <element signature="e#3528#3529#0" expanded="true" />
+            <element signature="e#3557#3558#0" expanded="true" />
+            <element signature="e#3589#3590#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
