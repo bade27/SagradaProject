@@ -51,9 +51,9 @@ public class ObjectivesFactory {
 
             switch (patterns) {
                 case "row":
-                    return new PublicObjective(name, description, value, new PunteggioRiga(tag));
+                    return new PublicObjective(name, description, value, new ColRowScore(patterns, tag));
                 case "col":
-                    return new PublicObjective(name, description, value, new PunteggioColonna(tag));
+                    return new PublicObjective(name, description, value, new ColRowScore(patterns, tag));
                 case "pair":
                     return new PublicObjective(name, description, value, new PairScore(tag));
                 case "var":

@@ -19,14 +19,13 @@ class PairScoreTest {
     static int rows;
     static int cols;
     static int value;
-    static PairScore score;
 
     @org.junit.jupiter.api.BeforeAll
     static void setup() {
         rows = 4;
         cols = 5;
         value = 5;
-        score = new PairScore("pair");
+
     }
 
     @org.junit.jupiter.api.BeforeEach
@@ -40,31 +39,40 @@ class PairScoreTest {
     @Test
     void calcScoreEven() {
 
-        boolean rightScore = false;
-        for(int p = 0; p < 6; p++) {
-
-            int numCells = 0;
-            do {
-                numCells = new Random().nextInt(rows * cols);
-            } while ((numCells % 2) != 0);
-
-            HashSet<Integer> cells = new HashSet<>();
-            for (int i = 0; i < numCells; i++) {
-                int n = new Random().nextInt(rows * cols);
-                cells.add(n);
-            }
-
-            for (int i = 0, cont = 0; i < rows; i++) {
-                for (int j = 0; j < cols; j++) {
-                    if (cells.contains(cont))
-                        grid[i][j].setDice(new Dice((p + 1), Color.green));
-                    else grid[i][j].setDice(new Dice(p, Color.green));
-                    cont++;
-                }
-            }
-
-
+        int[] pair = new int[2];
+        int first = -1;
+        boolean validPair = false;
+        while(first == 2 && first == 4) {
+            first = new Random().nextInt(5) + 1;
         }
+        pair[0] = first;
+        pair[1] = first + 1 ;
+
+        PairScore score = new PairScore(pair[0] + " " + pair[1]);
+
+        int numCells = 0;
+        do {
+            numCells = new Random().nextInt(rows * cols);
+        } while ((numCells % 2) != 0);
+
+        HashSet<Integer> cells = new HashSet<>();
+        for (int i = 0; i < numCells; i++) {
+            int n = new Random().nextInt(rows * cols);
+            cells.add(n);
+        }
+
+        for (int i = 0, cont = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                if (cells.contains(cont))
+                    if(cont % 2 == 0) {
+                        grid[i][j].setDice(new Dice(pair[0], Color.green));
+                    } else grid[i][j].setDice(new Dice(pair[1], Color.green));
+                else grid[i][j].setDice(new Dice(7, Color.green));
+                cont++;
+            }
+        }
+
+        assertEquals(value * numCells / 2, score.calcScore(value, grid));
 
     }
 

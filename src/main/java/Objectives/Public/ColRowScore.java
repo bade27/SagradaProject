@@ -6,7 +6,7 @@ import Model.Dice;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ColRowScore {
+public class ColRowScore implements ScoreInterface {
 
     String tag;
     String pattern;

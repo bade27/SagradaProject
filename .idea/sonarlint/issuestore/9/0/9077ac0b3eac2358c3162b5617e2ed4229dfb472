@@ -1,23 +1,31 @@
 
-Dsquid:S00108")Either remove or fill this block of code.(±Ÿ—±ÿÿÿÿÿ
-dsquid:S00100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(åıæ
 _squid:S2259"JA "NullPointerException" could be thrown; "serverSocket" is nullable here.(§ˆïó
-_squid:S2259"JA "NullPointerException" could be thrown; "serverSocket" is nullable here.(§ˆïó
+Vsquid:S1141"5Extract this nested try block into a separate method.(¡»¢üùÿÿÿÿ8é´ ¥³,
+=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ
 ksquid:S3008"ORename this field "PORT" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÔÀóÙ8ÕŸñ·±,
-|squid:S00115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(áî¤šúÿÿÿÿ8ÁÀğ·±,
-=squid:S1148"#Use a logger to log this exception.(•ÅÁşÿÿÿÿ
-=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ
-L
-squid:S106"9Replace this use of System.out or System.err by a logger.(¨€è.
-8squid:S1148"#Use a logger to log this exception.(Ç’Çê
-R
-squid:S106"9Replace this use of System.out or System.err by a logger.(ÎÇ‘çùÿÿÿÿ
-=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ
-msquid:S00120"WRename this package name to match the regular expression '^[a-z]+(\.[a-z][a-z0-9]*)*$'.(¾©ò¹
-=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ
-usquid:S1450"[Remove the "serverSocket" field and declare it as a local variable in the relevant methods.(“—Ó¿ıÿÿÿÿ
-R
-squid:S106"9Replace this use of System.out or System.err by a logger.(¨¶ÑÍşÿÿÿÿ
-=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ
+lsquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(ƒŸö ıÿÿÿÿ8Í¸è¤³,
+Gsquid:S1068"+Remove this unused "isAlive" private field.(ÛË‰ß8®ÓŒ¥³,
+Dsquid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8é´ ¥³,
+Lsquid:S1068"0Remove this unused "PING_TIMEOUT" private field.(Ãû¡8Õê¥³,
 Dsquid:S2093"*Change this "try" to a try-with-resources.(¡»¢üùÿÿÿÿ
+msquid:S00120"WRename this package name to match the regular expression '^[a-z]+(\.[a-z][a-z0-9]*)*$'.(¾©ò¹
+?squid:S1148"#Use a logger to log this exception.(Ç’Çê8é´ ¥³,
+Vsquid:S1141"5Extract this nested try block into a separate method.(¡»¢üùÿÿÿÿ8é´ ¥³,
+=squid:S1170"!Make this final field static too.(æ¡µ8®ÓŒ¥³,
+Dsquid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8é´ ¥³,
+=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ
+=squid:S1170"!Make this final field static too.(Ãû¡8®ÓŒ¥³,
+_squid:S2259"JA "NullPointerException" could be thrown; "serverSocket" is nullable here.(§ˆïó
+Fsquid:S00108")Either remove or fill this block of code.(±•å•8“Œã¤³,
+gsquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(Ãí¾˜8Õê¥³,
+ksquid:S00100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ºÉ”á8“Œã¤³,
+tsquid:S00116"WRename this field "PING_TIMEOUT" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ãû¡8®ÓŒ¥³,
+|squid:S00115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(áî¤šúÿÿÿÿ8ÁÀğ·±,
 8squid:S1148"#Use a logger to log this exception.(Ç’Çê
+usquid:S1450"[Remove the "serverSocket" field and declare it as a local variable in the relevant methods.(“—Ó¿ıÿÿÿÿ
+vsquid:S00116"YRename this field "ACTION_TIMEOUT" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(æ¡µ8®ÓŒ¥³,
+S
+squid:S106"9Replace this use of System.out or System.err by a logger.(¨€è.8é´ ¥³,
+³%squid:RedundantThrowsDeclarationCheck"}Remove the declaration of thrown exception 'Exceptions.ClientOutOfReachException', as it cannot be thrown from method's body.(ºÉ”á8Í¸è¤³,
+Nsquid:S1068"2Remove this unused "ACTION_TIMEOUT" private field.(æ¡µ8®ÓŒ¥³,
+lsquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(—é¦åûÿÿÿÿ8Ş„¥³,
