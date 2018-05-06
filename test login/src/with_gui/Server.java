@@ -60,9 +60,9 @@ public class Server {
 
         System.out.println("ok, let's get started");
         int deads = 0;
-        /*for(int i = 0; i < 12 && deads < 3; i++) {
+        for(int i = 0; i < 1 /*12 && deads < 3*/; i++) {
             Handler hd = h[globalTurn];
-            if(hd.isAlive()) {
+            /*if(hd.isAlive()) {
                 System.out.println("turno di " + globalTurn);
                 System.out.println(hd.login());
                 nextTurn();
@@ -70,10 +70,11 @@ public class Server {
                 System.out.println("player " + globalTurn + " is dead");
                 deads++;
                 globalTurn = (globalTurn + 1) % 3;
-            }
-        }*/
-
-        while(true) System.out.println(h[0].login());
+            }*/
+            String s = h[i].login();
+            if(s != null)
+                System.out.println(s);
+        }
 
     }
 
