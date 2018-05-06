@@ -6,7 +6,7 @@ import Utilities.LogFile;
 
 import java.util.ArrayList;
 
-public class ServerPlayer implements Runnable
+public class ServerPlayer extends Thread
 {
     private ServerConnectionHandler com;
     private TokenTurn token;
@@ -64,6 +64,7 @@ public class ServerPlayer implements Runnable
         catch (InterruptedException ex) {
             System.out.println(ex.getMessage());
             LogFile.addLog(ex.getStackTrace().toString());
+            token.notifyFatalError();
             return;
         }
 
@@ -91,6 +92,7 @@ public class ServerPlayer implements Runnable
                 {
                     System.out.println(ex.getMessage());
                     LogFile.addLog(ex.getStackTrace().toString());
+                    token.notifyFatalError();
                     return;
                 }
 

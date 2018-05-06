@@ -45,11 +45,10 @@ public class MatchHandler implements Runnable
         {
             synchronized (tok)
             {
-                /*if (tok.getNumPlayers() < 2)
-                {
-                    System.out.println(">>>Game finished");
-                    LogFile.addLog("Game finished");
-                }*/
+                if (tok.isFatalError())
+                    closeAllConnection();
+
+
                 if (tok.isEndRound())
                 {
                     dices.mix(tok.getNumPlayers());
@@ -66,6 +65,7 @@ public class MatchHandler implements Runnable
                 {
                     System.out.println(ex.getMessage());
                     ex.printStackTrace();
+                    closeAllConnection();
                 }
             }
         }
@@ -111,8 +111,8 @@ public class MatchHandler implements Runnable
             }
         }
         catch (Exception e) {
-            System.out.println("Exception: "+e);
             LogFile.addLog("",e.getStackTrace());
+            closeAllConnection();
             e.printStackTrace();
         }
     }
@@ -272,9 +272,19 @@ public class MatchHandler implements Runnable
             }
             catch (InterruptedException ex) {
                 LogFile.addLog("" , ex.getStackTrace());
+                closeAllConnection();
             }
         }
+    }
 
+    private void closeAllConnection ()
+    {
+        for (int i = 0; i < player.size() ; i++)
+        {
+            player.get(i).interrupt();
+            player.get(i).closeComunication();
+        }
+        LogFile.addLog("All connections are forced to stop");
     }
 
 

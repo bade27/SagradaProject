@@ -16,6 +16,9 @@ public class TokenTurn
     private int playerEndSetup;
     private int initNumberOfPlayers;
 
+    //ControlMatch
+    private boolean fatalError;
+
     public TokenTurn ()
     {
         currentTurn = 0;
@@ -23,6 +26,7 @@ public class TokenTurn
         onSetup = false;
         players = new ArrayList<>();
         initNumberOfPlayers = 0;
+        fatalError = false;
     }
 
     public synchronized boolean isMyTurn (String s)
@@ -159,7 +163,13 @@ public class TokenTurn
         }
     }
 
+    public synchronized boolean isFatalError() {
+        return fatalError;
+    }
 
+    public synchronized void notifyFatalError() {
+        this.fatalError = true;
+    }
 
 
     //////SETUP PHASE//////

@@ -1,31 +1,31 @@
-2018/05/06 13:31:30 Server Started
-2018/05/06 13:31:30 
+2018/05/06 15:23:53 Server Started
+2018/05/06 15:23:53 
 Server waiting for client on port 6000
-2018/05/06 13:31:35 Client accepted
-2018/05/06 13:31:35 
+2018/05/06 15:23:57 Client accepted
+2018/05/06 15:23:57 
 Server waiting for client on port 6000
-2018/05/06 13:31:38 Client accepted
-2018/05/06 13:31:38 Number of Client connected:2
-2018/05/06 13:31:38 Thread ServerPlayer 0 Started
-2018/05/06 13:31:38 Thread ServerPlayer 1 Started
-2018/05/06 13:31:38 Setup Phase started
-2018/05/06 13:31:40 User: A Added
-2018/05/06 13:31:40 User: A Window initialized: resources/vetrate/xml/kaleidoscopic_dream.xml
-2018/05/06 13:31:43 User: B Added
-2018/05/06 13:31:43 (User:B)Client is out of reach
-	Server.ServerConnectionHandler.chooseWindow(ServerConnectionHandler.java:173)
-	Server.ServerPlayer.initializeWindow(ServerPlayer.java:141)
-	Server.ServerPlayer.run(ServerPlayer.java:49)
-	java.lang.Thread.run(Thread.java:745)
-2018/05/06 13:31:43 Setup Phase ended
-2018/05/06 13:31:43 Game Phase started
-2018/05/06 13:31:43 Dadiera Mixed
-2018/05/06 13:31:43 Turn of:A
-2018/05/06 13:31:45 Turn of:A
-2018/05/06 13:31:47 Turn of:A
-2018/05/06 13:31:49 Turn of:A
-2018/05/06 13:31:51 Turn of:A
-2018/05/06 13:31:53 Turn of:A
-2018/05/06 13:31:55 Turn of:A
-2018/05/06 13:31:57 Turn of:A
-2018/05/06 13:31:59 Turn of:A
+2018/05/06 15:23:58 Client accepted
+2018/05/06 15:23:58 Number of Client connected:2
+2018/05/06 15:23:58 Thread ServerPlayer 0 Started
+2018/05/06 15:23:58 Thread ServerPlayer 1 Started
+2018/05/06 15:23:58 Setup Phase started
+2018/05/06 15:24:01 User: C Added
+2018/05/06 15:24:01 User: C Window initialized: resources/vetrate/xml/kaleidoscopic_dream.xml
+2018/05/06 15:24:06 User: D Added
+2018/05/06 15:24:06 User: D Window initialized: resources/vetrate/xml/aurorae_magnificus.xml
+2018/05/06 15:24:06 Setup Phase ended
+2018/05/06 15:24:06 Game Phase started
+2018/05/06 15:24:06 Dadiera Mixed
+2018/05/06 15:24:06 Turn of:C
+2018/05/06 15:24:08 Turn of:D
+2018/05/06 15:24:10 Turn of:D
+2018/05/06 15:24:12 Turn of:C
+2018/05/06 15:24:14 Dadiera Mixed
+2018/05/06 15:24:14 Turn of:D
+2018/05/06 15:24:16 Turn of:C
+2018/05/06 15:24:18 Turn of:C
+2018/05/06 15:24:20 Turn of:D
+2018/05/06 15:24:22 Dadiera Mixed
+2018/05/06 15:24:22 Turn of:C
+2018/05/06 15:24:24 Turn of:D
+2018/05/06 15:24:26 Turn of:D
