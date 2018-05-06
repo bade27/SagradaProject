@@ -1,25 +1,0 @@
-
-lsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(å‹¯ùÿÿÿÿ
-gsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(œÂÿ®
-Esquid:S1659"+Declare "num_of_yellow" on a separate line.(å‹¯ùÿÿÿÿ
-Csquid:S1659")Declare "num_of_blue" on a separate line.(å‹¯ùÿÿÿÿ
-Fsquid:S1612",Replace this lambda with a method reference.(ˆ–­öøÿÿÿÿ
-lsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(å‹¯ùÿÿÿÿ
-=squid:S1643"Use a StringBuilder instead.(²ÌÜıÿÿÿÿ8˜ñş“°,
-Šsquid:S1319"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(ç©²‘ûÿÿÿÿ
-?squid:S1659"*Declare "num_of_green" on a separate line.(œÂÿ®
-Xsquid:UnusedPrivateMethod"5Remove this unused private "checkConstructor" method.(„óÜ¿
-gsquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(¿İÉ°8±Åœ“°,
-Ysquid:UnusedPrivateMethod"1Remove this unused private "checkNumDice" method.(®À›úÿÿÿÿ
-8squid:S1643"Use a StringBuilder instead.(í™Æ±8‚üü“°,
-osquid:S00116"TRename this field "N_OF_DICE" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(²¢®•øÿÿÿÿ
-;squid:S1170"!Make this final field static too.(²¢®•øÿÿÿÿ
-rsquid:S00120"WRename this package name to match the regular expression '^[a-z]+(\.[a-z][a-z0-9]*)*$'.(‡äÿ¥ûÿÿÿÿ
-lsquid:S3776"RRefactor this method to reduce its Cognitive Complexity from 23 to the 15 allowed.(şñÊëÿÿÿÿÿ
-gsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(œÂÿ®
-5squid:S1170"!Make this final field static too.(¶´D
-nsquid:S00116"YRename this field "DICE_PER_COLOR" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¶´D
-Asquid:S1659",Declare "num_of_magenta" on a separate line.(Å°İ‘
-d squid:LabelsShouldNotBeUsedCheck";Refactor the code to remove this label and the need for it.(Ù•¡#
-esquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(ÅÔ¢Äúÿÿÿÿ
-gsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Å°İ‘

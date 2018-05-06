@@ -78,6 +78,9 @@ public class ClientConnectionHandler implements Runnable {
                     case "login":
                         login();
                         continue;
+                    case "close":
+                        close();
+                        continue;
                     default:
                         return;
                 }
@@ -137,6 +140,7 @@ public class ClientConnectionHandler implements Runnable {
     }
 
     private void close() {
+        outSocket.println("ok");
         try {
             socket.close();
         } catch(Exception e) {
