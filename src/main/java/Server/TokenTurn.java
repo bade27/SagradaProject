@@ -14,6 +14,10 @@ public class TokenTurn
     //Setup Phase
     private boolean onSetup;
     private int playerEndSetup;
+    private int initNumberOfPlayers;
+
+    //ControlMatch
+    private boolean fatalError;
 
     public TokenTurn ()
     {
@@ -21,6 +25,8 @@ public class TokenTurn
         clockwise = true;
         onSetup = false;
         players = new ArrayList<>();
+        initNumberOfPlayers = 0;
+        fatalError = false;
     }
 
     public synchronized boolean isMyTurn (String s)
@@ -81,7 +87,7 @@ public class TokenTurn
      * Add a new player
      * @param name username of new added player
      */
-    public void addPlayer (String name)
+    public synchronized void addPlayer (String name)
     {
         players.add(new Player(name,players.size() + 1));
     }
@@ -91,7 +97,7 @@ public class TokenTurn
      * Delete a player and change idPlayer of the others
      * @param name username of deleted player
      */
-    public void deletePlayer (String name)
+    public synchronized void deletePlayer (String name)
     {
         int inc,turnDel;
         for (int i = 0; i < players.size() ; i++)
@@ -117,7 +123,6 @@ public class TokenTurn
         return players.size();
     }
 
-
     public String toString ()
     {
         String r = "";
@@ -126,7 +131,6 @@ public class TokenTurn
 
         return r;
     }
-
 
     public boolean isEndRound ()
     {
@@ -159,12 +163,18 @@ public class TokenTurn
         }
     }
 
+    public synchronized boolean isFatalError() {
+        return fatalError;
+    }
 
+    public synchronized void notifyFatalError() {
+        this.fatalError = true;
+    }
 
 
     //////SETUP PHASE//////
     /**
-     * put onSetup = true and starts initialization phase
+     * Starts initialization phase
      */
     public synchronized void startSetup ()
     {
@@ -173,12 +183,12 @@ public class TokenTurn
     }
 
     /**
-     * increase number of client who finished setup
+     * Increase number of client who finished setup
      */
     public synchronized void endSetup ()
     {
         playerEndSetup ++ ;
-        if (playerEndSetup == players.size())
+        if (playerEndSetup == initNumberOfPlayers)
             onSetup = false;
     }
 
@@ -190,4 +200,8 @@ public class TokenTurn
         return onSetup;
     }
 
+    public void setInitNumberOfPlayers (int i)
+    {
+        initNumberOfPlayers = i;
+    }
 }

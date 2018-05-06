@@ -24,7 +24,7 @@ class ColRowScoreTest {
     }
 
     @org.junit.jupiter.api.BeforeEach
-    void setGrid() {
+    void setupGrid() {
         grid = new Cell[rows][cols];
         for(int i = 0; i < rows; i++)
             for(int j = 0; j < cols; j++)

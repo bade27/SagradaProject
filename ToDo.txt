@@ -3,18 +3,17 @@
 -Gestire la partita dei giocatori lato server
 -Gestire gli errori di comunicazione che arrivano e gli errori interni
 -Gestire fine partita (un client rimasto)
--Mettere la richiesta username in thread separato in qualche modo
+
 (successivamente)
 -Creare (DB/XML/file) giocatori
  
 Matteo Badenchini:
--Aggiungere i messaggi di chiusura comunicazione
+-Aggiungere i messaggi di chiusura comunicazione (Vittoria con punteggi/Ultimo rimasto/Server crash)
 -Comunicazione mossa
 -Aggiungere Timer ad ogni messaggio del server che notifica in caso di scatto che il client ci ha messo troppo a rispondere
 -Lanciare eccezione in caso di client non raggiungibile
+
 (successivamente)
--Aggiungere classe richiesta IsAlive che chiede ogni x secondi al client se e' attivo, viene messa in wait quando ConnHand 
- deve comunicare col client e aggiorna ConnHand se il client non e' piu' attivo
 -Gestire il socket.connect in ThreadSafe
 
 
