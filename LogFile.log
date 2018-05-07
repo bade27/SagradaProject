@@ -1,41 +1,28 @@
-2018/05/07 15:32:06 Server Started
-2018/05/07 15:32:06 
+2018/05/07 16:06:47 Server Started
+2018/05/07 16:06:47 
 Server waiting for client on port 6000
-2018/05/07 15:32:10 Client accepted
-2018/05/07 15:32:10 
+2018/05/07 16:06:53 Client accepted
+2018/05/07 16:06:53 
 Server waiting for client on port 6000
-2018/05/07 15:32:12 Client accepted
-2018/05/07 15:32:12 Number of Client connected:2
-2018/05/07 15:32:12 Thread ServerPlayer 0 Started
-2018/05/07 15:32:12 Thread ServerPlayer 1 Started
-2018/05/07 15:32:12 Setup Phase started
-2018/05/07 15:32:14 User: A Added
-2018/05/07 15:32:14 User: A Window initialized: resources/vetrate/xml/kaleidoscopic_dream.xml
-2018/05/07 15:32:32 Client is out of reach
+2018/05/07 16:06:54 Client accepted
+2018/05/07 16:06:54 Number of Client connected:2
+2018/05/07 16:06:54 Thread ServerPlayer 0 Started
+2018/05/07 16:06:54 Thread ServerPlayer 1 Started
+2018/05/07 16:06:54 Setup Phase started
+2018/05/07 16:06:56 User: A Added
+2018/05/07 16:06:56 User: A Window initialized: resources/vetrate/xml/aurorae_magnificus.xml
+2018/05/07 16:07:14 Client is out of reach
 	Server.ServerConnectionHandler.login(ServerConnectionHandler.java:158)
 	Server.ServerPlayer.login(ServerPlayer.java:128)
 	Server.ServerPlayer.run(ServerPlayer.java:43)
 	java.lang.Thread.run(Thread.java:745)
-2018/05/07 15:32:32 Setup Phase ended
-2018/05/07 15:32:32 Game Phase started
-2018/05/07 15:32:32 Dadiera Mixed
-2018/05/07 15:32:32 Turn of:A
-2018/05/07 15:32:34 Turn of:A
-2018/05/07 15:32:36 Turn of:A
-2018/05/07 15:32:38 Turn of:A
-2018/05/07 15:32:40 Turn of:A
-2018/05/07 15:32:42 Turn of:A
-2018/05/07 15:32:44 Turn of:A
-2018/05/07 15:32:46 Turn of:A
-2018/05/07 15:32:48 Turn of:A
-2018/05/07 15:32:50 Turn of:A
-2018/05/07 15:32:52 Turn of:A
-2018/05/07 15:32:54 Turn of:A
-2018/05/07 15:32:56 Turn of:A
-2018/05/07 15:32:58 Turn of:A
-2018/05/07 15:33:00 Turn of:A
-2018/05/07 15:33:02 Turn of:A
-2018/05/07 15:33:04 Turn of:A
-2018/05/07 15:33:06 Turn of:A
-2018/05/07 15:33:08 Turn of:A
-2018/05/07 15:33:10 Turn of:A
+2018/05/07 16:07:14 Setup Phase ended
+2018/05/07 16:07:14 Game Phase started
+2018/05/07 16:07:14 Dadiera Mixed
+2018/05/07 16:07:14 Turn of:A
+2018/05/07 16:07:16 Turn of:A
+2018/05/07 16:07:18 Turn of:A
+2018/05/07 16:07:20 Turn of:A
+2018/05/07 16:07:22 Turn of:A
+2018/05/07 16:07:24 Turn of:A
+2018/05/07 16:07:26 Turn of:A
