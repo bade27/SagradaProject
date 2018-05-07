@@ -24,9 +24,10 @@
 		*	constructor
 		*	addDice(int x,int y,Dice d)
 -	Server
-	*	constructor
-	*	addPlayer(String s)
-	*	deletePlayer(string s)
-	*	isMyTurn()
-	*	nextTurn()
+	-	TokenTurn
+		*	constructor
+		*	addPlayer(String s)
+		*	deletePlayer(string s)
+		*	isMyTurn()
+		*	nextTurn()
 	
