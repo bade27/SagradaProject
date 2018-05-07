@@ -31,7 +31,7 @@ public class ServerConnectionHandler {
     private ServerSocket serverSocket;
 
     private final int PING_TIMEOUT = 10000; //10 sec
-    private final int ACTION_TIMEOUT = 300000; //5 min
+    private final int ACTION_TIMEOUT = 30000; //5 min
     private boolean isAlive = true;
 
     private static void initializer() throws ParserConfigurationException, IOException, SAXException {
@@ -61,7 +61,7 @@ public class ServerConnectionHandler {
 
     }
 
-    /*private boolean ping() {
+    private boolean ping() {
         //setting up ping timeout
         try {
             client.setSoTimeout(PING_TIMEOUT);
@@ -84,7 +84,7 @@ public class ServerConnectionHandler {
         }
         return reply;
 
-    }*/
+    }
 
     private void init_connection() throws ClientOutOfReachException
     {
@@ -116,18 +116,17 @@ public class ServerConnectionHandler {
     public String login() throws ClientOutOfReachException
     {
         String user = "";
-        try {
+        /*try {
             outSocket.println("login");
             outSocket.println("Inserisci username");
             user = inSocket.readLine();
         } catch (IOException e) {
             throw new ClientOutOfReachException("Client is out of reach");
         }
-        return user;
+        return user;*/
 
         //non decommmentare: funziona, ma la parte corrispondente sul client è in costruzione (c'è la verisione vecchia)
-        /*
-        boolean reachable = ping()
+        boolean reachable = ping();
         if(reachable) {
             //setting up messages timeout
             try {
@@ -136,6 +135,8 @@ public class ServerConnectionHandler {
                 e.printStackTrace();
             }
             outSocket.write("login\n");
+            outSocket.flush();
+            outSocket.write("Inserisci username\n");
             outSocket.flush();
             try {
                 user = inSocket.readLine();
@@ -146,7 +147,6 @@ public class ServerConnectionHandler {
                     isAlive = false;
                 } else {
                     isAlive = true;
-                    logged = true;
                     System.out.println("time's up");
                 }
             } catch (IOException e) {
@@ -154,7 +154,9 @@ public class ServerConnectionHandler {
             }
         } else isAlive = false;
 
-        return user;*/
+        if(!isAlive)
+            throw new ClientOutOfReachException("Client is out of reach");
+        return user;
 
     }
 

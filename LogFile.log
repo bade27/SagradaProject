@@ -1,6 +1,14 @@
-2018/05/06 18:27:56 Server Started
-2018/05/06 18:27:58 
+2018/05/07 14:36:47 Server Started
+2018/05/07 14:36:48 
 Server waiting for client on port 6000
-2018/05/06 18:28:15 Client accepted
-2018/05/06 18:28:15 
+2018/05/07 14:36:57 Client accepted
+2018/05/07 14:36:57 
 Server waiting for client on port 6000
+2018/05/07 14:37:06 Client accepted
+2018/05/07 14:37:06 Number of Client connected:2
+2018/05/07 14:37:06 Thread ServerPlayer 0 Started
+2018/05/07 14:37:06 Thread ServerPlayer 1 Started
+2018/05/07 14:37:06 Setup Phase started
+2018/05/07 14:37:09 User: A Added
+2018/05/07 14:37:09 User: A Window initialized: resources/vetrate/xml/aurorae_magnificus.xml
+2018/05/07 14:38:21 User: B Added
