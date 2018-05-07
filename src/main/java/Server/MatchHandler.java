@@ -48,7 +48,6 @@ public class MatchHandler implements Runnable
                 if (tok.isFatalError())
                     closeAllConnection();
 
-
                 if (tok.isEndRound())
                 {
                     dices.mix(tok.getNumPlayers());

@@ -1,31 +1,29 @@
 
-psquid:S1450"\Remove the "publicObjCard" field and declare it as a local variable in the relevant methods.(¿Ÿ“
-hsquid:UnusedPrivateMethod"@Remove this unused private "initializePrivateObjectives" method.(¦ìÅıÿÿÿÿ
-bsquid:UnusedPrivateMethod"?Remove this unused private "initializePublicObjectives" method.(ØçáÚ
-Lsquid:S1197"8Move the array designator from the variable to the type.(€¼¤
-Qsquid:S1854"5Remove this useless assignment to local variable "x".(¯¡õ8æ­œ²³,
-=squid:S1659")Declare "windowCard2" on a separate line.(¿Ÿ“
-Esquid:S1068"1Remove this unused "publicObjCard" private field.(¿Ÿ“
-R
-squid:S106"9Replace this use of System.out or System.err by a logger.(ı™øøÿÿÿÿ
-M
-squid:S106"9Replace this use of System.out or System.err by a logger.(È«Šª
-Msquid:S3046"1Don't use "wait()" here; multiple locks are held.(…úÕÕ8æ­œ²³,
-Esquid:S1172"+Remove this unused method parameter "card".(¦ìÅıÿÿÿÿ
-?squid:S2116"%Use "Arrays.toString(array)" instead.(šÅô–ûÿÿÿÿ
-`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(–ùìñ
-?squid:S2116"%Use "Arrays.toString(array)" instead.(šÅô–ûÿÿÿÿ
-Xsquid:S2276"CReplace the call to "Thread.sleep(...)" with a call to "wait(...)".(¯ú™ú
-‚squid:S1319"mThe type of the "ps" object should be an interface such as "List" rather than the implementation "ArrayList".(µõÖˆ
-Asquid:S1172",Remove this unused method parameter "cards".(ØçáÚ
-Vsquid:S1141"5Extract this nested try block into a separate method.(¡»¢üùÿÿÿÿ8æ­œ²³,
-wsquid:S1450"]Remove the "privateObjCard" field and declare it as a local variable in the relevant methods.(š•¶şÿÿÿÿ
 Lsquid:S1197"8Move the array designator from the variable to the type.(€¼¤
 `squid:S2142"FEither re-interrupt this method or rethrow the "InterruptedException".(Ê‰¬åÿÿÿÿÿ
-Lsquid:S1068"2Remove this unused "privateObjCard" private field.(š•¶şÿÿÿÿ
-?squid:S1659"+Declare "publicObjCard" on a separate line.(¿Ÿ“
-Usquid:S1161":Add the "@Override" annotation above this method signature(íòø8æ­œ²³,
-`squid:S2142"FEither re-interrupt this method or rethrow the "InterruptedException".(ÖÅ×ÿÿÿÿÿ
+Esquid:S1068"1Remove this unused "publicObjCard" private field.(¿Ÿ“
 msquid:S00120"WRename this package name to match the regular expression '^[a-z]+(\.[a-z][a-z0-9]*)*$'.(¾©ò¹
+Lsquid:S1068"2Remove this unused "privateObjCard" private field.(š•¶şÿÿÿÿ
 R
 squid:S106"9Replace this use of System.out or System.err by a logger.(ı™øøÿÿÿÿ
+Esquid:S1172"+Remove this unused method parameter "card".(¦ìÅıÿÿÿÿ
+?squid:S2116"%Use "Arrays.toString(array)" instead.(šÅô–ûÿÿÿÿ
+`squid:S2142"FEither re-interrupt this method or rethrow the "InterruptedException".(ÖÅ×ÿÿÿÿÿ
+=squid:S1659")Declare "windowCard2" on a separate line.(¿Ÿ“
+hsquid:UnusedPrivateMethod"@Remove this unused private "initializePrivateObjectives" method.(¦ìÅıÿÿÿÿ
+Xsquid:S2276"CReplace the call to "Thread.sleep(...)" with a call to "wait(...)".(¯ú™ú
+Asquid:S1172",Remove this unused method parameter "cards".(ØçáÚ
+M
+squid:S106"9Replace this use of System.out or System.err by a logger.(È«Šª
+Nsquid:S3516"9Refactor this method to not always return the same value.(±£ü
+‚squid:S1319"mThe type of the "ps" object should be an interface such as "List" rather than the implementation "ArrayList".(µõÖˆ
+bsquid:UnusedPrivateMethod"?Remove this unused private "initializePublicObjectives" method.(ØçáÚ
+?squid:S2116"%Use "Arrays.toString(array)" instead.(šÅô–ûÿÿÿÿ
+<squid:S2189""Add an end condition to this loop.(Î¬®ıÿÿÿÿ
+`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(–ùìñ
+psquid:S1450"\Remove the "publicObjCard" field and declare it as a local variable in the relevant methods.(¿Ÿ“
+R
+squid:S106"9Replace this use of System.out or System.err by a logger.(ı™øøÿÿÿÿ
+Lsquid:S1197"8Move the array designator from the variable to the type.(€¼¤
+wsquid:S1450"]Remove the "privateObjCard" field and declare it as a local variable in the relevant methods.(š•¶şÿÿÿÿ
+?squid:S1659"+Declare "publicObjCard" on a separate line.(¿Ÿ“

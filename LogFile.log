@@ -1,26 +1,41 @@
-2018/05/07 14:54:26 Server Started
-2018/05/07 14:54:28 
+2018/05/07 15:32:06 Server Started
+2018/05/07 15:32:06 
 Server waiting for client on port 6000
-2018/05/07 14:54:40 Client accepted
-2018/05/07 14:54:40 
+2018/05/07 15:32:10 Client accepted
+2018/05/07 15:32:10 
 Server waiting for client on port 6000
-2018/05/07 14:54:47 Client accepted
-2018/05/07 14:54:47 Number of Client connected:2
-2018/05/07 14:54:47 Thread ServerPlayer 0 Started
-2018/05/07 14:54:47 Thread ServerPlayer 1 Started
-2018/05/07 14:54:47 Setup Phase started
-2018/05/07 14:54:50 User: A Added
-2018/05/07 14:54:51 User: A Window initialized: resources/vetrate/xml/kaleidoscopic_dream.xml
-2018/05/07 14:55:08 Client is out of reach
+2018/05/07 15:32:12 Client accepted
+2018/05/07 15:32:12 Number of Client connected:2
+2018/05/07 15:32:12 Thread ServerPlayer 0 Started
+2018/05/07 15:32:12 Thread ServerPlayer 1 Started
+2018/05/07 15:32:12 Setup Phase started
+2018/05/07 15:32:14 User: A Added
+2018/05/07 15:32:14 User: A Window initialized: resources/vetrate/xml/kaleidoscopic_dream.xml
+2018/05/07 15:32:32 Client is out of reach
 	Server.ServerConnectionHandler.login(ServerConnectionHandler.java:158)
-	Server.ServerPlayer.login(ServerPlayer.java:130)
+	Server.ServerPlayer.login(ServerPlayer.java:128)
 	Server.ServerPlayer.run(ServerPlayer.java:43)
-	java.lang.Thread.run(Thread.java:748)
-2018/05/07 14:55:08 Setup Phase ended
-2018/05/07 14:55:08 Game Phase started
-2018/05/07 14:55:08 Dadiera Mixed
-2018/05/07 14:55:08 Turn of:A
-2018/05/07 14:55:10 Turn of:A
-2018/05/07 14:55:12 Turn of:A
-2018/05/07 14:55:14 Turn of:A
-2018/05/07 14:55:16 Turn of:A
+	java.lang.Thread.run(Thread.java:745)
+2018/05/07 15:32:32 Setup Phase ended
+2018/05/07 15:32:32 Game Phase started
+2018/05/07 15:32:32 Dadiera Mixed
+2018/05/07 15:32:32 Turn of:A
+2018/05/07 15:32:34 Turn of:A
+2018/05/07 15:32:36 Turn of:A
+2018/05/07 15:32:38 Turn of:A
+2018/05/07 15:32:40 Turn of:A
+2018/05/07 15:32:42 Turn of:A
+2018/05/07 15:32:44 Turn of:A
+2018/05/07 15:32:46 Turn of:A
+2018/05/07 15:32:48 Turn of:A
+2018/05/07 15:32:50 Turn of:A
+2018/05/07 15:32:52 Turn of:A
+2018/05/07 15:32:54 Turn of:A
+2018/05/07 15:32:56 Turn of:A
+2018/05/07 15:32:58 Turn of:A
+2018/05/07 15:33:00 Turn of:A
+2018/05/07 15:33:02 Turn of:A
+2018/05/07 15:33:04 Turn of:A
+2018/05/07 15:33:06 Turn of:A
+2018/05/07 15:33:08 Turn of:A
+2018/05/07 15:33:10 Turn of:A

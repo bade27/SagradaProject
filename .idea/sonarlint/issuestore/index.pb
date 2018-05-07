@@ -45,6 +45,8 @@ b
 2src/main/java/Objectives/Public/DiagonalScore.java,2/e/2e0c98ce243063a5f956b54bf74300b2dbc39656
 d
 4src/test/java/Objectives/Public/ColRowScoreTest.java,a/0/a0171a410399d9208e7272cb95d492143740f00c
+b
+2src/test/java/Objectives/Public/PairScoreTest.java,c/7/c78ed0e052494d34091580c8f75fa47ce3bd9990
 `
 0src/main/java/Objectives/Public/ColRowScore.java,3/f/3f49c88d020ae5d3f935c3494ddcb2cdd4e0e5b2
 
@@ -59,5 +61,3 @@ V
 .src/main/java/Objectives/Public/PairScore.java,c/f/cf0eeed489a50df04ab8a9b5dd57ddc29ee4c9b3
 f
 6src/main/java/Objectives/Private/PrivateObjective.java,b/6/b656b1bdc6d1cd47ba207d3da88251a359056633
-i
-9src/test/java/Objectives/Public/CoordinatesScoreTest.java,a/3/a364d6c325275122e3ffeefb64d771708e5acb0a

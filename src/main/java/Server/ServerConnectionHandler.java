@@ -48,7 +48,7 @@ public class ServerConnectionHandler {
             init_connection();
             inSocket = new BufferedReader(new InputStreamReader(client.getInputStream()));
             outSocket = new PrintWriter(new BufferedWriter(
-                    new OutputStreamWriter(client.getOutputStream())));
+                    new OutputStreamWriter(client.getOutputStream())), true);
         } catch (IOException e)
         {
             try {
@@ -166,14 +166,9 @@ public class ServerConnectionHandler {
 
         try {
             JSONArray jsonArray = JSONFacilities.encodeStringArrays(s1, s2); //creo il json da inviare
-            outSocket.write("windowinit\n"); //dico al client che azione voglio eseguire
-            outSocket.flush();
-            outSocket.write("Scegli la vetrata\n");
-            outSocket.flush();
-            StringBuilder jsonmsg = new StringBuilder(jsonArray.toString());
-            jsonmsg.append("\n");
-            outSocket.write(jsonmsg.toString());    //invio le due coppie di vetrate
-            outSocket.flush();
+            outSocket.println("windowinit"); //dico al client che azione voglio eseguire
+            outSocket.println("Scegli la vetrata");
+            outSocket.println(jsonArray.toString());    //invio le due coppie di vetrate
             response = inSocket.readLine();  //mi aspetto il nome della vetrata scelta
         }
         catch (IOException e) {
@@ -190,12 +185,8 @@ public class ServerConnectionHandler {
     public boolean sendPrivateObjective(String privObj) {
         //mi aspetto un ok come risposta
         try {
-            outSocket.write("privobj\n"); //dico al client che azione voglio eseguire
-            outSocket.flush();
-            StringBuilder sb = new StringBuilder(privObj);
-            sb.append("\n");
-            outSocket.write(sb.toString());
-            outSocket.flush();
+            outSocket.println("privobj"); //dico al client che azione voglio eseguire
+            outSocket.println(privObj);
             if(inSocket.readLine().equals("ok"))
                 return true;//mi aspetto il nome della vetrata scelta
         } catch (IOException e) {
@@ -213,8 +204,7 @@ public class ServerConnectionHandler {
     }
 
     public void close() {
-        outSocket.write("close\n");
-        outSocket.flush();
+        outSocket.println("close");
         try {
             if (inSocket.readLine() == "ok") {
                 try {

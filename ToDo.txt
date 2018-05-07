@@ -12,8 +12,6 @@ Matteo Badenchini:
 -Comunicazione mossa
 -Aggiungere Timer ad ogni messaggio del server che notifica in caso di scatto che il client ci ha messo troppo a rispondere
 -Lanciare eccezione in caso di client non raggiungibile
--mettere eccezioni in logClient
--checkIsAlive con ping ed eventuale eccezione
 
 (successivamente)
 -Gestire il socket.connect in ThreadSafe

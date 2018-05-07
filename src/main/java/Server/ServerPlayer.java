@@ -123,8 +123,6 @@ public class ServerPlayer extends Thread
     private void login () throws ClientOutOfReachException
     {
         String u;
-        int x =0;
-        x = x + 5;
         try{
             do{
                 u = com.login();
