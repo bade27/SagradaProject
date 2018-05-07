@@ -53,7 +53,7 @@ public class ClientConnectionHandler implements Runnable {
             socket = new Socket(address, PORT);
             inSocket = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             outSocket = new PrintWriter(new BufferedWriter(
-                    new OutputStreamWriter(socket.getOutputStream())), true);
+                    new OutputStreamWriter(socket.getOutputStream())));
         } catch (Exception e) {
             System.out.println("initialization gone wrong");
             e.printStackTrace();
@@ -119,13 +119,15 @@ public class ClientConnectionHandler implements Runnable {
         try {
             System.out.println(inSocket.readLine());
             String json = inSocket.readLine();
-            String choice = graph.chooseWindow(JSONFacilities.decodeStringArrays(json));
+            StringBuilder choice = new StringBuilder(graph.chooseWindow(JSONFacilities.decodeStringArrays(json)));
             try {
-                adp.initializeWindow(choice);
+                adp.initializeWindow(choice.toString());
             }catch (ModelException ex) {
                 System.out.println(ex.getMessage());
             }
-            outSocket.println(choice);
+            choice.append("\n");
+            outSocket.write(choice.toString());
+            outSocket.flush();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException je) {
@@ -135,8 +137,10 @@ public class ClientConnectionHandler implements Runnable {
 
     public void myPrivateObj() {
         try {
-            String response = graph.myPrivateObj(inSocket.readLine()).toLowerCase();
-            outSocket.println(response);
+            StringBuilder response = new StringBuilder(graph.myPrivateObj(inSocket.readLine()).toLowerCase());
+            response.append("\n");
+            outSocket.write(response.toString());
+            outSocket.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -165,7 +169,7 @@ public class ClientConnectionHandler implements Runnable {
     }
 
     private void close() {
-        outSocket.println("ok");
+        outSocket.write("ok\n");
         try {
             socket.close();
         } catch(Exception e) {
