@@ -15,8 +15,6 @@ a
 Presources/carte/obbiettivi/obbiettiviPubblici/xml/colore/colori_diversi_riga.xml,d/1/d1e7b6eb409adf9f01f43c08ba6a250efd01a68f
 a
 1src/main/java/Server/ServerConnectionHandler.java,9/0/9077ac0b3eac2358c3162b5617e2ed4229dfb472
-R
-"src/main/java/Model/ParserXML.java,8/6/8613f4ef796f2f1ffc2ea078aa25c0d55852b9c7
 ]
 -resources/vetrate/xml/kaleidoscopic_dream.xml,e/3/e3c78d7c295f38f9390c84e2648c333d3806728a
 V
@@ -45,8 +43,6 @@ b
 2src/main/java/Objectives/Public/DiagonalScore.java,2/e/2e0c98ce243063a5f956b54bf74300b2dbc39656
 d
 4src/test/java/Objectives/Public/ColRowScoreTest.java,a/0/a0171a410399d9208e7272cb95d492143740f00c
-b
-2src/test/java/Objectives/Public/PairScoreTest.java,c/7/c78ed0e052494d34091580c8f75fa47ce3bd9990
 `
 0src/main/java/Objectives/Public/ColRowScore.java,3/f/3f49c88d020ae5d3f935c3494ddcb2cdd4e0e5b2
 
