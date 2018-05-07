@@ -2,18 +2,18 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="008348eb-67b9-401c-8bd6-79cafa4f8e65" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/Objectives/Public/VarietyScoreTest.java" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/8/6/8613f4ef796f2f1ffc2ea078aa25c0d55852b9c7" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/c/7/c78ed0e052494d34091580c8f75fa47ce3bd9990" afterPath="" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/Objectives/ObjectivesFactoryTest.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/test/java/Objectives/Private/PrivateObjectiveTest.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/1/3/13ed6935f52594f301a1ba39c6f5993d0b8cb209" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/1/3/13ed6935f52594f301a1ba39c6f5993d0b8cb209" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/9/0/9077ac0b3eac2358c3162b5617e2ed4229dfb472" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/9/0/9077ac0b3eac2358c3162b5617e2ed4229dfb472" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/e/6/e6522fdeaba92a9604f205b8c3012c4b5ce5e8ed" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/e/6/e6522fdeaba92a9604f205b8c3012c4b5ce5e8ed" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/f/e/fec662d791c56a7a5e74e88ab5941a5f913afca9" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/f/e/fec662d791c56a7a5e74e88ab5941a5f913afca9" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_api_5_2_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_api_5_2_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_engine_5_0_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_jupiter_junit_jupiter_engine_5_0_1.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_platform_junit_platform_commons_1_2_0.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_platform_junit_platform_commons_1_2_0.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_platform_junit_platform_engine_1_0_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_platform_junit_platform_engine_1_0_1.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_platform_junit_platform_launcher_1_0_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_platform_junit_platform_launcher_1_0_1.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_platform_junit_platform_runner_1_0_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_platform_junit_platform_runner_1_0_1.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_platform_junit_platform_suite_api_1_0_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_platform_junit_platform_suite_api_1_0_1.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_vintage_junit_vintage_engine_4_12_1.xml" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_junit_vintage_junit_vintage_engine_4_12_1.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/Objectives/ObjectivesFactory.class" afterPath="$PROJECT_DIR$/target/classes/Objectives/ObjectivesFactory.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/Objectives/Private/PrivateObjective.class" afterPath="$PROJECT_DIR$/target/classes/Objectives/Private/PrivateObjective.class" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/Objectives/ObjectivesFactory.java" afterPath="$PROJECT_DIR$/src/main/java/Objectives/ObjectivesFactory.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/Objectives/Private/PrivateObjective.java" afterPath="$PROJECT_DIR$/src/main/java/Objectives/Private/PrivateObjective.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -26,75 +26,46 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="ClientConnectionHandler.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Client/ClientConnectionHandler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1938">
-              <caret line="128" column="33" lean-forward="false" selection-start-line="128" selection-start-column="33" selection-end-line="128" selection-end-column="33" />
-              <folding>
-                <element signature="e#2945#2946#0" expanded="true" />
-                <element signature="e#3023#3024#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MatchHandler.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Server/MatchHandler.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="731">
-              <caret line="48" column="41" lean-forward="false" selection-start-line="48" selection-start-column="41" selection-end-line="48" selection-end-column="41" />
-              <folding>
-                <element signature="method#initiliazeWindowPlayers#0;class#MatchHandler#0" expanded="false" />
-                <element signature="method#initalizePrivateObjectiveCards#0;class#MatchHandler#0" expanded="false" />
-                <element signature="method#initializePublicObjectiveCards#0;class#MatchHandler#0" expanded="false" />
-                <element signature="method#initializePossibleUsers#0;class#MatchHandler#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ServerConnectionHandler.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Server/ServerConnectionHandler.java">
+      <file leaf-file-name="PrivateObjective.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/Objectives/Private/PrivateObjective.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="17">
-              <caret line="115" column="58" lean-forward="false" selection-start-line="115" selection-start-column="58" selection-end-line="115" selection-end-column="58" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ServerModelAdapter.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Server/ServerModelAdapter.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="9" column="13" lean-forward="false" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+              <caret line="1" column="0" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ServerPlayer.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Server/ServerPlayer.java">
+      <file leaf-file-name="PrivateObjectiveTest.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/test/java/Objectives/Private/PrivateObjectiveTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1802">
-              <caret line="119" column="40" lean-forward="false" selection-start-line="119" selection-start-column="35" selection-end-line="119" selection-end-column="40" />
+            <state relative-caret-position="85">
+              <caret line="18" column="19" lean-forward="false" selection-start-line="18" selection-start-column="19" selection-end-line="18" selection-end-column="19" />
               <folding>
-                <element signature="method#initializeComunication#0;class#ServerPlayer#0" expanded="false" />
-                <element signature="method#initializeWindow#0;class#ServerPlayer#0" expanded="false" />
-                <element signature="method#setWindowCards#0;class#ServerPlayer#0" expanded="false" />
+                <element signature="e#556#557#0" expanded="true" />
+                <element signature="e#600#601#0" expanded="true" />
+                <element signature="e#639#640#0" expanded="true" />
+                <element signature="e#690#691#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="VarietyScoreTest.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="VarietyScoreTest.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/Objectives/Public/VarietyScoreTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
+            <state relative-caret-position="-340">
               <caret line="15" column="6" lean-forward="false" selection-start-line="15" selection-start-column="6" selection-end-line="15" selection-end-column="6" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Window.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/Model/Window.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="8" column="13" lean-forward="false" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
               <folding />
             </state>
           </provider>
@@ -106,8 +77,8 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="JUnit3 Test Class" />
-        <option value="JUnit5 Test Class" />
         <option value="Class" />
+        <option value="JUnit5 Test Class" />
       </list>
     </option>
   </component>
@@ -151,10 +122,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/Test/Server/ServerPlayer.java" />
-        <option value="$PROJECT_DIR$/resources/vetrate/xml/windows_list.xml" />
-        <option value="$PROJECT_DIR$/src/main/java/Test/Client/ClientConnectionHandler.java" />
-        <option value="$PROJECT_DIR$/resources/carte/obbiettivi/obbiettiviPrivati/xml/privateObjectiveList.xml" />
         <option value="$PROJECT_DIR$/resources/carte/obbiettivi/obbiettiviPubblici/xml/publicObjectiveList.xml" />
         <option value="$PROJECT_DIR$/src/main/java/Test/Client/ClientModelAdapter.java" />
         <option value="$PROJECT_DIR$/src/main/java/Test/Client/NotEnoughDiceException.java" />
@@ -199,9 +166,13 @@
         <option value="$PROJECT_DIR$/src/main/java/Objectives/Public/PairScore.java" />
         <option value="$PROJECT_DIR$/src/test/java/Objectives/Public/CoordinatesScoreTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/Client/ClientConnectionHandler.java" />
-        <option value="$PROJECT_DIR$/src/main/java/Server/ServerConnectionHandler.java" />
         <option value="$PROJECT_DIR$/src/main/java/Server/MatchHandler.java" />
         <option value="$PROJECT_DIR$/src/test/java/Objectives/Public/VarietyScoreTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Server/ServerConnectionHandler.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Objectives/Private/PrivateObjective.java" />
+        <option value="$PROJECT_DIR$/src/main/java/Objectives/ObjectivesFactory.java" />
+        <option value="$PROJECT_DIR$/src/test/java/Objectives/ObjectivesFactoryTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/Objectives/Private/PrivateObjectiveTest.java" />
       </list>
     </option>
   </component>
@@ -240,6 +211,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -269,6 +242,14 @@
               <item name="SagradaProject" type="b2602c69:ProjectViewProjectNode" />
               <item name="SagradaProject" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="Model" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SagradaProject" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SagradaProject" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -284,15 +265,22 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="Public" type="462c0819:PsiDirectoryNode" />
+              <item name="Objectives" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="SagradaProject" type="b2602c69:ProjectViewProjectNode" />
+              <item name="SagradaProject" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="test" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="Objectives" type="462c0819:PsiDirectoryNode" />
+              <item name="Private" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="Scratches" />
-      <pane id="AndroidView" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -309,6 +297,8 @@
   </component>
   <component name="RecentsManager">
     <key name="CreateTestDialog.RecentsKey">
+      <recent name="Objectives" />
+      <recent name="Objectives.Private" />
       <recent name="Server" />
       <recent name="Model" />
       <recent name="Test.Model" />
@@ -347,7 +337,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.VarietyScoreTest">
+  <component name="RunManager" selected="JUnit.PrivateObjectiveTest">
     <configuration name="ColRowScoreTest" type="JUnit" factoryName="JUnit">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="LM18" />
@@ -456,6 +446,26 @@
       <module name="LM18" />
       <envs />
     </configuration>
+    <configuration name="ObjectivesFacotryTest" type="JUnit" factoryName="JUnit">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="LM18" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="Objectives" />
+      <option name="MAIN_CLASS_NAME" value="Objectives.ObjectivesFactoryTest" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$MODULE_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
+    </configuration>
     <configuration name="PairScoreTest" type="JUnit" factoryName="JUnit">
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
       <module name="LM18" />
@@ -468,6 +478,26 @@
       <option name="VM_PARAMETERS" value="-ea" />
       <option name="PARAMETERS" value="" />
       <option name="WORKING_DIRECTORY" value="file://$MAVEN_REPOSITORY$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="singleModule" />
+      </option>
+      <envs />
+      <patterns />
+    </configuration>
+    <configuration name="PrivateObjectiveTest" type="JUnit" factoryName="JUnit">
+      <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea" />
+      <module name="LM18" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" value="Objectives.Private" />
+      <option name="MAIN_CLASS_NAME" value="Objectives.Private.PrivateObjectiveTest" />
+      <option name="METHOD_NAME" value="" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$MODULE_DIR$" />
       <option name="ENV_VARIABLES" />
       <option name="PASS_PARENT_ENVS" value="true" />
       <option name="TEST_SEARCH_SCOPE">
@@ -616,17 +646,19 @@
       <properties />
       <listeners />
     </configuration>
-    <list size="10">
+    <list size="12">
       <item index="0" class="java.lang.String" itemvalue="JUnit.VarietyScoreTest" />
-      <item index="1" class="java.lang.String" itemvalue="JUnit.DiceBagTest" />
-      <item index="2" class="java.lang.String" itemvalue="JUnit.DiceTest" />
-      <item index="3" class="java.lang.String" itemvalue="JUnit.ColRowScoreTest" />
-      <item index="4" class="java.lang.String" itemvalue="JUnit.PairScoreTest" />
-      <item index="5" class="java.lang.String" itemvalue="Application.MatchHandler" />
-      <item index="6" class="java.lang.String" itemvalue="Application.Graphic" />
-      <item index="7" class="java.lang.String" itemvalue="JUnit.DadieraTest" />
-      <item index="8" class="java.lang.String" itemvalue="JUnit.WindowTest" />
-      <item index="9" class="java.lang.String" itemvalue="JUnit.TokenTurnTest" />
+      <item index="1" class="java.lang.String" itemvalue="JUnit.ObjectivesFacotryTest" />
+      <item index="2" class="java.lang.String" itemvalue="JUnit.PrivateObjectiveTest" />
+      <item index="3" class="java.lang.String" itemvalue="JUnit.DiceBagTest" />
+      <item index="4" class="java.lang.String" itemvalue="JUnit.DiceTest" />
+      <item index="5" class="java.lang.String" itemvalue="JUnit.ColRowScoreTest" />
+      <item index="6" class="java.lang.String" itemvalue="JUnit.PairScoreTest" />
+      <item index="7" class="java.lang.String" itemvalue="Application.MatchHandler" />
+      <item index="8" class="java.lang.String" itemvalue="Application.Graphic" />
+      <item index="9" class="java.lang.String" itemvalue="JUnit.DadieraTest" />
+      <item index="10" class="java.lang.String" itemvalue="JUnit.WindowTest" />
+      <item index="11" class="java.lang.String" itemvalue="JUnit.TokenTurnTest" />
     </list>
     <recent_temporary>
       <list size="5">
@@ -674,42 +706,42 @@
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="PairScoreTest - 2018.05.06 at 20h 29m 45s.xml">
-      <configuration name="PairScoreTest" configurationId="JUnit" />
+    <history-entry file="ObjectivesFacotryTest - 2018.05.07 at 17h 35m 08s.xml">
+      <configuration name="ObjectivesFacotryTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="PairScoreTest - 2018.05.06 at 20h 31m 09s.xml">
-      <configuration name="PairScoreTest" configurationId="JUnit" />
+    <history-entry file="ObjectivesFacotryTest - 2018.05.07 at 17h 35m 33s.xml">
+      <configuration name="ObjectivesFacotryTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="PairScoreTest - 2018.05.06 at 20h 31m 40s.xml">
-      <configuration name="PairScoreTest" configurationId="JUnit" />
+    <history-entry file="ObjectivesFacotryTest - 2018.05.07 at 17h 36m 03s.xml">
+      <configuration name="ObjectivesFacotryTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="PairScoreTest - 2018.05.06 at 20h 34m 55s.xml">
-      <configuration name="PairScoreTest" configurationId="JUnit" />
+    <history-entry file="ObjectivesFacotryTest - 2018.05.07 at 17h 36m 26s.xml">
+      <configuration name="ObjectivesFacotryTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="PairScoreTest - 2018.05.06 at 20h 38m 49s.xml">
-      <configuration name="PairScoreTest" configurationId="JUnit" />
+    <history-entry file="ObjectivesFacotryTest - 2018.05.07 at 17h 38m 40s.xml">
+      <configuration name="ObjectivesFacotryTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="PairScoreTest - 2018.05.06 at 20h 39m 18s.xml">
-      <configuration name="PairScoreTest" configurationId="JUnit" />
+    <history-entry file="ObjectivesFacotryTest - 2018.05.07 at 17h 39m 24s.xml">
+      <configuration name="ObjectivesFacotryTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="PairScoreTest - 2018.05.06 at 20h 41m 29s.xml">
-      <configuration name="PairScoreTest" configurationId="JUnit" />
+    <history-entry file="ObjectivesFacotryTest - 2018.05.07 at 17h 40m 04s.xml">
+      <configuration name="ObjectivesFacotryTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="PairScoreTest - 2018.05.06 at 20h 41m 47s.xml">
-      <configuration name="PairScoreTest" configurationId="JUnit" />
+    <history-entry file="ObjectivesFacotryTest - 2018.05.07 at 17h 42m 00s.xml">
+      <configuration name="ObjectivesFacotryTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="PairScoreTest - 2018.05.06 at 20h 45m 13s.xml">
-      <configuration name="PairScoreTest" configurationId="JUnit" />
+    <history-entry file="PrivateObjectiveTest - 2018.05.07 at 17h 48m 51s.xml">
+      <configuration name="PrivateObjectiveTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="PairScoreTest - 2018.05.06 at 20h 48m 25s.xml">
-      <configuration name="PairScoreTest" configurationId="JUnit" />
+    <history-entry file="PrivateObjectiveTest - 2018.05.07 at 17h 49m 12s.xml">
+      <configuration name="PrivateObjectiveTest" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
     <option name="totallyTimeSpent" value="3027000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-2" y="-1" width="1370" height="745" extended-state="6" />
+    <frame x="64" y="-11" width="1370" height="745" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -720,26 +752,26 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29738563" sideWeight="0.5075643" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29431438" sideWeight="0.49319214" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.22734138" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.23036253" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="SonarLint" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3277592" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37123746" sideWeight="0.4924357" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="SonarQube" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32913387" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -801,22 +833,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/resources/vetrate/xml/aurorae_magnificus.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/vetrate/xml/windows_list.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="16" lean-forward="true" selection-start-line="6" selection-start-column="16" selection-end-line="6" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Test/Model/Cell.java" />
-    <entry file="jar://$MAVEN_REPOSITORY$/org/Junit/jupiter/junit-jupiter-api/5.1.1/junit-jupiter-api-5.1.1.jar!/org/junit/jupiter/api/function/Executable.class" />
     <entry file="file://$PROJECT_DIR$/src/main/java/Test/Model/Dice.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/Test/Model/ParserXML.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/Test/Model/Window.java" />
@@ -832,7 +848,6 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/Obbiettivi/Privati/ObbiettivoPrivato.java" />
     <entry file="file://$PROJECT_DIR$/src/test/java/Model/CellTest.java" />
     <entry file="file://$PROJECT_DIR$/src/test/java/Model/CellTest.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/Model/Window.java" />
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
@@ -867,13 +882,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="8" column="6" lean-forward="false" selection-start-line="8" selection-start-column="6" selection-end-line="8" selection-end-column="6" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Utilities/ParserXML.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="14" column="13" lean-forward="false" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
         </state>
       </provider>
     </entry>
@@ -955,29 +963,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/Objectives/Public/CoordinatesScoreTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-142">
-          <caret line="91" column="34" lean-forward="false" selection-start-line="91" selection-start-column="34" selection-end-line="91" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/Objectives/Public/CoordinatesScoreTest.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/Objectives/Public/PairScore.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="391">
           <caret line="27" column="0" lean-forward="false" selection-start-line="27" selection-start-column="0" selection-end-line="27" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Server/ServerPlayer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1802">
-          <caret line="119" column="40" lean-forward="false" selection-start-line="119" selection-start-column="35" selection-end-line="119" selection-end-column="40" />
-          <folding>
-            <element signature="method#initializeComunication#0;class#ServerPlayer#0" expanded="false" />
-            <element signature="method#initializeWindow#0;class#ServerPlayer#0" expanded="false" />
-            <element signature="method#setWindowCards#0;class#ServerPlayer#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -986,30 +976,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
           <caret line="45" column="35" lean-forward="false" selection-start-line="45" selection-start-column="35" selection-end-line="45" selection-end-column="35" />
-          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Server/ServerModelAdapter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="9" column="13" lean-forward="false" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Client/ClientConnectionHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1938">
-          <caret line="128" column="33" lean-forward="false" selection-start-line="128" selection-start-column="33" selection-end-line="128" selection-end-column="33" />
-          <folding>
-            <element signature="e#2945#2946#0" expanded="true" />
-            <element signature="e#3023#3024#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../../Java/Esercitazione 4/ChatServer/ChatServer.iml" />
+    <entry file="file://$USER_HOME$/Java/Esercitazione 4/ChatServer/ChatServer.iml" />
     <entry file="file://$PROJECT_DIR$/LM18.iml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1035,16 +1005,102 @@
         <state relative-caret-position="17">
           <caret line="115" column="58" lean-forward="false" selection-start-line="115" selection-start-column="58" selection-end-line="115" selection-end-column="58" />
           <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Client/ClientConnectionHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="128" column="33" lean-forward="false" selection-start-line="128" selection-start-column="33" selection-end-line="128" selection-end-column="33" />
+          <folding>
+            <element signature="e#2945#2946#0" expanded="false" />
+            <element signature="e#3023#3024#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Server/ServerModelAdapter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="9" column="13" lean-forward="false" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Server/ServerPlayer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="119" column="40" lean-forward="false" selection-start-line="119" selection-start-column="35" selection-end-line="119" selection-end-column="40" />
+          <folding>
+            <element signature="method#initializeComunication#0;class#ServerPlayer#0" expanded="false" />
+            <element signature="method#initializeWindow#0;class#ServerPlayer#0" expanded="false" />
+            <element signature="method#setWindowCards#0;class#ServerPlayer#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Utilities/ParserXML.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="14" column="13" lean-forward="false" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Objectives/ObjectivesFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-391">
+          <caret line="10" column="21" lean-forward="false" selection-start-line="10" selection-start-column="21" selection-end-line="10" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/Objectives/ObjectivesFactoryTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="18" column="93" lean-forward="false" selection-start-line="18" selection-start-column="93" selection-end-line="18" selection-end-column="93" />
+          <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/Objectives/Public/VarietyScoreTest.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/Objectives/Private/PrivateObjective.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="1" column="0" lean-forward="true" selection-start-line="1" selection-start-column="0" selection-end-line="1" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Model/Window.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
+          <caret line="8" column="13" lean-forward="false" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/Objectives/Public/VarietyScoreTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-340">
           <caret line="15" column="6" lean-forward="false" selection-start-line="15" selection-start-column="6" selection-end-line="15" selection-end-column="6" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/Objectives/Private/PrivateObjectiveTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="18" column="19" lean-forward="false" selection-start-line="18" selection-start-column="19" selection-end-line="18" selection-end-column="19" />
+          <folding>
+            <element signature="e#556#557#0" expanded="true" />
+            <element signature="e#600#601#0" expanded="true" />
+            <element signature="e#639#640#0" expanded="true" />
+            <element signature="e#690#691#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

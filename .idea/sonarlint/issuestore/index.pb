@@ -57,3 +57,7 @@ V
 .src/main/java/Objectives/Public/PairScore.java,c/f/cf0eeed489a50df04ab8a9b5dd57ddc29ee4c9b3
 f
 6src/main/java/Objectives/Private/PrivateObjective.java,b/6/b656b1bdc6d1cd47ba207d3da88251a359056633
+\
+,src/main/java/Server/ServerModelAdapter.java,c/2/c2a6d995ec05416146df885b55cbada7ce50280c
+e
+5src/test/java/Objectives/Public/VarietyScoreTest.java,a/6/a61ad2860d6f9ed74a3aa06e5bbc4fdb1d37e6ec
