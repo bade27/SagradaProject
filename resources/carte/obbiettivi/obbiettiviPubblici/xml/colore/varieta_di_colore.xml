@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <card>
-	<name>Varietà di colore</name>
+	<name>Varietà di color</name>
 	<value>4</value>
 	<pattern p = "var">
 		<tag>color</tag>
 	</pattern>
-  <description>Set di dadi di ogni colore ovunque</description>
+  <description>Set di dadi di ogni color ovunque</description>
 </card>

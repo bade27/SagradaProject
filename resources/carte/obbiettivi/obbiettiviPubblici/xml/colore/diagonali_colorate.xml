@@ -7,5 +7,5 @@
 	<pattern p = "diag">
 		<tag>color</tag>
 	</pattern>
-  <description>Numero di dadi dello stesso colore diagonalmente adiacenti</description>
+  <description>Numero di dadi dello stesso color diagonalmente adiacenti</description>
 </card>

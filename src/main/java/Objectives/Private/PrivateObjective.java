@@ -7,28 +7,28 @@ import java.awt.*;
 
 public class PrivateObjective {
 
-    private String nome;
-    private String descrizione;
-    private Color colore;
+    private String name;
+    private String description;
+    private Color color;
 
-    public PrivateObjective(String nome, String colore, String descrizione) {
-        this.nome = nome;
-        this.descrizione = descrizione;
-        switch (colore) {
+    public PrivateObjective(String name, String color, String description) {
+        this.name = name;
+        this.description = description;
+        switch (color) {
             case "rosso":
-                this.colore = Color.RED;
+                this.color = Color.RED;
                 break;
             case "verde":
-                this.colore = Color.GREEN;
+                this.color = Color.GREEN;
                 break;
             case "giallo":
-                this.colore = Color.YELLOW;
+                this.color = Color.YELLOW;
                 break;
             case "viola":
-                this.colore = Color.MAGENTA;
+                this.color = Color.MAGENTA;
                 break;
             case "blu":
-                this.colore = Color.BLUE;
+                this.color = Color.BLUE;
                 break;
         }
 
@@ -37,7 +37,7 @@ public class PrivateObjective {
     /**
      *
      * @param vetrata
-     * @return *il punteggio totalizzato dal giocatore (=numero dei dadi del colore obbiettivo posizionati)*
+     * @return *il punteggio totalizzato dal giocatore (=numero dei dadi del color obbiettivo posizionati)*
      */
     public int calcolaPunteggio(Window vetrata) {
         Cell[][] grid = vetrata.getGrid();
@@ -48,18 +48,18 @@ public class PrivateObjective {
                 Cell current_cell = grid[i][j];
                 if(current_cell.getFrontDice() != null) {
                     current_color = current_cell.getFrontDice().getColor();
-                    if (current_color.equals(colore))
+                    if (current_color.equals(color))
                         total++;
                 }
             }
         return total;
     }
 
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public String getDescrizione() {
-        return descrizione;
+    public String getDescription() {
+        return description;
     }
 }
