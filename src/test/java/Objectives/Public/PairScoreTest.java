@@ -11,7 +11,7 @@ import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CoordinatesScoreTest {
+class PairScoreTest {
 
     static Cell[][] grid;
     static int rows;

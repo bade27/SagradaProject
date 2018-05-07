@@ -34,23 +34,23 @@
 -	Objectives
 	-	ColRowScore
 		*	calcScore(int value, Cell[][] grid)
-			.	case with expected result of zero (both for colors and shade)
-			.	case with expected result different from zero (both for colors and shade)
+			*	case with expected result of zero (both for colors and shade)
+			*	case with expected result different from zero (both for colors and shade)
 	-	PairScore
 		*	calcScore(int value, Cell[][] grid)
-			.	case with expected result of zero (test with no expected pairs placed)
-			.	case with expected result different from zero (for all possible pairs)
+			*	case with expected result of zero (test with no expected pairs placed)
+			*	case with expected result different from zero (for all possible pairs)
 	-	VarietyScore
 		*	calcScore(int value, Cell[][] grid)
-			.	case with expected result of zero (test with no expected cluster (both colors and values) placed)
-			.	case with expected result different from zero (for clusters of all possible size (both colors and values))
+			*	case with expected result of zero (test with no expected cluster (both colors and values) placed)
+			*	case with expected result different from zero (for clusters of all possible size (both colors and values))
 	-	PrivateObjective
 		*	getName()
-			.	assertNotNull test
+			*	assertNotNull test
 		*	getDescription()
-			.	assertNotNull test
+			*	assertNotNull test
 	-	ObjectivevesFactory
 		*	getPrivateObjective(String path)
-			.	check the type of the expected result
+			*	check the type of the expected result
 		*	getPublicObjective(String path)
-			.	check the type of the expected result
+			*	check the type of the expected result

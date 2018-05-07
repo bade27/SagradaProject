@@ -57,3 +57,13 @@ V
 .src/main/java/Objectives/Public/PairScore.java,c/f/cf0eeed489a50df04ab8a9b5dd57ddc29ee4c9b3
 f
 6src/main/java/Objectives/Private/PrivateObjective.java,b/6/b656b1bdc6d1cd47ba207d3da88251a359056633
+\
+,src/main/java/Server/ServerModelAdapter.java,c/2/c2a6d995ec05416146df885b55cbada7ce50280c
+e
+5src/test/java/Objectives/Public/VarietyScoreTest.java,a/6/a61ad2860d6f9ed74a3aa06e5bbc4fdb1d37e6ec
+j
+:src/test/java/Objectives/Private/PrivateObjectiveTest.java,6/7/67e835618310d2da2eed74962ef6a13820df3feb
+c
+3src/test/java/Objectives/ObjectivesFactoryTest.java,7/5/758c06712986139c2393612bde7efc2f26532741
+b
+2src/test/java/Objectives/Public/PairScoreTest.java,c/7/c78ed0e052494d34091580c8f75fa47ce3bd9990
