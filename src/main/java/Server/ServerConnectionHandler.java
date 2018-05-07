@@ -31,7 +31,7 @@ public class ServerConnectionHandler {
     private ServerSocket serverSocket;
 
     private final int PING_TIMEOUT = 10000; //10 sec
-    private final int ACTION_TIMEOUT = 30000; //5 min
+    private final int ACTION_TIMEOUT = 10000; //5 min
     private boolean isAlive = true;
 
     private static void initializer() throws ParserConfigurationException, IOException, SAXException {

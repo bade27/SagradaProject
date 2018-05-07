@@ -2,16 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="008348eb-67b9-401c-8bd6-79cafa4f8e65" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/c/7/c78ed0e052494d34091580c8f75fa47ce3bd9990" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/1/3/13ed6935f52594f301a1ba39c6f5993d0b8cb209" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/1/3/13ed6935f52594f301a1ba39c6f5993d0b8cb209" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/c/f/cf0eeed489a50df04ab8a9b5dd57ddc29ee4c9b3" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/c/f/cf0eeed489a50df04ab8a9b5dd57ddc29ee4c9b3" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/e/5/e511cf987eaff5f2f35f44f13df8628d763a468e" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/e/5/e511cf987eaff5f2f35f44f13df8628d763a468e" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/e/6/e6522fdeaba92a9604f205b8c3012c4b5ce5e8ed" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/e/6/e6522fdeaba92a9604f205b8c3012c4b5ce5e8ed" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/f/e/fec662d791c56a7a5e74e88ab5941a5f913afca9" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/f/e/fec662d791c56a7a5e74e88ab5941a5f913afca9" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/LogFile.log" afterPath="$PROJECT_DIR$/LogFile.log" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/Client/ClientConnectionHandler.java" afterPath="$PROJECT_DIR$/src/main/java/Client/ClientConnectionHandler.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/Server/ServerConnectionHandler.java" afterPath="$PROJECT_DIR$/src/main/java/Server/ServerConnectionHandler.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -56,8 +46,8 @@
       <file leaf-file-name="ServerConnectionHandler.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/Server/ServerConnectionHandler.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="147">
-              <caret line="157" column="59" lean-forward="false" selection-start-line="157" selection-start-column="59" selection-end-line="157" selection-end-column="59" />
+            <state relative-caret-position="-40">
+              <caret line="115" column="23" lean-forward="false" selection-start-line="115" selection-start-column="18" selection-end-line="115" selection-end-column="23" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -691,6 +681,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-2" y="-1" width="1370" height="745" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -700,7 +691,7 @@
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.29738563" sideWeight="0.5075643" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29598662" sideWeight="0.49319214" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.29598662" sideWeight="0.49319214" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1027,8 +1018,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Server/ServerConnectionHandler.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="147">
-          <caret line="157" column="59" lean-forward="false" selection-start-line="157" selection-start-column="59" selection-end-line="157" selection-end-column="59" />
+        <state relative-caret-position="-40">
+          <caret line="115" column="23" lean-forward="false" selection-start-line="115" selection-start-column="18" selection-end-line="115" selection-end-column="23" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
