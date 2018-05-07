@@ -10,7 +10,7 @@ import java.io.File;
 
 public class ObjectivesFactory {
 
-    public static PrivateObjective getPrivateObjective(String path) {
+    public static PrivateObjective getObbiettivoPrivato(String path) {
 
         try {
 
@@ -33,7 +33,7 @@ public class ObjectivesFactory {
 
     }
 
-    public static PublicObjective getPublicObjective(String path) {
+    public static PublicObjective getObbiettivoPubblico(String path) {
 
         try {
 

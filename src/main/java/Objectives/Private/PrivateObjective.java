@@ -7,28 +7,28 @@ import java.awt.*;
 
 public class PrivateObjective {
 
-    private String name;
-    private String description;
-    private Color color;
+    private String nome;
+    private String descrizione;
+    private Color colore;
 
-    public PrivateObjective(String name, String colore, String descrizione) {
-        this.name = name;
-        this.description = descrizione;
+    public PrivateObjective(String nome, String colore, String descrizione) {
+        this.nome = nome;
+        this.descrizione = descrizione;
         switch (colore) {
             case "rosso":
-                this.color = Color.RED;
+                this.colore = Color.RED;
                 break;
             case "verde":
-                this.color = Color.GREEN;
+                this.colore = Color.GREEN;
                 break;
             case "giallo":
-                this.color = Color.YELLOW;
+                this.colore = Color.YELLOW;
                 break;
             case "viola":
-                this.color = Color.MAGENTA;
+                this.colore = Color.MAGENTA;
                 break;
             case "blu":
-                this.color = Color.BLUE;
+                this.colore = Color.BLUE;
                 break;
         }
 
@@ -37,9 +37,9 @@ public class PrivateObjective {
     /**
      *
      * @param vetrata
-     * @return *il punteggio totalizzato dal giocatore (=numero dei dadi del color obbiettivo posizionati)*
+     * @return *il punteggio totalizzato dal giocatore (=numero dei dadi del colore obbiettivo posizionati)*
      */
-    public int calcScore(Window vetrata) {
+    public int calcolaPunteggio(Window vetrata) {
         Cell[][] grid = vetrata.getGrid();
         Color current_color = null;
         int total = 0;
@@ -48,18 +48,18 @@ public class PrivateObjective {
                 Cell current_cell = grid[i][j];
                 if(current_cell.getFrontDice() != null) {
                     current_color = current_cell.getFrontDice().getColor();
-                    if (current_color.equals(color))
+                    if (current_color.equals(colore))
                         total++;
                 }
             }
         return total;
     }
 
-    public String getName() {
-        return name;
+    public String getNome() {
+        return nome;
     }
 
-    public String getDescription() {
-        return description;
+    public String getDescrizione() {
+        return descrizione;
     }
 }
