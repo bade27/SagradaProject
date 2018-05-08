@@ -4,7 +4,7 @@
 - Gestire gli errori di comunicazione che arrivano e gli errori interni
 - Gestire fine partita (un client rimasto)
 - Creare (DB/XML/file) giocatori (successivamente)
-- prova
+- prova2
  
 ## Matteo Badenchini:
 - Aggiungere i messaggi di chiusura comunicazione (Vittoria con punteggi/Ultimo rimasto/Server crash)
