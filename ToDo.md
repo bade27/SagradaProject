@@ -9,7 +9,7 @@
 ## Matteo Badenchini:
 - Aggiungere i messaggi di chiusura comunicazione (Vittoria con punteggi/Ultimo rimasto/Server crash)
 - Comunicazione mossa
-- Aggiungere Timer ad ogni messaggio del server che notifica in caso di scatto che il client ci ha messo troppo a rispondere
+- Aggiungere Timer ad ogni messaggio del server che notifica in caso di scatto che il client  ci ha messo troppo a rispondere
 - Lanciare eccezione in caso di client non raggiungibile
 - Gestire il socket.connect in ThreadSafe (successivamente)
 
