@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="008348eb-67b9-401c-8bd6-79cafa4f8e65" name="Default" comment="prova commit">
+    <list default="true" id="008348eb-67b9-401c-8bd6-79cafa4f8e65" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/ToDo.md" afterPath="$PROJECT_DIR$/ToDo.md" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -807,10 +806,10 @@
     <MESSAGE value="aggiunte le classi obbiettivo" />
     <MESSAGE value="uniti i due progetti" />
     <MESSAGE value="eii" />
-    <MESSAGE value="prova commit" />
     <MESSAGE value="aerty" />
     <MESSAGE value="aaaa" />
-    <option name="LAST_COMMIT_MESSAGE" value="aaaa" />
+    <MESSAGE value="prova commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="prova commit" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
