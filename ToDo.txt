@@ -1,8 +1,8 @@
-﻿Andrea Bionda:
--Aggiungere la creazione delle carte obbiettivo
--Gestire la partita dei giocatori lato server
--Gestire gli errori di comunicazione che arrivano e gli errori interni
--Gestire fine partita (un client rimasto)
+﻿##Andrea Bionda:
+- Aggiungere la creazione delle carte obbiettivo
+- Gestire la partita dei giocatori lato server
+- Gestire gli errori di comunicazione che arrivano e gli errori interni
+- Gestire fine partita (un client rimasto)
 
 (successivamente)
 -Creare (DB/XML/file) giocatori
