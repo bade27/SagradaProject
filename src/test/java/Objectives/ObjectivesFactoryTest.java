@@ -9,7 +9,7 @@ class ObjectivesFactoryTest {
     @Test
     void getPrivateObjective() {
         assertTrue(ObjectivesFactory.getPrivateObjective(
-                        "resources/carte/obbiettivi/obbiettiviPrivati/xml/sfumature_blue.xml")
+                         "resources/carte/obbiettivi/obbiettiviPrivati/xml/sfumature_blue.xml")
          instanceof PrivateObjective);
     }
 
