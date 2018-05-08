@@ -1,14 +1,0 @@
-
-Gsquid:S3398"&Move this method into "BoardListener".(˜é¨ñúÿÿÿÿ8–ßø°¬,
-Csquid:S1659"'Declare "textPanel" on a separate line.(ù­š8–ßø°¬,
-Csquid:S1659"'Declare "dicePanel" on a separate line.(ù­š8–ßø°¬,
-Csquid:S1659""Declare "cols" on a separate line.(“µˆßøÿÿÿÿ8–ßø°¬,
-Tsquid:S1197"8Move the array designator from the variable to the type.(Ì›’8–ßø°¬,
-Tsquid:S1197"8Move the array designator from the variable to the type.(ì†¼8–ßø°¬,
-bsquid:S1192"FDefine a constant instead of duplicating this literal "Error" 3 times.(“äÁé8–ßø°¬,
-usquid:S1450"YRemove the "boardPanel" field and declare it as a local variable in the relevant methods.(ù­š8–ßø°¬,
-tsquid:S1450"XRemove the "textPanel" field and declare it as a local variable in the relevant methods.(ù­š8–ßø°¬,
-ysquid:S00120"WRename this package name to match the regular expression '^[a-z]+(\.[a-z][a-z0-9]*)*$'.(±¢™ùÿÿÿÿ8–ßø°¬,
-Gsquid:S1948"+Make "giocatore" transient or serializable.(êıñÜ8–ßø°¬,
-Jsquid:S1948".Make "selectedDice" transient or serializable.(Ê±öç8–ßø°¬,
-osquid:MaximumInheritanceDepth"<This class has 6 parents which is greater than 5 authorized.(Ëëéûÿÿÿÿ8–ßø°¬,

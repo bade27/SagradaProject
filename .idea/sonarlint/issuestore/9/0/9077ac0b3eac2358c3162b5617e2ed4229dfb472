@@ -1,34 +1,0 @@
-
-Dsquid:S2093"*Change this "try" to a try-with-resources.(¡»¢üùÿÿÿÿ
-=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ýÿÿÿÿ
-=squid:S1170"!Make this final field static too.(ÃŽû¡8®ÓŒ¥³,
-_squid:S2259"JA "NullPointerException" could be thrown; "serverSocket" is nullable here.(§ˆïó
-Dsquid:S1148"#Use a logger to log this exception.(€ÉÔ…ýÿÿÿÿ8©‘¦á³,
-Fsquid:S00108")Either remove or fill this block of code.(±•å•8“Œã¤³,
-usquid:S1450"[Remove the "serverSocket" field and declare it as a local variable in the relevant methods.(“—Ó¿ýÿÿÿÿ
-gsquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(½‘Ñ³8©‘¦á³,
-_squid:S2259"JA "NullPointerException" could be thrown; "serverSocket" is nullable here.(§ˆïó
-vsquid:S00116"YRename this field "ACTION_TIMEOUT" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(šŠÿ”8©‘¦á³,
-S
-squid:S106"9Replace this use of System.out or System.err by a logger.(¨€è.8é´ ¥³,
-?squid:S1148"#Use a logger to log this exception.(Ç’Çê8é´ ¥³,
-Vsquid:S1141"5Extract this nested try block into a separate method.(¡»¢üùÿÿÿÿ8é´ ¥³,
-„squid:S4165"cRemove this useless assignment; "reply" already holds the assigned value along all execution paths.(ØúÐûýÿÿÿÿ8©‘¦á³,
-8squid:S1148"#Use a logger to log this exception.(Ç’Çê
-Dsquid:S1148"#Use a logger to log this exception.(€ÉÔ…ýÿÿÿÿ8é´ ¥³,
-tsquid:S00116"WRename this field "PING_TIMEOUT" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÃŽû¡8®ÓŒ¥³,
-T
-squid:S106"9Replace this use of System.out or System.err by a logger.(•Ì†Á8©‘¦á³,
-ksquid:S00100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ºÉ”á8“Œã¤³,
-msquid:S00120"WRename this package name to match the regular expression '^[a-z]+(\.[a-z][a-z0-9]*)*$'.(¾©ò¹
-Vsquid:S1141"5Extract this nested try block into a separate method.(¡»¢üùÿÿÿÿ8é´ ¥³,
-Dsquid:S1148"#Use a logger to log this exception.(€ÉÔ…ýÿÿÿÿ8©‘¦á³,
-=squid:S1148"#Use a logger to log this exception.(€ÉÔ…ýÿÿÿÿ
-Dsquid:S1148"#Use a logger to log this exception.(€ÉÔ…ýÿÿÿÿ8©‘¦á³,
-lsquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(ƒŸö ýÿÿÿÿ8Í¸è¤³,
-ksquid:S3008"ORename this field "PORT" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÔÀóÙ8ÕŸñ·±,
-|squid:S00115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(áî¤šúÿÿÿÿ8ÁÀð·±,
-T
-squid:S106"9Replace this use of System.out or System.err by a logger.(ÿþ«Ä8©‘¦á³,
-Dsquid:S1148"#Use a logger to log this exception.(€ÉÔ…ýÿÿÿÿ8é´ ¥³,
-=squid:S1170"!Make this final field static too.(šŠÿ”8©‘¦á³,

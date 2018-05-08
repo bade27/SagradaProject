@@ -1,32 +1,0 @@
-
-t
-squid:S135"YReduce the total number of break and continue statements in this loop to use at most one.(ñÊÒÒ8¥•à¤³,
-T
-squid:S106"9Replace this use of System.out or System.err by a logger.(¾“¼8¦ÿĞ¶±,
-Dsquid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8›ÛŸ·±,
-ksquid:S3008"ORename this field "PORT" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÔÀóÙ8ÒÏ‚·±,
-gsquid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(…î8¥•à¤³,
-rsquid:S00120"WRename this package name to match the regular expression '^[a-z]+(\.[a-z][a-z0-9]*)*$'.(•İÈ‚ıÿÿÿÿ
-Y
-squid:S106"9Replace this use of System.out or System.err by a logger.(²àéÁüÿÿÿÿ8›ÛŸ·±,
-|squid:S00115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(áî¤šúÿÿÿÿ8öğˆ·±,
-Dsquid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8›ÛŸ·±,
-Dsquid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8›ÛŸ·±,
-Dsquid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8›ÛŸ·±,
-T
-squid:S106"9Replace this use of System.out or System.err by a logger.(©½µÜ8›ÛŸ·±,
-Y
-squid:S106"9Replace this use of System.out or System.err by a logger.(ı™øøÿÿÿÿ8›ÛŸ·±,
-Dsquid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8¥•à¤³,
-T
-squid:S106"9Replace this use of System.out or System.err by a logger.(ÅåÁ8¥•à¤³,
-Dsquid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8›ÛŸ·±,
-Vsquid:S1141"5Extract this nested try block into a separate method.(¡»¢üùÿÿÿÿ8›ÛŸ·±,
-T
-squid:S106"9Replace this use of System.out or System.err by a logger.(ÅåÁ8›ÛŸ·±,
-Isquid:S3010"(Remove this assignment of "initialized".(âËŠûÿÿÿÿ8¥•à¤³,
-T
-squid:S106"9Replace this use of System.out or System.err by a logger.(ğÚàË8›ÛŸ·±,
-T
-squid:S106"9Replace this use of System.out or System.err by a logger.(ğÉ®™8›ÛŸ·±,
-Dsquid:S1148"#Use a logger to log this exception.(•ÅÁşÿÿÿÿ8›ÛŸ·±,
