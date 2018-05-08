@@ -1,12 +1,0 @@
-
-Gsquid:S1068"-Remove this unused "difficult" private field.(È¹Çªùÿÿÿÿ
-0squid:S1643"Use a StringBuilder instead.(ìÏûj
-lsquid:S3776"RRefactor this method to reduce its Cognitive Complexity from 45 to the 15 allowed.(¹ÃÙöşÿÿÿÿ
-msquid:S00120"WRename this package name to match the regular expression '^[a-z]+(\.[a-z][a-z0-9]*)*$'.(á–Ì“
-6squid:S1643"Use a StringBuilder instead.(¢—¸½ûÿÿÿÿ
-Isquid:S1066"/Merge this if statement with the enclosing one.(ş„ëşÿÿÿÿ
-;squid:S1170"!Make this final field static too.(îñ‘Şûÿÿÿÿ
-1squid:S1643"Use a StringBuilder instead.(°†ÿ‚
-Hsquid:UselessParenthesesCheck"!Remove these useless parentheses.(¯Ã¹õ
-;squid:S1170"!Make this final field static too.(È¥ÓÒıÿÿÿÿ
-Msquid:S1197"8Move the array designator from the variable to the type.(±ŒÍ
