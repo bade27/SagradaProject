@@ -6,7 +6,7 @@ import Utilities.LogFile;
 
 import java.util.ArrayList;
 
-public class ServerPlayer implements Runnable
+public class ServerPlayer extends Thread
 {
     private ServerConnectionHandler com;
     private TokenTurn token;
@@ -29,38 +29,46 @@ public class ServerPlayer implements Runnable
 
     public synchronized void run ()
     {
-        //Setup Phase
-        synchronized (token)
+        //////SETUP PHASE//////
+        try
         {
-            try
-            {
+            synchronized (token) {
                 //Wait until matchHandler signal start setup
                 while (!token.getOnSetup())
                     token.wait();
-
-                //Initialization of client
-                boolean b = initializeWindow();
-                //DA TESTAREEE!!!!!
-                if (!b)
-                {
-                    //Notify token that client is dead
-                    token.deletePlayer(user);
-                    token.notifyAll();
-                    return;
-                }
-
-                //End Setup phase comunication
-                token.endSetup();
-                token.notifyAll();
             }
-            catch (InterruptedException ex) {
-                System.out.println(ex.getMessage());
-                LogFile.addLog(ex.getStackTrace().toString());
+
+            //Initialization of client
+            try {
+                login();
+                token.addPlayer(user);
+                initializeWindow();
+            }
+            catch (ClientOutOfReachException|ModelException ex) {
+                //Notify token that client is dead
+                token.deletePlayer(user);
+                token.endSetup();
+                synchronized (token) {
+                    token.notifyAll();
+                }
+                //If client fail initialization, he will not return on game
                 return;
             }
+
+            //End Setup phase comunication
+            token.endSetup();
+            synchronized (token) {
+                token.notifyAll();
+            }
+        }
+        catch (InterruptedException ex) {
+            System.out.println(ex.getMessage());
+            LogFile.addLog(ex.getStackTrace().toString());
+            token.notifyFatalError();
+            return;
         }
 
-        //Game Phase
+        //////GAME PHASE//////
         while (true)//Da cambiare con la condizione di fine partita
         {
             synchronized (token)
@@ -84,6 +92,7 @@ public class ServerPlayer implements Runnable
                 {
                     System.out.println(ex.getMessage());
                     LogFile.addLog(ex.getStackTrace().toString());
+                    token.notifyFatalError();
                     return;
                 }
 
@@ -91,17 +100,14 @@ public class ServerPlayer implements Runnable
         }
     }
 
+    /**
+     * Wait until client's connection
+     * @return true if connection goes well, false otherwise
+     */
     public boolean initializeComunication ()
     {
-        String u;
         try{
             com = new ServerConnectionHandler();
-
-            do{
-                u = com.login();
-            } while (!possibleUsers.contains(u));
-            possibleUsers.remove(u);
-            user = u;
             return true;
         }
         catch (ClientOutOfReachException e) {
@@ -110,7 +116,33 @@ public class ServerPlayer implements Runnable
         }
     }
 
-    private boolean initializeWindow ()
+    /**
+     * Initialize username through login phase
+     * @throws ClientOutOfReachException Client is out of reach
+     */
+    private void login () throws ClientOutOfReachException
+    {
+        String u;
+        try{
+            do{
+                u = com.login();
+            } while (!possibleUsers.contains(u));
+            possibleUsers.remove(u);
+            user = u;
+            LogFile.addLog("User: " + user + " Added");
+        }
+        catch (ClientOutOfReachException e) {
+            LogFile.addLog(e.getMessage() , e.getStackTrace());
+            throw new ClientOutOfReachException();
+        }
+    }
+
+    /**
+     * Initialize client's window board
+     * @throws ClientOutOfReachException Client is out of reach
+     * @throws ModelException Impossible to set window
+     */
+    private void initializeWindow () throws ClientOutOfReachException,ModelException
     {
         String s1 ="";
         try {
@@ -118,7 +150,7 @@ public class ServerPlayer implements Runnable
         }
         catch (ClientOutOfReachException e) {
             LogFile.addLog("(User:" + user + ")" + e.getMessage() , e.getStackTrace());
-            return false;
+            throw new ClientOutOfReachException();
         }
 
         try {
@@ -127,10 +159,10 @@ public class ServerPlayer implements Runnable
         }
         catch (ModelException ex) {
             LogFile.addLog(ex.getMessage());
-            return false;
+            throw new ModelException();
         }
-        return true;
     }
+
 
     private void initializePrivateObjectives (String card)
     {
@@ -152,11 +184,6 @@ public class ServerPlayer implements Runnable
     {
         windowCard1 = c1;
         windowCard2 = c2;
-    }
-
-
-    public String getUser() {
-        return user;
     }
 
     public void setPublicObjCard (String[] c)

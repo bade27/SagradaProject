@@ -1,0 +1,6 @@
+
+lsquid:S3776"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(ÔÒ„îûÿÿÿÿ
+1squid:S1643"Use a StringBuilder instead.(ª™Ã‹
+msquid:S00120"WRename this package name to match the regular expression '^[a-z]+(\.[a-z][a-z0-9]*)*$'.(¾©ò¹
+Vsquid:S1126"AReplace this if-then-else statement by a single return statement.(Ö—´­
+?squid:S1659"%Declare "turnDel" on a separate line.(¯ç“åýÿÿÿÿ

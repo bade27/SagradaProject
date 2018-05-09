@@ -12,6 +12,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.concurrent.*;
 
 public class ClientConnectionHandler implements Runnable {
 
@@ -76,7 +77,32 @@ public class ClientConnectionHandler implements Runnable {
                         myPrivateObj();
                         continue;
                     case "login":
-                        login();
+                        ExecutorService executor = Executors.newCachedThreadPool();
+                        Callable<Boolean> task = new Callable<Boolean>() {
+                            public Boolean call() {
+                                return login();
+                            }
+                        };
+                        Future future = executor.submit(task);
+                        try {
+                            future.get(30, TimeUnit.SECONDS);
+                        } catch (TimeoutException te) {
+                            //System.out.println(te.getMessage());
+                            System.out.println("too late to reply");
+                        } catch (InterruptedException ie) {
+                            //System.out.println(ie.getMessage());
+                        } catch (ExecutionException ee) {
+                            //System.out.println(ee.getMessage());
+                        } finally {
+                            future.cancel(true);
+                        }
+                        continue;
+                    case "close":
+                        close();
+                        continue;
+                    case "ping":
+                        outSocket.write("pong\n");
+                        outSocket.flush();
                         continue;
                     default:
                         return;
@@ -116,14 +142,15 @@ public class ClientConnectionHandler implements Runnable {
         }
     }
 
-    public void login() {
+    public Boolean login() {
         try {
             //Da modificare con finestra a popup con username
             Scanner cli = new Scanner(System.in);
             System.out.println(inSocket.readLine());
-            String username = cli.nextLine();
-            outSocket.println(username);
-
+            StringBuilder username = new StringBuilder(cli.nextLine());
+            username.append("\n");
+            outSocket.write(username.toString());
+            return outSocket.checkError();
             //SOLO PER TEST
             /*if (username.equals("B"))
             {
@@ -134,9 +161,11 @@ public class ClientConnectionHandler implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     private void close() {
+        outSocket.println("ok");
         try {
             socket.close();
         } catch(Exception e) {

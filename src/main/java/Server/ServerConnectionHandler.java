@@ -15,6 +15,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
+import java.net.SocketTimeoutException;
 
 public class ServerConnectionHandler {
 
@@ -27,6 +29,10 @@ public class ServerConnectionHandler {
     private BufferedReader inSocket;
     private PrintWriter outSocket;
     private ServerSocket serverSocket;
+
+    private final int PING_TIMEOUT = 10000; //10 sec
+    private final int ACTION_TIMEOUT = 10000; //5 min
+    private boolean isAlive = true;
 
     private static void initializer() throws ParserConfigurationException, IOException, SAXException {
         File file = new File(settings);
@@ -52,6 +58,31 @@ public class ServerConnectionHandler {
             }
             throw new ClientOutOfReachException("Impossible to create Socket Buffer");
         }
+
+    }
+
+    private boolean ping() {
+        //setting up ping timeout
+        try {
+            client.setSoTimeout(PING_TIMEOUT);
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
+
+        //ping-pong communication
+        boolean reply = false;
+        try {
+            outSocket.write("ping\n");
+            outSocket.flush();
+            String r = inSocket.readLine();
+            reply = r.equals("pong");
+            System.out.println(r);
+        } catch (SocketTimeoutException ste) {
+            reply = false;
+        } catch (IOException e) {
+            e.getMessage();
+        }
+        return reply;
 
     }
 
@@ -85,14 +116,48 @@ public class ServerConnectionHandler {
     public String login() throws ClientOutOfReachException
     {
         String user = "";
-        try {
+        /*try {
             outSocket.println("login");
             outSocket.println("Inserisci username");
             user = inSocket.readLine();
         } catch (IOException e) {
             throw new ClientOutOfReachException("Client is out of reach");
         }
+        return user;*/
+
+        //non decommmentare: funziona, ma la parte corrispondente sul client è in costruzione (c'è la verisione vecchia)
+        boolean reachable = ping();
+        if(reachable) {
+            //setting up messages timeout
+            try {
+                client.setSoTimeout(ACTION_TIMEOUT);
+            } catch (SocketException e) {
+                e.printStackTrace();
+            }
+            outSocket.write("login\n");
+            outSocket.flush();
+            outSocket.write("Inserisci username\n");
+            outSocket.flush();
+            try {
+                user = inSocket.readLine();
+                isAlive = true;
+            } catch (SocketTimeoutException ste) {
+                boolean alive = ping();
+                if (!alive) {
+                    isAlive = false;
+                } else {
+                    isAlive = true;
+                    System.out.println("time's up");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else isAlive = false;
+
+        if(!isAlive)
+            throw new ClientOutOfReachException("Client is out of reach");
         return user;
+
     }
 
     public String chooseWindow(String[] s1, String[] s2)  throws ClientOutOfReachException
@@ -139,17 +204,24 @@ public class ServerConnectionHandler {
     }
 
     public void close() {
+        outSocket.println("close");
         try {
-            client.close();
-        } catch(Exception e) {
-            System.out.println("Exception: e="+e);
-            e.printStackTrace();
+            if (inSocket.readLine() == "ok") {
+                try {
+                    client.close();
+                } catch (Exception e) {
+                    System.out.println("Exception: e=" + e);
+                    e.printStackTrace();
 
-            try {
-                client.close();
-            } catch(Exception ex) {
-                ex.printStackTrace();
+                    try {
+                        client.close();
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
+                }
             }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
