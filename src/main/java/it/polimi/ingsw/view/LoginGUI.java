@@ -18,7 +18,7 @@ import javafx.stage.Stage;
 
 public class LoginGUI extends Application {
     public boolean log;
-    public ClientConnectionHandler clientConnectionHandler;
+    //public ClientConnectionHandler clientConnectionHandler;
 
     public static void main(String[] args) {
         launch(args);
@@ -26,7 +26,7 @@ public class LoginGUI extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        clientConnectionHandler =new ClientConnectionHandler();
+        //clientConnectionHandler =new ClientConnectionHandler();
         GridPane root=new GridPane();
         Label l=new Label("LOGIN");
         l.setFont(Font.font("Tahoma", FontWeight.NORMAL,20));
@@ -55,10 +55,12 @@ public class LoginGUI extends Application {
                 String n=textname.getText();
                 String p=textpw.getText();
                 if(!(n.contentEquals("")) && !(p.contentEquals("")) && log==false) {
-                    String[] buffer = {n,p};
+                    /*String[] buffer = {n,p};
                     boolean b= clientConnectionHandler.setBuffer(buffer);
                     if(b==true)
-                        log=true;
+                        log=true;*/
+                    System.out.println(n);
+                    System.out.println(p);
                 }else{
                     System.out.println("valori non validi");
                 }
