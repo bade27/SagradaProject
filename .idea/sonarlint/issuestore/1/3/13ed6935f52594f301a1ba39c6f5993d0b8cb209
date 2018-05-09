@@ -1,30 +1,0 @@
-
-`squid:S2142"FEither re-interrupt this method or rethrow the "InterruptedException".(ÖÅ×ÿÿÿÿÿ
-hsquid:UnusedPrivateMethod"@Remove this unused private "initializePrivateObjectives" method.(¦ìÅıÿÿÿÿ
-Lsquid:S1068"2Remove this unused "privateObjCard" private field.(š•¶şÿÿÿÿ
-Esquid:S1172"+Remove this unused method parameter "card".(¦ìÅıÿÿÿÿ
-R
-squid:S106"9Replace this use of System.out or System.err by a logger.(ı™øøÿÿÿÿ
-=squid:S1659")Declare "windowCard2" on a separate line.(¿Ÿ“
-R
-squid:S106"9Replace this use of System.out or System.err by a logger.(ı™øøÿÿÿÿ
-msquid:S00120"WRename this package name to match the regular expression '^[a-z]+(\.[a-z][a-z0-9]*)*$'.(¾©ò¹
-wsquid:S1450"]Remove the "privateObjCard" field and declare it as a local variable in the relevant methods.(š•¶şÿÿÿÿ
-‚squid:S1319"mThe type of the "ps" object should be an interface such as "List" rather than the implementation "ArrayList".(µõÖˆ
-Lsquid:S1197"8Move the array designator from the variable to the type.(€¼¤
-bsquid:UnusedPrivateMethod"?Remove this unused private "initializePublicObjectives" method.(ØçáÚ
-?squid:S1659"+Declare "publicObjCard" on a separate line.(¿Ÿ“
-Esquid:S1068"1Remove this unused "publicObjCard" private field.(¿Ÿ“
-?squid:S2116"%Use "Arrays.toString(array)" instead.(šÅô–ûÿÿÿÿ
-‚%squid:RedundantThrowsDeclarationCheck"GRemove the redundant '!unknownSymbol!' thrown exception declaration(s).(Ÿ³ƒüÿÿÿÿ8†¤¦á³,
-psquid:S1450"\Remove the "publicObjCard" field and declare it as a local variable in the relevant methods.(¿Ÿ“
-?squid:S2116"%Use "Arrays.toString(array)" instead.(šÅô–ûÿÿÿÿ
-`squid:S2142"FEither re-interrupt this method or rethrow the "InterruptedException".(Ê‰¬åÿÿÿÿÿ
-Vsquid:S1141"5Extract this nested try block into a separate method.(¡»¢üùÿÿÿÿ8†¤¦á³,
-Usquid:S1161":Add the "@Override" annotation above this method signature(íòø8†¤¦á³,
-Xsquid:S2276"CReplace the call to "Thread.sleep(...)" with a call to "wait(...)".(¯ú™ú
-`squid:CommentedOutCodeLine"<This block of commented-out lines of code should be removed.(–ùìñ
-Lsquid:S1197"8Move the array designator from the variable to the type.(€¼¤
-M
-squid:S106"9Replace this use of System.out or System.err by a logger.(È«Šª
-Asquid:S1172",Remove this unused method parameter "cards".(ØçáÚ

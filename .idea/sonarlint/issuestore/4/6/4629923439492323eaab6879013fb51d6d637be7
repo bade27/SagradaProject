@@ -1,5 +1,0 @@
-
-gsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(™š³ê
-rsquid:S00120"WRename this package name to match the regular expression '^[a-z]+(\.[a-z][a-z0-9]*)*$'.(‹ÕÈÚüÿÿÿÿ
-S"squid:SwitchLastCaseIsDefaultCheck""Add a default case to this switch.(·‰½ùøÿÿÿÿ
-lsquid:S00117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(¥ÆƒÜÿÿÿÿÿ

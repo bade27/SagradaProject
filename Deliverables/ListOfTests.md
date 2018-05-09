@@ -1,6 +1,6 @@
 # List of implemented test
 
--	Model
+-	it.polimi.ingsw.model
 	-	Dice
 		*	constructor
 		*	isEqual(Dice d)
@@ -23,7 +23,7 @@
 	-	Window
 		*	constructor
 		*	addDice(int x,int y,Dice d)
--	Server
+-	it.polimi.ingsw.server
 	-	TokenTurn
 		*	constructor
 		*	addPlayer(String s)
@@ -31,7 +31,7 @@
 		*	isMyTurn()
 		*	nextTurn()
 
--	Objectives
+-	it.polimi.ingsw.objectives
 	-	ColRowScore
 		*	calcScore(int value, Cell[][] grid)
 			*	case with expected result of zero (both for colors and shade)
