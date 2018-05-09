@@ -1,104 +1,183 @@
-package it.polimi.ingsw;
+package Client;
 
+import Exceptions.ModelException;
+import Utilities.JSONFacilities;
+import org.json.JSONException;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.net.Socket;
+import java.util.Scanner;
+import java.util.concurrent.*;
 
 public class ClientConnectionHandler implements Runnable {
 
-    //private static final String address = "localhost";
-    private static final String address = "192.168.1.5";
-    private static final int PORT = 8000;
+    //contiene informazioni su indirizzo e porta del server
+    private static final String settings = "resources/settings.xml";
 
-    private Object bufferLock = new Object();
-    private String[] buffer = null;
+    private static String address;
+    private static int PORT;
+    private static boolean initialized = false;
 
     private Socket socket;
     private BufferedReader inSocket;
     private PrintWriter outSocket;
-    private Thread demon;
 
-    public ClientConnectionHandler() {
+    private Thread deamon;
+
+    private Graphic graph;
+    ClientModelAdapter adp;
+
+    private static void initializer() throws ParserConfigurationException, IOException, SAXException {
+        File file = new File(settings);
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document document = documentBuilder.parse(file);
+        address = document.getElementsByTagName("hostName").item(0).getTextContent();
+        PORT = Integer.parseInt(document.getElementsByTagName("portNumber").item(0).getTextContent());
+    }
+
+    public ClientConnectionHandler(Graphic c) {
+        this.graph = c;
+        adp = new ClientModelAdapter(graph);
         System.out.println("connecting...");
         try{
+            if(!initialized) {
+                initializer();
+                initialized = true;
+            }
             socket = new Socket(address, PORT);
             inSocket = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             outSocket = new PrintWriter(new BufferedWriter(
-                    new OutputStreamWriter(socket.getOutputStream())));
+                    new OutputStreamWriter(socket.getOutputStream())), true);
         } catch (Exception e) {
             System.out.println("initialization gone wrong");
             e.printStackTrace();
         }
-        demon = new Thread(this);
-        demon.start();
+        deamon = new Thread(this);
+        deamon.start();
         System.out.println("connected");
     }
 
     @Override
     public void run() {
-        String action = "";
-        System.out.println("started");
+
         try {
-            while( (action = inSocket.readLine()) != "stop") {
-                System.out.println("entered");
+            String action = "";
+            while( (action = inSocket.readLine()) != "stop" )  {
                 switch (action) {
-                    case "choose":
-                        //chooseNumber();
+                    case "windowinit":
+                        chooseWindow();
+                        continue;
+                    case "privobj":
+                        myPrivateObj();
                         continue;
                     case "login":
-                    	new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                String s = "";
-                                System.out.println("i'm a thread");
-                                synchronized (bufferLock) {
-                                    System.out.println("synch block");
-                                    while (buffer == null){
-                                        try {
-                                            System.out.println("exiting synch");
-                                            bufferLock.wait();
-                                        } catch (InterruptedException e) {
-                                            e.printStackTrace();
-                                        }
-                                        System.out.println("done synch");
-                                    }
-                                    s = buffer[0] + ", " + buffer[1];
-                                    bufferLock.notifyAll();
-                                }
-                                login(s);
+                        ExecutorService executor = Executors.newCachedThreadPool();
+                        Callable<Boolean> task = new Callable<Boolean>() {
+                            public Boolean call() {
+                                return login();
                             }
-                        }).start();
+                        };
+                        Future future = executor.submit(task);
+                        try {
+                            future.get(30, TimeUnit.SECONDS);
+                        } catch (TimeoutException te) {
+                            //System.out.println(te.getMessage());
+                            System.out.println("too late to reply");
+                        } catch (InterruptedException ie) {
+                            //System.out.println(ie.getMessage());
+                        } catch (ExecutionException ee) {
+                            //System.out.println(ee.getMessage());
+                        } finally {
+                            future.cancel(true);
+                        }
+                        continue;
+                    case "close":
+                        close();
                         continue;
                     case "ping":
-                        System.out.println("hi");
                         outSocket.write("pong\n");
-                    	outSocket.flush();
-                    	continue;
-                    default:continue;
+                        outSocket.flush();
+                        continue;
+                    default:
+                        return;
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
-    public Boolean login(String s) {
-        StringBuilder sb = new StringBuilder(s);
-        sb.append("\n");
-        outSocket.write(sb.toString());
-        return outSocket.checkError();
-    }
-
-    public boolean setBuffer(String[] buff) {
-        boolean ok = false;
-        synchronized (bufferLock) {
-            buffer = new String[2];
-            for(int i = 0; i < buff.length; i++)
-                buffer[i] = new String(buff[i]);
-            ok = true;
-            bufferLock.notifyAll();
+    public void chooseWindow()
+    {
+        try {
+            System.out.println(inSocket.readLine());
+            String json = inSocket.readLine();
+            String choice = graph.chooseWindow(JSONFacilities.decodeStringArrays(json));
+            try {
+                adp.initializeWindow(choice);
+            }catch (ModelException ex) {
+                System.out.println(ex.getMessage());
+            }
+            outSocket.println(choice);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException je) {
+            je.printStackTrace();
         }
-        return ok;
     }
 
+    public void myPrivateObj() {
+        try {
+            String response = graph.myPrivateObj(inSocket.readLine()).toLowerCase();
+            outSocket.println(response);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    public Boolean login() {
+        try {
+            //Da modificare con finestra a popup con username
+            Scanner cli = new Scanner(System.in);
+            System.out.println(inSocket.readLine());
+            StringBuilder username = new StringBuilder(cli.nextLine());
+            username.append("\n");
+            outSocket.write(username.toString());
+            return outSocket.checkError();
+            //SOLO PER TEST
+            /*if (username.equals("B"))
+            {
+                socket.close();
+                outSocket.close();
+                inSocket.close();
+            }*/
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private void close() {
+        outSocket.println("ok");
+        try {
+            socket.close();
+        } catch(Exception e) {
+            System.out.println("Exception: "+e);
+            e.printStackTrace();
+        } finally {
+            // Always close it:
+            try {
+                socket.close();
+            } catch(IOException ex) {
+                System.err.println("Socket not closed");
+            }
+        }
+    }
 }

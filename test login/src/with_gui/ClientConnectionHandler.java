@@ -1,12 +1,13 @@
-package it.polimi.ingsw;
+package with_gui;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.concurrent.*;
 
 public class ClientConnectionHandler implements Runnable {
 
-    //private static final String address = "localhost";
-    private static final String address = "192.168.1.5";
+    private static final String address = "localhost";
+    //private static final String address = "192.168.1.5";
     private static final int PORT = 8000;
 
     private Object bufferLock = new Object();
@@ -36,40 +37,74 @@ public class ClientConnectionHandler implements Runnable {
     @Override
     public void run() {
         String action = "";
-        System.out.println("started");
+        //System.out.println("started");
         try {
             while( (action = inSocket.readLine()) != "stop") {
-                System.out.println("entered");
+                //System.out.println("entered");
                 switch (action) {
                     case "choose":
                         //chooseNumber();
                         continue;
                     case "login":
-                    	new Thread(new Runnable() {
+                    	/*new Thread(new Runnable() {
                             @Override
                             public void run() {
                                 String s = "";
-                                System.out.println("i'm a thread");
+                                //System.out.println("i'm a thread");
                                 synchronized (bufferLock) {
-                                    System.out.println("synch block");
+                                    //System.out.println("synch block");
                                     while (buffer == null){
                                         try {
-                                            System.out.println("exiting synch");
+                                            //System.out.println("exiting synch");
                                             bufferLock.wait();
                                         } catch (InterruptedException e) {
                                             e.printStackTrace();
                                         }
-                                        System.out.println("done synch");
+                                        //System.out.println("done synch");
                                     }
                                     s = buffer[0] + ", " + buffer[1];
                                     bufferLock.notifyAll();
                                 }
                                 login(s);
                             }
-                        }).start();
+                        }).start();*/
+
+                    	//---------------------------
+                        ExecutorService executor = Executors.newCachedThreadPool();
+                        Callable<Boolean> task = new Callable<Boolean>() {
+                            public Boolean call() {
+                                String s = "";
+                                synchronized (bufferLock) {
+                                    while (buffer == null){
+                                        try {
+                                            bufferLock.wait();
+                                        } catch (InterruptedException e) {
+                                            System.out.println("i'm dead");
+                                        }
+                                    }
+                                    s = buffer[0] + ", " + buffer[1];
+                                    bufferLock.notifyAll();
+                                }
+                                return login(s);
+                            }
+                        };
+                        Future future = executor.submit(task);
+                        try {
+                            future.get(30, TimeUnit.SECONDS);
+                        } catch (TimeoutException te) {
+                            //System.out.println(te.getMessage());
+                            System.out.println("too late to reply");
+                        } catch (InterruptedException ie) {
+                            //System.out.println(ie.getMessage());
+                        } catch (ExecutionException ee) {
+                            //System.out.println(ee.getMessage());
+                        } finally {
+                            future.cancel(true);
+                        }
                         continue;
+                    	//---------------------------
                     case "ping":
-                        System.out.println("hi");
+                        //System.out.println("hi");
                         outSocket.write("pong\n");
                     	outSocket.flush();
                     	continue;
@@ -77,7 +112,7 @@ public class ClientConnectionHandler implements Runnable {
                 }
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 

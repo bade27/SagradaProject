@@ -11,7 +11,7 @@ public class Handler {
 
     private Socket client;
     private final int PING_TIMEOUT = 10000;
-    private final int ACTION_TIMEOUT = 10000;
+    private final int ACTION_TIMEOUT = 30000;
     private boolean isAlive = true;
     private BufferedReader inSocket;
     private PrintWriter outSocket;
@@ -24,7 +24,7 @@ public class Handler {
         try {
             inSocket = new BufferedReader(new InputStreamReader(client.getInputStream()));
             outSocket = new PrintWriter(new BufferedWriter(
-                    new OutputStreamWriter(client.getOutputStream())), true);
+                    new OutputStreamWriter(client.getOutputStream())));
         }
         catch(Exception e) {
             System.out.println(e);
@@ -68,21 +68,20 @@ public class Handler {
     }
     
     public String login() {
-    	
-    	boolean setup = ping();
     	String user = null;
     	
-    	if(setup) {
-    		
+    	if(!logged) {
+    	    ping();
     		//setting up ping timeout
         	try {
                 client.setSoTimeout(ACTION_TIMEOUT);
             } catch (SocketException e) {
                 e.printStackTrace();
             }
-        	
-    		System.out.println("I'm client " + myTurn + ", my globalTurn is " + myTurn + " and I'm loggin");
+
+    		//System.out.println("I'm client " + myTurn + ", my globalTurn is " + myTurn + " and I'm loggin");
     		outSocket.write("login\n");
+        	outSocket.flush();
     		try {
     			user = inSocket.readLine();
     			//Server.add(user);
@@ -94,6 +93,7 @@ public class Handler {
     				isAlive = false;
     			} else {
     				isAlive = true;
+    				logged = true;
     				System.out.println("time's up");
     			}
     		} catch (IOException e) {
