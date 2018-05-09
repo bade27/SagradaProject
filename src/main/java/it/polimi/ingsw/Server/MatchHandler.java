@@ -75,8 +75,8 @@ public class MatchHandler implements Runnable
      */
     private void acceptConnection()
     {
-        System.out.println(">>>it.polimi.ingsw.Server Started");
-        LogFile.addLog("it.polimi.ingsw.Server Started");
+        System.out.println(">>>Server Started");
+        LogFile.addLog("Server Started");
         nConn = 0;
         player = new ArrayList<ServerPlayer>();
         try
