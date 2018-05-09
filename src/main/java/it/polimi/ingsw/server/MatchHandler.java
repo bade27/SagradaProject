@@ -35,6 +35,9 @@ public class MatchHandler implements Runnable
         startGame();
     }
 
+    /**
+     * Manage the match: checks status, wakes players, and manage match components
+     * */
     private void startGame ()
     {
         LogFile.addLog("Game Phase started");
