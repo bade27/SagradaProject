@@ -94,15 +94,14 @@ public class MatchHandler implements Runnable
                 if (pl.initializeComunication())
                 {
                     player.add(pl);
-                    nConn++;
                     LogFile.addLog("it.polimi.ingsw.client accepted");
                 }
                 else
                     i--;
-                //n = CheckAlive();
-                //if (n > 0)
-                //  i = i-n;
+                int n = checkClientAlive();
+                i = i-n;
             }
+            nConn = MAXGIOC - checkClientAlive();
             LogFile.addLog("Number of it.polimi.ingsw.client connected:" + nConn);
             tok.setInitNumberOfPlayers(nConn);
             for (int i = 0; i <nConn ; i++)
@@ -286,9 +285,31 @@ public class MatchHandler implements Runnable
             player.get(i).interrupt();
             player.get(i).closeComunication();
         }
-        LogFile.addLog("All connections are forced to stop");
+        LogFile.addLog("All connections are forced to stop cause fatal error");
     }
 
+    private int checkClientAlive ()
+    {
+        int nDisc = 0;
+        try
+        {
+            for (int i = 0; i < player.size() ; i++)
+            {
+                if (!player.get(i).isClientAlive())
+                {
+                    nDisc ++ ;
+                    player.get(i).interrupt();
+                    player.remove(i);
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            LogFile.addLog("" , e.getStackTrace());
+            closeAllConnection();
+        }
+        return nDisc;
+    }
 
     public static void main(String[] args)
     {

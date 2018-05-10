@@ -163,6 +163,10 @@ public class ServerPlayer extends Thread
         }
     }
 
+    public boolean isClientAlive ()
+    {
+        return com.ping();
+    }
 
     private void initializePrivateObjectives (String card)
     {

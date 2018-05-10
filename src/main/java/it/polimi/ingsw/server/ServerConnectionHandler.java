@@ -61,12 +61,14 @@ public class ServerConnectionHandler {
 
     }
 
-    private boolean ping() {
+    public boolean ping()
+    {
         //setting up ping timeout
         try {
             client.setSoTimeout(PING_TIMEOUT);
         } catch (SocketException e) {
-            e.printStackTrace();
+            LogFile.addLog("Ping Failed" , e.getStackTrace());
+            return false;
         }
 
         //ping-pong communication
@@ -76,14 +78,14 @@ public class ServerConnectionHandler {
             outSocket.flush();
             String r = inSocket.readLine();
             reply = r.equals("pong");
-            System.out.println(r);
         } catch (SocketTimeoutException ste) {
             reply = false;
+            LogFile.addLog("Ping Failed" , ste.getStackTrace());
         } catch (IOException e) {
-            e.getMessage();
+            LogFile.addLog("Ping Failed" , e.getStackTrace());
+            return false;
         }
         return reply;
-
     }
 
     private void init_connection() throws ClientOutOfReachException
