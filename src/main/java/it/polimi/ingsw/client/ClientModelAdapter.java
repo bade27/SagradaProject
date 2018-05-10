@@ -26,6 +26,8 @@ public class ClientModelAdapter
     public void initializeWindow (String path) throws ModelException
     {
         try {
+            if(path.equals(""))
+                throw new ModelException("void field");
             board = new Window(path);
             graph.initGraphic(this);
         }

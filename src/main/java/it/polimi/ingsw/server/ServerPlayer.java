@@ -153,6 +153,9 @@ public class ServerPlayer extends Thread
             throw new ClientOutOfReachException();
         }
 
+        if(s1.equals(""))
+            throw new ModelException("void field");
+
         try {
             adapter.initializeWindow(s1);
             LogFile.addLog("User: " + user + " Window initialized: " + s1);

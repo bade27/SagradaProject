@@ -17,7 +17,7 @@
         - [X]   Handling disconnection during setup phase
 		
 -   Communication
-    - Tutor's request
+    - Hard deadline
         - [ ]    Create a standard protocol
         - [ ]    Define in a document standard protocol used
     - Connection Phase

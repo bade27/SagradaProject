@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<server>
-    <hostName>localhost</hostName>
-    <portNumber>6000</portNumber>
-</server>
+<game>
+    <server>
+        <portNumber>6000</portNumber>
+        <ping>10000</ping>
+        <action>20000</action>
+    </server>
+
+    <client>
+        <hostName>localhost</hostName>
+        <portNumber>6000</portNumber>
+        <init>20000</init>
+        <move>30000</move>
+    </client>
+</game>

@@ -22,7 +22,7 @@ public class MatchHandler implements Runnable
     private TokenTurn tok;
     private Dadiera dices;
 
-    private final static int MAXGIOC =2;//Da modificare a 4
+    private final static int MAXGIOC =1;//Da modificare a 4
 
     public synchronized void run ()
     {
@@ -94,7 +94,7 @@ public class MatchHandler implements Runnable
                 if (pl.initializeComunication())
                 {
                     player.add(pl);
-                    LogFile.addLog("it.polimi.ingsw.client accepted");
+                    LogFile.addLog("client accepted");
                 }
                 else
                     i--;
@@ -102,7 +102,7 @@ public class MatchHandler implements Runnable
                 i = i-n;
             }
             nConn = MAXGIOC - checkClientAlive();
-            LogFile.addLog("Number of it.polimi.ingsw.client connected:" + nConn);
+            LogFile.addLog("Number of client(s) connected:" + nConn);
             tok.setInitNumberOfPlayers(nConn);
             for (int i = 0; i <nConn ; i++)
             {

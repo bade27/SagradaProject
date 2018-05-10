@@ -30,8 +30,8 @@ public class ServerConnectionHandler {
     private PrintWriter outSocket;
     private ServerSocket serverSocket;
 
-    private final int PING_TIMEOUT = 10000; //10 sec
-    private final int ACTION_TIMEOUT = 10000; //5 min
+    private static int PING_TIMEOUT; //10 sec
+    private static int ACTION_TIMEOUT; //5 min
     private boolean isAlive = true;
 
     private static void initializer() throws ParserConfigurationException, IOException, SAXException {
@@ -40,6 +40,9 @@ public class ServerConnectionHandler {
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document document = documentBuilder.parse(file);
         PORT = Integer.parseInt(document.getElementsByTagName("portNumber").item(0).getTextContent());
+        PING_TIMEOUT = Integer.parseInt(document.getElementsByTagName("ping").item(0).getTextContent());
+        ACTION_TIMEOUT = Integer.parseInt(document.getElementsByTagName("action").item(0).getTextContent());
+
     }
 
     public ServerConnectionHandler() throws ClientOutOfReachException
@@ -118,16 +121,7 @@ public class ServerConnectionHandler {
     public String login() throws ClientOutOfReachException
     {
         String user = "";
-        /*try {
-            outSocket.println("login");
-            outSocket.println("Inserisci username");
-            user = inSocket.readLine();
-        } catch (IOException e) {
-            throw new ClientOutOfReachException("it.polimi.ingsw.client is out of reach");
-        }
-        return user;*/
 
-        //non decommmentare: funziona, ma la parte corrispondente sul client è in costruzione (c'è la verisione vecchia)
         boolean reachable = ping();
         if(reachable) {
             //setting up messages timeout
@@ -149,7 +143,7 @@ public class ServerConnectionHandler {
                     isAlive = false;
                 } else {
                     isAlive = true;
-                    System.out.println("time's up");
+                    //System.out.println("time's up");
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -167,17 +161,44 @@ public class ServerConnectionHandler {
         String response = "";
 
         try {
-            JSONArray jsonArray = JSONFacilities.encodeStringArrays(s1, s2); //creo il json da inviare
-            outSocket.println("windowinit"); //dico al client che azione voglio eseguire
-            outSocket.println("Scegli la vetrata");
-            outSocket.println(jsonArray.toString());    //invio le due coppie di vetrate
-            response = inSocket.readLine();  //mi aspetto il nome della vetrata scelta
-        }
-        catch (IOException e) {
-            throw new ClientOutOfReachException("it.polimi.ingsw.client is out of reach");
-        }
-        catch (JSONException je) {
-            throw new ClientOutOfReachException("JSON can't decrypt client message");
+            JSONArray jsonArray = JSONFacilities.encodeStringArrays(s1, s2);
+            boolean reachable = ping();
+            if (reachable) {
+                //setting up messages timeout
+                try {
+                    client.setSoTimeout(ACTION_TIMEOUT);
+                } catch (SocketException e) {
+                    e.printStackTrace();
+                }
+                outSocket.write("windowinit\n");
+                outSocket.flush();
+                outSocket.write("Scegli la vetrata\n");
+                outSocket.flush();
+                StringBuilder windows = new StringBuilder(jsonArray.toString());
+                windows.append("\n");
+                outSocket.write(windows.toString());
+                outSocket.flush();
+                try {
+                    response = inSocket.readLine();
+                    isAlive = true;
+                } catch (SocketTimeoutException ste) {
+                    boolean alive = ping();
+                    if (!alive) {
+                        isAlive = false;
+                    } else {
+                        isAlive = true;
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else isAlive = false;
+
+            if (!isAlive)
+                throw new ClientOutOfReachException("it.polimi.ingsw.client is out of reach");
+            outSocket.write("ok\n");
+            outSocket.flush();
+        } catch (JSONException je) {
+            throw new ClientOutOfReachException("JSON can't encrypt client message");
         }
 
         return response;

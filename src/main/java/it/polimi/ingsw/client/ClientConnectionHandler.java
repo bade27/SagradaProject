@@ -21,6 +21,8 @@ public class ClientConnectionHandler implements Runnable {
 
     private static String address;
     private static int PORT;
+    private static int INIT_EXECUTE_TIME;
+    private static int MOVE_EXECUTE_TIME;
     private static boolean initialized = false;
 
     private Socket socket;
@@ -39,6 +41,8 @@ public class ClientConnectionHandler implements Runnable {
         Document document = documentBuilder.parse(file);
         address = document.getElementsByTagName("hostName").item(0).getTextContent();
         PORT = Integer.parseInt(document.getElementsByTagName("portNumber").item(0).getTextContent());
+        INIT_EXECUTE_TIME = Integer.parseInt(document.getElementsByTagName("init").item(0).getTextContent());
+        MOVE_EXECUTE_TIME = Integer.parseInt(document.getElementsByTagName("move").item(0).getTextContent());
     }
 
     public ClientConnectionHandler(Graphic c) {
@@ -68,34 +72,20 @@ public class ClientConnectionHandler implements Runnable {
 
         try {
             String action = "";
+            int executionTime = 0;
+            ExecutorService executor = Executors.newFixedThreadPool(1);
             while( (action = inSocket.readLine()) != "stop" )  {
                 switch (action) {
                     case "windowinit":
-                        chooseWindow();
+                        executionTime = INIT_EXECUTE_TIME;
+                        stopTask(() -> chooseWindow(), executionTime, executor);
                         continue;
                     case "privobj":
                         myPrivateObj();
                         continue;
                     case "login":
-                        ExecutorService executor = Executors.newCachedThreadPool();
-                        Callable<Boolean> task = new Callable<Boolean>() {
-                            public Boolean call() {
-                                return login();
-                            }
-                        };
-                        Future future = executor.submit(task);
-                        try {
-                            future.get(30, TimeUnit.SECONDS);
-                        } catch (TimeoutException te) {
-                            //System.out.println(te.getMessage());
-                            System.out.println("too late to reply");
-                        } catch (InterruptedException ie) {
-                            //System.out.println(ie.getMessage());
-                        } catch (ExecutionException ee) {
-                            //System.out.println(ee.getMessage());
-                        } finally {
-                            future.cancel(true);
-                        }
+                        executionTime = INIT_EXECUTE_TIME;
+                        stopTask(() -> login(), executionTime, executor);
                         continue;
                     case "close":
                         close();
@@ -103,6 +93,9 @@ public class ClientConnectionHandler implements Runnable {
                     case "ping":
                         outSocket.write("pong\n");
                         outSocket.flush();
+                        continue;
+                    case "wellcome!":
+                        System.out.println(action);
                         continue;
                     default:
                         return;
@@ -114,23 +107,26 @@ public class ClientConnectionHandler implements Runnable {
 
     }
 
-    public void chooseWindow()
+    public Boolean chooseWindow()
     {
         try {
             System.out.println(inSocket.readLine());
             String json = inSocket.readLine();
-            String choice = graph.chooseWindow(JSONFacilities.decodeStringArrays(json));
+            StringBuilder choice = new StringBuilder(graph.chooseWindow(JSONFacilities.decodeStringArrays(json)));
             try {
-                adp.initializeWindow(choice);
+                adp.initializeWindow(choice.toString());
             }catch (ModelException ex) {
                 System.out.println(ex.getMessage());
             }
-            outSocket.println(choice);
+            choice.append("\n");
+            outSocket.write(choice.toString());
+            return outSocket.checkError();
         } catch (IOException e) {
             e.printStackTrace();
         } catch (JSONException je) {
             je.printStackTrace();
         }
+        return false;
     }
 
     public void myPrivateObj() {
@@ -162,6 +158,22 @@ public class ClientConnectionHandler implements Runnable {
             e.printStackTrace();
         }
         return false;
+    }
+
+    private <T> void stopTask(Callable<T> task, int executionTime, ExecutorService executor) {
+        Future future = executor.submit(task);
+        try {
+            future.get(executionTime, TimeUnit.MILLISECONDS);
+        } catch (TimeoutException te) {
+            //System.out.println(te.getMessage());
+            System.out.println("too late to reply");
+        } catch (InterruptedException ie) {
+            //System.out.println(ie.getMessage());
+        } catch (ExecutionException ee) {
+            //System.out.println(ee.getMessage());
+        } finally {
+            future.cancel(true);
+        }
     }
 
     private void close() {
