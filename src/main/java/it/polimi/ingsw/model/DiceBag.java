@@ -20,9 +20,9 @@ public class DiceBag {
     }
 
     /**
-     * inizializza i dadi e li inserisce nel sacchetto (aka dice)
-     * N.B.: l'assenza di break nei vari branch è intenzionale, in quanto se ho esaurito i dadi di
-     * un colore passo a quello successivo
+     * initialize dice and fill dicebag (aka dice)
+     * N.B.: the absence of 'break' in switch-case code is intentional because if I created all dice for a color,
+     * I pass to the next one.
      */
     private void init() {
         int num_of_red, num_of_green,
@@ -79,12 +79,9 @@ public class DiceBag {
         }
     }
 
-    //medoti per il check del rep
-
     /**
-     *
-     * @param col
-     * @return *numero di elementi del colore scelto*
+     * @param col color to check
+     * @return number of dice per color created
      */
     private int numberOfDicePerColor(Color col) {
         return (int)dice.stream()
@@ -94,8 +91,7 @@ public class DiceBag {
     }
 
     /**
-     * controlla che la somma dei dadi per colore sia uguale
-     * al numero di dadi presenti nel sacchetto
+     *  check if sum of dice per color is equals to sum of dice inside dicebag
      */
     private void checkNumDice() {
         assert numberOfDicePerColor(Color.red) + numberOfDicePerColor(Color.green)
@@ -104,7 +100,7 @@ public class DiceBag {
     }
 
     /**
-     * controllo del rep dopo il costruttore
+     * check of rep after constructor
      */
     private void checkConstructor() {
         assert dice.size() == N_OF_DICE;
@@ -120,8 +116,8 @@ public class DiceBag {
     /**
      *
      * @param n
-     * @return *una lista di n dadi estratti dal sacchetto*
-     * (i dadi estratti vengono rimossi)
+     * @return list of dice extract from dicebag
+     * (dice extract will be removed form dicebag)
      */
     public ArrayList<Dice> pickDices(int n) {
         if(n > dice.size())
@@ -138,7 +134,7 @@ public class DiceBag {
 
     /**
      *
-     * @return *il numero di dadi rimasti*
+     * @return number of dice remaining
      */
     public int getRemainingDice() {
         return dice.size();
@@ -146,7 +142,7 @@ public class DiceBag {
 
     /**
      *
-     * @return *la rappresentazione in formato String del contenuto del sacchetto*
+     * @return Dicebag on string representation
      */
     @Override
     public String toString() {

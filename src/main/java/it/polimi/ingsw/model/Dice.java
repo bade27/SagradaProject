@@ -24,9 +24,9 @@ public class Dice
     }
 
     /**
-     * Controlla se il dado passato è esattamente uguale a this
-     * @param d dado da confrontare
-     * @return true se ugale, false se diverso
+     * Check if die passed is equals to this placement in color and value
+     * @param d die to compare
+     * @return true equals, false different
      */
     public boolean isEqual (Dice d)
     {
@@ -38,9 +38,9 @@ public class Dice
     }
 
     /**
-     * Controlla se il dado passato ha uno dei due parametri uguale a this
-     * @param d dado da confrontare
-     * @return true se simile, false se diverso
+     * Check if die passed is similar to this placement in color or value
+     * @param d die to compare
+     * @return true similar, false different
      */
     public boolean isSimilar (Dice d)
     {

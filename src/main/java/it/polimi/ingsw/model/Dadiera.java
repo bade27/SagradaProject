@@ -12,7 +12,7 @@ public class Dadiera
     private DiceBag bag;
 
     /**
-     * Genera una nuova dadiera per il numero di fiocatori passati
+     * Generate a new Dadiera item
      */
     public Dadiera ()
     {
@@ -21,7 +21,7 @@ public class Dadiera
     }
 
     /**
-     * Genera un nuovo set di dadi casualmente
+     * Generate a new set of dice randomly with dim of numGioc
      */
     public void mix (int numGioc)
     {
@@ -29,6 +29,10 @@ public class Dadiera
         assert listaDadi != null;
     }
 
+    /**
+     * Delete passed die from dadiera
+     * @param d die to delete
+     */
     public void deleteDice (Dice d)
     {
         for (int i=0;i < listaDadi.size();i++)
@@ -39,6 +43,12 @@ public class Dadiera
             }
     }
 
+    /**
+     * Return die in i position
+     * @param i position of occurred die
+     * @return die selected
+     * @throws IllegalDiceException die not present
+     */
     public Dice getDice (int i) throws IllegalDiceException
     {
         try {
@@ -50,13 +60,15 @@ public class Dadiera
 
     }
 
-    public ArrayList<Dice> getListaDadi() {
-        return listaDadi;
-    }
+    /**
+     * return entire list of dice
+     * @return
+     */
+    public ArrayList<Dice> getListaDadi() { return listaDadi; }
 
     /**
      *
-     * @return i dadi presenti sull'area di gioco in formato String
+     * @return dice inside item on string format
      */
     @Override
     public String toString() {
