@@ -105,15 +105,17 @@ public class ServerConnectionHandler {
         catch(Exception e)
         {
             try {
-                serverSocket.close();
-            } catch(Exception ex) { }
+                if (serverSocket != null)
+                    serverSocket.close();
+            } catch(IOException  npe) {}
             //throw new ClientOutOfReachException("Impossible to accept client connection \n\r" + e.getStackTrace().toString());
         }
         finally {
             try {
-                serverSocket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
+                if (serverSocket != null)
+                    serverSocket.close();
+            } catch (IOException npe) {
+                npe.printStackTrace();
             }
         }
     }

@@ -63,9 +63,9 @@ public class ServerPlayer extends Thread
         }
         catch (InterruptedException ex) {
             System.out.println(ex.getMessage());
-            LogFile.addLog(ex.getStackTrace().toString());
+            LogFile.addLog("Fatal error on thread " + user  , ex.getStackTrace());
             token.notifyFatalError();
-            return;
+            Thread.currentThread().interrupt();
         }
 
         //////GAME PHASE//////
@@ -91,9 +91,9 @@ public class ServerPlayer extends Thread
                 catch (InterruptedException ex)
                 {
                     System.out.println(ex.getMessage());
-                    LogFile.addLog(ex.getStackTrace().toString());
+                    LogFile.addLog("Fatal error on thread " + user  , ex.getStackTrace());
                     token.notifyFatalError();
-                    return;
+                    Thread.currentThread().interrupt();
                 }
 
             }

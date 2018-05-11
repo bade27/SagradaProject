@@ -1,5 +1,7 @@
 package it.polimi.ingsw.utilities;
 
+import com.sun.istack.internal.Nullable;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -10,19 +12,28 @@ public class LogFile
 {
     public static void cleanFile ()
     {
-        FileWriter f;
+        FileWriter f = null;
         try {
             f = new FileWriter("LogFile.log");
         }
         catch (IOException ex){
             System.out.println(ex.getMessage());
         }
+        finally
+        {
+            try{
+                if (f != null)
+                    f.close();
+            }catch (IOException ex ){
+                System.out.println(ex.getMessage());
+            }
+        }
     }
 
 
     public synchronized static void addLog (String s)
     {
-        FileWriter f;
+        FileWriter f = null;
         try {
             f = new FileWriter("LogFile.log",true);
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -33,11 +44,20 @@ public class LogFile
         catch (IOException ex){
             System.out.println(ex.getMessage());
         }
+        finally
+        {
+            try{
+                if (f != null)
+                    f.close();
+            }catch (IOException ex ){
+                System.out.println(ex.getMessage());
+            }
+        }
     }
 
     public synchronized static void addLog (String s, StackTraceElement[] st)
     {
-        FileWriter f;
+        FileWriter f = null;
         try {
             f = new FileWriter("LogFile.log",true);
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -51,6 +71,15 @@ public class LogFile
         }
         catch (IOException ex){
             System.out.println(ex.getMessage());
+        }
+        finally
+        {
+            try{
+                if (f != null)
+                    f.close();
+            }catch (IOException ex ){
+                System.out.println(ex.getMessage());
+            }
         }
     }
 }

@@ -169,6 +169,7 @@ public class ClientConnectionHandler implements Runnable {
             System.out.println("too late to reply");
         } catch (InterruptedException ie) {
             //System.out.println(ie.getMessage());
+            Thread.currentThread().interrupt();
         } catch (ExecutionException ee) {
             //System.out.println(ee.getMessage());
         } finally {
