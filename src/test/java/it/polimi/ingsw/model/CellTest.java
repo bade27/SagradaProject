@@ -36,6 +36,29 @@ class CellTest
     }
 
 
+    @Test
+    void setDiceByColor() {
+        assertTrue(backColorVoid.setDiceByColor(new Dice(3,Color.RED)));
+        assertTrue(backColorVoid.setDiceByColor(new Dice(5,Color.BLUE)));
+
+        assertTrue(backValueVoid.setDiceByColor(new Dice(5,Color.BLUE)));
+        assertFalse(backValueVoid.setDiceByColor(new Dice(3,Color.RED)));
+
+        assertTrue(backVoid.setDiceByColor(new Dice(3,Color.RED)));
+        assertTrue(backVoid.setDiceByColor(new Dice(5,Color.BLUE)));
+    }
 
 
+
+    @Test
+    void setDiceByValue() {
+        assertTrue(backColorVoid.setDiceByColor(new Dice(3,Color.RED)));
+        assertFalse(backColorVoid.setDice(new Dice(5,Color.BLUE)));
+
+        assertTrue(backValueVoid.setDiceByColor(new Dice(5,Color.BLUE)));
+        assertTrue(backValueVoid.setDiceByColor(new Dice(3,Color.RED)));
+
+        assertTrue(backVoid.setDiceByColor(new Dice(3,Color.RED)));
+        assertTrue(backVoid.setDiceByColor(new Dice(5,Color.BLUE)));
+    }
 }

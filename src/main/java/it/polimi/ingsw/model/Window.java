@@ -12,12 +12,12 @@ public class Window
     private Cell board [][];
     public final int rows = 4;
     public final int cols = 5;
-    private boolean firstTurn;//Indica se il dado da inserire deve per forza stare sul bordo (primo inserimento)
+    private boolean firstTurn;//Flag that tell if we are in firs turn of game
     private String boardPath;
 
     /**
-     * Genera una nuova window da file xml
-     * @param path path del file xml per la generazione della window+
+     * Create a new Window from XML file
+     * @param path file xml path
      */
     public Window (String path) throws ParserXMLException
     {
@@ -28,30 +28,31 @@ public class Window
     }
 
     /**
-     * Aggiunge alla window il Dice passato come parametro agli indici i e j swe rispetta i vincoli di gioco,altrimenti invoca un exception
-     * @param i Riga in cui aggiungere il Dice
-     * @param j Colonna in cui aggiungere il Dice
-     * @param d Dice da Aggiungere
-     * @param level livello di controllo da adottare nell'inseriemnto (-1: nessun controllo ; 0:tutti controlli)
-     * @throws IllegalDiceException
+     * Adds to window indicated die in indicated position, if window rejects insertion this method throw an exception
+     * @param i Row index to add die
+     * @param j Column index to add die
+     * @param d Die to add
+     * @param level control level of insertion (-1: no control ; 0:all control ; 1:control to Placement value ;
+     *                                          2:control to Placement color ; 3:no control to near die)
      */
     public void addDice (int i , int j , Dice d, int level) throws IllegalDiceException
     {
-        if (i < 0 || j < 0 || i > rows-1 || j > cols-1 )
+        if (checkPositionBorder(i,j))
             throw new IllegalDiceException("Position out of bound");
 
+        //Check if no controls are expected
         if (level == -1)
         {
             board[i][j].setFrontDice(d);
             return;
         }
-        //Controllo se il primo dado immesso sia inserito sul bordo
+
+        //Check if die position is on board
         if (firstTurn)
         {
             if ((i == 0 || i == rows - 1 || j == 0 || j == cols - 1))
             {
-                //Controllo se il placement è compatibile con il FrontDice
-                if (!board[i][j].setDice(d))
+                if (!setDie(i,j,d,level))
                     throw new IllegalDiceException("Die not placed on compatible cell");
                 else
                     firstTurn = false;
@@ -61,14 +62,14 @@ public class Window
         }
         else
         {
-            //Controllo se già presente un currentDice
+            //Control if die position is occupied
             if (board[i][j].getFrontDice() != null)
                 throw new IllegalDiceException("Die placed on another one");
 
-            boolean near=false;
-            boolean noSimilar = true;
+            boolean near=false; //true if there is die near my position
+            boolean noSimilar = true; //true if there are not dice similar on cardinal position
 
-            //Controllo su posizionamento di dadi con colore/valore adiacenti
+            //Check near and similar condition
             for (int ind=0; ind<3 ; ind++)
             {
                 for (int jnd=0; jnd<3; jnd++)
@@ -83,15 +84,44 @@ public class Window
                 }
             }
 
-            if (near && noSimilar)
-            {
-                if (!board[i][j].setDice(d))
+            if (noSimilar && level == 3) {
+                if (!setDie(i, j, d, 0))
                     throw new IllegalDiceException("Die not placed on compatible cell");
-                return;
             }
+
+            else if (near && noSimilar) {
+                    if (!setDie(i, j, d, level))
+                        throw new IllegalDiceException("Die not placed on compatible cell");
+            }
+
             else
                 throw new IllegalDiceException("Die not placed near a compatible one");
         }
+    }
+
+    /**
+     * Check if die position parameters are correct
+     */
+    private boolean checkPositionBorder (int i, int j)
+    {
+        return  (i < 0 || j < 0 || i > rows-1 || j > cols-1 );
+    }
+
+    /**
+     * Set die with opportune control
+     * @return true die set, false otherwise
+     */
+    private boolean setDie (int i , int j ,Dice d , int control)
+    {
+        if (control == 0)
+            return board[i][j].setDice(d);
+        else if (control == 1)
+            return board[i][j].setDiceByValue(d);
+        else if (control == 2)
+            return board[i][j].setDiceByColor(d);
+        else if (control == 3)
+            return board[i][j].setDice(d);
+        return false;
     }
 
 

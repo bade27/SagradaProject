@@ -22,9 +22,9 @@ public class Placement
     }
 
     /**
-     * Controlla se il dado passato è esattamente uguale a this
-     * @param d dado da confrontare
-     * @return true se ugale, false se diverso
+     * Check if die passed is equals to this placement in color and value
+     * @param d die to compare
+     * @return true equals, false different
      */
     public boolean isEqual (Dice d)
     {
@@ -36,9 +36,9 @@ public class Placement
     }
 
     /**
-     * Controlla se il dado passato ha uno dei due parametri uguale a this
-     * @param d dado da confrontare
-     * @return true se simile, false se diverso
+     * Check if die passed is similar to this placement in color or value
+     * @param d die to compare
+     * @return true similar, false different
      */
     public boolean isSimilar (Dice d)
     {
@@ -50,8 +50,32 @@ public class Placement
     }
 
     /**
+     * Check if die passed is equals to this placement in color
+     * @param d die to compare
+     * @return true equals, false different
+     */
+    public boolean isColorEquals (Dice d)
+    {
+        if (d.getColor() == color || color == null)
+            return true;
+        return false;
+    }
+
+    /**
+     * Check if die passed is equals to this placement in value
+     * @param d die to compare
+     * @return true equals, false different
+     */
+    public boolean isValueEquals (Dice d)
+    {
+        if (d.getValue() == value || value == 0)
+            return true;
+        return false;
+    }
+
+    /**
      *
-     * @return *la rappresentazione in formato String del placement
+     * @return String representation of placement
      */
     @Override
     public String toString() {

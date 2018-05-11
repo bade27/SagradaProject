@@ -46,9 +46,16 @@ class PlacementTest {
     }
 
     @Test
-    void isSimilarFalse () {
+    void isSimilarColorFalse () {
         assertFalse(place.isSimilar(new Dice (5,Color.RED)));
     }
+
+    @Test
+    void isColorEquals() { assertTrue(place.isColorEquals(new Dice (5,Color.BLUE))); assertFalse(place.isColorEquals(new Dice (5,Color.RED)));}
+
+    @Test
+    void isValueEquals() { assertTrue(place.isValueEquals(new Dice (3,Color.RED))); assertFalse(place.isValueEquals(new Dice (5,Color.BLUE)));}
+
 
     @Test
     void equalCOLORcolor (){
@@ -64,5 +71,4 @@ class PlacementTest {
     void toStringTest() {
         assertNotNull(place.toString());
     }
-
 }

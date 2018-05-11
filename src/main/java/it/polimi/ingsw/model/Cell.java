@@ -12,9 +12,9 @@ public class Cell
     }
 
     /**
-     * Setta il front dice col dado passato se esso è compatibile con il placement
-     * @param d dado da settare front dice
-     * @return  true se front dice settato, false altrimenti
+     * Set passed die to cell's front die if it is similar to placement
+     * @param d die to set
+     * @return  true die set, false otherwise
      */
     public boolean setDice (Dice d)
     {
@@ -24,9 +24,36 @@ public class Cell
         return true;
     }
 
-    public void setFrontDice (Dice d)
+    /**
+     * Set passed die to cell's front die if it has color equals to placement's one
+     * @param d die to set
+     * @return  true die set, false otherwise
+     */
+    public boolean setDiceByColor (Dice d)
+    {
+        if (!back.isColorEquals(d))
+            return false;
+        frontDice = d;
+        return true;
+    }
+
+    /**
+     * Set passed die to cell's front die if it has value equals to placement's one
+     * @param d die to set
+     * @return  true die set, false otherwise
+     */
+    public boolean setDiceByValue (Dice d)
+    {
+        if (!back.isValueEquals(d))
+            return false;
+        frontDice = d;
+        return true;
+    }
+
+    public boolean setFrontDice (Dice d)
     {
         frontDice = d;
+        return true;
     }
 
     public Dice getFrontDice ()
