@@ -18,8 +18,8 @@
 		
 -   Communication
     - Hard deadline
-        - [ ]    Create a standard protocol
-        - [ ]    Define in a document standard protocol used
+        - [X]    Create a standard protocol
+        - [X]    Define in a document standard protocol used
     - Connection Phase
         - [X]   Accepting connections
         - [X]   Check client's alive
