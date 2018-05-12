@@ -49,10 +49,6 @@
 </p>
 <br>
 
-<!--- #####login aknowledge  
-<p></p>
-<br> --->
-
 
 ###Window choice phase 
 <pre>
@@ -301,7 +297,7 @@
      |<-------------------------|
      |                          |
 </pre>
-- #####Pinza Sgrossatrice (1)
+- #####Pinza Sgrossatrice (1)<br>
      #####action
     <p style:"text-align:left">
         ["color","value"]\n<br>
@@ -324,7 +320,7 @@
     </p>
     <br>
     
-- #####Pennello per Eglomise (2)
+- #####Pennello per Eglomise (2)<br>
     #####action
     <p style:"text-align:left">
         [color, ["x<sub>i</sub>", "y<sub>i</sub>"], ["x<sub>f</sub>", "y<sub>f</sub>"]]\n<br>
@@ -344,7 +340,7 @@
     </p>
     <br>
 
-- #####Alesatore per Lamine di rame (3)
+- #####Alesatore per Lamine di rame (3)<br>
     #####action
     <p style:"text-align:left">
         ["value", ["x<sub>i</sub>", "y<sub>i</sub>"], ["x<sub>f</sub>", "y<sub>f</sub>"]]\n<br>
@@ -364,7 +360,7 @@
     </p>
     <br>
     
-- #####Riga in sughero (9)
+- #####Riga in sughero (9)<br>
     #####action
     <p style:"text-align:left">
         ["color", value"]\n<br>
@@ -387,7 +383,7 @@
     </p>
     <br>
     
-- #####Tampone diamantato (10)
+- #####Tampone diamantato (10)<br>
     #####action
     <p style:"text-align:left">
         ["color", value"]\n
@@ -449,7 +445,7 @@
                                     |                          |
 </pre>
 
-- #####Lathekin (4)
+- #####Lathekin (4)<br>
     #####dice_coordinates
     <p style:"text-align:left">
         ["value", ["x<sub>i</sub>", "y<sub>i</sub>"], ["x<sub>f</sub>", "y<sub>f</sub>"]]\n<br>
@@ -495,7 +491,7 @@
      |                          |
 </pre>
 
-- #####Taglierina circolare (5)
+- #####Taglierina circolare (5)<br>
     #####selected_dice
     <p style:"text-align:left">
         ["color", "value"]\n
@@ -556,7 +552,7 @@
      |                          |  
 </pre>
 
-- #####Pennello per pasta salda (6)
+- #####Pennello per pasta salda (6)<br>
     #####selected_dice
     <p style:"text-align:left">
         ["color", "value"]\n
@@ -597,7 +593,7 @@
     the information it just sends a reply and a graphic update:
 </p>
 
-- #####Martelletto (7) and Tenaglia a rotelle (8)
+- #####Martelletto (7) and Tenaglia a rotelle (8)<br>
     #####response
     <p style:"text-align:left">
         response\n<br>
@@ -649,7 +645,7 @@
      |                          |
 </pre>
 
-- #####Diluente per pasta salda (11)
+- #####Diluente per pasta salda (11)<br>
     #####selected_dice
     <p style:"text-align:left">
         ["color", "value"]\n
@@ -740,7 +736,7 @@
                                     |                          |
 </pre>
 
-- #####Taglierina manuale (12)
+- #####Taglierina manuale (12)<br>
     #####num_of_dice and color
     <p style:"text-align:left">
         "num_of_dice"<TAB>"selected_color"\n
