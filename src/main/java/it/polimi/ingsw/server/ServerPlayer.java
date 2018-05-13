@@ -115,6 +115,8 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
         }
     }
 
+
+
     //<editor-fold desc="Initialization Phase">
     /**
      * Generate 2 method for accepting client (Rmi and Socket)
