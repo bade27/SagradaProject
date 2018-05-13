@@ -1,5 +1,8 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.RemoteInterface.ClientRemoteInterface;
+import it.polimi.ingsw.RemoteInterface.ServerRemoteInterface;
+import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.exceptions.ModelException;
 import it.polimi.ingsw.utilities.JSONFacilities;
 import org.json.JSONException;
@@ -14,7 +17,7 @@ import java.net.Socket;
 import java.util.Scanner;
 import java.util.concurrent.*;
 
-public class ClientConnectionHandler implements Runnable {
+public class ClientConnectionHandler implements Runnable,ServerRemoteInterface {
 
     //contiene informazioni su indirizzo e porta del server
     private static final String settings = "resources/settings.xml";
@@ -31,8 +34,7 @@ public class ClientConnectionHandler implements Runnable {
 
     private Thread deamon;
 
-    private Graphic graph;
-    ClientModelAdapter adp;
+    ClientPlayer player;
 
     private static void initializer() throws ParserConfigurationException, IOException, SAXException {
         File file = new File(settings);
@@ -45,9 +47,8 @@ public class ClientConnectionHandler implements Runnable {
         MOVE_EXECUTE_TIME = Integer.parseInt(document.getElementsByTagName("move").item(0).getTextContent());
     }
 
-    public ClientConnectionHandler(Graphic c) {
-        this.graph = c;
-        adp = new ClientModelAdapter(graph);
+    public ClientConnectionHandler(ClientPlayer cli) {
+        player = cli;
         System.out.println("connecting...");
         try{
             if(!initialized) {
@@ -80,9 +81,9 @@ public class ClientConnectionHandler implements Runnable {
                         executionTime = INIT_EXECUTE_TIME;
                         stopTask(() -> chooseWindow(), executionTime, executor);
                         continue;
-                    case "privobj":
+                    /*case "privobj":
                         myPrivateObj();
-                        continue;
+                        continue;*/
                     case "login":
                         executionTime = INIT_EXECUTE_TIME;
                         stopTask(() -> login(), executionTime, executor);
@@ -112,12 +113,7 @@ public class ClientConnectionHandler implements Runnable {
         try {
             System.out.println(inSocket.readLine());
             String json = inSocket.readLine();
-            StringBuilder choice = new StringBuilder(graph.chooseWindow(JSONFacilities.decodeStringArrays(json)));
-            try {
-                adp.initializeWindow(choice.toString());
-            }catch (ModelException ex) {
-                System.out.println(ex.getMessage());
-            }
+            StringBuilder choice = new StringBuilder(player.chooseWindow(JSONFacilities.decodeStringArrays(json)));
             choice.append("\n");
             outSocket.write(choice.toString());
             return outSocket.checkError();
@@ -129,32 +125,24 @@ public class ClientConnectionHandler implements Runnable {
         return false;
     }
 
-    public void myPrivateObj() {
+    /*public void myPrivateObj() {
         try {
             String response = graph.myPrivateObj(inSocket.readLine()).toLowerCase();
             outSocket.println(response);
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 
     public Boolean login() {
         try {
             //Da modificare con finestra a popup con username
-            Scanner cli = new Scanner(System.in);
-            System.out.println(inSocket.readLine());
-            StringBuilder username = new StringBuilder(cli.nextLine());
+            inSocket.readLine();
+            StringBuilder username = new StringBuilder(player.login());
             username.append("\n");
             outSocket.write(username.toString());
             return outSocket.checkError();
-            //SOLO PER TEST
-            /*if (username.equals("B"))
-            {
-                socket.close();
-                outSocket.close();
-                inSocket.close();
-            }*/
-        } catch (IOException e) {
+        } catch (IOException | ClientOutOfReachException e) {
             e.printStackTrace();
         }
         return false;
@@ -192,5 +180,10 @@ public class ClientConnectionHandler implements Runnable {
                 System.err.println("Socket not closed");
             }
         }
+    }
+
+    //Sono obbligato ad implementarlo, per ora non ha uno scopo preciso
+    public void setClient (ClientRemoteInterface client)
+    {
     }
 }

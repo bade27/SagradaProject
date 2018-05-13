@@ -1,28 +1,43 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.RemoteInterface.ClientRemoteInterface;
+import it.polimi.ingsw.RemoteInterface.ServerRemoteInterface;
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.exceptions.ModelException;
 import it.polimi.ingsw.utilities.LogFile;
 
+import java.rmi.Naming;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
-public class ServerPlayer extends Thread
+public class ServerPlayer extends UnicastRemoteObject implements Runnable,ServerRemoteInterface
 {
-    private ServerConnectionHandler com;
+    private ClientRemoteInterface comunicator;
     private TokenTurn token;
     private ServerModelAdapter adapter;
     private String user;
+
+    private boolean connectionError;
+    private Integer lockObject;
+    ServerConnectionHandler socketCon;
 
     private ArrayList<String> possibleUsers;
 
     private String[] windowCard1,windowCard2,publicObjCard;
     private String privateObjCard;
 
-    public ServerPlayer(TokenTurn tok, ServerModelAdapter adp, ArrayList ps)
+    public ServerPlayer(TokenTurn tok, ServerModelAdapter adp, ArrayList ps) throws RemoteException
     {
         adapter = adp;
         token = tok;
         possibleUsers = ps;
+        comunicator = null;
+        connectionError = false;
+        lockObject = 0;
+        //initConn();
     }
 
 
@@ -100,22 +115,65 @@ public class ServerPlayer extends Thread
         }
     }
 
+    //<editor-fold desc="Initialization Phase">
     /**
-     * Wait until client's connection
+     * Generate 2 method for accepting client (Rmi and Socket)
+     * For socket this method creates a thread in waiting of Connection client
+     * For RMI this method put a bind of ServerPlayer
      * @return true if connection goes well, false otherwise
      */
-    public boolean initializeComunication ()
+    public boolean initializeCommunication (int progressive)
     {
+        //RMI Registry creation and bind server name
+        try {
+            try{
+                java.rmi.registry.LocateRegistry.createRegistry(1099);
+            }catch (Exception ex){}
+
+            Naming.bind("rmi://127.0.0.1/sagrada" + progressive, this );
+
+            LogFile.addLog("RMI Bind Waiting for client");
+        }catch (Exception e) {
+            LogFile.addLog("RMI Bind failed" , e.getStackTrace());
+        }
+
+        //Socket connection creation
         try{
-            com = new ServerConnectionHandler();
-            return true;
+            socketCon = new ServerConnectionHandler();
+            socketCon.createConnection();
+            if (socketCon.isConnected())
+                comunicator = socketCon;
+            synchronized (lockObject) {
+                lockObject.notifyAll();
+            }
         }
         catch (ClientOutOfReachException e) {
             LogFile.addLog(e.getMessage() , e.getStackTrace());
-            return false;
+            synchronized (lockObject) {
+                connectionError = true;
+                lockObject.notifyAll();
+            }
         }
+        return !connectionError;
     }
 
+    /**
+     * From this method client can connect with RMI
+     * @param client client stub
+     */
+    public void setClient (ClientRemoteInterface client) throws RemoteException
+    {
+        synchronized (lockObject)
+        {
+            socketCon.start();
+            comunicator = client;
+            lockObject.notifyAll();
+        }
+
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="Setup Phase">
     /**
      * Initialize username through login phase
      * @throws ClientOutOfReachException it.polimi.ingsw.client is out of reach
@@ -125,13 +183,13 @@ public class ServerPlayer extends Thread
         String u;
         try{
             do{
-                u = com.login();
+                u = comunicator.login();
             } while (!possibleUsers.contains(u));
             possibleUsers.remove(u);
             user = u;
             LogFile.addLog("User: " + user + " Added");
         }
-        catch (ClientOutOfReachException e) {
+        catch (ClientOutOfReachException|RemoteException e) {
             LogFile.addLog(e.getMessage() , e.getStackTrace());
             throw new ClientOutOfReachException();
         }
@@ -146,9 +204,9 @@ public class ServerPlayer extends Thread
     {
         String s1 ="";
         try {
-            s1 = com.chooseWindow(windowCard1, windowCard2);
+            s1 = comunicator.chooseWindow(windowCard1, windowCard2);
         }
-        catch (ClientOutOfReachException e) {
+        catch (ClientOutOfReachException|RemoteException e) {
             LogFile.addLog("(User:" + user + ")" + e.getMessage() , e.getStackTrace());
             throw new ClientOutOfReachException();
         }
@@ -166,11 +224,6 @@ public class ServerPlayer extends Thread
         }
     }
 
-    public boolean isClientAlive ()
-    {
-        return com.ping();
-    }
-
     private void initializePrivateObjectives (String card)
     {
         //Comunicazione col client per la sua carta obbiettivo privato
@@ -180,13 +233,25 @@ public class ServerPlayer extends Thread
     {
         //Comunicazione col client per le carte obbiettivo pubblico
     }
+    //</editor-fold>
 
+    //<editor-fold desc="Utilities: Ping/CloseCommunication(to implement)">
+    public boolean isClientAlive ()
+    {
+        try {
+            return comunicator.ping();
+        }catch (RemoteException e) {
+            return false;
+        }
+
+    }
     public void closeComunication ()
     {
-        //com.close ();
+
     }
+    //</editor-fold>
 
-
+    //<editor-fold desc="Window and objects set">
     public void setWindowCards (String c1[],String c2 [])
     {
         windowCard1 = c1;
@@ -202,5 +267,6 @@ public class ServerPlayer extends Thread
     {
         privateObjCard = c;
     }
+    //</editor-fold>
 
 }

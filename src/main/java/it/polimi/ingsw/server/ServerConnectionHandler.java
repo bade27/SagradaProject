@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.RemoteInterface.ClientRemoteInterface;
 import it.polimi.ingsw.utilities.JSONFacilities;
 import it.polimi.ingsw.utilities.LogFile;
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
@@ -18,7 +19,8 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
-public class ServerConnectionHandler {
+public class ServerConnectionHandler extends Thread implements ClientRemoteInterface
+{
 
     //contiene informazioni su indirizzo e porta del server
     private static final String settings = "resources/settings.xml";
@@ -33,6 +35,7 @@ public class ServerConnectionHandler {
     private static int PING_TIMEOUT; //10 sec
     private static int ACTION_TIMEOUT; //5 min
     private boolean isAlive = true;
+    private boolean isConnected;
 
     private static void initializer() throws ParserConfigurationException, IOException, SAXException {
         File file = new File(settings);
@@ -47,21 +50,38 @@ public class ServerConnectionHandler {
 
     public ServerConnectionHandler() throws ClientOutOfReachException
     {
+        isConnected = false;
+
+    }
+
+    public void createConnection () throws ClientOutOfReachException
+    {
         try {
             init_connection();
             inSocket = new BufferedReader(new InputStreamReader(client.getInputStream()));
             outSocket = new PrintWriter(new BufferedWriter(
                     new OutputStreamWriter(client.getOutputStream())), true);
-        } catch (IOException e)
+            isConnected = true;
+        }
+        catch (IOException|NullPointerException e)
         {
             try {
+                serverSocket.close();
                 client.close();
             } catch(Exception ex) {
-                ex.printStackTrace();
+                //ex.printStackTrace();
             }
-            throw new ClientOutOfReachException("Impossible to create Socket Buffer");
         }
+    }
 
+    public void run ()
+    {
+        try{
+            serverSocket.close();
+            client.close();
+        }catch (Exception e){
+
+        }
     }
 
     public boolean ping()
@@ -108,7 +128,7 @@ public class ServerConnectionHandler {
                 if (serverSocket != null)
                     serverSocket.close();
             } catch(IOException  npe) {}
-            //throw new ClientOutOfReachException("Impossible to accept client connection \n\r" + e.getStackTrace().toString());
+            //throw new ClientOutOfReachException("Impossible to accept client connection");
         }
         finally {
             try {
@@ -207,6 +227,11 @@ public class ServerConnectionHandler {
 
     }
 
+    public boolean isConnected() {
+        return isConnected;
+    }
+
+    /*
     public boolean sendPrivateObjective(String privObj) {
         //mi aspetto un ok come risposta
         try {
@@ -219,6 +244,7 @@ public class ServerConnectionHandler {
         }
         return false;
     }
+
 
     public void sendCards(String[]... s) {
         //mi aspetto un ok come risposta
@@ -248,5 +274,5 @@ public class ServerConnectionHandler {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 }

@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Window;
 
 import javax.swing.*;
 import java.awt.*;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public class Graphic extends JFrame
@@ -13,7 +14,8 @@ public class Graphic extends JFrame
     private int rows,cols;
     private CellGraphic board [][];
     private CellGraphic dices[];
-    private ClientConnectionHandler cch;
+    private ClientPlayer player;
+
 
     //Dado selezionato da quelli sopra
     private Dice selectedDice;
@@ -25,12 +27,15 @@ public class Graphic extends JFrame
 
     private void initailizeComunication ()
     {
-        cch = new ClientConnectionHandler(this);
+        try {
+            //1:RMI     0:Socket
+            player = new ClientPlayer(0,this);
+        }
+        catch (RemoteException e){
+            Thread.currentThread().interrupt();
+        }
     }
 
-    public String chooseWindow(ArrayList<String[]> list) {
-        return list.get(0)[0];
-    }
 
     public String myPrivateObj(String obj) {
         System.out.println(obj);
@@ -44,6 +49,7 @@ public class Graphic extends JFrame
     {
         Window finestra = giocatore.getWindow();
         //Dadiera dadiera = giocatore.getDadiera();
+
 
         rows = finestra.getRows();
         cols = finestra.getCols();

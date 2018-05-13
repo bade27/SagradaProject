@@ -7,17 +7,13 @@ import it.polimi.ingsw.utilities.LogFile;
 
 import java.util.ArrayList;
 
-/**
- * Cose da aggiungere:
- *  -la funzione run() che gestisce la partita
- *  -l'oggetto comunicator che comunica col client da passare al serverPlayer
- *  -completare l'initiailizePlayers
- *  -completare la startGame
- */
 public class MatchHandler implements Runnable
 {
+    //List of active serverPlayer
     private ArrayList<ServerPlayer> player;
+    private ArrayList<Thread> threadPlayers;
 
+    //Number of client connected
     private int nConn;
     private TokenTurn tok;
     private Dadiera dices;
@@ -75,24 +71,30 @@ public class MatchHandler implements Runnable
     }
 
     /**
-     * Iniziatalize connecition with server for each players
+     * Initialize connection with server for each players
      */
     private void acceptConnection()
     {
         System.out.println(">>>server Started");
         LogFile.addLog("server Started");
         nConn = 0;
+        threadPlayers = new ArrayList<Thread>();
         player = new ArrayList<ServerPlayer>();
         try
         {
             tok = new TokenTurn();
             dices = new Dadiera();
+
+            //Initialize possible username
             ArrayList possibleUsrs = initializePossibleUsers();
-            //Per ogni giocatore initzializza la comunicazione attendendo che qualche client si connetta
+
+            //progressive is a progressive number of connection created
+            int progressive = 0;
+            //For each players starts waiting for connection
             for (int i =0 ;i< MAXGIOC;i ++)
             {
                 ServerPlayer pl = new ServerPlayer(tok,new ServerModelAdapter(dices),possibleUsrs);
-                if (pl.initializeComunication())
+                if (pl.initializeCommunication(progressive))
                 {
                     player.add(pl);
                     LogFile.addLog("client accepted");
@@ -101,6 +103,7 @@ public class MatchHandler implements Runnable
                     i--;
                 int n = checkClientAlive();
                 i = i-n;
+                progressive++;
             }
             nConn = MAXGIOC - checkClientAlive();
             LogFile.addLog("Number of client(s) connected:" + nConn);
@@ -109,6 +112,7 @@ public class MatchHandler implements Runnable
             {
                 Thread t = new Thread(player.get(i));
                 t.start();
+                threadPlayers.add(t);
                 LogFile.addLog("Thread ServerPlayer " + i + " Started");
             }
         }
@@ -119,6 +123,10 @@ public class MatchHandler implements Runnable
         }
     }
 
+
+
+
+    //<editor-fold desc = "Window and objects initialization">
     /**
      *  Initialization board game for each players
      */
@@ -236,6 +244,9 @@ public class MatchHandler implements Runnable
         return true;
     }
 
+    //</editor-fold>
+
+    //<editor-fold desc="closeAllCOnnection/CheckClientAlive/WaitInitialization/initializePossibleUsers">
     /**
      * To modify in reading from XML or DB possible users
      * @return
@@ -250,6 +261,44 @@ public class MatchHandler implements Runnable
         return arr;
     }
 
+    /**
+     * DA MODIFICARE!! non funziona con interface runnable, serve memorizzare i thread di serverPlayer
+     */
+    private void closeAllConnection ()
+    {
+        for (int i = 0; i < threadPlayers.size() ; i++)
+            threadPlayers.get(i).interrupt();
+        for (int i = 0; i < player.size() ; i++)
+            player.get(i).closeComunication();
+
+        LogFile.addLog("All connections are forced to stop cause fatal error");
+    }
+
+    /**
+     * check if all clients are already connected
+     * @return number of client disconnected
+     */
+    private int checkClientAlive ()
+    {
+        int nDisc = 0;
+        try
+        {
+            for (int i = 0; i < player.size() ; i++)
+            {
+                if (!player.get(i).isClientAlive())
+                {
+                    nDisc ++ ;
+                    player.remove(i);
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            LogFile.addLog("" , e.getStackTrace());
+            closeAllConnection();
+        }
+        return nDisc;
+    }
 
     /**
      * Start client's setup comunication (Windows and it.polimi.ingsw.objectives)
@@ -269,7 +318,7 @@ public class MatchHandler implements Runnable
 
                 //Wait until end setup phase
                 while (tok.getOnSetup())
-                        tok.wait();
+                    tok.wait();
                 LogFile.addLog("Setup Phase ended");
             }
             catch (InterruptedException ex) {
@@ -279,39 +328,7 @@ public class MatchHandler implements Runnable
             }
         }
     }
-
-    private void closeAllConnection ()
-    {
-        for (int i = 0; i < player.size() ; i++)
-        {
-            player.get(i).interrupt();
-            player.get(i).closeComunication();
-        }
-        LogFile.addLog("All connections are forced to stop cause fatal error");
-    }
-
-    private int checkClientAlive ()
-    {
-        int nDisc = 0;
-        try
-        {
-            for (int i = 0; i < player.size() ; i++)
-            {
-                if (!player.get(i).isClientAlive())
-                {
-                    nDisc ++ ;
-                    player.get(i).interrupt();
-                    player.remove(i);
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            LogFile.addLog("" , e.getStackTrace());
-            closeAllConnection();
-        }
-        return nDisc;
-    }
+    //</editor-fold>
 
     public static void main(String[] args)
     {
