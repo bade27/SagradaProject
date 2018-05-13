@@ -160,20 +160,14 @@ public class ServerConnectionHandler extends Thread implements ClientRemoteInter
                 user = inSocket.readLine();
                 isAlive = true;
             } catch (SocketTimeoutException ste) {
-                boolean alive = ping();
-                if (!alive) {
-                    isAlive = false;
-                } else {
-                    isAlive = true;
-                    //System.out.println("time's up");
-                }
+                isAlive = false;
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else isAlive = false;
 
         if(!isAlive)
-            throw new ClientOutOfReachException("it.polimi.ingsw.client is out of reach");
+            throw new ClientOutOfReachException("client is out of reach");
         return user;
 
     }
@@ -204,19 +198,14 @@ public class ServerConnectionHandler extends Thread implements ClientRemoteInter
                     response = inSocket.readLine();
                     isAlive = true;
                 } catch (SocketTimeoutException ste) {
-                    boolean alive = ping();
-                    if (!alive) {
-                        isAlive = false;
-                    } else {
-                        isAlive = true;
-                    }
+                    isAlive = false;
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             } else isAlive = false;
 
             if (!isAlive)
-                throw new ClientOutOfReachException("it.polimi.ingsw.client is out of reach");
+                throw new ClientOutOfReachException("client is out of reach");
             outSocket.write("ok\n");
             outSocket.flush();
         } catch (JSONException je) {
