@@ -1,4 +1,4 @@
-#Communication protocol
+# Communication protocol
 <p style="text-align:justify">
     When the connection is initialized the server sends a "ping\n" message (plain text)
     and the client replies with a "pong\n" message (plain text).<br>
@@ -11,9 +11,9 @@
 </p>
 <br>
 
-##Initialization
+## Initialization
 
-###Login phase 
+### Login phase 
 <pre>
 +---------+              +---------+  
 | Client  |              | Server  |  
@@ -36,14 +36,14 @@
      |                        |  
 </pre>
 
-#####login request (server)  
+##### login request (server)  
 <p style="text-align:left">
     login\n<br>
     Inserire username\n
 </p>
 <br>
 
-#####login reply (client)  
+##### login reply (client)  
 <p style:"text-align:left">
     username\n
 </p>
@@ -79,7 +79,7 @@
      |                               |
 </pre>
 
-#####window request (server)  
+##### window request (server)  
 <p style:"text-align:left">
     windowinit\n<br>
     Scegli la vetrata\n<br>
@@ -87,19 +87,19 @@
 </p>
 <br>
 
-#####window reply (client)  
+##### window reply (client)  
 <p style:"text-align:left">
     path_window\n
 </p>
 <br>
 
-#####window ack (server)
+##### window ack (server)
 <p style:"text-align:left">
     ok\n
 </p>
 <br>
 
-###Cards phase (Tools and Public objectives)
+### Cards phase (Tools and Public objectives)
 <pre>
 +---------+       +---------+
 | Client  |       | Server  |
@@ -131,25 +131,25 @@
      |                 |
 </pre>
 
-#####objectives (server)  
+##### objectives (server)  
 <p style:"text-align:left">
     ["path_obj1", "path_obj2", "path_obj3"]\n
 </p>
 <br>
 
-#####tools (server)
+##### tools (server)
 <p style:"text-align:left">
     ["path_tool1", "path_tool2", "path_tool3"]\n
 </p>
 <br>
 
-#####reply (client)  
+##### reply (client)  
 <p style:"text-align:left">
     ok\n
 </p>
 <br>
 
-###Private objective phase
+### Private objective phase
 <pre>
 +---------+      +---------+
 | Client  |      | Server  |
@@ -171,21 +171,21 @@
      |--------------->|
      |                |
 </pre>
-#####objective (server)
+##### objective (server)
 <p style:"text-align:left">
     "path_obj"\n
 </p>
 <br>
 
-#####reply (client)  
+##### reply (client)  
 <p style:"text-align:left">
     ok\n
 </p>
 <br>
 
-##Game
+## Game
 
-###Move phase
+### Move phase
 <pre>
 +---------+                +---------+
 | Client  |                | Server  |
@@ -211,34 +211,34 @@
      |                          |
 </pre>
 
-#####wake (client)  
+##### wake (client)  
 <p style:"text-align:left">
     "your turn"\n
 </p>
 <br>
 
-#####move (server)
+##### move (server)
 <p style:"text-align:left">
         ["color", "value"]]\n<br>
         ["x", "y"]\n
     </p>
     <br>
 
-#####response
+##### response
 <p style:"text-align:left">
     response\n<br>
     <i>response: y, n</i>
 </p>
 <br>
     
-#####changed_gui_element
+##### changed_gui_element
 <p style:"text-align:left">
    [["color1", "value1"], ..., ["color20", "value20"]]\n
 </p>
 <br>
 
 
-###Tool phase
+### Tool phase
 <p style="text-align:justify">
     To use any of the tools the following set up messages are exchanged.<br>
 </p>
@@ -261,13 +261,13 @@
      |                    |
 </pre>
 
-#####tool request (client)
+##### tool request (client)
 <p style:"text-align:left">
     toolID<TAB>numToken\n
 </p>
 <br>
     
-#####response (server)
+##### response (server)
 <p style:"text-align:left">
     response\n<br>
     <i>response: y, n</i>
@@ -297,8 +297,8 @@
      |<-------------------------|
      |                          |
 </pre>
-- #####Pinza Sgrossatrice (1)<br>
-     #####action
+- ##### Pinza Sgrossatrice (1)<br>
+     ##### action
     <p style:"text-align:left">
         ["color","value"]\n<br>
         command\n<br>
@@ -306,76 +306,76 @@
     </p>
     <br>
     
-    #####reply
+    ##### reply
     <p style:"text-align:left">
         response\n<br>
         <i>response: y, n</i>
     </p>
     <br>
     
-    #####changed_gui_element
+    ##### changed_gui_element
     <p style:"text-align:left">
         [["color1", "value1"], ..., ["colorn", "valuen"]]\n<br>
         <i>where n is the number of dice on the table</i>
     </p>
     <br>
     
-- #####Pennello per Eglomise (2)<br>
-    #####action
+- ##### Pennello per Eglomise (2)<br>
+    ##### action
     <p style:"text-align:left">
         [color, ["x<sub>i</sub>", "y<sub>i</sub>"], ["x<sub>f</sub>", "y<sub>f</sub>"]]\n<br>
     </p>
     <br>
     
-    #####reply
+    ##### reply
     <p style:"text-align:left">
         response\n<br>
         <i>response: y, n</i>
     </p>
     <br>
     
-    #####changed_gui_element
+    ##### changed_gui_element
     <p style:"text-align:left">
         [["color1", "value1"], ..., ["color20", "value20"]]\n
     </p>
     <br>
 
-- #####Alesatore per Lamine di rame (3)<br>
+- ##### Alesatore per Lamine di rame (3)<br>
     #####action
     <p style:"text-align:left">
         ["value", ["x<sub>i</sub>", "y<sub>i</sub>"], ["x<sub>f</sub>", "y<sub>f</sub>"]]\n<br>
     </p>
     <br>
     
-    #####reply
+    ##### reply
     <p style:"text-align:left">
         response\n<br>
         <i>response: y, n</i>
     </p>
     <br>
     
-    #####changed_gui_element
+    ##### changed_gui_element
     <p style:"text-align:left">
         [["color1", "value1"], ..., ["color20", "value20"]]\n
     </p>
     <br>
     
-- #####Riga in sughero (9)<br>
-    #####action
+- ##### Riga in sughero (9)<br>
+    ##### action
     <p style:"text-align:left">
         ["color", value"]\n<br>
         ["x", "y"]\n<br>
     </p>
     <br>
     
-    #####reply
+    ##### reply
     <p style:"text-align:left">
         response\n<br>
         <i>response: y, n</i>
     </p>
     <br>
     
-    #####changed_gui_element
+    ##### changed_gui_element
     <p style:"text-align:left">
         [["color1", "value1"], ..., ["colorn", "valuen"]]\n<br>
         [["color1", "value1"], ..., ["color20", "value20"]]\n<br>
@@ -383,21 +383,21 @@
     </p>
     <br>
     
-- #####Tampone diamantato (10)<br>
-    #####action
+- ##### Tampone diamantato (10)<br>
+    ##### action
     <p style:"text-align:left">
         ["color", value"]\n
     </p>
     <br>
     
-    #####reply
+    ##### reply
     <p style:"text-align:left">
         response\n<br>
         <i>response: y, n</i>
     </p>
     <br>
     
-    #####changed_gui_element
+    ##### changed_gui_element
     <p style:"text-align:left">
         [["color1", "value1"], ..., ["color20", "value20"]]\n<br>
         <i>where n is the number of dice on the table</i>
@@ -445,21 +445,21 @@
                                     |                          |
 </pre>
 
-- #####Lathekin (4)<br>
-    #####dice_coordinates
+- ##### Lathekin (4)<br>
+    ##### dice_coordinates
     <p style:"text-align:left">
         ["value", ["x<sub>i</sub>", "y<sub>i</sub>"], ["x<sub>f</sub>", "y<sub>f</sub>"]]\n<br>
     </p>
     <br>
     
-    #####response
+    ##### response
     <p style:"text-align:left">
         response\n<br>
         <i>response: y, n</i>
     </p>
     <br>
     
-    #####changed_gui_element
+    ##### changed_gui_element
     <p style:"text-align:left">
         [["color1", "value1"], ..., ["color20", "value20"]]\n
     </p>
@@ -491,27 +491,27 @@
      |                          |
 </pre>
 
-- #####Taglierina circolare (5)<br>
-    #####selected_dice
+- ##### Taglierina circolare (5)<br>
+    ##### selected_dice
     <p style:"text-align:left">
         ["color", "value"]\n
     </p>
     <br>
     
-    #####selected_dice
+    ##### selected_dice
     <p style:"text-align:left">
         ["turn", ["color", "value"]]\n
     </p>
     <br>
     
-    #####response
+    ##### response
     <p style:"text-align:left">
         response\n<br>
         <i>response: y, n</i>
     </p>
     <br>
     
-    #####changed_gui_element
+    ##### changed_gui_element
     <p style:"text-align:left">
         [["color1", "value1"], ..., ["colorn", "valuen"]]\n<br>
         [["color1", "value1"], ..., ["colorm", "valuem"]]\n<br>
@@ -552,33 +552,33 @@
      |                          |  
 </pre>
 
-- #####Pennello per pasta salda (6)<br>
-    #####selected_dice
+- ##### Pennello per pasta salda (6)<br>
+    ##### selected_dice
     <p style:"text-align:left">
         ["color", "value"]\n
     </p>
     <br>
     
-    #####rolled_dice
+    ##### rolled_dice
     <p style:"text-align:left">
         "value"\n
     </p>
     <br>
 
-    #####dice_coordinates
+    ##### dice_coordinates
     <p style:"text-align:left">
         ["x", "y"]\n
     </p>
     <br>
 
-    #####response
+    ##### response
     <p style:"text-align:left">
         response\n<br>
         <i>response: y, n</i>
     </p>
     <br>
     
-    #####changed_gui_element
+    ##### changed_gui_element
     <p style:"text-align:left">
         [["color1", "value1"], ..., ["colorn", "valuen"]]\n<br>
         [["color1", "value1"], ..., ["color20", "value20"]]\n<br>
@@ -593,15 +593,15 @@
     the information it just sends a reply and a graphic update:
 </p>
 
-- #####Martelletto (7) and Tenaglia a rotelle (8)<br>
-    #####response
+- ##### Martelletto (7) and Tenaglia a rotelle (8)<br>
+    ##### response
     <p style:"text-align:left">
         response\n<br>
         <i>response: y, n</i>
     </p>
     <br>
     
-    #####changed_gui_element
+    ##### changed_gui_element
     <p style:"text-align:left">
         [["color1", "value1"], ..., ["colorn", "valuen"]]\n<br>
         [["color1", "value1"], ..., ["color20", "value20"]]\n<br>
@@ -645,39 +645,39 @@
      |                          |
 </pre>
 
-- #####Diluente per pasta salda (11)<br>
-    #####selected_dice
+- ##### Diluente per pasta salda (11)<br>
+    ##### selected_dice
     <p style:"text-align:left">
         ["color", "value"]\n
     </p>
     <br>
     
-    #####picked_dice
+    ##### picked_dice
     <p style:"text-align:left">
         ["color", "value"]\n
     </p>
     <br>
     
-    #####value
+    ##### value
     <p style:"text-align:left">
         value\n
     </p>
     <br>
     
-    #####dice_coordinates
+    ##### dice_coordinates
     <p style:"text-align:left">
         ["x", "y"]\n
     </p>
     <br>
     
-    #####response
+    ##### response
     <p style:"text-align:left">
         response\n<br>
         <i>response: y, n</i>
     </p>
     <br>
     
-    #####changed_gui_element
+    ##### changed_gui_element
     <p style:"text-align:left">
         [["color1", "value1"], ..., ["colorn", "valuen"]]\n<br>
         [["color1", "value1"], ..., ["color20", "value20"]]\n<br>
@@ -736,27 +736,27 @@
                                     |                          |
 </pre>
 
-- #####Taglierina manuale (12)<br>
-    #####num_of_dice and color
+- ##### Taglierina manuale (12)<br>
+    ##### num_of_dice and color
     <p style:"text-align:left">
         "num_of_dice"<TAB>"selected_color"\n
     </p>
     <br>
     
-    #####dice_coordinates
+    ##### dice_coordinates
     <p style:"text-align:left">
         ["x", "y"]\n
     </p>
     <br>
     
-    #####response
+    ##### response
     <p style:"text-align:left">
         response\n<br>
         <i>response: y, n</i>
     </p>
     <br>
     
-    #####changed_gui_element
+    ##### changed_gui_element
     <p style:"text-align:left">
         [["color1", "value1"], ..., ["color20", "value20"]]\n
     </p>
