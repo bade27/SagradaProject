@@ -29,7 +29,7 @@ public class Graphic extends JFrame
     {
         try {
             //1:RMI     0:Socket
-            player = new ClientPlayer(1,this);
+            player = new ClientPlayer(0,this);
         }
         catch (RemoteException e){
             Thread.currentThread().interrupt();

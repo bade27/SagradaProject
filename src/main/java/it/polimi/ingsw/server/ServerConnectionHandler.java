@@ -162,10 +162,8 @@ public class ServerConnectionHandler extends Thread implements ClientRemoteInter
             try {
                 user = inSocket.readLine();
                 isAlive = true;
-            } catch (SocketTimeoutException ste) {
-                isAlive = false;
             } catch (IOException e) {
-                e.printStackTrace();
+                isAlive = false;
             }
         } else isAlive = false;
 

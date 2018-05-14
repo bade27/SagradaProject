@@ -19,7 +19,7 @@ public class MatchHandler implements Runnable
     private TokenTurn tok;
     private Dadiera dices;
 
-    private final static int MAXGIOC =1;//Da modificare a 4
+    private final static int MAXGIOC =2;//Da modificare a 4
 
     public synchronized void run ()
     {
@@ -290,14 +290,9 @@ public class MatchHandler implements Runnable
                 {
                     nDisc ++ ;
                     player.remove(i);
+                    LogFile.addLog("Client does not respond to ping");
                 }
-                else
-                    LogFile.addLog("Client out of reach");
             }
-        }
-        catch (ClientOutOfReachException ex)
-        {
-            LogFile.addLog("Client out of reach" , ex.getStackTrace());
         }
         catch (Exception e)
         {

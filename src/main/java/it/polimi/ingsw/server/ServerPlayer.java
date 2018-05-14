@@ -200,7 +200,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
             LogFile.addLog("User: " + user + " Added");
         }
         catch (ClientOutOfReachException|RemoteException e) {
-            LogFile.addLog(e.getMessage() , e.getStackTrace());
+            LogFile.addLog("Failed to add user" , e.getStackTrace());
             throw new ClientOutOfReachException();
         }
     }
@@ -246,7 +246,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     //</editor-fold>
 
     //<editor-fold desc="Utilities: Ping/CloseCommunication(to implement)">
-    public boolean isClientAlive () throws ClientOutOfReachException
+    public boolean isClientAlive ()
     {
         try {
             return comunicator.ping();
