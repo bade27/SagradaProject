@@ -1,15 +1,0 @@
-
-¢squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(¹æÚışÿÿÿÿ8ã™­,
-qsquid:S1450"URemove the "server" field and declare it as a local variable in the relevant methods.(©½º8Ôöèš­,
-Ksquid:S1948"*Make "inSocket" transient or serializable.(¶éÂóıÿÿÿÿ8ä¬Ôš­,
-Isquid:S1948"(Make "socket" transient or serializable.(Å’¬Úşÿÿÿÿ8ä¬Ôš­,
-Lsquid:S2160"+Override the "equals" method in this class.(ÆóŒâÿÿÿÿÿ8ä¬Ôš­,
-Ksquid:S1068"*Remove this unused "socket" private field.(Å’¬Úşÿÿÿÿ8Æè¹š­,
-ksquid:S00100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(®èÕ—8Î’Õ—­,
-Msquid:S1068",Remove this unused "inSocket" private field.(¶éÂóıÿÿÿÿ8Æè¹š­,
-Xsquid:UnusedPrivateMethod")Remove this unused private "init" method.(”§¨İÿÿÿÿÿ8üÁ™­,
-Wsquid:UnusedPrivateMethod"-Remove this unused private "init_rmi" method.(®èÕ—8˜¡¶˜­,
-squid:S1186"€Add a nested comment explaining why this method is empty, throw an UnsupportedOperationException or complete the implementation.(“–ış8ĞË¸—­,
-Nsquid:S1068"-Remove this unused "outSocket" private field.(–¨•üÿÿÿÿ8Æè¹š­,
-Lsquid:S1948"+Make "outSocket" transient or serializable.(–¨•üÿÿÿÿ8ä¬Ôš­,
-Dsquid:S1148"#Use a logger to log this exception.(€ÉÔ…ıÿÿÿÿ8“Ëíš­,
