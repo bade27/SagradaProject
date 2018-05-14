@@ -74,6 +74,9 @@ public class ServerConnectionHandler extends Thread implements ClientRemoteInter
         }
     }
 
+    /**
+     * Used for close socket connection for RMI
+     */
     public void run ()
     {
         try{
