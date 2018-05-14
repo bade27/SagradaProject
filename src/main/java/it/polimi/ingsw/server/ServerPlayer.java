@@ -129,10 +129,11 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
         //RMI Registry creation and bind server name
         try {
             try{
+                //System.setProperty("java.rmi.server.hostname","192.168.1.3");
                 java.rmi.registry.LocateRegistry.createRegistry(1099);
             }catch (Exception ex){}
 
-            Naming.bind("rmi://127.0.0.1/sagrada" + progressive, this );
+            Naming.bind("rmi://0.0.0.0:1099/sagrada" + progressive, this );
 
             LogFile.addLog("RMI Bind Waiting for client");
         }catch (Exception e) {
@@ -167,9 +168,16 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     {
         synchronized (lockObject)
         {
-            socketCon.start();
-            comunicator = client;
-            lockObject.notifyAll();
+            //try
+            //{
+                socketCon.start();
+                //socketCon.join();
+                comunicator = client;
+                lockObject.notifyAll();
+            //}catch (InterruptedException e){
+                //throw new RemoteException();
+            //}
+
         }
 
     }
@@ -238,7 +246,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     //</editor-fold>
 
     //<editor-fold desc="Utilities: Ping/CloseCommunication(to implement)">
-    public boolean isClientAlive ()
+    public boolean isClientAlive () throws ClientOutOfReachException
     {
         try {
             return comunicator.ping();
