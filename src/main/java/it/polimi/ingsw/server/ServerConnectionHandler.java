@@ -235,13 +235,50 @@ public class ServerConnectionHandler extends Thread implements ClientRemoteInter
             e.printStackTrace();
         }
         return false;
+    }*/
+
+
+    public void sendCards(String[]... s) throws ClientOutOfReachException {
+        String response = "";
+
+        try {
+            boolean reachable = ping();
+            if (reachable) {
+                //setting up messages timeout
+                try {
+                    client.setSoTimeout(ACTION_TIMEOUT);
+                } catch (SocketException e) {
+                    e.printStackTrace();
+                }
+                String[] msgs = {"pub_objs\n", "tools\n"};
+                for(int i = 0; i < s.length; i++) {
+                    JSONArray jsonArray = JSONFacilities.encodeStringArrays(s[i]);
+                    outSocket.write(msgs[i]);
+                    outSocket.flush();
+                    StringBuilder cards = new StringBuilder();
+                    cards.append(jsonArray.toString());
+                    cards.append("\n");
+                    outSocket.write(cards.toString());
+                    outSocket.flush();
+                    try {
+                        response = inSocket.readLine();
+                        isAlive = true;
+                    } catch (SocketTimeoutException ste) {
+                        isAlive = false;
+                        break;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            } else isAlive = false;
+
+            if (!isAlive)
+                throw new ClientOutOfReachException("client is out of reach");
+        } catch (JSONException je) {
+            throw new ClientOutOfReachException("JSON can't encrypt client message");
+        }
     }
-
-
-    public void sendCards(String[]... s) {
-        //mi aspetto un ok come risposta
-    }
-
+/*
     public void moves() {
         //dico al client che è il suo turno, poi aspetto che invii la mossa fatta
     }
