@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<list>
+
+    <numberOfCards>10</numberOfCards>
+
+    <card n = "1">colore/colori_diversi_colonna.xml</card>
+    <card n = "2">colore/colori_diversi_riga.xml</card>
+    <card n = "3">colore/diagonali_colorate.xml</card>
+    <card n = "4">colore/varieta_di_colore.xml</card>
+    <card n = "5">sfumatura/sfumature_chiare.xml</card>
+    <card n = "6">sfumatura/sfumature_diverse.xml</card>
+    <card n = "7">sfumatura/sfumature_diverse_colonna.xml</card>
+    <card n = "8">sfumatura/sfumature_diverse_riga.xml</card>
+    <card n = "9">sfumatura/sfumature_medie.xml</card>
+    <card n = "10">sfumatura/sfumature_scure.xml</card>
+
+</list>

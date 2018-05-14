@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<list>
+
+  <numberOfCards>4</numberOfCards>
+
+  <card n = "1">kaleidoscopic_dream.xml</card>
+  <card n = "2">virtus.xml</card>
+
+  <card n = "3">aurorae_magnificus.xml</card>
+  <card n = "4">via_lux.xml</card>
+
+  <card n = "5">kaleidoscopic_dream.xml</card>
+  <card n = "6">virtus.xml</card>
+
+  <card n = "7">aurorae_magnificus.xml</card>
+  <card n = "8">via_lux.xml</card>
+
+
+</list>

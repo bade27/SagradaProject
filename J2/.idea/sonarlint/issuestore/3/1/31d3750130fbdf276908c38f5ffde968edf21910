@@ -1,0 +1,4 @@
+
+msquid:S2975"SRemove this "clone" implementation; use a copy constructor or copy factory instead.(Ö¡Å²úÿÿÿÿ
+vsquid:S1488"\Immediately return this expression instead of assigning it to the temporary variable "copy".(İØğÿÿÿÿÿ
+bsquid:S1182"HUse super.clone() to create and seed the cloned instance to be returned.(Ö¡Å²úÿÿÿÿ
