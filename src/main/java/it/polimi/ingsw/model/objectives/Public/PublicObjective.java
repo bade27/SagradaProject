@@ -1,4 +1,4 @@
-package it.polimi.ingsw.objectives.Public;
+package it.polimi.ingsw.model.objectives.Public;
 
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.Window;

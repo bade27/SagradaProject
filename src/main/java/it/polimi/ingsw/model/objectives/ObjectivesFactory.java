@@ -1,7 +1,7 @@
-package it.polimi.ingsw.objectives;
+package it.polimi.ingsw.model.objectives;
 
-import it.polimi.ingsw.objectives.Private.PrivateObjective;
-import it.polimi.ingsw.objectives.Public.*;
+import it.polimi.ingsw.model.objectives.Private.PrivateObjective;
+import it.polimi.ingsw.model.objectives.Public.*;
 import org.w3c.dom.Document;
 
 import javax.xml.parsers.DocumentBuilder;

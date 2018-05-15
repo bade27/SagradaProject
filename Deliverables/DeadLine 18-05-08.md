@@ -31,7 +31,7 @@
 		*	isMyTurn()
 		*	nextTurn()
 
--	it.polimi.ingsw.objectives
+-	it.polimi.ingsw.model.objectives
 	-	ColRowScore
 		*	calcScore(int value, Cell[][] grid)
 			*	case with expected result of zero (both for colors and shade)
