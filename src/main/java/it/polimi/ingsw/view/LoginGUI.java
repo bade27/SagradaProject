@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 
 public class LoginGUI extends Application {
     public boolean log;
-    //public ClientConnectionHandler clientConnectionHandler;
+    //public ClientSocketHandler clientConnectionHandler;
 
     public static void main(String[] args) {
         launch(args);
@@ -25,7 +25,7 @@ public class LoginGUI extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        //clientConnectionHandler =new ClientConnectionHandler();
+        //clientConnectionHandler =new ClientSocketHandler();
         GridPane root=new GridPane();
         Label l=new Label("LOGIN");
         l.setFont(Font.font("Tahoma", FontWeight.NORMAL,20));

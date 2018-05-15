@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.RemoteInterface.ClientRemoteInterface;
-import it.polimi.ingsw.RemoteInterface.ServerRemoteInterface;
+import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
+import it.polimi.ingsw.remoteInterface.ServerRemoteInterface;
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.exceptions.ModelException;
 
@@ -31,7 +31,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
         //if connection is socket, creates socket connect
         if (typeOfCOnnection == 0)
-            server = new ClientConnectionHandler(this);
+            server = new ClientSocketHandler(this);
 
         //if connection is RMI, creates RMI lookup of stub
         else if (typeOfCOnnection == 1)

@@ -1,15 +1,13 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.RemoteInterface.ClientRemoteInterface;
-import it.polimi.ingsw.RemoteInterface.ServerRemoteInterface;
+import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
+import it.polimi.ingsw.remoteInterface.ServerRemoteInterface;
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.exceptions.ModelException;
 import it.polimi.ingsw.utilities.LogFile;
 
 import java.rmi.Naming;
 import java.rmi.RemoteException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
@@ -22,7 +20,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
 
     private boolean connectionError;
     private Integer lockObject;
-    ServerConnectionHandler socketCon;
+    ServerSocketHandler socketCon;
 
     private ArrayList<String> possibleUsers;
 
@@ -142,7 +140,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
 
         //Socket connection creation
         try{
-            socketCon = new ServerConnectionHandler();
+            socketCon = new ServerSocketHandler();
             socketCon.createConnection();
             if (socketCon.isConnected())
                 comunicator = socketCon;
