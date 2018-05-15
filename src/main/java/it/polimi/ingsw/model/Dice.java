@@ -23,6 +23,8 @@ public class Dice
         return color;
     }
 
+    public void setValue(int v) { value = v; }
+
     /**
      * Check if die passed is equals to this placement in color and value
      * @param d die to compare
