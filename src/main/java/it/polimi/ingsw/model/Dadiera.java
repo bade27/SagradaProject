@@ -51,6 +51,23 @@ public class Dadiera
         listaDadi.add(x);
     }
 
+
+    /**
+     * Set die's value to n
+     * @param n value
+     * @param d die
+     * @throws IllegalDiceException
+     */
+    public void setDiceValue(int n, Dice d) throws IllegalDiceException {
+        if(n>0&&n<7) {
+            for (int i = 0; i < listaDadi.size(); i++)
+                if (d.equals(listaDadi.get(i))) {
+                    listaDadi.get(i).setValue(n);
+                    break;
+                }
+        }else throw new IllegalDiceException();
+    }
+
     /**
      * Return die in i position
      * @param i position of occurred die

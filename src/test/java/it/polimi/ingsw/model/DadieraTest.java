@@ -97,7 +97,7 @@ class DadieraTest {
         default:
         break;
     }
-        Dice dice=new Dice(num.nextInt(5)+1,color);
+        Dice dice=new Dice(number,color);
 
         //dadi uguali a quello inserito
         BiFunction<ArrayList<Dice>, Dice, Integer> numDice = (list, d) -> {
@@ -122,6 +122,41 @@ class DadieraTest {
 
         assertEquals(oldLen,newLen-1);
         assertEquals(oldLen,newLen-1);
+
+    }
+
+    @Test
+    void setDiceValueException() throws IllegalDiceException{
+        d.mix(n);
+        ArrayList<Dice> playableDice = d.getListaDadi();
+        int which_Die = new Random().nextInt(expectedDice);
+
+        Random n=new Random();
+        int a=7+Math.abs(n.nextInt());
+        int b=0-Math.abs(n.nextInt());
+
+        //estrazione di un dado a caso
+        Dice dice = playableDice.get(which_Die);
+
+        assertThrows(IllegalDiceException.class, () -> d.setDiceValue(a,dice));
+        assertThrows(IllegalDiceException.class, () -> d.setDiceValue(b,dice));
+    }
+
+    @Test
+    void setDiceValue() throws IllegalDiceException{
+        d.mix(n);
+        ArrayList<Dice> playableDice = d.getListaDadi();
+        int which_Die = new Random().nextInt(expectedDice);
+
+        //creo valore del dado casualmente
+        int n=new Random().nextInt(5)+1;
+
+        //estrazione di un dado da dadiera
+        Dice dice = playableDice.get(which_Die);
+        d.setDiceValue(n,dice);
+
+        assertEquals(dice.getValue(),n);
+        assertEquals(dice.getValue(),playableDice.get(which_Die).getValue());
 
     }
 
