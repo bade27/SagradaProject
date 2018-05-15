@@ -94,6 +94,12 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         }
         return s1[0];
     }
+
+    @Override
+    public void sendCards(String[]... s) throws ClientOutOfReachException, RuntimeException {
+
+    }
+
     //</editor-fold>
 
     //<editor-fold desc="Utilities: Ping">
