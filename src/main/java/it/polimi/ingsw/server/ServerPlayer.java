@@ -1,9 +1,12 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
-import it.polimi.ingsw.remoteInterface.ServerRemoteInterface;
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.exceptions.ModelException;
+import it.polimi.ingsw.model.Window;
+import it.polimi.ingsw.objectives.Private.PrivateObjective;
+import it.polimi.ingsw.objectives.Public.PublicObjective;
+import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
+import it.polimi.ingsw.remoteInterface.ServerRemoteInterface;
 import it.polimi.ingsw.utilities.LogFile;
 
 import java.rmi.Naming;
@@ -24,7 +27,9 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
 
     private ArrayList<String> possibleUsers;
 
-    private String[] windowCard1,windowCard2,publicObjCard;
+    //passed parameters
+    private String[] windowCard1,windowCard2;
+    private String[] publicObjCard;
     private String privateObjCard;
 
     public ServerPlayer(TokenTurn tok, ServerModelAdapter adp, ArrayList ps) throws RemoteException
@@ -55,6 +60,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
             try {
                 login();
                 token.addPlayer(user);
+                initializeCards();
                 initializeWindow();
             }
             catch (ClientOutOfReachException|ModelException ex) {
@@ -232,14 +238,20 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
         }
     }
 
-    private void initializePrivateObjectives (String card)
+    private void initializePrivateObjectives ()
     {
         //Comunicazione col client per la sua carta obbiettivo privato
     }
 
-    private void initializePublicObjectives (String[] cards)
+    private void initializeCards () throws ClientOutOfReachException
     {
-        //Comunicazione col client per le carte obbiettivo pubblico
+        try {
+            comunicator.sendCards(publicObjCard);
+        }
+        catch (ClientOutOfReachException|RemoteException e) {
+            LogFile.addLog("(User:" + user + ")" + e.getMessage() , e.getStackTrace());
+            throw new ClientOutOfReachException();
+        }
     }
     //</editor-fold>
 
