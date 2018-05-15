@@ -35,20 +35,28 @@ class TokenTurnTest {
         {
             //A - B - C - D - D - C - B - A
             token.nextTurn();
+            assertFalse(token.isMySecondRound("A"));
             assertTurnA();
             token.nextTurn();
+            assertFalse(token.isMySecondRound("B"));
             assertTurnB();
             token.nextTurn();
+            assertFalse(token.isMySecondRound("C"));
             assertTurnC();
             token.nextTurn();
+            assertFalse(token.isMySecondRound("D"));
             assertTurnD();
             token.nextTurn();
+            assertTrue(token.isMySecondRound("D"));
             assertTurnD();
             token.nextTurn();
+            assertTrue(token.isMySecondRound("C"));
             assertTurnC();
             token.nextTurn();
+            assertTrue(token.isMySecondRound("B"));
             assertTurnB();
             token.nextTurn();
+            assertTrue(token.isMySecondRound("A"));
             assertTurnA();
 
             assertTrue(token.isEndRound());
@@ -187,6 +195,8 @@ class TokenTurnTest {
         token.nextTurn();
         assertTurnB();
     }
+
+
 
     //System.out.println(token.toString());
 

@@ -29,17 +29,32 @@ public class TokenTurn
         fatalError = false;
     }
 
+    /**
+     * Request if player s has turn
+     * @param s username of player
+     * @return true if turn, false otherwise
+     */
     public synchronized boolean isMyTurn (String s)
     {
         for (int i = 0; i < players.size() ; i++)
         {
             if (players.get(i).getName().equals(s))
-            {
-                if (players.get(i).getIdTurn() == currentTurn)
-                    return true;
-                else
-                    return false;
-            }
+                return  (players.get(i).getIdTurn() == currentTurn);
+        }
+        return false;
+    }
+
+    /**
+     * Request if player is in his second round
+     * @param s username of player
+     * @return true if turn, false otherwise
+     */
+    public boolean isMySecondRound (String s)
+    {
+        for (int i = 0; i < players.size() ; i++)
+        {
+            if (players.get(i).getName().equals(s))
+                return (players.get(i).getIdTurn() == currentTurn && !clockwise);
         }
         return false;
     }
@@ -204,4 +219,6 @@ public class TokenTurn
     {
         initNumberOfPlayers = i;
     }
+
+
 }
