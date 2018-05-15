@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.Window;
 import javax.swing.*;
 import java.awt.*;
 import java.rmi.RemoteException;
-import java.util.ArrayList;
 
 public class Graphic extends JFrame
 {
@@ -29,7 +28,7 @@ public class Graphic extends JFrame
     {
         try {
             //1:RMI     0:Socket
-            player = new ClientPlayer(1,this);
+            player = new ClientPlayer(0,this);
         }
         catch (RemoteException e){
             Thread.currentThread().interrupt();
