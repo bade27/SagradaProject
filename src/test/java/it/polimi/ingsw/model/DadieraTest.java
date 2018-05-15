@@ -4,6 +4,7 @@ import it.polimi.ingsw.exceptions.IllegalDiceException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.function.BiFunction;
@@ -61,6 +62,67 @@ class DadieraTest {
 
         assertEquals(oldEquals - 1, newEquals);
         assertEquals(oldLen - 1, playableDice.size());
+    }
+
+    @Test
+    void addDice(){
+        d.mix(n);
+        ArrayList<Dice> playableDice = d.getListaDadi();
+
+        //lunghezza dadiera iniziale
+        int oldLen = playableDice.size();
+
+        //creazione dado casuale
+        Random col=new Random();
+        Random num=new Random();
+        int number=num.nextInt(5)+1;
+        Color color=null;
+        switch (col.nextInt(5))
+        {case 0:
+            color = Color.red;
+            break;
+        case 1:
+            color = Color.green;
+            break;
+        case 2:
+            color = Color.blue;
+            break;
+        case 3:
+            color = Color.yellow;
+            break;
+        case 4:
+            color = Color.magenta;
+            break;
+
+        default:
+        break;
+    }
+        Dice dice=new Dice(num.nextInt(5)+1,color);
+
+        //dadi uguali a quello inserito
+        BiFunction<ArrayList<Dice>, Dice, Integer> numDice = (list, d) -> {
+            Long t = list.stream()
+                    .filter(currentDice -> currentDice.isEqual(d))
+                    .count();
+            return t.intValue();
+        };
+
+
+        //numero dei dadi uguali a quello estratto
+        int oldEquals = numDice.apply(playableDice, dice);
+
+        //aggiunta dado
+        d.addDice(dice);
+
+        //numero dei dadi uguali dopo aver aggiunto il dado
+        int newEquals = numDice.apply(playableDice, dice);
+
+        //nuova lunghezza dadiera
+        int newLen=d.getListaDadi().size();
+
+        assertEquals(oldLen,newLen-1);
+        assertEquals(oldLen,newLen-1);
+
     }
 
     @Test

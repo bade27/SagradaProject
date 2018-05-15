@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.exceptions.IllegalDiceException;
+import it.polimi.ingsw.exceptions.*;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -41,6 +41,14 @@ public class Dadiera
                 listaDadi.remove(i);
                 return;
             }
+    }
+
+    /**
+     * add dice x
+     * @param x index of the dice that i must add
+     */
+    public void addDice (Dice x){
+        listaDadi.add(x);
     }
 
     /**
