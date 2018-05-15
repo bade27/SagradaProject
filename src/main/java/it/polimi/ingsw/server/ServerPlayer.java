@@ -2,9 +2,6 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.exceptions.ModelException;
-import it.polimi.ingsw.model.Window;
-import it.polimi.ingsw.objectives.Private.PrivateObjective;
-import it.polimi.ingsw.objectives.Public.PublicObjective;
 import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
 import it.polimi.ingsw.remoteInterface.ServerRemoteInterface;
 import it.polimi.ingsw.utilities.LogFile;
@@ -60,7 +57,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
             try {
                 login();
                 token.addPlayer(user);
-                initializeCards();
+                //initializeCards();
                 initializeWindow();
             }
             catch (ClientOutOfReachException|ModelException ex) {
@@ -121,7 +118,6 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
 
 
 
-    //<editor-fold desc="Initialization Phase">
     /**
      * Generate 2 method for accepting client (Rmi and Socket)
      * For socket this method creates a thread in waiting of Connection client
@@ -185,12 +181,10 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
         }
 
     }
-    //</editor-fold>
 
-    //<editor-fold desc="Setup Phase">
     /**
      * Initialize username through login phase
-     * @throws ClientOutOfReachException it.polimi.ingsw.client is out of reach
+     * @throws ClientOutOfReachException client is out of reach
      */
     private void login () throws ClientOutOfReachException
     {
@@ -211,7 +205,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
 
     /**
      * Initialize client's window board
-     * @throws ClientOutOfReachException it.polimi.ingsw.client is out of reach
+     * @throws ClientOutOfReachException client is out of reach
      * @throws ModelException Impossible to set window
      */
     private void initializeWindow () throws ClientOutOfReachException,ModelException
@@ -243,6 +237,11 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
         //Comunicazione col client per la sua carta obbiettivo privato
     }
 
+    /**
+     * receives the public objectives and the tools chosen for the current match
+     * and sets the corresponding parameters on the model adapter
+     * @throws ClientOutOfReachException
+     */
     private void initializeCards () throws ClientOutOfReachException
     {
         try {
@@ -253,9 +252,8 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
             throw new ClientOutOfReachException();
         }
     }
-    //</editor-fold>
 
-    //<editor-fold desc="Utilities: Ping/CloseCommunication(to implement)">
+
     public boolean isClientAlive ()
     {
         try {
@@ -269,24 +267,38 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     {
 
     }
-    //</editor-fold>
 
-    //<editor-fold desc="Window and objects set">
+    /**
+     * receives from the match the window cards among which the client need to choose
+     * and sends them to the client
+     * @param c1 first card (two sides)
+     * @param c2 second card (two sides)
+     */
     public void setWindowCards (String c1[],String c2 [])
     {
         windowCard1 = c1;
         windowCard2 = c2;
     }
 
+    /**
+     * receives from the match the array of the public objectives of the current match
+     * and sends them to the client
+     * @param c array of the public objectives of the current match
+     */
     public void setPublicObjCard (String[] c)
     {
         publicObjCard = c;
     }
 
+    /**
+     * receives from the match the player's private objective for the current match
+     * and sends them to the client
+     * @param c array of the public objectives of the current match
+     */
     public void setPrivateObjCard (String c)
     {
         privateObjCard = c;
     }
-    //</editor-fold>
+
 
 }

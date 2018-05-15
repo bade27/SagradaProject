@@ -1,7 +1,5 @@
 package it.polimi.ingsw.utilities;
 
-import com.sun.istack.internal.Nullable;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.DateFormat;

@@ -56,7 +56,7 @@ class CellTest
         assertFalse(backColorVoid.setDice(new Dice(5,Color.BLUE)));
 
         assertTrue(backValueVoid.setDiceByColor(new Dice(5,Color.BLUE)));
-        assertTrue(backValueVoid.setDiceByColor(new Dice(3,Color.RED)));
+        assertFalse(backValueVoid.setDiceByColor(new Dice(3,Color.RED)));
 
         assertTrue(backVoid.setDiceByColor(new Dice(3,Color.RED)));
         assertTrue(backVoid.setDiceByColor(new Dice(5,Color.BLUE)));

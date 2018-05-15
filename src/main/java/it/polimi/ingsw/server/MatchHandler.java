@@ -304,7 +304,7 @@ public class MatchHandler implements Runnable
     }
 
     /**
-     * Start client's setup comunication (Windows and it.polimi.ingsw.objectives)
+     * Start client's setup comunication (Windows and it.polimi.ingsw.model.objectives)
      */
     private synchronized void waitInitialition ()
     {

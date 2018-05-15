@@ -1,6 +1,6 @@
-package it.polimi.ingsw.objectives.Private;
+package it.polimi.ingsw.model.objectives.Private;
 
-import it.polimi.ingsw.objectives.ObjectivesFactory;
+import it.polimi.ingsw.model.objectives.ObjectivesFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

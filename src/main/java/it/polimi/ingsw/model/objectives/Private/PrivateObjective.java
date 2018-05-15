@@ -1,4 +1,4 @@
-package it.polimi.ingsw.objectives.Private;
+package it.polimi.ingsw.model.objectives.Private;
 
 import it.polimi.ingsw.model.Window;
 import it.polimi.ingsw.model.Cell;

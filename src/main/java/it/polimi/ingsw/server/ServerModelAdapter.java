@@ -6,11 +6,17 @@ import it.polimi.ingsw.exceptions.ParserXMLException;
 import it.polimi.ingsw.model.Dadiera;
 import it.polimi.ingsw.model.Dice;
 import it.polimi.ingsw.model.Window;
+import it.polimi.ingsw.model.objectives.Private.PrivateObjective;
+import it.polimi.ingsw.model.objectives.Public.PublicObjective;
+import it.polimi.ingsw.model.tools.Tools;
 
 public class ServerModelAdapter
 {
     private Window board;
     private Dadiera dadiera;
+    private PrivateObjective myPrivateObject;
+    private PublicObjective[] publicObjectives;
+    private Tools[] tools;
 
     public ServerModelAdapter (Dadiera d)
     {
@@ -48,5 +54,8 @@ public class ServerModelAdapter
         }
     }
 
-
+    public void setPublicObjectives(String path) throws ModelException
+    {
+        //publicObjectives[0] = ObjectivesFactory.getPublicObjective(path);
+    }
 }
