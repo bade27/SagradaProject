@@ -1,5 +1,7 @@
 package it.polimi.ingsw.server;
 
+import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
+
 import java.util.ArrayList;
 
 public class TokenTurn
@@ -88,6 +90,9 @@ public class TokenTurn
 
     }
 
+    /**
+     * Increment turn when tool8 is not active
+     */
     private void normalTurn ()
     {
         endRound = false;
@@ -115,9 +120,55 @@ public class TokenTurn
     }
 
     /**
+     * Increment turn when tooli is active
+     */
+    private void toolTurn ()
+    {
+        endRound = false;
+        if (clockwise)
+        {
+            if (currentTurn < tempPlayers.size() )
+                currentTurn ++;
+            else
+            {
+                clockwise = false;
+                if (tempPlayers.size() == 2)
+                    endRound = true;
+            }
+        }
+        else
+        {
+            if (currentTurn > 2)
+            {
+                currentTurn --;
+                if (currentTurn == 2)
+                    endRound = true;
+            }
+            else
+            {
+                clockwise = true;
+                toolInUsing = false;
+                currentTurn = 1;
+                leftShiftIdTurn();
+            }
+        }
+        if (firstTurnTool)
+        {
+            secondTurnTool = true;
+            firstTurnTool = false;
+            currentTurn --;
+        }
+        else if (secondTurnTool)
+        {
+            secondTurnTool();
+            secondTurnTool = false;
+        }
+    }
+
+    /**
      * Left shift idTurn of players
      */
-    public void leftShiftIdTurn ()
+    private void leftShiftIdTurn ()
     {
         for (int i = 0; i < players.size() ; i++)
         {
@@ -128,8 +179,6 @@ public class TokenTurn
             players.get(i).setIdTurn(t);
         }
     }
-
-
 
 
     //<editor-fold desc="Initialization/Deleting Players">
@@ -149,25 +198,32 @@ public class TokenTurn
      */
     public synchronized void deletePlayer (String name)
     {
+        if (toolInUsing)
+            delPlayer(name,tempPlayers);
+        delPlayer(name,players);
+    }
+
+    private void delPlayer (String name,ArrayList<Player> t)
+    {
         int inc,turnDel;
-        for (int i = 0; i < players.size() ; i++)
-            if (players.get(i).getName().equals(name))
+        for (int i = 0; i < t.size() ; i++)
+            if (t.get(i).getName().equals(name))
             {
-                if (currentTurn == players.size())
+                if (currentTurn == t.size())
                 {
                     currentTurn--;
                     clockwise = false;
                 }
                 if (currentTurn == 1)
                     clockwise = true;
-                turnDel = players.get(i).getIdTurn();
-                players.remove(i);
+                turnDel = t.get(i).getIdTurn();
+                t.remove(i);
                 inc=0;
-                for (int j = 0; j < players.size() ; j++)
+                for (int j = 0; j < t.size() ; j++)
                 {
-                    if (players.get(j).getIdTurn() > turnDel)
+                    if (t.get(j).getIdTurn() > turnDel)
                     {
-                        players.get(j).setIdTurn(turnDel + inc);
+                        t.get(j).setIdTurn(turnDel + inc);
                         inc++;
                     }
                 }
@@ -243,49 +299,6 @@ public class TokenTurn
         secondTurnTool = false;
         toolInUsing = true;
         return true;
-    }
-
-    private void toolTurn ()
-    {
-        endRound = false;
-        if (clockwise)
-        {
-            if (currentTurn < tempPlayers.size() )
-                currentTurn ++;
-            else
-            {
-                clockwise = false;
-                if (tempPlayers.size() == 2)
-                    endRound = true;
-            }
-        }
-        else
-        {
-            if (currentTurn > 2)
-            {
-                currentTurn --;
-                if (currentTurn == 2)
-                    endRound = true;
-            }
-            else
-            {
-                clockwise = true;
-                toolInUsing = false;
-                currentTurn = 1;
-                leftShiftIdTurn();
-            }
-        }
-        if (firstTurnTool)
-        {
-            secondTurnTool = true;
-            firstTurnTool = false;
-            currentTurn --;
-        }
-        else if (secondTurnTool)
-        {
-            secondTurnTool();
-            secondTurnTool = false;
-        }
     }
 
     //</editor-fold>

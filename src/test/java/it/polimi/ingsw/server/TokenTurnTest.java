@@ -374,6 +374,111 @@ class TokenTurnTest {
     }
 
 
+    @Test
+    void checkTool8WithExits ()
+    {
+        //A - tool8(A) - A - delete B - C - D - D - C
+        token.nextTurn();
+        assertTurnA();
+        assertTrue (token.useToolNumber8("A"));
+        assertTurnA();
+
+        token.nextTurn();
+        assertTurnA();
+
+        token.nextTurn();
+        token.deletePlayer("B");
+        token.nextTurn();
+
+        assertTurnC();
+        token.nextTurn();
+        assertTurnD();
+        token.nextTurn();
+        assertTurnD();
+        token.nextTurn();
+        assertTurnC();
+
+        assertTrue(token.isEndRound());
+
+
+        //C - D- A - A - D - C
+        token.nextTurn();
+        assertTurnC();
+        token.nextTurn();
+        assertTurnD();
+        token.nextTurn();
+        assertTurnA();
+        token.nextTurn();
+        assertTurnA();
+        token.nextTurn();
+        assertTurnD();
+        token.nextTurn();
+        assertTurnC();
+
+        assertTrue(token.isEndRound());
+
+        //D - tool8(D) - D - delete A - C - C
+
+        token.nextTurn();
+        assertTurnD();
+        assertTrue (token.useToolNumber8("D"));
+        assertTurnD();
+
+        token.nextTurn();
+        assertTurnD();
+
+        token.nextTurn();
+        token.deletePlayer("A");
+        token.nextTurn();
+
+        assertTurnC();
+        token.nextTurn();
+        assertTurnC();
+
+        assertTrue(token.isEndRound());
+
+        //C - D - D - C
+        token.nextTurn();
+        assertTurnC();
+        token.nextTurn();
+        assertTurnD();
+        token.nextTurn();
+        assertTurnD();
+        token.nextTurn();
+        assertTurnC();
+
+        assertTrue(token.isEndRound());
+
+        //D - tool8(D) - C - C
+        token.nextTurn();
+
+        assertTurnD();
+        assertTrue (token.useToolNumber8("D"));
+        assertTurnD();
+
+        token.nextTurn();
+        assertTurnD();
+        token.nextTurn();
+        assertTurnC();
+        token.nextTurn();
+        assertTurnC();
+        assertFalse(token.useToolNumber8("C"));
+        assertTurnC();
+
+        assertTrue(token.isEndRound());
+
+        //C - D - D - C
+        token.nextTurn();
+        assertTurnC();
+        token.nextTurn();
+        assertTurnD();
+        token.nextTurn();
+        assertTurnD();
+        token.nextTurn();
+        assertTurnC();
+
+        assertTrue(token.isEndRound());
+    }
 
 
 
