@@ -134,9 +134,10 @@ class TokenTurnTest {
         token.nextTurn();
         assertTurnC();
 
-        token.deletePlayer("D");
-
         token.nextTurn();
+        token.deletePlayer("D");
+        token.nextTurn();
+
         assertTurnC();
         token.nextTurn();
         assertTurnB();
@@ -162,9 +163,10 @@ class TokenTurnTest {
         assertTrue(token.isEndRound());
 
         //delete(C) A - B - B - A
-        token.deletePlayer("C");
-
         token.nextTurn();
+        token.deletePlayer("C");
+        token.nextTurn();
+
         assertTurnA();
         token.nextTurn();
         assertTurnB();
@@ -188,6 +190,7 @@ class TokenTurnTest {
         assertTrue(token.isEndRound());
 
         //delete(A) B - B - ....
+        token.nextTurn();
         token.deletePlayer("A");
 
         token.nextTurn();
@@ -196,10 +199,286 @@ class TokenTurnTest {
         assertTurnB();
     }
 
+    @Test
+    void checkTool8WithoutExits ()
+    {
+        //A - tool8(A) - A - B - C - D - D - C - B
+        token.nextTurn();
+        assertTurnA();
+        assertTrue (token.useToolNumber8("A"));
+        assertTurnA();
+
+        token.nextTurn();
+        assertTurnA();
+        token.nextTurn();
+        assertTurnB();
+        token.nextTurn();
+        assertTurnC();
+        token.nextTurn();
+        assertTurnD();
+        token.nextTurn();
+        assertTurnD();
+        token.nextTurn();
+        assertTurnC();
+        token.nextTurn();
+        assertTurnB();
+
+        assertTrue(token.isEndRound());
+
+        //(no tools in use) B - C - D - A - A - D - C - B
+        token.nextTurn();
+        assertTurnB();
+        token.nextTurn();
+        assertTurnC();
+        token.nextTurn();
+        assertTurnD();
+        token.nextTurn();
+        assertTurnA();
+        token.nextTurn();
+        assertTurnA();
+        token.nextTurn();
+        assertTurnD();
+        token.nextTurn();
+        assertTurnC();
+        token.nextTurn();
+        assertTurnB();
+
+        assertTrue(token.isEndRound());
+
+        //C - D - tool8(D) - D - A - B - B - A - C
+        token.nextTurn();
+        assertTurnC();
+        token.nextTurn();
+        assertTurnD();
+        assertTrue (token.useToolNumber8("D"));
+        assertTurnD();
+        token.nextTurn();
+        assertTurnD();
+        token.nextTurn();
+        assertTurnA();
+        token.nextTurn();
+        assertTurnB();
+        token.nextTurn();
+        assertTurnB();
+        token.nextTurn();
+        assertTurnA();
+        token.nextTurn();
+        assertTurnC();
+
+        assertTrue(token.isEndRound());
+
+        //D - A - B tool8(B) - B - C - C - A - D
+        token.nextTurn();
+        assertTurnD();
+        token.nextTurn();
+        assertTurnA();
+        token.nextTurn();
+        assertTurnB();
+        assertTrue (token.useToolNumber8("B"));
+        assertTurnB();
+
+        token.nextTurn();
+        assertTurnB();
+        token.nextTurn();
+        assertTurnC();
+        token.nextTurn();
+        assertTurnC();
+        token.nextTurn();
+        assertTurnA();
+        token.nextTurn();
+        assertTurnD();
 
 
-    //System.out.println(token.toString());
+        assertTrue(token.isEndRound());
 
+        //A - tool8(A) - A - B - C - D - D - C - B
+        token.nextTurn();
+        assertTurnA();
+        assertTrue (token.useToolNumber8("A"));
+        assertTurnA();
+
+        token.nextTurn();
+        assertTurnA();
+        token.nextTurn();
+        assertTurnB();
+        token.nextTurn();
+        assertTurnC();
+        token.nextTurn();
+        assertTurnD();
+        token.nextTurn();
+        assertTurnD();
+        token.nextTurn();
+        assertTurnC();
+        token.nextTurn();
+        assertTurnB();
+
+        assertTrue(token.isEndRound());
+
+    }
+
+    @Test
+    void checkTool8WithEveryNumberOfPlayers()
+    {
+        token.nextTurn();
+        token.deletePlayer("A");
+
+        //B - C - tool8 - C - D - D - B
+        token.nextTurn();
+        assertTurnB();
+        token.nextTurn();
+
+        assertTurnC();
+        token.useToolNumber8("C");
+        assertTurnC();
+
+        token.nextTurn();
+        assertTurnC();
+        token.nextTurn();
+        assertTurnD();
+        token.nextTurn();
+        assertTurnD();
+        token.nextTurn();
+        assertTurnB();
+
+        assertTrue(token.isEndRound());
+
+        //delete B - C - tool8 - C - D - D
+        token.nextTurn();
+        token.deletePlayer("B");
+        token.nextTurn();
+
+        assertTurnC();
+        token.useToolNumber8("C");
+        assertTurnC();
+
+        token.nextTurn();
+        assertTurnC();
+        token.nextTurn();
+        assertTurnD();
+        token.nextTurn();
+        assertTurnD();
+
+        assertTrue(token.isEndRound());
+
+        //D - C - C -D
+        token.nextTurn();
+        assertTurnD();
+        token.nextTurn();
+        assertTurnC();
+        token.nextTurn();
+        assertTurnC();
+        token.nextTurn();
+        assertTurnD();
+
+        assertTrue(token.isEndRound());
+    }
+
+
+    @Test
+    void checkTool8WithExits ()
+    {
+        //A - tool8(A) - A - delete B - C - D - D - C
+        token.nextTurn();
+        assertTurnA();
+        assertTrue (token.useToolNumber8("A"));
+        assertTurnA();
+
+        token.nextTurn();
+        assertTurnA();
+
+        token.nextTurn();
+        token.deletePlayer("B");
+        token.nextTurn();
+
+        assertTurnC();
+        token.nextTurn();
+        assertTurnD();
+        token.nextTurn();
+        assertTurnD();
+        token.nextTurn();
+        assertTurnC();
+
+        assertTrue(token.isEndRound());
+
+
+        //C - D- A - A - D - C
+        token.nextTurn();
+        assertTurnC();
+        token.nextTurn();
+        assertTurnD();
+        token.nextTurn();
+        assertTurnA();
+        token.nextTurn();
+        assertTurnA();
+        token.nextTurn();
+        assertTurnD();
+        token.nextTurn();
+        assertTurnC();
+
+        assertTrue(token.isEndRound());
+
+        //D - tool8(D) - D - delete A - C - C
+
+        token.nextTurn();
+        assertTurnD();
+        assertTrue (token.useToolNumber8("D"));
+        assertTurnD();
+
+        token.nextTurn();
+        assertTurnD();
+
+        token.nextTurn();
+        token.deletePlayer("A");
+        token.nextTurn();
+
+        assertTurnC();
+        token.nextTurn();
+        assertTurnC();
+
+        assertTrue(token.isEndRound());
+
+        //C - D - D - C
+        token.nextTurn();
+        assertTurnC();
+        token.nextTurn();
+        assertTurnD();
+        token.nextTurn();
+        assertTurnD();
+        token.nextTurn();
+        assertTurnC();
+
+        assertTrue(token.isEndRound());
+
+        //D - tool8(D) - C - C
+        token.nextTurn();
+
+        assertTurnD();
+        assertTrue (token.useToolNumber8("D"));
+        assertTurnD();
+
+        token.nextTurn();
+        assertTurnD();
+        token.nextTurn();
+        assertTurnC();
+        token.nextTurn();
+        assertTurnC();
+        assertFalse(token.useToolNumber8("C"));
+        assertTurnC();
+
+        assertTrue(token.isEndRound());
+
+        //C - D - D - C
+        token.nextTurn();
+        assertTurnC();
+        token.nextTurn();
+        assertTurnD();
+        token.nextTurn();
+        assertTurnD();
+        token.nextTurn();
+        assertTurnC();
+
+        assertTrue(token.isEndRound());
+    }
 
 
 

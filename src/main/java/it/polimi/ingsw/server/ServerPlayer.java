@@ -129,7 +129,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
         //RMI Registry creation and bind server name
         try {
             try{
-                //System.setProperty("java.rmi.server.hostname","192.168.1.3");
+                System.setProperty("java.rmi.server.hostname","192.168.1.1");
                 java.rmi.registry.LocateRegistry.createRegistry(1099);
             }catch (Exception ex){}
 
@@ -259,6 +259,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
         try {
             return comunicator.ping();
         }catch (RemoteException e) {
+            e.printStackTrace();
             return false;
         }
 
