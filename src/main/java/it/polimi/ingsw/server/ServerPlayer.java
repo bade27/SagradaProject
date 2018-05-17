@@ -128,12 +128,15 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     {
         //RMI Registry creation and bind server name
         try {
+            int port = 7000;
+            String hostname = "127.0.0.1";
+            String bindLocation = "rmi://" + hostname + ":" + port + "/sagrada" + progressive;
             try{
-                System.setProperty("java.rmi.server.hostname","192.168.1.1");
-                java.rmi.registry.LocateRegistry.createRegistry(1099);
+                //System.setProperty("java.rmi.server.hostname","192.168.1.1");
+                java.rmi.registry.LocateRegistry.createRegistry(port);
             }catch (Exception ex){}
 
-            Naming.bind("rmi://0.0.0.0:1099/sagrada" + progressive, this );
+            Naming.bind(bindLocation, this );
 
             LogFile.addLog("RMI Bind Waiting for client");
         }catch (Exception e) {
