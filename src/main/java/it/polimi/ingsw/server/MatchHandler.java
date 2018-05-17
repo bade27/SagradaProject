@@ -10,6 +10,8 @@ import java.util.ArrayList;
 
 public class MatchHandler implements Runnable
 {
+    public LogFile log;
+
     //List of active serverPlayer
     private ArrayList<ServerPlayer> player;
     private ArrayList<Thread> threadPlayers;
@@ -19,11 +21,11 @@ public class MatchHandler implements Runnable
     private TokenTurn tok;
     private Dadiera dices;
 
-    private final static int MAXGIOC =1;//Da modificare a 4
+    private final static int MAXGIOC =2;//Da modificare a 4
 
     public synchronized void run ()
     {
-        LogFile.cleanFile();
+        log = new LogFile("ServerLog");
 
         acceptConnection();
         initiliazeWindowPlayers();
@@ -38,10 +40,10 @@ public class MatchHandler implements Runnable
      * */
     private void startGame ()
     {
-        LogFile.addLog("Game Phase started");
+        log.addLog("Game Phase started");
 
         dices.mix(tok.getNumPlayers());
-        LogFile.addLog("Dadiera Mixed");
+        log.addLog("Dadiera Mixed");
         while (true)
         {
             synchronized (tok)
@@ -53,7 +55,7 @@ public class MatchHandler implements Runnable
                 {
                     dices.mix(tok.getNumPlayers());
                     System.out.println(">>>Dadiera Mixed");
-                    LogFile.addLog("Dadiera Mixed");
+                    log.addLog("Dadiera Mixed");
                 }
                 tok.nextTurn();
                 tok.notifyAll();
@@ -78,7 +80,7 @@ public class MatchHandler implements Runnable
     private void acceptConnection()
     {
         System.out.println(">>>server Started");
-        LogFile.addLog("server Started");
+        log.addLog("server Started");
         nConn = 0;
         threadPlayers = new ArrayList<Thread>();
         player = new ArrayList<ServerPlayer>();
@@ -95,11 +97,11 @@ public class MatchHandler implements Runnable
             //For each players starts waiting for connection
             for (int i =0 ;i< MAXGIOC;i ++)
             {
-                ServerPlayer pl = new ServerPlayer(tok,new ServerModelAdapter(dices),possibleUsrs);
+                ServerPlayer pl = new ServerPlayer(tok,new ServerModelAdapter(dices),possibleUsrs,log);
                 if (pl.initializeCommunication(progressive))
                 {
                     player.add(pl);
-                    LogFile.addLog("client accepted");
+                    log.addLog("client accepted");
                 }
                 else
                     i--;
@@ -108,18 +110,18 @@ public class MatchHandler implements Runnable
                 progressive++;
             }
             nConn = MAXGIOC - checkClientAlive();
-            LogFile.addLog("Number of client(s) connected:" + nConn);
+            log.addLog("Number of client(s) connected:" + nConn);
             tok.setInitNumberOfPlayers(nConn);
             for (int i = 0; i <nConn ; i++)
             {
                 Thread t = new Thread(player.get(i));
                 t.start();
                 threadPlayers.add(t);
-                LogFile.addLog("Thread ServerPlayer " + i + " Started");
+                log.addLog("Thread ServerPlayer " + i + " Started");
             }
         }
         catch (Exception e) {
-            LogFile.addLog("",e.getStackTrace());
+            log.addLog("",e.getStackTrace());
             closeAllConnection();
             e.printStackTrace();
         }
@@ -143,7 +145,7 @@ public class MatchHandler implements Runnable
         }
         catch (ParserXMLException ex){
             System.out.println(ex.getMessage());
-            LogFile.addLog("" , ex.getStackTrace());
+            log.addLog("" , ex.getStackTrace());
             return false;
         }
 
@@ -273,7 +275,7 @@ public class MatchHandler implements Runnable
         for (int i = 0; i < player.size() ; i++)
             player.get(i).closeComunication();
 
-        LogFile.addLog("All connections are forced to stop cause fatal error");
+        log.addLog("All connections are forced to stop cause fatal error");
     }
 
     /**
@@ -291,13 +293,13 @@ public class MatchHandler implements Runnable
                 {
                     nDisc ++ ;
                     player.remove(i);
-                    LogFile.addLog("Client does not respond to ping");
+                    log.addLog("Client does not respond to ping");
                 }
             }
         }
         catch (Exception e)
         {
-            LogFile.addLog("" , e.getStackTrace());
+            log.addLog("" , e.getStackTrace());
             closeAllConnection();
         }
         return nDisc;
@@ -315,17 +317,17 @@ public class MatchHandler implements Runnable
         {
             try
             {
-                LogFile.addLog("Setup Phase started");
+                log.addLog("Setup Phase started");
                 //Wake Up all ServerPlayers to start setup phase
                 tok.notifyAll();
 
                 //Wait until end setup phase
                 while (tok.getOnSetup())
                     tok.wait();
-                LogFile.addLog("Setup Phase ended");
+                log.addLog("Setup Phase ended");
             }
             catch (InterruptedException ex) {
-                LogFile.addLog("" , ex.getStackTrace());
+                log.addLog("" , ex.getStackTrace());
                 Thread.currentThread().interrupt();
                 closeAllConnection();
             }

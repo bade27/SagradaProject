@@ -243,8 +243,17 @@ public class TokenTurn
     {
         for (int i = 0; i < players.size() ; i++)
         {
-            if (players.get(i).getName().equals(s))
-                return (players.get(i).getIdTurn() == currentTurn && !clockwise);
+            if (!toolInUsing)
+            {
+                if (players.get(i).getName().equals(s))
+                    return (players.get(i).getIdTurn() == currentTurn && !clockwise);
+            }
+            else
+            {
+                if (tempPlayers.get(i).getName().equals(s))
+                    return (tempPlayers.get(i).getIdTurn() == currentTurn && !clockwise);
+            }
+
         }
         return false;
     }

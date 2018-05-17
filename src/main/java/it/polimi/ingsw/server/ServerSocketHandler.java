@@ -21,6 +21,7 @@ import java.net.SocketTimeoutException;
 
 public class ServerSocketHandler extends Thread implements ClientRemoteInterface
 {
+    LogFile log;
 
     //contiene informazioni su indirizzo e porta del server
     private static final String settings = "resources/settings.xml";
@@ -48,10 +49,10 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
 
     }
 
-    public ServerSocketHandler() throws ClientOutOfReachException
+    public ServerSocketHandler(LogFile l) throws ClientOutOfReachException
     {
         isConnected = false;
-
+        log = l;
     }
 
     public void createConnection () throws ClientOutOfReachException
@@ -93,7 +94,7 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
         try {
             client.setSoTimeout(PING_TIMEOUT);
         } catch (SocketException e) {
-            LogFile.addLog("Ping Failed" , e.getStackTrace());
+            log.addLog("Ping Failed" , e.getStackTrace());
             return false;
         }
 
@@ -106,9 +107,9 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
             reply = r.equals("pong");
         } catch (SocketTimeoutException ste) {
             reply = false;
-            LogFile.addLog("Ping Failed" , ste.getStackTrace());
+            log.addLog("Ping failed ", ste.getStackTrace());
         } catch (IOException e) {
-            LogFile.addLog("Ping Failed" , e.getStackTrace());
+            log.addLog("Ping failed ", e.getStackTrace());
             return false;
         }
         return reply;
@@ -120,7 +121,7 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
         try {
             initializer();
             serverSocket = new ServerSocket(PORT);
-            LogFile.addLog("\nit.polimi.ingsw.server waiting for client on port " +  serverSocket.getLocalPort());
+            log.addLog("\nit.polimi.ingsw.server waiting for client on port " +  serverSocket.getLocalPort());
 
             // server infinite loop
             client = serverSocket.accept();

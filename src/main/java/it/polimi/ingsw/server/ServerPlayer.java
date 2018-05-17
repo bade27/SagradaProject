@@ -17,10 +17,12 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     private TokenTurn token;
     private ServerModelAdapter adapter;
     private String user;
+    private LogFile log;
 
     private boolean connectionError;
+
     private Integer lockObject;
-    ServerSocketHandler socketCon;
+    private ServerSocketHandler socketCon;
 
     private ArrayList<String> possibleUsers;
 
@@ -29,7 +31,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     private String[] publicObjCard;
     private String privateObjCard;
 
-    public ServerPlayer(TokenTurn tok, ServerModelAdapter adp, ArrayList ps) throws RemoteException
+    public ServerPlayer(TokenTurn tok, ServerModelAdapter adp, ArrayList ps,LogFile l) throws RemoteException
     {
         adapter = adp;
         token = tok;
@@ -37,7 +39,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
         comunicator = null;
         connectionError = false;
         lockObject = 0;
-        //initConn();
+        log = l;
     }
 
 
@@ -79,7 +81,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
         }
         catch (InterruptedException ex) {
             System.out.println(ex.getMessage());
-            LogFile.addLog("Fatal error on thread " + user  , ex.getStackTrace());
+            log.addLog("Fatal error on thread " + user  , ex.getStackTrace());
             token.notifyFatalError();
             Thread.currentThread().interrupt();
         }
@@ -96,7 +98,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
                         token.wait();
 
                     //Simulazione del turno
-                    LogFile.addLog("Turn of:" + user);
+                    log.addLog("Turn of:" + user);
                     System.out.println(">>>Turn of:" + user);
                     Thread.sleep(2000);
 
@@ -107,7 +109,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
                 catch (InterruptedException ex)
                 {
                     System.out.println(ex.getMessage());
-                    LogFile.addLog("Fatal error on thread " + user  , ex.getStackTrace());
+                    log.addLog("Fatal error on thread " + user  , ex.getStackTrace());
                     token.notifyFatalError();
                     Thread.currentThread().interrupt();
                 }
@@ -135,14 +137,14 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
 
             Naming.bind("rmi://0.0.0.0:1099/sagrada" + progressive, this );
 
-            LogFile.addLog("RMI Bind Waiting for client");
+            log.addLog("RMI Bind Waiting for client");
         }catch (Exception e) {
-            LogFile.addLog("RMI Bind failed" , e.getStackTrace());
+            log.addLog("RMI Bind failed" , e.getStackTrace());
         }
 
         //Socket connection creation
         try{
-            socketCon = new ServerSocketHandler();
+            socketCon = new ServerSocketHandler(log);
             socketCon.createConnection();
             if (socketCon.isConnected())
                 comunicator = socketCon;
@@ -151,7 +153,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
             }
         }
         catch (ClientOutOfReachException e) {
-            LogFile.addLog(e.getMessage() , e.getStackTrace());
+            log.addLog(e.getMessage() , e.getStackTrace());
             synchronized (lockObject) {
                 connectionError = true;
                 lockObject.notifyAll();
@@ -195,10 +197,10 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
             } while (!possibleUsers.contains(u));
             possibleUsers.remove(u);
             user = u;
-            LogFile.addLog("User: " + user + " Added");
+            log.addLog("User: " + user + " Added");
         }
         catch (ClientOutOfReachException|RemoteException e) {
-            LogFile.addLog("Failed to add user" , e.getStackTrace());
+            log.addLog("Failed to add user" , e.getStackTrace());
             throw new ClientOutOfReachException();
         }
     }
@@ -215,7 +217,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
             s1 = comunicator.chooseWindow(windowCard1, windowCard2);
         }
         catch (ClientOutOfReachException|RemoteException e) {
-            LogFile.addLog("(User:" + user + ")" + e.getMessage() , e.getStackTrace());
+            log.addLog("(User:" + user + ")" + e.getMessage() , e.getStackTrace());
             throw new ClientOutOfReachException();
         }
 
@@ -224,10 +226,10 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
 
         try {
             adapter.initializeWindow(s1);
-            LogFile.addLog("User: " + user + " Window initialized: " + s1);
+            log.addLog("User: " + user + " Window initialized: " + s1);
         }
         catch (ModelException ex) {
-            LogFile.addLog(ex.getMessage());
+            log.addLog(ex.getMessage());
             throw new ModelException();
         }
     }
@@ -248,7 +250,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
             comunicator.sendCards(publicObjCard);
         }
         catch (ClientOutOfReachException|RemoteException e) {
-            LogFile.addLog("(User:" + user + ")" + e.getMessage() , e.getStackTrace());
+            log.addLog("(User:" + user + ")" + e.getMessage() , e.getStackTrace());
             throw new ClientOutOfReachException();
         }
     }

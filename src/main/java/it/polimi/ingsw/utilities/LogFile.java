@@ -8,14 +8,17 @@ import java.util.Date;
 
 public class LogFile
 {
-    public static void cleanFile ()
+    private String name;
+
+    public LogFile (String n)
     {
+        name = n + ".log";
         FileWriter f = null;
         try {
-            f = new FileWriter("LogFile.log");
+            f = new FileWriter(name);
         }
         catch (IOException ex){
-            System.out.println(ex.getMessage());
+            System.out.println("Impossible to create to log file: " + name + ".log");
         }
         finally
         {
@@ -29,11 +32,11 @@ public class LogFile
     }
 
 
-    public synchronized static void addLog (String s)
+    public synchronized void addLog (String s)
     {
         FileWriter f = null;
         try {
-            f = new FileWriter("LogFile.log",true);
+            f = new FileWriter(name,true);
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             Date date = new Date();
             f.write(dateFormat.format(date) + " " + s + "\r\n");
@@ -53,11 +56,11 @@ public class LogFile
         }
     }
 
-    public synchronized static void addLog (String s, StackTraceElement[] st)
+    public synchronized void addLog (String s, StackTraceElement[] st)
     {
         FileWriter f = null;
         try {
-            f = new FileWriter("LogFile.log",true);
+            f = new FileWriter(name,true);
             DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
             Date date = new Date();
             if (s.equals(""))

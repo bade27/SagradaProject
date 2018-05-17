@@ -480,6 +480,12 @@ class TokenTurnTest {
         assertTrue(token.isEndRound());
     }
 
+    @Test
+    void checkTool8WithOtherTool8 ()
+    {
+        //To be implemented
+    }
+
 
 
     void assertTurnA ()
