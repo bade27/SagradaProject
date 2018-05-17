@@ -37,7 +37,10 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         else if (typeOfCOnnection == 1)
         {
             try{
-                String[] e = Naming.list("rmi://192.168.1.1:1099");
+                int port = 7000;
+                String address = "127.0.0.1";
+                String remote = "rmi://" + address + ":" + port;
+                String[] e = Naming.list(remote);
 
                 for (int i = 0; i < e.length ; i++)
                     System.out.println(e[i]);
