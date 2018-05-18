@@ -29,31 +29,44 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         this.graph = g;
         adp = new ClientModelAdapter(graph);
 
-        //if connection is socket, creates socket connect
-        if (typeOfCOnnection == 0)
-            server = new ClientSocketHandler(this);
-
-        //if connection is RMI, creates RMI lookup of stub
-        else if (typeOfCOnnection == 1)
+        try
         {
-            try{
+            //if connection is socket, creates socket connect
+            if (typeOfCOnnection == 0)
+                server = new ClientSocketHandler(this);
+
+            //if connection is RMI, creates RMI lookup of stub
+            else if (typeOfCOnnection == 1)
+            {
                 int port = 7000;
-                String address = "127.0.0.1";
+                String address = "192.168.1.3";
                 String remote = "rmi://" + address + ":" + port;
+                System.out.println("RMI connection to host " + address + " port " + port +  "...");
                 String[] e = Naming.list(remote);
 
-                for (int i = 0; i < e.length ; i++)
-                    System.out.println(e[i]);
+                /*for (int i = 0; i < e.length ; i++)
+                    System.out.println(e[i]);*/
 
                 String s = Collections.max(new ArrayList<>(Arrays.asList(e)));
 
                 server=(ServerRemoteInterface) Naming.lookup(s);
                 server.setClient(this);
-            } catch(Exception e){
-                e.printStackTrace();
-                throw new RemoteException();
             }
+
         }
+        catch (ClientOutOfReachException e){
+            System.out.println("Impossible to connect to Host with socket");
+            return;
+        }
+        catch (RemoteException e){
+            System.out.println("Impossible to connect to Host with RMI");
+            return;
+        }
+        catch (Exception e){
+            System.out.println("Impossible to connect to Host");
+            return;
+        }
+        System.out.println("Client connected");
     }
 
     //<editor-fold desc="Setup Phase">

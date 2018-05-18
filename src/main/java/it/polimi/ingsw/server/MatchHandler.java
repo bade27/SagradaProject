@@ -21,7 +21,7 @@ public class MatchHandler implements Runnable
     private TokenTurn tok;
     private Dadiera dices;
 
-    private final static int MAXGIOC =2;//Da modificare a 4
+    private final static int MAXGIOC =1;//Da modificare a 4
 
     public synchronized void run ()
     {
@@ -99,10 +99,7 @@ public class MatchHandler implements Runnable
             {
                 ServerPlayer pl = new ServerPlayer(tok,new ServerModelAdapter(dices),possibleUsrs,log);
                 if (pl.initializeCommunication(progressive))
-                {
                     player.add(pl);
-                    log.addLog("client accepted");
-                }
                 else
                     i--;
                 int n = checkClientAlive();

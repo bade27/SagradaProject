@@ -45,9 +45,10 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
         MOVE_EXECUTE_TIME = Integer.parseInt(document.getElementsByTagName("move").item(0).getTextContent());
     }
 
-    public ClientSocketHandler(ClientPlayer cli) {
+    public ClientSocketHandler(ClientPlayer cli) throws ClientOutOfReachException
+    {
         player = cli;
-        System.out.println("connecting...");
+        System.out.println("Socket connection to host " + address + " port " + PORT +  "...");
         try{
             if(!initialized) {
                 initializer();
@@ -57,13 +58,12 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
             inSocket = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             outSocket = new PrintWriter(new BufferedWriter(
                     new OutputStreamWriter(socket.getOutputStream())), true);
-        } catch (Exception e) {
-            System.out.println("initialization gone wrong");
-            e.printStackTrace();
+        } catch (Exception e)
+        {
+            throw new ClientOutOfReachException();
         }
         deamon = new Thread(this);
         deamon.start();
-        System.out.println("connected");
     }
 
     @Override

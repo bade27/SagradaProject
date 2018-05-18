@@ -131,7 +131,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
         //RMI Registry creation and bind server name
         try {
             int port = 7000;
-            String hostname = "127.0.0.1";
+            String hostname = "192.168.1.5";
             String bindLocation = "rmi://" + hostname + ":" + port + "/sagrada" + progressive;
             try{
                 //System.setProperty("java.rmi.server.hostname","192.168.1.1");
@@ -150,7 +150,10 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
             socketCon = new ServerSocketHandler(log);
             socketCon.createConnection();
             if (socketCon.isConnected())
+            {
                 comunicator = socketCon;
+                log.addLog("Client accepted with Socket connection");
+            }
             synchronized (lockObject) {
                 lockObject.notifyAll();
             }
@@ -175,10 +178,12 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
         {
             //try
             //{
-                socketCon.start();
-                //socketCon.join();
-                comunicator = client;
-                lockObject.notifyAll();
+            socketCon.start();
+            //socketCon.join();
+            comunicator = client;
+            lockObject.notifyAll();
+
+            log.addLog("Client accepted with RMI connection");
             //}catch (InterruptedException e){
                 //throw new RemoteException();
             //}
