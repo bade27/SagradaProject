@@ -59,7 +59,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
             try {
                 login();
                 token.addPlayer(user);
-                //initializeCards();
+                initializeCards();
                 initializeWindow();
             }
             catch (ClientOutOfReachException|ModelException ex) {

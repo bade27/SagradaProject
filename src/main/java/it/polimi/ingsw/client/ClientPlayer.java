@@ -57,6 +57,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         }
         catch (ClientOutOfReachException e){
             System.out.println("Impossible to connect to Host with socket");
+            //e.printStackTrace();
             return;
         }
         catch (RemoteException e){

@@ -159,6 +159,7 @@ public class Graphic extends JFrame
 
     public static void main(String[] args)
     {
-        Graphic g = new Graphic();
+        Graphic g1 = new Graphic();
+        //Graphic g2 = new Graphic();
     }
 }

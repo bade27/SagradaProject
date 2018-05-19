@@ -123,11 +123,11 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
             serverSocket = new ServerSocket(PORT);
             log.addLog("\nit.polimi.ingsw.server socket waiting for client on port " +  serverSocket.getLocalPort());
 
-            // server infinite loop
             client = serverSocket.accept();
         }
         catch(Exception e)
         {
+            e.printStackTrace();
             try {
                 if (serverSocket != null)
                     serverSocket.close();
@@ -279,10 +279,15 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
         }
     }
 
-    public void sendMessage (String s)
-    {
-        //Da fare
+    public void sendMessage (String s) throws ClientOutOfReachException {
+        StringBuilder msg = new StringBuilder(s);
+        msg.append("\n");
+        outSocket.write(msg.toString());
+        if(outSocket.checkError())
+            isAlive = false;
 
+        if(!isAlive)
+            throw new ClientOutOfReachException("client is out of reach");
     }
 /*
     public void moves() {

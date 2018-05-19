@@ -41,7 +41,7 @@ public class MatchHandler implements Runnable
     private void startGame ()
     {
         log.addLog("Game Phase started");
-
+        clientConnectionUpdateMessage("playing");
         dices.mix(tok.getNumPlayers());
         log.addLog("Dadiera Mixed");
         while (true)
@@ -103,7 +103,7 @@ public class MatchHandler implements Runnable
                 else
                     i--;
                 int n = checkClientAlive();
-                clientConnectionUpdateMessage();
+                clientConnectionUpdateMessage("connected");
                 i = i-n;
                 progressive++;
             }
@@ -332,10 +332,10 @@ public class MatchHandler implements Runnable
         }
     }
 
-    private void clientConnectionUpdateMessage ()
+    private void clientConnectionUpdateMessage (String str)
     {
         for (int i = 0; i < player.size(); i++)
-            player.get(i).sendMessage("Number of client connected: " + player.size());
+            player.get(i).sendMessage("Number of client " + str + ": "+ player.size());
     }
     //</editor-fold>
 

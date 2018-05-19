@@ -6,7 +6,7 @@
 		- [X] Show message when client is logged correctly
 		- [X] Handle double connection from client
 		- [X] Accidentally disconnetion from crash of communication
-		- [ ] Other client connected message (on ping or in another function?)
+		- [X] Other client connected message (on ping or in another function?)
 	- RMI
 		- [ ] Parameters loaded from file
 		- [X] Show message when client is logged correctly

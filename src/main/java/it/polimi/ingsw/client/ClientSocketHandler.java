@@ -48,18 +48,19 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
     public ClientSocketHandler(ClientPlayer cli) throws ClientOutOfReachException
     {
         player = cli;
-        System.out.println("Socket connection to host " + address + " port " + PORT +  "...");
         try{
             if(!initialized) {
                 initializer();
                 initialized = true;
             }
+            System.out.println("Socket connection to host " + address + " port " + PORT +  "...");
             socket = new Socket(address, PORT);
             inSocket = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             outSocket = new PrintWriter(new BufferedWriter(
                     new OutputStreamWriter(socket.getOutputStream())), true);
         } catch (Exception e)
         {
+            e.printStackTrace();
             throw new ClientOutOfReachException();
         }
         deamon = new Thread(this);
@@ -86,6 +87,10 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
                         executionTime = INIT_EXECUTE_TIME;
                         stopTask(() -> login(), executionTime, executor);
                         continue;
+                    case "pub_objs":
+                        executionTime = INIT_EXECUTE_TIME;
+                        stopTask(() -> receivePublicObjectives(), executionTime, executor);
+                        continue;
                     case "close":
                         close();
                         continue;
@@ -94,11 +99,9 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
                         outSocket.write("pong\n");
                         outSocket.flush();
                         continue;
-                    case "wellcome!":
+                    default:
                         System.out.println(action);
                         continue;
-                    default:
-                        return;
                 }
             }
         } catch (IOException e) {
@@ -122,6 +125,18 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
         return false;
     }
 
+    private Boolean receivePublicObjectives()
+    {
+        try {
+            String objs = inSocket.readLine();
+            System.out.println(objs);
+            outSocket.write("ok\n");
+            return outSocket.checkError();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
     /*public void myPrivateObj() {
         try {
             String response = graph.myPrivateObj(inSocket.readLine()).toLowerCase();
