@@ -1,10 +1,9 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.exceptions.ParserXMLException;
 import it.polimi.ingsw.model.Dadiera;
-import it.polimi.ingsw.utilities.ParserXML;
 import it.polimi.ingsw.utilities.LogFile;
+import it.polimi.ingsw.utilities.ParserXML;
 
 import java.util.ArrayList;
 
@@ -21,7 +20,7 @@ public class MatchHandler implements Runnable
     private TokenTurn tok;
     private Dadiera dices;
 
-    private final static int MAXGIOC =2;//Da modificare a 4
+    private final static int MAXGIOC =1;//Da modificare a 4
 
     public synchronized void run ()
     {
@@ -41,7 +40,7 @@ public class MatchHandler implements Runnable
     private void startGame ()
     {
         log.addLog("Game Phase started");
-        clientConnectionUpdateMessage("playing");
+        //clientConnectionUpdateMessage("playing");
         dices.mix(tok.getNumPlayers());
         log.addLog("Dadiera Mixed");
         while (true)
@@ -342,7 +341,6 @@ public class MatchHandler implements Runnable
     public static void main(String[] args)
     {
         (new Thread(new MatchHandler())).start();
-
     }
 }
 

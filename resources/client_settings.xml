@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <client>
+
+    <hostName>127.0.0.1</hostName>
+
     <socket>
-        <hostName>localhost</hostName>
         <portNumber>6000</portNumber>
         <init>20000</init>
         <move>30000</move>
     </socket>
 
     <rmi>
-        <hostName>localhost</hostName>
-        <portNumber>8000</portNumber>
+        <registryPort>5000</registryPort>
+        <stubPort>9000</stubPort>
     </rmi>
 </client>

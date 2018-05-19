@@ -8,7 +8,8 @@
     </socket>
 
     <rmi>
-        <hostName>localhost</hostName>
-        <portNumber>8000</portNumber>
+        <hostName>127.0.0.1</hostName>
+        <registryPort>5000</registryPort>
+        <stubPort>9000</stubPort>
     </rmi>
 </server>

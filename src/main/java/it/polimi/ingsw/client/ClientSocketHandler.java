@@ -1,30 +1,21 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
 import it.polimi.ingsw.remoteInterface.ServerRemoteInterface;
-import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.utilities.JSONFacilities;
 import org.json.JSONException;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.net.Socket;
 import java.util.concurrent.*;
 
 public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
 
-    //contiene informazioni su indirizzo e porta del server
-    private static final String settings = "resources/client_settings.xml";
-
-    private static String address;
-    private static int PORT;
-    private static int INIT_EXECUTE_TIME;
-    private static int MOVE_EXECUTE_TIME;
-    private static boolean initialized = false;
+    private String HOSTNAME;
+    private int PORT;
+    private int INIT_EXECUTE_TIME;
+    private int MOVE_EXECUTE_TIME;
 
     private Socket socket;
     private BufferedReader inSocket;
@@ -34,27 +25,16 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
 
     private ClientPlayer player;
 
-    private static void initializer() throws ParserConfigurationException, IOException, SAXException {
-        File file = new File(settings);
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document document = documentBuilder.parse(file);
-        address = document.getElementsByTagName("hostName").item(0).getTextContent();
-        PORT = Integer.parseInt(document.getElementsByTagName("portNumber").item(0).getTextContent());
-        INIT_EXECUTE_TIME = Integer.parseInt(document.getElementsByTagName("init").item(0).getTextContent());
-        MOVE_EXECUTE_TIME = Integer.parseInt(document.getElementsByTagName("move").item(0).getTextContent());
-    }
-
-    public ClientSocketHandler(ClientPlayer cli) throws ClientOutOfReachException
+    public ClientSocketHandler(ClientPlayer cli, String host, int port, int init_time, int mov_time) throws ClientOutOfReachException
     {
         player = cli;
+        HOSTNAME = host;
+        PORT = port;
+        INIT_EXECUTE_TIME = init_time;
+        MOVE_EXECUTE_TIME = mov_time;
         try{
-            if(!initialized) {
-                initializer();
-                initialized = true;
-            }
-            System.out.println("Socket connection to host " + address + " port " + PORT +  "...");
-            socket = new Socket(address, PORT);
+            System.out.println("Socket connection to host " + HOSTNAME + " port " + PORT +  "...");
+            socket = new Socket(HOSTNAME, PORT);
             inSocket = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             outSocket = new PrintWriter(new BufferedWriter(
                     new OutputStreamWriter(socket.getOutputStream())), true);
@@ -81,7 +61,8 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
                         stopTask(() -> chooseWindow(), executionTime, executor);
                         continue;
                     /*case "privobj":
-                        myPrivateObj();
+                        executionTime = INIT_EXECUTE_TIME;
+                        stopTask(() -> myPrivateObj(), executionTime, executor);
                         continue;*/
                     case "login":
                         executionTime = INIT_EXECUTE_TIME;
