@@ -65,7 +65,7 @@ class DadieraTest {
         assertEquals(oldLen - 1, playableDice.size());
     }
 
-    @RepeatedTest(10000)
+    @Test()
     void addDice(){
         d.mix(n);
         ArrayList<Dice> playableDice = d.getListaDadi();

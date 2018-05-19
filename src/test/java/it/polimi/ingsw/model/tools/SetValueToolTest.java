@@ -30,7 +30,7 @@ class SetValueToolTest {
         svt=new SetValueTool();
     }
 
-    @RepeatedTest(10000)
+    @Test()
     void addSub0() throws IllegalDiceException, IllegalStepException {
         boolean found = false;
         d.mix(n);
@@ -74,7 +74,7 @@ class SetValueToolTest {
             assertEquals(oldcol,newcol);
     }
 
-    @RepeatedTest(10000)
+    @Test()
     void addSub0Exception() throws IllegalDiceException {
         boolean found = false;
         d.mix(n);
@@ -101,7 +101,7 @@ class SetValueToolTest {
     }
 
 
-    @RepeatedTest(10000)
+    @Test()
     void addSub1() throws IllegalDiceException, IllegalStepException {
         boolean found = false;
         d.mix(n);
@@ -145,7 +145,7 @@ class SetValueToolTest {
         assertEquals(oldcol,newcol);
     }
 
-    @RepeatedTest(10000)
+    @Test()
     void addSub1Exception() throws IllegalDiceException {
         boolean found = false;
         d.mix(n);
@@ -170,7 +170,7 @@ class SetValueToolTest {
         assertThrows(IllegalStepException.class, () -> svt.addSub(finalDice,d,1));
     }
 
-    @RepeatedTest(10000)
+    @Test()
     void turnDice() throws IllegalDiceException {
         d.mix(n);
         int i=new Random().nextInt(expectedDice);
@@ -193,7 +193,7 @@ class SetValueToolTest {
         assertEquals(oldcol,newcol);
     }
 
-    @RepeatedTest(10000)
+    @Test()
     void relaunchDice() throws IllegalDiceException {
         d.mix(n);
         int i=new Random().nextInt(expectedDice);
@@ -216,7 +216,7 @@ class SetValueToolTest {
 
     }
 
-    @RepeatedTest(10000)
+    @Test()
     void setPrice() {
         int price1=svt.getPrice();
         svt.setPrice();
@@ -228,7 +228,7 @@ class SetValueToolTest {
         assertEquals(price3,2);
     }
 
-    @RepeatedTest(10000)
+    @Test()
     void getPrice() {
         int price=svt.getPrice();
         assertNotNull(price);
