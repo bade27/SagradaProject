@@ -18,7 +18,7 @@ import java.util.concurrent.*;
 public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
 
     //contiene informazioni su indirizzo e porta del server
-    private static final String settings = "resources/settings.xml";
+    private static final String settings = "resources/client_settings.xml";
 
     private static String address;
     private static int PORT;

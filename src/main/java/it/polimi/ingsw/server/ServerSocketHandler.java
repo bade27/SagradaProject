@@ -24,7 +24,7 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
     LogFile log;
 
     //contiene informazioni su indirizzo e porta del server
-    private static final String settings = "resources/settings.xml";
+    private static final String settings = "resources/server_settings.xml";
 
     private static int PORT;
 

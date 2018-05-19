@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<server>
+    <socket>
+        <portNumber>6000</portNumber>
+        <ping>10000</ping>
+        <action>20000</action>
+    </socket>
+
+    <rmi>
+        <hostName>localhost</hostName>
+        <portNumber>8000</portNumber>
+    </rmi>
+</server>
