@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.exceptions.IllegalDiceException;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
@@ -31,7 +32,7 @@ class DadieraTest {
         assertEquals(expectedDice, d.getListaDadi().size());
     }
 
-    @Test
+    @Test()
     void deleteDice() {
         d.mix(n);
         int which_Die = new Random().nextInt(expectedDice);
@@ -64,7 +65,7 @@ class DadieraTest {
         assertEquals(oldLen - 1, playableDice.size());
     }
 
-    @Test
+    @RepeatedTest(10000)
     void addDice(){
         d.mix(n);
         ArrayList<Dice> playableDice = d.getListaDadi();
@@ -75,7 +76,7 @@ class DadieraTest {
         //creazione dado casuale
         Random col=new Random();
         Random num=new Random();
-        int number=num.nextInt(5)+1;
+        int number=num.nextInt(6)+1;
         Color color=null;
         switch (col.nextInt(5))
         {case 0:
@@ -99,7 +100,7 @@ class DadieraTest {
     }
         Dice dice=new Dice(number,color);
 
-        //dadi uguali a quello inserito
+        // funzione dadi uguali a quello inserito
         BiFunction<ArrayList<Dice>, Dice, Integer> numDice = (list, d) -> {
             Long t = list.stream()
                     .filter(currentDice -> currentDice.isEqual(d))
@@ -121,11 +122,12 @@ class DadieraTest {
         int newLen=d.getListaDadi().size();
 
         assertEquals(oldLen,newLen-1);
-        assertEquals(oldLen,newLen-1);
+        assertEquals(oldEquals,newEquals-1);
+        assertNotNull(color);
 
     }
 
-    @Test
+    @Test()
     void setDiceValueException() throws IllegalDiceException{
         d.mix(n);
         ArrayList<Dice> playableDice = d.getListaDadi();
@@ -149,7 +151,7 @@ class DadieraTest {
         int which_Die = new Random().nextInt(expectedDice);
 
         //creo valore del dado casualmente
-        int n=new Random().nextInt(5)+1;
+        int n=new Random().nextInt(6)+1;
 
         //estrazione di un dado da dadiera
         Dice dice = playableDice.get(which_Die);

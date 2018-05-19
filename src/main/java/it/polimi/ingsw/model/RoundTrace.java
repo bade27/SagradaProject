@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.exceptions.IllegalDiceException;
 import it.polimi.ingsw.exceptions.IllegalStepException;
 
 import java.util.ArrayList;
@@ -12,35 +13,32 @@ public class RoundTrace {
     }
 
     /**
-     * Aggiunge il dado d nella posizione n del tracciato
-     * @param n cella del tracciato round nella quale inserire il dado
-     * @param d dado da aggiungere
+     * Add d die in the n position
+     * @param n track's cell
+     * @param d die
      */
     public void addDice(int n,Dice d){
-        trace[n-1].add(d);
+            trace[n-1].add(d);
     }
 
     /**
-     * Toglie il dado d dalla posizione n del tracciato
-     * @param n cella del tracciato round dalla quale togliere il dado
-     * @param d dado da togliere
+     * Delete d die from the n position
+     * @param n track's cell
+     * @param d die
      */
-    public void deleteDice(int n,Dice d) throws IllegalStepException {
-        boolean found=false;
-        for(int i=0;i<trace[n-1].size() && found==false;i++){
+    public void deleteDice(int n,Dice d){
+        for(int i=0;i<trace[n-1].size();i++){
             if (d.equals(trace[n-1].get(i))){
                 trace[n-1].remove(i);
-                found=true;
+                break;
             }
         }
-        if (found==false)
-            throw new IllegalStepException();
     }
 
     /**
-     * Genera la lista dei dadi presenti in una determinata cella del tracciato round
-     * @param n cella del tracciato round
-     * @return lista di dadi
+     * Return the list of dice in a specific track cell
+     * @param n cell
+     * @return list of dice
      */
     public ArrayList<Dice> getListDice(int n){
         return trace[n-1];
