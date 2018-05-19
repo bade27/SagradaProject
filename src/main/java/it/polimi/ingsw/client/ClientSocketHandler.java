@@ -25,21 +25,21 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
 
     private ClientPlayer player;
 
-    public ClientSocketHandler(ClientPlayer cli, String host, int port, int init_time, int mov_time) throws ClientOutOfReachException
-    {
+    public ClientSocketHandler(ClientPlayer cli, String host, int port, int init_time, int mov_time) throws ClientOutOfReachException {
         player = cli;
         HOSTNAME = host;
         PORT = port;
         INIT_EXECUTE_TIME = init_time;
         MOVE_EXECUTE_TIME = mov_time;
-        try{
-            System.out.println("Socket connection to host " + HOSTNAME + " port " + PORT +  "...");
+        System.out.println("Socket connection to host " + HOSTNAME + " port " + PORT + "...");
+        socket = null;
+        try {
+            System.out.println("Socket connection to host " + HOSTNAME + " port " + PORT + "...");
             socket = new Socket(HOSTNAME, PORT);
             inSocket = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             outSocket = new PrintWriter(new BufferedWriter(
                     new OutputStreamWriter(socket.getOutputStream())), true);
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             e.printStackTrace();
             throw new ClientOutOfReachException();
         }

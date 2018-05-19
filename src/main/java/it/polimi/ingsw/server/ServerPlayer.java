@@ -35,11 +35,12 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     private String user;
     private LogFile log;
 
+    //Init phase
     private boolean connectionError;
 
+    //Setup Phase
     private Integer lockObject;
     private ServerSocketHandler socketCon;
-
     private ArrayList<String> possibleUsers;
 
     //passed parameters
@@ -223,18 +224,10 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     {
         synchronized (lockObject)
         {
-            //try
-            //{
             socketCon.start();
-            //socketCon.join();
             communicator = client;
             lockObject.notifyAll();
-
             log.addLog("Client accepted with RMI connection");
-            //}catch (InterruptedException e){
-            //throw new RemoteException();
-            //}
-
         }
 
     }
@@ -317,9 +310,9 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     public boolean isClientAlive ()
     {
         try {
+            //setTimeout(50000);
             return communicator.ping();
         }catch (RemoteException e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -333,6 +326,33 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
         }
 
     }
+
+    //It works but on login function it doesn't wait client's response
+    /*private  void setTimeout (int milli)
+    {
+        try {
+            RMISocketFactory.setSocketFactory(new RMISocketFactory()
+            {
+                public Socket createSocket(String host, int port )
+                        throws IOException
+                {
+                    Socket socket = new Socket();
+                    socket.setSoTimeout( milli );
+                    socket.connect( new InetSocketAddress( host, port ), milli );
+                    return socket;
+                }
+
+                public ServerSocket createServerSocket(int port )
+                        throws IOException
+                {
+                    return new ServerSocket( port );
+                }
+            } );
+
+        }catch (IOException e){
+            log.addLog("Impossible to set RMI timeout");
+        }
+    }*/
 
     public void closeCommunication ()
     {
