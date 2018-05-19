@@ -4,13 +4,13 @@
     <server>
         <portNumber>6000</portNumber>
         <ping>10000</ping>
-        <action>20000</action>
+        <action>50000</action>
     </server>
 
     <client>
         <hostName>localhost</hostName>
         <portNumber>6000</portNumber>
-        <init>20000</init>
-        <move>30000</move>
+        <init>50000</init>
+        <move>50000</move>
     </client>
 </game>

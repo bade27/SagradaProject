@@ -48,12 +48,12 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
     public ClientSocketHandler(ClientPlayer cli) throws ClientOutOfReachException
     {
         player = cli;
-        System.out.println("Socket connection to host " + address + " port " + PORT +  "...");
         try{
             if(!initialized) {
                 initializer();
                 initialized = true;
             }
+            System.out.println("Socket connection to host " + address + " port " + PORT +  "...");
             socket = new Socket(address, PORT);
             inSocket = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             outSocket = new PrintWriter(new BufferedWriter(

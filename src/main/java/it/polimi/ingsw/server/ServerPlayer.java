@@ -6,8 +6,13 @@ import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
 import it.polimi.ingsw.remoteInterface.ServerRemoteInterface;
 import it.polimi.ingsw.utilities.LogFile;
 
+import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.rmi.server.RMISocketFactory;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
@@ -19,11 +24,12 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     private String user;
     private LogFile log;
 
+    //Init phase
     private boolean connectionError;
 
+    //Setup Phase
     private Integer lockObject;
     private ServerSocketHandler socketCon;
-
     private ArrayList<String> possibleUsers;
 
     //passed parameters
@@ -132,8 +138,8 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
         //RMI Registry creation and bind server name
         try {
             int port = 7000;
-            String hostname = "127.0.0.1";
-            //String hostname = "192.168.1.5";
+            //String hostname = "127.0.0.1";
+            String hostname = "192.168.1.5";
             String bindLocation = "rmi://" + hostname + ":" + port + "/sagrada" + progressive;
             try{
                 //System.setProperty("java.rmi.server.hostname","192.168.1.1");
@@ -178,18 +184,10 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     {
         synchronized (lockObject)
         {
-            //try
-            //{
             socketCon.start();
-            //socketCon.join();
             comunicator = client;
             lockObject.notifyAll();
-
             log.addLog("Client accepted with RMI connection");
-            //}catch (InterruptedException e){
-            //throw new RemoteException();
-            //}
-
         }
 
     }
@@ -272,9 +270,9 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     public boolean isClientAlive ()
     {
         try {
+            //setTimeout(50000);
             return comunicator.ping();
         }catch (RemoteException e) {
-            e.printStackTrace();
             return false;
         }
     }
@@ -288,6 +286,33 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
         }
 
     }
+
+    //It works but on login function it doesn't wait client's response
+    /*private  void setTimeout (int milli)
+    {
+        try {
+            RMISocketFactory.setSocketFactory(new RMISocketFactory()
+            {
+                public Socket createSocket(String host, int port )
+                        throws IOException
+                {
+                    Socket socket = new Socket();
+                    socket.setSoTimeout( milli );
+                    socket.connect( new InetSocketAddress( host, port ), milli );
+                    return socket;
+                }
+
+                public ServerSocket createServerSocket(int port )
+                        throws IOException
+                {
+                    return new ServerSocket( port );
+                }
+            } );
+
+        }catch (IOException e){
+            log.addLog("Impossible to set RMI timeout");
+        }
+    }*/
 
     public void closeCommunication ()
     {

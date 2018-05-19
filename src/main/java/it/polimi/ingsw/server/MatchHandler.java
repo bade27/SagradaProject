@@ -21,7 +21,7 @@ public class MatchHandler implements Runnable
     private TokenTurn tok;
     private Dadiera dices;
 
-    private final static int MAXGIOC =2;//Da modificare a 4
+    private final static int MAXGIOC = 2;//Da modificare a 4
 
     public synchronized void run ()
     {
@@ -291,7 +291,7 @@ public class MatchHandler implements Runnable
                 {
                     nDisc ++ ;
                     player.remove(i);
-                    log.addLog("Client does not respond to ping");
+                    log.addLog("Client does not respond to ping\n\t Client disconnected");
                 }
             }
         }
