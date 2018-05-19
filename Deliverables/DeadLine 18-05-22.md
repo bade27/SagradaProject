@@ -7,18 +7,18 @@
 		- [X] Handle double connection from client
 		- [X] Accidentally disconnetion from crash of communication
 		- [ ] Manually disconnection from client
-		- [ ] Other client connected message (on ping or in anoteher function?)
+		- [ ] Other client connected message (on ping or in another function?)
 	- RMI
 		- [ ] Parameters loaded from file
 		- [X] Show message when client is logged correctly
 		- [X] Handle double connection from client
 		- [X] Accidentally disconnetion from crash of communication
 		- [ ] Manually disconnection from client
-		- [ ] Other client connected message (on ping or in anoteher function?)
+		- [ ] Other client connected message (on ping or in another function?)
 		
-- Server
+- Client
     - Socket
-		- [ ] Parameters loaded from file
+		- [X] Parameters loaded from file
 		- [X] Show message when client is logged correctly
 		- [ ] Too many users message specificly (if necessary)
 	- RMI
