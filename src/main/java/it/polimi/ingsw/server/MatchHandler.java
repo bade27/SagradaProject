@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class MatchHandler implements Runnable
 {
-    public LogFile log;
+    private LogFile log;
 
     //List of active serverPlayer
     private ArrayList<ServerPlayer> player;
@@ -21,7 +21,7 @@ public class MatchHandler implements Runnable
     private TokenTurn tok;
     private Dadiera dices;
 
-    private final static int MAXGIOC =1;//Da modificare a 4
+    private final static int MAXGIOC =2;//Da modificare a 4
 
     public synchronized void run ()
     {
@@ -103,6 +103,7 @@ public class MatchHandler implements Runnable
                 else
                     i--;
                 int n = checkClientAlive();
+                clientConnectionUpdateMessage();
                 i = i-n;
                 progressive++;
             }
@@ -123,8 +124,6 @@ public class MatchHandler implements Runnable
             e.printStackTrace();
         }
     }
-
-
 
 
     //<editor-fold desc = "Window and objects initialization">
@@ -247,7 +246,7 @@ public class MatchHandler implements Runnable
 
     //</editor-fold>
 
-    //<editor-fold desc="closeAllCOnnection/CheckClientAlive/WaitInitialization/initializePossibleUsers">
+    //<editor-fold desc="Utilities">
     /**
      * To modify in reading from XML or DB possible users
      * @return
@@ -262,6 +261,8 @@ public class MatchHandler implements Runnable
         return arr;
     }
 
+
+
     /**
      * DA MODIFICARE!! non funziona con interface runnable, serve memorizzare i thread di serverPlayer
      */
@@ -270,7 +271,7 @@ public class MatchHandler implements Runnable
         for (int i = 0; i < threadPlayers.size() ; i++)
             threadPlayers.get(i).interrupt();
         for (int i = 0; i < player.size() ; i++)
-            player.get(i).closeComunication();
+            player.get(i).closeCommunication();
 
         log.addLog("All connections are forced to stop cause fatal error");
     }
@@ -329,6 +330,12 @@ public class MatchHandler implements Runnable
                 closeAllConnection();
             }
         }
+    }
+
+    private void clientConnectionUpdateMessage ()
+    {
+        for (int i = 0; i < player.size(); i++)
+            player.get(i).sendMessage("Number of client connected: " + player.size());
     }
     //</editor-fold>
 

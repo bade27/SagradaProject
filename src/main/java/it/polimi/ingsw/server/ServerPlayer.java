@@ -120,6 +120,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
 
 
 
+    //<editor-fold desc="Initialization Phase">
     /**
      * Generate 2 method for accepting client (Rmi and Socket)
      * For socket this method creates a thread in waiting of Connection client
@@ -131,7 +132,8 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
         //RMI Registry creation and bind server name
         try {
             int port = 7000;
-            String hostname = "192.168.1.5";
+            String hostname = "127.0.0.1";
+            //String hostname = "192.168.1.5";
             String bindLocation = "rmi://" + hostname + ":" + port + "/sagrada" + progressive;
             try{
                 //System.setProperty("java.rmi.server.hostname","192.168.1.1");
@@ -140,7 +142,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
 
             Naming.bind(bindLocation, this );
 
-            log.addLog("RMI Bind Waiting for client");
+            log.addLog("it.polimi.ingsw.server RMI waiting for client on port  " + port);
         }catch (Exception e) {
             log.addLog("RMI Bind failed" , e.getStackTrace());
         }
@@ -185,13 +187,15 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
 
             log.addLog("Client accepted with RMI connection");
             //}catch (InterruptedException e){
-                //throw new RemoteException();
+            //throw new RemoteException();
             //}
 
         }
 
     }
+    //</editor-fold>
 
+    //<editor-fold desc="Setup Phase">
     /**
      * Initialize username through login phase
      * @throws ClientOutOfReachException client is out of reach
@@ -262,8 +266,9 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
             throw new ClientOutOfReachException();
         }
     }
+    //</editor-fold>
 
-
+    //<editor-fold desc="Utilities">
     public boolean isClientAlive ()
     {
         try {
@@ -272,13 +277,25 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
             e.printStackTrace();
             return false;
         }
+    }
+
+    public void sendMessage (String s)
+    {
+        try {
+            comunicator.sendMessage(s);
+        }catch (Exception ex) {
+            log.addLog("Send message to client failed", ex.getStackTrace());
+        }
 
     }
-    public void closeComunication ()
+
+    public void closeCommunication ()
     {
 
     }
+    //</editor-fold>
 
+    //<editor-fold desc="Set Windows/Objects/Tools">
     /**
      * receives from the match the window cards among which the client need to choose
      * and sends them to the client
@@ -310,6 +327,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     {
         privateObjCard = c;
     }
+    //</editor-fold>
 
 
 }

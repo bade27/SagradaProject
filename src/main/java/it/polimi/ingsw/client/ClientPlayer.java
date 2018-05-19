@@ -39,7 +39,8 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             else if (typeOfCOnnection == 1)
             {
                 int port = 7000;
-                String address = "192.168.1.3";
+                String address = "127.0.0.1";
+                //String address = "192.168.1.3";
                 String remote = "rmi://" + address + ":" + port;
                 System.out.println("RMI connection to host " + address + " port " + port +  "...");
                 String[] e = Naming.list(remote);
@@ -76,7 +77,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
      */
     public String login() throws ClientOutOfReachException
     {
-        System.out.println("Inserisci Username: ");
+        System.out.println("Insert Username: ");
         Scanner cli = new Scanner(System.in);
         return cli.nextLine();
     }
@@ -125,6 +126,11 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     public boolean ping ()
     {
         return true;
+    }
+
+    public void sendMessage (String s)
+    {
+        System.out.println(s);
     }
     //</editor-fold>
 }

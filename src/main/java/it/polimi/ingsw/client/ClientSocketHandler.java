@@ -32,7 +32,7 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
 
     private Thread deamon;
 
-    ClientPlayer player;
+    private ClientPlayer player;
 
     private static void initializer() throws ParserConfigurationException, IOException, SAXException {
         File file = new File(settings);
@@ -90,6 +90,7 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
                         close();
                         continue;
                     case "ping":
+                        player.ping();
                         outSocket.write("pong\n");
                         outSocket.flush();
                         continue;
@@ -106,7 +107,7 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
 
     }
 
-    public Boolean chooseWindow()
+    private Boolean chooseWindow()
     {
         try {
             System.out.println(inSocket.readLine());
@@ -115,10 +116,8 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
             choice.append("\n");
             outSocket.write(choice.toString());
             return outSocket.checkError();
-        } catch (IOException e) {
+        } catch (IOException | JSONException e) {
             e.printStackTrace();
-        } catch (JSONException je) {
-            je.printStackTrace();
         }
         return false;
     }
@@ -132,7 +131,7 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
         }
     }*/
 
-    public Boolean login() {
+    private Boolean login() {
         try {
             //Da modificare con finestra a popup con username
             inSocket.readLine();

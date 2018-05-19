@@ -121,7 +121,7 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
         try {
             initializer();
             serverSocket = new ServerSocket(PORT);
-            log.addLog("\nit.polimi.ingsw.server waiting for client on port " +  serverSocket.getLocalPort());
+            log.addLog("\nit.polimi.ingsw.server socket waiting for client on port " +  serverSocket.getLocalPort());
 
             // server infinite loop
             client = serverSocket.accept();
@@ -277,6 +277,12 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
         } catch (JSONException je) {
             throw new ClientOutOfReachException("JSON can't encrypt client message");
         }
+    }
+
+    public void sendMessage (String s)
+    {
+        //Da fare
+
     }
 /*
     public void moves() {
