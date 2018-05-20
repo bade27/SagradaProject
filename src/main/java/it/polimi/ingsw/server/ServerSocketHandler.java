@@ -263,7 +263,7 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
                     e.printStackTrace();
                 }
                 String[] msgs = {"pub_objs\n", "tools\n"};
-                System.out.println(s.length);
+                //System.out.println(s.length);
                 for(int i = 0; i < s.length; i++) {
                     JSONArray jsonArray = JSONFacilities.encodeStringArrays(s[i]);
                     outSocket.write(msgs[i]);

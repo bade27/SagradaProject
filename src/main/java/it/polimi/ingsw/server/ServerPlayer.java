@@ -13,8 +13,11 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.rmi.server.RMISocketFactory;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
@@ -171,16 +174,13 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     {
         try {
             connection_parameters_setup();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
+        } catch (ParserConfigurationException| IOException | SAXException e) {
+            log.addLog("Impossible to read settings parameters" , e.getStackTrace());
         }
 
         //RMI Registry creation and bind server name
         try {
+            System.setProperty("sun.rmi.transport.connectionTimeout" , "1000");
             String bindLocation = "rmi://" + HOSTNAME + ":" + RMI_REGISTRY_PORT + "/sagrada" + progressive;
             try{
                 java.rmi.registry.LocateRegistry.createRegistry(RMI_REGISTRY_PORT);
@@ -310,7 +310,6 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     public boolean isClientAlive ()
     {
         try {
-            //setTimeout(50000);
             return communicator.ping();
         }catch (RemoteException e) {
             return false;
@@ -325,35 +324,8 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
             log.addLog("Send message to client failed", ex.getStackTrace());
         }
 
+
     }
-
-    //It works but on login function it doesn't wait client's response
-    /*private  void setTimeout (int milli)
-    {
-        try {
-            RMISocketFactory.setSocketFactory(new RMISocketFactory()
-            {
-                public Socket createSocket(String host, int port )
-                        throws IOException
-                {
-                    Socket socket = new Socket();
-                    socket.setSoTimeout( milli );
-                    socket.connect( new InetSocketAddress( host, port ), milli );
-                    return socket;
-                }
-
-                public ServerSocket createServerSocket(int port )
-                        throws IOException
-                {
-                    return new ServerSocket( port );
-                }
-            } );
-
-        }catch (IOException e){
-            log.addLog("Impossible to set RMI timeout");
-        }
-    }*/
-
     public void closeCommunication ()
     {
 

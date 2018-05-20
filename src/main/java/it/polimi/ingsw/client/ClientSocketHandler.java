@@ -31,7 +31,6 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
         PORT = port;
         INIT_EXECUTE_TIME = init_time;
         MOVE_EXECUTE_TIME = mov_time;
-        System.out.println("Socket connection to host " + HOSTNAME + " port " + PORT + "...");
         socket = null;
         try {
             System.out.println("Socket connection to host " + HOSTNAME + " port " + PORT + "...");

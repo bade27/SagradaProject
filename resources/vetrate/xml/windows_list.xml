@@ -2,7 +2,7 @@
 
 <list>
 
-  <numberOfCards>4</numberOfCards>
+  <numberOfCards>6</numberOfCards>
 
   <card n = "1">resources/vetrate/xml/kaleidoscopic_dream.xml</card>
   <card n = "2">resources/vetrate/xml/virtus.xml</card>
@@ -16,5 +16,10 @@
   <card n = "7">resources/vetrate/xml/aurorae_magnificus.xml</card>
   <card n = "8">resources/vetrate/xml/via_lux.xml</card>
 
+  <card n = "9">resources/vetrate/xml/kaleidoscopic_dream.xml</card>
+  <card n = "10">resources/vetrate/xml/virtus.xml</card>
+
+  <card n = "11">resources/vetrate/xml/aurorae_magnificus.xml</card>
+  <card n = "12">resources/vetrate/xml/via_lux.xml</card>
 
 </list>
