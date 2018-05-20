@@ -13,7 +13,7 @@
 		- [X] Handle double connection from client
 		- [X] Accidentally disconnection from crash of communication
 		- [X] Other client connected message (on ping or in another function?)
-		- [ ] Change timeout connection
+		- [X] Change timeout connection
 		
 - Client
     - Socket

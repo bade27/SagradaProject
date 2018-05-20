@@ -51,6 +51,8 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     private String[] publicObjCard;
     private String privateObjCard;
 
+    private Socket RMISocket;
+
     /**
      * sets up connection parameters
      * @throws ParserConfigurationException
@@ -83,6 +85,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
         connectionError = false;
         lockObject = 0;
         log = l;
+        setRmiSocket();
     }
 
 
@@ -240,6 +243,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
      */
     private void login () throws ClientOutOfReachException
     {
+        setRMITimeout(ACTION_TIMEOUT);
         String u;
         try{
             do{
@@ -262,6 +266,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
      */
     private void initializeWindow () throws ClientOutOfReachException,ModelException
     {
+        setRMITimeout(ACTION_TIMEOUT);
         String s1 ="";
         try {
             s1 = communicator.chooseWindow(windowCard1, windowCard2);
@@ -309,6 +314,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     //<editor-fold desc="Utilities">
     public boolean isClientAlive ()
     {
+        setRMITimeout(PING_TIMEOUT);
         try {
             return communicator.ping();
         }catch (RemoteException e) {
@@ -318,13 +324,12 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
 
     public void sendMessage (String s)
     {
+        setRMITimeout(PING_TIMEOUT);
         try {
             communicator.sendMessage(s);
         }catch (Exception ex) {
             log.addLog("Send message to client failed", ex.getStackTrace());
         }
-
-
     }
     public void closeCommunication ()
     {
@@ -366,5 +371,35 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     }
     //</editor-fold>
 
+    //<editor-fold desc="RMI Settings">
+    private void setRmiSocket ()
+    {
+        try
+        {
+            RMISocketFactory.setSocketFactory(new RMISocketFactory() {
+                public Socket createSocket(String host, int port) throws IOException {
+                    Socket socket = new Socket(host, port);
+                    socket.setSoLinger(false, 0);
+                    RMISocket = socket;
+                    return socket;
+                }
+                public ServerSocket createServerSocket(int port) throws IOException {
+                    return new ServerSocket(port);
+                }
+            });
+        }catch (IOException e) {
+            log.addLog("Impossible to set RMI socket");
+        }
+    }
+
+    private void setRMITimeout (int millis)
+    {
+        try {
+            RMISocket.setSoTimeout(millis);
+        }catch (Exception e) {
+            //log.addLog("Impossible to set RMI Timeout");
+        }
+    }
+    //</editor-fold>
 
 }
