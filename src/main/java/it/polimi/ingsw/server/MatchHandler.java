@@ -20,7 +20,7 @@ public class MatchHandler implements Runnable
     private TokenTurn tok;
     private Dadiera dices;
 
-    private final static int MAXGIOC = 2;//Da modificare a 4
+    private final static int MAXGIOC = 3;//Da modificare a 4
 
     public synchronized void run ()
     {
@@ -270,7 +270,7 @@ public class MatchHandler implements Runnable
         for (int i = 0; i < threadPlayers.size() ; i++)
             threadPlayers.get(i).interrupt();
         for (int i = 0; i < player.size() ; i++)
-            player.get(i).closeConnection("fatal error");
+            player.get(i).closeConnection("Fatal Error");
 
         log.addLog("All connections are forced to stop cause fatal error");
     }

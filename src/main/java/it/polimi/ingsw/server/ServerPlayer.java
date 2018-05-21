@@ -105,7 +105,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
             catch (ClientOutOfReachException|ModelException ex) {
                 //Notify token that client is dead
                 token.deletePlayer(user);
-                closeConnection("Timeout Expired");
+                //closeConnection("Timeout Expired");
                 token.endSetup();
                 synchronized (token) {
                     token.notifyAll();
@@ -245,13 +245,16 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
             do{
                 u = stopTask(() -> communicator.login(), PING_TIMEOUT, executor);
                 if(u == null)
+                {
+                    log.addLog("Failed to add user");
                     throw new ClientOutOfReachException();
+                }
             } while (!possibleUsers.contains(u));
             possibleUsers.remove(u);
             user = u;
             log.addLog("User: " + user + " Added");
         }
-        catch (NullPointerException e) {
+        catch (Exception e) {
             log.addLog("Failed to add user" , e.getStackTrace());
             throw new ClientOutOfReachException();
         }
@@ -268,9 +271,12 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
         try {
             s1 = stopTask(() -> communicator.chooseWindow(windowCard1, windowCard2), PING_TIMEOUT, executor);
             if(s1 == null)
+            {
+                log.addLog("(User:" + user + ") Failed to initialize Windows");
                 throw new ClientOutOfReachException();
+            }
         }
-        catch (ClientOutOfReachException e) {
+        catch (Exception e) {
             log.addLog("(User:" + user + ")" + e.getMessage() , e.getStackTrace());
             throw new ClientOutOfReachException();
         }
@@ -288,11 +294,6 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
         }
     }
 
-    private void initializePrivateObjectives ()
-    {
-        //Comunicazione col client per la sua carta obbiettivo privato
-    }
-
     /**
      * receives the public objectives and the tools chosen for the current match
      * and sets the corresponding parameters on the model adapter
@@ -303,9 +304,12 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
             boolean performed;
             performed = stopTask(() -> communicator.sendCards(publicObjCard), PING_TIMEOUT, executor);
             if(!performed)
+            {
+                log.addLog("(User:" + user + ") Failed to initialize cards");
                 throw new ClientOutOfReachException();
+            }
         }
-        catch (ClientOutOfReachException e) {
+        catch (Exception e) {
             log.addLog("(User:" + user + ")" + e.getMessage() , e.getStackTrace());
             throw new ClientOutOfReachException();
         }
