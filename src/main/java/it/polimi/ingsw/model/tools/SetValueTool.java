@@ -71,8 +71,8 @@ public class SetValueTool extends Tools {
     }
 
     /**
-     * Ritorna il costo del tool
-     * @return *il prezzo del tool*
+     * Return tool's price
+     * @return *tool's price*
      */
     public int getPrice(){
         return price;

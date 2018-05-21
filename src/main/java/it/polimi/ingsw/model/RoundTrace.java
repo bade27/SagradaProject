@@ -6,10 +6,17 @@ import it.polimi.ingsw.exceptions.IllegalStepException;
 import java.util.ArrayList;
 
 public class RoundTrace {
-    ArrayList<Dice>[] trace;
+    //private ArrayList<Object> trace;
+    private ArrayList [] trace;             //vettore di arrayList
 
     public RoundTrace(){
-        trace=new ArrayList[10];
+        //trace=new ArrayList<Object>(10);
+        trace= new ArrayList [10];
+        for(int i=0;i<10;i++) {
+            ArrayList<Dice> listdice = new ArrayList<Dice>();       //inizializzo la lista
+            //trace.set(i,listdice);
+            trace[i]= listdice;                                     //la infilo nell i-esima posizione dell'array
+        }
     }
 
     /**
