@@ -79,7 +79,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
         connectionError = false;
         lockObject = 0;
         log = l;
-        executor = Executors.newFixedThreadPool(1);
+        executor = Executors.newCachedThreadPool();
     }
 
 
@@ -336,14 +336,14 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
         }
     }
 
-    private void closeConnection (String s)
+    public void closeConnection (String s)
     {
         try {
             boolean performed;
             performed = stopTask(() -> communicator.closeComunication(s), PING_TIMEOUT, executor);
             if (!performed)
                 log.addLog("Impossible to communicate to client (" + user + ") closed connection happened");
-        }catch (Exception e) {
+        }catch (NullPointerException e) {
             log.addLog("Impossible to communicate to client (" + user + ") closed connection happened");
         }
 

@@ -52,29 +52,35 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
         try {
             String action = "";
             int executionTime = 0;
-            ExecutorService executor = Executors.newFixedThreadPool(1);
+            ExecutorService executor = Executors.newCachedThreadPool();
+            Future<?> task = null;
+            boolean stop = false;
             while( (action = inSocket.readLine()) != "close" )  {
                 switch (action) {
                     case "windowinit":
                         chooseWindow();
                         continue;
                     case "login":
-                        login();
+                        task = executor.submit(() -> {login();});
                         continue;
                     case "pub_objs":
                         receivePublicObjectives();
                         continue;
                     case "ping":
-                        player.ping();
                         outSocket.write("pong\n");
                         outSocket.flush();
                         continue;
+                    case "close":
+                        stop = true;
+                        break;
                     default:
                         System.out.println(action);
                         continue;
                 }
+                if(stop)
+                    break;
             }
-            close();
+            close(task);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -120,12 +126,11 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
     private Boolean login() {
         try {
             //Da modificare con finestra a popup con username
-            inSocket.readLine();
             StringBuilder username = new StringBuilder(player.login());
             username.append("\n");
             outSocket.write(username.toString());
             return outSocket.checkError();
-        } catch (IOException | ClientOutOfReachException e) {
+        } catch (ClientOutOfReachException e) {
             e.printStackTrace();
         }
         return false;
@@ -148,16 +153,17 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
         }
     }
 
-    private void close() {
+    private void close(Future<?> task) {
         String msg = "";
         try {
             msg = inSocket.readLine();
+            task.cancel(true);
             socket.close();
+            System.out.println("socket closed");
         } catch(Exception e) {
             System.out.println("Exception: "+e);
             e.printStackTrace();
         } finally {
-            // Always close it:
             try {
                 socket.close();
             } catch(IOException ex) {

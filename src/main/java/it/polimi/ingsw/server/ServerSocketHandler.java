@@ -274,13 +274,14 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
         return true;
     }
 
-<<<<<<< HEAD
-    public void closeComunication ( String cause) throws ClientOutOfReachException
-=======
-    public boolean closeComunication ( String cause)
->>>>>>> 13b5032c5a3eae29c64d6d5a76478a56c3fba40b
+    public boolean closeComunication ( String cause) throws ClientOutOfReachException
     {
-        return true;
+        StringBuilder sb = new StringBuilder(cause);
+        outSocket.write("close\n");
+        outSocket.flush();
+        sb.append("\n");
+        outSocket.write(sb.toString());
+        return outSocket.checkError();
     }
 /*
     public void moves() {

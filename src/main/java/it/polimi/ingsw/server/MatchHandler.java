@@ -270,7 +270,7 @@ public class MatchHandler implements Runnable
         for (int i = 0; i < threadPlayers.size() ; i++)
             threadPlayers.get(i).interrupt();
         for (int i = 0; i < player.size() ; i++)
-            player.get(i).closeCommunication();
+            player.get(i).closeConnection("fatal error");
 
         log.addLog("All connections are forced to stop cause fatal error");
     }

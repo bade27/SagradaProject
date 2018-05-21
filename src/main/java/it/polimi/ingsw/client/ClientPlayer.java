@@ -177,7 +177,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
     public boolean closeComunication (String cause)
     {
-        System.out.println("Game ended cause " + cause);
+        System.out.println("Game ended because " + cause);
         return true;
         //Graphic.setpopup connection down
 
