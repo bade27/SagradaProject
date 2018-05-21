@@ -5,25 +5,45 @@ import it.polimi.ingsw.exceptions.ModelException;
 import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
 import it.polimi.ingsw.remoteInterface.ServerRemoteInterface;
 import it.polimi.ingsw.utilities.LogFile;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.IOException;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.rmi.server.RMISocketFactory;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
 public class ServerPlayer extends UnicastRemoteObject implements Runnable,ServerRemoteInterface
 {
-    private ClientRemoteInterface comunicator;
+    //connection parameters
+    private static final String settings = "resources/server_settings.xml";
+    private static int RMI_REGISTRY_PORT;
+    private static int RMI_STUB_PORT;
+    private static String HOSTNAME;
+    private static int SOCKET_PORT;
+    private static int PING_TIMEOUT; //10 sec
+    private static int ACTION_TIMEOUT; //5 min
+
+    private ClientRemoteInterface communicator;
     private TokenTurn token;
     private ServerModelAdapter adapter;
     private String user;
     private LogFile log;
 
+    //Init phase
     private boolean connectionError;
 
+    //Setup Phase
     private Integer lockObject;
     private ServerSocketHandler socketCon;
-
     private ArrayList<String> possibleUsers;
 
     //passed parameters
@@ -31,15 +51,41 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     private String[] publicObjCard;
     private String privateObjCard;
 
+    private Socket RMISocket;
+
+    /**
+     * sets up connection parameters
+     * @throws ParserConfigurationException
+     * @throws IOException
+     * @throws SAXException
+     */
+    private static void connection_parameters_setup() throws ParserConfigurationException, IOException, SAXException {
+        File file = new File(settings);
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document document = documentBuilder.parse(file);
+
+        //rmi setup
+        RMI_REGISTRY_PORT = Integer.parseInt(document.getElementsByTagName("registryPort").item(0).getTextContent());
+        RMI_STUB_PORT = Integer.parseInt(document.getElementsByTagName("stubPort").item(0).getTextContent());
+        HOSTNAME = document.getElementsByTagName("hostName").item(0).getTextContent();
+
+        //socket setup
+        SOCKET_PORT = Integer.parseInt(document.getElementsByTagName("portNumber").item(0).getTextContent());
+        PING_TIMEOUT = Integer.parseInt(document.getElementsByTagName("ping").item(0).getTextContent());
+        ACTION_TIMEOUT = Integer.parseInt(document.getElementsByTagName("action").item(0).getTextContent());
+    }
+
     public ServerPlayer(TokenTurn tok, ServerModelAdapter adp, ArrayList ps,LogFile l) throws RemoteException
     {
         adapter = adp;
         token = tok;
         possibleUsers = ps;
-        comunicator = null;
+        communicator = null;
         connectionError = false;
         lockObject = 0;
         log = l;
+        setRmiSocket();
     }
 
 
@@ -59,7 +105,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
             try {
                 login();
                 token.addPlayer(user);
-                //initializeCards();
+                initializeCards();
                 initializeWindow();
             }
             catch (ClientOutOfReachException|ModelException ex) {
@@ -129,31 +175,34 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
      */
     public boolean initializeCommunication (int progressive)
     {
+        try {
+            connection_parameters_setup();
+        } catch (ParserConfigurationException| IOException | SAXException e) {
+            log.addLog("Impossible to read settings parameters" , e.getStackTrace());
+        }
+
         //RMI Registry creation and bind server name
         try {
-            int port = 7000;
-            String hostname = "127.0.0.1";
-            //String hostname = "192.168.1.5";
-            String bindLocation = "rmi://" + hostname + ":" + port + "/sagrada" + progressive;
+            System.setProperty("sun.rmi.transport.connectionTimeout" , "1000");
+            String bindLocation = "rmi://" + HOSTNAME + ":" + RMI_REGISTRY_PORT + "/sagrada" + progressive;
             try{
-                //System.setProperty("java.rmi.server.hostname","192.168.1.1");
-                java.rmi.registry.LocateRegistry.createRegistry(port);
+                java.rmi.registry.LocateRegistry.createRegistry(RMI_REGISTRY_PORT);
             }catch (Exception ex){}
 
             Naming.bind(bindLocation, this );
 
-            log.addLog("it.polimi.ingsw.server RMI waiting for client on port  " + port);
+            log.addLog("Server RMI waiting for client on port  " + RMI_REGISTRY_PORT);
         }catch (Exception e) {
             log.addLog("RMI Bind failed" , e.getStackTrace());
         }
 
         //Socket connection creation
         try{
-            socketCon = new ServerSocketHandler(log);
+            socketCon = new ServerSocketHandler(log, SOCKET_PORT, PING_TIMEOUT, ACTION_TIMEOUT);
             socketCon.createConnection();
             if (socketCon.isConnected())
             {
-                comunicator = socketCon;
+                communicator = socketCon;
                 log.addLog("Client accepted with Socket connection");
             }
             synchronized (lockObject) {
@@ -178,18 +227,10 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     {
         synchronized (lockObject)
         {
-            //try
-            //{
             socketCon.start();
-            //socketCon.join();
-            comunicator = client;
+            communicator = client;
             lockObject.notifyAll();
-
             log.addLog("Client accepted with RMI connection");
-            //}catch (InterruptedException e){
-            //throw new RemoteException();
-            //}
-
         }
 
     }
@@ -202,10 +243,11 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
      */
     private void login () throws ClientOutOfReachException
     {
+        setRMITimeout(ACTION_TIMEOUT);
         String u;
         try{
             do{
-                u = comunicator.login();
+                u = communicator.login();
             } while (!possibleUsers.contains(u));
             possibleUsers.remove(u);
             user = u;
@@ -224,9 +266,10 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
      */
     private void initializeWindow () throws ClientOutOfReachException,ModelException
     {
+        setRMITimeout(ACTION_TIMEOUT);
         String s1 ="";
         try {
-            s1 = comunicator.chooseWindow(windowCard1, windowCard2);
+            s1 = communicator.chooseWindow(windowCard1, windowCard2);
         }
         catch (ClientOutOfReachException|RemoteException e) {
             log.addLog("(User:" + user + ")" + e.getMessage() , e.getStackTrace());
@@ -259,7 +302,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     private void initializeCards () throws ClientOutOfReachException
     {
         try {
-            comunicator.sendCards(publicObjCard);
+            communicator.sendCards(publicObjCard);
         }
         catch (ClientOutOfReachException|RemoteException e) {
             log.addLog("(User:" + user + ")" + e.getMessage() , e.getStackTrace());
@@ -271,24 +314,23 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     //<editor-fold desc="Utilities">
     public boolean isClientAlive ()
     {
+        setRMITimeout(PING_TIMEOUT);
         try {
-            return comunicator.ping();
+            return communicator.ping();
         }catch (RemoteException e) {
-            e.printStackTrace();
             return false;
         }
     }
 
     public void sendMessage (String s)
     {
+        setRMITimeout(PING_TIMEOUT);
         try {
-            comunicator.sendMessage(s);
+            communicator.sendMessage(s);
         }catch (Exception ex) {
             log.addLog("Send message to client failed", ex.getStackTrace());
         }
-
     }
-
     public void closeCommunication ()
     {
 
@@ -329,5 +371,35 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     }
     //</editor-fold>
 
+    //<editor-fold desc="RMI Settings">
+    private void setRmiSocket ()
+    {
+        try
+        {
+            RMISocketFactory.setSocketFactory(new RMISocketFactory() {
+                public Socket createSocket(String host, int port) throws IOException {
+                    Socket socket = new Socket(host, port);
+                    socket.setSoLinger(false, 0);
+                    RMISocket = socket;
+                    return socket;
+                }
+                public ServerSocket createServerSocket(int port) throws IOException {
+                    return new ServerSocket(port);
+                }
+            });
+        }catch (IOException e) {
+            log.addLog("Impossible to set RMI socket");
+        }
+    }
+
+    private void setRMITimeout (int millis)
+    {
+        try {
+            RMISocket.setSoTimeout(millis);
+        }catch (Exception e) {
+            //log.addLog("Impossible to set RMI Timeout");
+        }
+    }
+    //</editor-fold>
 
 }

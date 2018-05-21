@@ -1,18 +1,12 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
 import it.polimi.ingsw.utilities.JSONFacilities;
 import it.polimi.ingsw.utilities.LogFile;
-import it.polimi.ingsw.exceptions.ClientOutOfReachException;
-
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -23,38 +17,32 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
 {
     LogFile log;
 
-    //contiene informazioni su indirizzo e porta del server
-    private static final String settings = "resources/settings.xml";
-
-    private static int PORT;
+    private int PORT;
 
     private Socket client;
     private BufferedReader inSocket;
     private PrintWriter outSocket;
     private ServerSocket serverSocket;
 
-    private static int PING_TIMEOUT; //10 sec
-    private static int ACTION_TIMEOUT; //5 min
+    private int PING_TIMEOUT; //10 sec
+    private int ACTION_TIMEOUT; //5 min
     private boolean isAlive = true;
     private boolean isConnected;
 
-    private static void initializer() throws ParserConfigurationException, IOException, SAXException {
-        File file = new File(settings);
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document document = documentBuilder.parse(file);
-        PORT = Integer.parseInt(document.getElementsByTagName("portNumber").item(0).getTextContent());
-        PING_TIMEOUT = Integer.parseInt(document.getElementsByTagName("ping").item(0).getTextContent());
-        ACTION_TIMEOUT = Integer.parseInt(document.getElementsByTagName("action").item(0).getTextContent());
 
-    }
-
-    public ServerSocketHandler(LogFile l) throws ClientOutOfReachException
+    public ServerSocketHandler(LogFile l, int port, int ping_time, int act_time) throws ClientOutOfReachException
     {
+        PORT = port;
+        PING_TIMEOUT = ping_time;
+        ACTION_TIMEOUT = act_time;
         isConnected = false;
         log = l;
     }
 
+    /**
+     *sets up connection and in and out buffers
+     * @throws ClientOutOfReachException if client not reachable
+     */
     public void createConnection () throws ClientOutOfReachException
     {
         try {
@@ -88,6 +76,10 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
         }
     }
 
+    /**
+     * ping function to see if the client is reachable
+     * @return weather the client is reachable or not
+     */
     public boolean ping()
     {
         //setting up ping timeout
@@ -115,19 +107,22 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
         return reply;
     }
 
+    /**
+     * sets up the connection with the player
+     * @throws ClientOutOfReachException if client could not connect to the server
+     */
     private void init_connection() throws ClientOutOfReachException
     {
         serverSocket=null;
         try {
-            initializer();
             serverSocket = new ServerSocket(PORT);
             log.addLog("\nit.polimi.ingsw.server socket waiting for client on port " +  serverSocket.getLocalPort());
 
-            // server infinite loop
             client = serverSocket.accept();
         }
         catch(Exception e)
         {
+            //e.printStackTrace();
             try {
                 if (serverSocket != null)
                     serverSocket.close();
@@ -144,6 +139,11 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
         }
     }
 
+    /**
+     * login function
+     * @return weather the client has successfully logged or not
+     * @throws ClientOutOfReachException if client has disconnected
+     */
     public String login() throws ClientOutOfReachException
     {
         String user = "";
@@ -174,6 +174,13 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
 
     }
 
+    /**
+     * let the player decide which window to use
+     * @param s1 firs pair of windows
+     * @param s2 second pair of windows
+     * @return the window chosen by the player
+     * @throws ClientOutOfReachException
+     */
     public String chooseWindow(String[] s1, String[] s2)  throws ClientOutOfReachException
     {
         String response = "";
@@ -218,6 +225,7 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
 
     }
 
+
     public boolean isConnected() {
         return isConnected;
     }
@@ -237,6 +245,11 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
     }*/
 
 
+    /**
+     * sends the cards (public objectives and tools) to the player
+     * @param s array of strings representing the list of public objectives and tools in the current game
+     * @throws ClientOutOfReachException if the client is disconnected
+     */
     public void sendCards(String[]... s) throws ClientOutOfReachException {
         String response = "";
 
@@ -250,7 +263,7 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
                     e.printStackTrace();
                 }
                 String[] msgs = {"pub_objs\n", "tools\n"};
-                System.out.println(s.length);
+                //System.out.println(s.length);
                 for(int i = 0; i < s.length; i++) {
                     JSONArray jsonArray = JSONFacilities.encodeStringArrays(s[i]);
                     outSocket.write(msgs[i]);
@@ -279,10 +292,15 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
         }
     }
 
-    public void sendMessage (String s)
-    {
-        //Da fare
+    public void sendMessage (String s) throws ClientOutOfReachException {
+        StringBuilder msg = new StringBuilder(s);
+        msg.append("\n");
+        outSocket.write(msg.toString());
+        if(outSocket.checkError())
+            isAlive = false;
 
+        if(!isAlive)
+            throw new ClientOutOfReachException("client is out of reach");
     }
 /*
     public void moves() {

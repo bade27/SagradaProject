@@ -12,6 +12,10 @@
 <br>
 
 ## Initialization
+<p style="text-align:justify">
+    Before the login every client is updated with the number of players currently connected.<br> 
+</p>
+<br>
 
 ### Login phase 
 <pre>
@@ -184,6 +188,10 @@
 <br>
 
 ## Game
+<p style="text-align:justify">
+    At the beginning of the game each player is notified with the number of players currently playing.<br> 
+</p>
+<br>
 
 ### Move phase
 <pre>

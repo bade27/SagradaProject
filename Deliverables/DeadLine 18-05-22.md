@@ -5,24 +5,25 @@
 		- [X] Parameters loaded from file
 		- [X] Show message when client is logged correctly
 		- [X] Handle double connection from client
-		- [X] Accidentally disconnetion from crash of communication
-		- [ ] Other client connected message (on ping or in another function?)
+		- [X] Accidentally disconnection from crash of communication
+		- [X] Other client connected message (on ping or in another function?)
 	- RMI
-		- [ ] Parameters loaded from file
+		- [X] Parameters loaded from file
 		- [X] Show message when client is logged correctly
 		- [X] Handle double connection from client
-		- [X] Accidentally disconnetion from crash of communication
+		- [X] Accidentally disconnection from crash of communication
 		- [X] Other client connected message (on ping or in another function?)
+		- [X] Change timeout connection
 		
 - Client
     - Socket
 		- [X] Parameters loaded from file
 		- [X] Show message when client is logged correctly
-		- [ ] Too many users message specificly (if necessary)
+		- [ ] Too many users message specifically (if necessary)
 	- RMI
-		- [ ] Parameters loaded from file
+		- [X] Parameters loaded from file
 		- [X] Show message when client is logged correctly
-		- [ ] Too many users message specificly (if necessary)
+		- [ ] Too many users message specifically (if necessary)
 
 - Test
 	- [X] Windows-Windows

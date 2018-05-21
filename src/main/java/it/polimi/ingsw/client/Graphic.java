@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.Window;
 import javax.swing.*;
 import java.awt.*;
 import java.rmi.RemoteException;
+import java.util.Scanner;
 
 public class Graphic extends JFrame
 {
@@ -28,7 +29,13 @@ public class Graphic extends JFrame
     {
         try {
             //1:RMI     0:Socket
-            player = new ClientPlayer(0,this);
+            Scanner cli = new Scanner(System.in);
+            String s;
+            System.out.println("Select connection mode: 0=Socket ; 1=RMI");
+            do{
+                s = cli.nextLine();
+            }while (!s.equals("1") && !s.equals("0"));
+            player = new ClientPlayer(Integer.parseInt(s),this);
         }
         catch (RemoteException e){
             Thread.currentThread().interrupt();
@@ -159,6 +166,7 @@ public class Graphic extends JFrame
 
     public static void main(String[] args)
     {
-        Graphic g = new Graphic();
+        Graphic g1 = new Graphic();
+        //Graphic g2 = new Graphic();
     }
 }

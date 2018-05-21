@@ -1,10 +1,9 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.exceptions.ParserXMLException;
 import it.polimi.ingsw.model.Dadiera;
-import it.polimi.ingsw.utilities.ParserXML;
 import it.polimi.ingsw.utilities.LogFile;
+import it.polimi.ingsw.utilities.ParserXML;
 
 import java.util.ArrayList;
 
@@ -21,7 +20,7 @@ public class MatchHandler implements Runnable
     private TokenTurn tok;
     private Dadiera dices;
 
-    private final static int MAXGIOC =2;//Da modificare a 4
+    private final static int MAXGIOC = 2;//Da modificare a 4
 
     public synchronized void run ()
     {
@@ -41,7 +40,7 @@ public class MatchHandler implements Runnable
     private void startGame ()
     {
         log.addLog("Game Phase started");
-
+        //clientConnectionUpdateMessage("playing");
         dices.mix(tok.getNumPlayers());
         log.addLog("Dadiera Mixed");
         while (true)
@@ -103,7 +102,7 @@ public class MatchHandler implements Runnable
                 else
                     i--;
                 int n = checkClientAlive();
-                clientConnectionUpdateMessage();
+                clientConnectionUpdateMessage("connected");
                 i = i-n;
                 progressive++;
             }
@@ -291,7 +290,7 @@ public class MatchHandler implements Runnable
                 {
                     nDisc ++ ;
                     player.remove(i);
-                    log.addLog("Client does not respond to ping");
+                    log.addLog("Client does not respond to ping\r\n\t Client disconnected");
                 }
             }
         }
@@ -332,17 +331,16 @@ public class MatchHandler implements Runnable
         }
     }
 
-    private void clientConnectionUpdateMessage ()
+    private void clientConnectionUpdateMessage (String str)
     {
         for (int i = 0; i < player.size(); i++)
-            player.get(i).sendMessage("Number of client connected: " + player.size());
+            player.get(i).sendMessage("Number of client " + str + ": "+ player.size());
     }
     //</editor-fold>
 
     public static void main(String[] args)
     {
         (new Thread(new MatchHandler())).start();
-
     }
 }
 
