@@ -274,9 +274,9 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
         return true;
     }
 
-    public void closeComunication ( String cause)
+    public boolean closeComunication ( String cause)
     {
-
+        return true;
     }
 /*
     public void moves() {

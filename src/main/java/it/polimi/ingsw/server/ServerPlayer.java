@@ -105,6 +105,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
             catch (ClientOutOfReachException|ModelException ex) {
                 //Notify token that client is dead
                 token.deletePlayer(user);
+                closeConnection("Timeout Expired");
                 token.endSetup();
                 synchronized (token) {
                     token.notifyAll();
@@ -334,8 +335,17 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
             log.addLog("Send message to client failed", ex.getStackTrace());
         }
     }
-    public void closeCommunication ()
+
+    private void closeConnection (String s)
     {
+        try {
+            boolean performed;
+            performed = stopTask(() -> communicator.closeComunication(s), PING_TIMEOUT, executor);
+            if (!performed)
+                log.addLog("Impossible to communicate to client (" + user + ") closed connection happened");
+        }catch (Exception e) {
+            log.addLog("Impossible to communicate to client (" + user + ") closed connection happened");
+        }
 
     }
     //</editor-fold>
