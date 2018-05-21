@@ -229,7 +229,7 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
         String response = "";
 
         try {
-            System.out.println(s.length);
+            //System.out.println(s.length);
             boolean reachable = ping();
             if (reachable) {
                 String[] msgs = {"pub_objs\n", "tools\n"};
@@ -275,7 +275,7 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
         return true;
     }
 
-    public boolean closeComunication ( String cause) throws ClientOutOfReachException
+    public boolean closeCommunication ( String cause) throws ClientOutOfReachException
     {
         StringBuilder sb = new StringBuilder(cause);
         outSocket.write("close\n");

@@ -243,7 +243,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
         String u;
         try{
             do{
-                u = stopTask(() -> communicator.login(), PING_TIMEOUT, executor);
+                u = stopTask(() -> communicator.login(), ACTION_TIMEOUT, executor);
                 if(u == null)
                 {
                     log.addLog("Failed to add user");
@@ -269,7 +269,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     {
         String s1;
         try {
-            s1 = stopTask(() -> communicator.chooseWindow(windowCard1, windowCard2), PING_TIMEOUT, executor);
+            s1 = stopTask(() -> communicator.chooseWindow(windowCard1, windowCard2), PING_TIMEOUT, executor);//To change with ACTION when implement user choice
             if(s1 == null)
             {
                 log.addLog("(User:" + user + ") Failed to initialize Windows");
@@ -344,11 +344,12 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     {
         try {
             boolean performed;
-            performed = stopTask(() -> communicator.closeComunication(s), PING_TIMEOUT, executor);
+            performed = stopTask(() -> communicator.closeCommunication(s), PING_TIMEOUT, executor);
             if (!performed)
-                log.addLog("Impossible to communicate to client (" + user + ") closed connection happened");
+                log.addLog("Impossible to communicate to client (" + user + ") cause closed connection");
         }catch (NullPointerException e) {
-            log.addLog("Impossible to communicate to client (" + user + ") closed connection happened");
+            e.printStackTrace();
+            log.addLog("Impossible to communicate to client (" + user + ") cause closed connection");
         }
 
     }
@@ -396,7 +397,8 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
             o = future.get(executionTime, TimeUnit.MILLISECONDS);
         } catch (TimeoutException te) {
             //System.out.println(te.getMessage());
-            System.out.println("too late to reply");
+            log.addLog("Client too late to reply");
+            //System.out.println("too late to reply");
         } catch (InterruptedException ie) {
             //System.out.println(ie.getMessage());
             Thread.currentThread().interrupt();

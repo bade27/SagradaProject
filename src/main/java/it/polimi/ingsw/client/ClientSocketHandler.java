@@ -14,8 +14,6 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
 
     private String HOSTNAME;
     private int PORT;
-    private int INIT_EXECUTE_TIME;
-    private int MOVE_EXECUTE_TIME;
 
     private Socket socket;
     private BufferedReader inSocket;
@@ -25,12 +23,10 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
 
     private ClientPlayer player;
 
-    public ClientSocketHandler(ClientPlayer cli, String host, int port, int init_time, int mov_time) throws ClientOutOfReachException {
+    public ClientSocketHandler(ClientPlayer cli, String host, int port) throws ClientOutOfReachException {
         player = cli;
         HOSTNAME = host;
         PORT = port;
-        INIT_EXECUTE_TIME = init_time;
-        MOVE_EXECUTE_TIME = mov_time;
         socket = null;
         try {
             System.out.println("Socket connection to host " + HOSTNAME + " port " + PORT + "...");
@@ -75,7 +71,7 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
                         stop = true;
                         break;
                     default:
-                        System.out.println(action);
+                        //System.out.println(action);
                         continue;
                 }
                 if(stop)
@@ -146,7 +142,7 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
             } catch(IOException ex) {
                 System.err.println("Socket not closed");
             }
-            player.closeComunication(msg);
+            player.closeCommunication(msg);
         }
     }
 

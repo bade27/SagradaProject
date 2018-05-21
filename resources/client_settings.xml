@@ -2,12 +2,10 @@
 
 <client>
 
-    <hostName>127.0.0.1</hostName>
+    <hostName>192.168.1.5</hostName>
 
     <socket>
         <portNumber>6000</portNumber>
-        <init>10000</init>
-        <move>50000</move>
     </socket>
 
     <rmi>
