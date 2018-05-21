@@ -10,8 +10,10 @@ public interface ClientRemoteInterface extends Remote
     public String login() throws ClientOutOfReachException, RemoteException;
     public boolean ping () throws RemoteException;
     public String chooseWindow(String[] s1, String[] s2)  throws ClientOutOfReachException, RemoteException;
-    public void sendCards(String[]... s) throws ClientOutOfReachException, RemoteException;
-    public void sendMessage (String s) throws ClientOutOfReachException,RemoteException;
+    public boolean sendCards(String[]... s) throws ClientOutOfReachException, RemoteException;
+    public boolean sendMessage (String s) throws ClientOutOfReachException,RemoteException;
+
+    public void closeComunication (String cause) throws  RemoteException;
 
     //public boolean sendPrivateObjective(String privObj);
 }

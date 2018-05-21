@@ -14,7 +14,7 @@ import java.net.SocketTimeoutException;
 
 public class ServerSocketHandler extends Thread implements ClientRemoteInterface
 {
-    LogFile log;
+    private LogFile log;
 
     private int PORT;
 
@@ -23,17 +23,13 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
     private PrintWriter outSocket;
     private ServerSocket serverSocket;
 
-    private int PING_TIMEOUT; //10 sec
-    private int ACTION_TIMEOUT; //5 min
     private boolean isAlive = true;
     private boolean isConnected;
 
 
-    public ServerSocketHandler(LogFile l, int port, int ping_time, int act_time) throws ClientOutOfReachException
+    public ServerSocketHandler(LogFile l, int port) throws ClientOutOfReachException
     {
         PORT = port;
-        PING_TIMEOUT = ping_time;
-        ACTION_TIMEOUT = act_time;
         isConnected = false;
         log = l;
     }
@@ -71,7 +67,7 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
             serverSocket.close();
             client.close();
         }catch (Exception e){
-
+            //log.addLog("Impossible to stop socket accept");
         }
     }
 
@@ -229,18 +225,12 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
      * @param s array of strings representing the list of public objectives and tools in the current game
      * @throws ClientOutOfReachException if the client is disconnected
      */
-    public void sendCards(String[]... s) throws ClientOutOfReachException {
+    public boolean sendCards(String[]... s) throws ClientOutOfReachException {
         String response = "";
 
         try {
             boolean reachable = ping();
             if (reachable) {
-                /*//setting up messages timeout
-                try {
-                    client.setSoTimeout(ACTION_TIMEOUT);
-                } catch (SocketException e) {
-                    e.printStackTrace();
-                }*/
                 String[] msgs = {"pub_objs\n", "tools\n"};
                 //System.out.println(s.length);
                 for(int i = 0; i < s.length; i++) {
@@ -269,9 +259,10 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
         } catch (JSONException je) {
             throw new ClientOutOfReachException("JSON can't encrypt client message");
         }
+        return isAlive;
     }
 
-    public void sendMessage (String s) throws ClientOutOfReachException {
+    public boolean sendMessage (String s) throws ClientOutOfReachException {
         StringBuilder msg = new StringBuilder(s);
         msg.append("\n");
         outSocket.write(msg.toString());
@@ -279,7 +270,13 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
             isAlive = false;
 
         if(!isAlive)
-            throw new ClientOutOfReachException("client is out of reach");
+            throw new ClientOutOfReachException("Client is out of reach");
+        return true;
+    }
+
+    public void closeComunication ( String cause)
+    {
+
     }
 /*
     public void moves() {

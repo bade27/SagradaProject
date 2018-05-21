@@ -8,17 +8,13 @@ import it.polimi.ingsw.utilities.LogFile;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import javax.naming.event.ObjectChangeListener;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
-import java.rmi.server.RMISocketFactory;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.concurrent.*;
@@ -54,13 +50,8 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     private String[] publicObjCard;
     private String privateObjCard;
 
-    private Socket RMISocket;
-
     /**
      * sets up connection parameters
-     * @throws ParserConfigurationException
-     * @throws IOException
-     * @throws SAXException
      */
     private static void connection_parameters_setup() throws ParserConfigurationException, IOException, SAXException {
         File file = new File(settings);
@@ -89,7 +80,6 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
         lockObject = 0;
         log = l;
         executor = Executors.newFixedThreadPool(1);
-        setRmiSocket();
     }
 
 
@@ -202,7 +192,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
 
         //Socket connection creation
         try{
-            socketCon = new ServerSocketHandler(log, SOCKET_PORT, PING_TIMEOUT, ACTION_TIMEOUT);
+            socketCon = new ServerSocketHandler(log, SOCKET_PORT);
             socketCon.createConnection();
             if (socketCon.isConnected())
             {
@@ -231,7 +221,9 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     {
         synchronized (lockObject)
         {
+            //Stop accepting of socket
             socketCon.start();
+            //Set client stub
             communicator = client;
             lockObject.notifyAll();
             log.addLog("Client accepted with RMI connection");
@@ -247,12 +239,11 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
      */
     private void login () throws ClientOutOfReachException
     {
-        //setRMITimeout(ACTION_TIMEOUT);
         String u;
         try{
             do{
-                u = stopTask(() -> communicator.login(), 10000, executor);
-                if(u.equals(null))
+                u = stopTask(() -> communicator.login(), PING_TIMEOUT, executor);
+                if(u == null)
                     throw new ClientOutOfReachException();
             } while (!possibleUsers.contains(u));
             possibleUsers.remove(u);
@@ -272,12 +263,13 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
      */
     private void initializeWindow () throws ClientOutOfReachException,ModelException
     {
-        //setRMITimeout(ACTION_TIMEOUT);
-        String s1 ="";
+        String s1;
         try {
-            s1 = communicator.chooseWindow(windowCard1, windowCard2);
+            s1 = stopTask(() -> communicator.chooseWindow(windowCard1, windowCard2), PING_TIMEOUT, executor);
+            if(s1 == null)
+                throw new ClientOutOfReachException();
         }
-        catch (ClientOutOfReachException|RemoteException e) {
+        catch (ClientOutOfReachException e) {
             log.addLog("(User:" + user + ")" + e.getMessage() , e.getStackTrace());
             throw new ClientOutOfReachException();
         }
@@ -290,7 +282,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
             log.addLog("User: " + user + " Window initialized: " + s1);
         }
         catch (ModelException ex) {
-            log.addLog(ex.getMessage());
+            log.addLog("Impossible to set Window from XML", ex.getStackTrace());
             throw new ModelException();
         }
     }
@@ -303,14 +295,16 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     /**
      * receives the public objectives and the tools chosen for the current match
      * and sets the corresponding parameters on the model adapter
-     * @throws ClientOutOfReachException
      */
     private void initializeCards () throws ClientOutOfReachException
     {
         try {
-            communicator.sendCards(publicObjCard);
+            boolean performed;
+            performed = stopTask(() -> communicator.sendCards(publicObjCard), PING_TIMEOUT, executor);
+            if(!performed)
+                throw new ClientOutOfReachException();
         }
-        catch (ClientOutOfReachException|RemoteException e) {
+        catch (ClientOutOfReachException e) {
             log.addLog("(User:" + user + ")" + e.getMessage() , e.getStackTrace());
             throw new ClientOutOfReachException();
         }
@@ -322,43 +316,20 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     {
         try {
             boolean performed;
-            performed = stopTask(() -> communicator.ping(), 5000, executor);
+            performed = stopTask(() -> communicator.ping(), PING_TIMEOUT, executor);
             return performed;
         } catch (NullPointerException e) {
             return false;
         }
-        /*setRMITimeout(PING_TIMEOUT);
-        try {
-            return communicator.ping();
-        }catch (RemoteException e) {
-            return false;
-        }*/
-    }
-
-    private <T> T stopTask(Callable<T> task, int executionTime, ExecutorService executor) {
-        Object o = null;
-        Future future = executor.submit(task);
-        try {
-            o = future.get(executionTime, TimeUnit.MILLISECONDS);
-        } catch (TimeoutException te) {
-            //System.out.println(te.getMessage());
-            System.out.println("too late to reply");
-        } catch (InterruptedException ie) {
-            //System.out.println(ie.getMessage());
-            Thread.currentThread().interrupt();
-        } catch (ExecutionException ee) {
-            //System.out.println(ee.getMessage());
-        } finally {
-            future.cancel(true);
-        }
-        return (T)o;
     }
 
     public void sendMessage (String s)
     {
-        //setRMITimeout(PING_TIMEOUT);
         try {
-            communicator.sendMessage(s);
+            boolean performed;
+            performed = stopTask(() -> communicator.sendMessage(s), PING_TIMEOUT, executor);
+            if (!performed)
+                log.addLog("Send message to client failed");
         }catch (Exception ex) {
             log.addLog("Send message to client failed", ex.getStackTrace());
         }
@@ -403,35 +374,24 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     }
     //</editor-fold>
 
-    //<editor-fold desc="RMI Settings">
-    private void setRmiSocket ()
-    {
-        try
-        {
-            RMISocketFactory.setSocketFactory(new RMISocketFactory() {
-                public Socket createSocket(String host, int port) throws IOException {
-                    Socket socket = new Socket(host, port);
-                    socket.setSoLinger(false, 0);
-                    RMISocket = socket;
-                    return socket;
-                }
-                public ServerSocket createServerSocket(int port) throws IOException {
-                    return new ServerSocket(port);
-                }
-            });
-        }catch (IOException e) {
-            log.addLog("Impossible to set RMI socket");
-        }
-    }
-
-    private void setRMITimeout (int millis)
-    {
+    //<editor-fold desc="Executor">
+    private <T> T stopTask(Callable<T> task, int executionTime, ExecutorService executor) {
+        Object o = null;
+        Future future = executor.submit(task);
         try {
-            RMISocket.setSoTimeout(millis);
-        }catch (Exception e) {
-            //log.addLog("Impossible to set RMI Timeout");
+            o = future.get(executionTime, TimeUnit.MILLISECONDS);
+        } catch (TimeoutException te) {
+            //System.out.println(te.getMessage());
+            System.out.println("too late to reply");
+        } catch (InterruptedException ie) {
+            //System.out.println(ie.getMessage());
+            Thread.currentThread().interrupt();
+        } catch (ExecutionException ee) {
+            //System.out.println(ee.getMessage());
+        } finally {
+            future.cancel(true);
         }
+        return (T)o;
     }
     //</editor-fold>
-
 }
