@@ -13,7 +13,11 @@ public interface ClientRemoteInterface extends Remote
     public boolean sendCards(String[]... s) throws ClientOutOfReachException, RemoteException;
     public boolean sendMessage (String s) throws ClientOutOfReachException,RemoteException;
 
+<<<<<<< HEAD
     public boolean closeComunication (String cause) throws ClientOutOfReachException, RemoteException;
+=======
+    public boolean closeComunication (String cause) throws  RemoteException,ClientOutOfReachException;
+>>>>>>> 13b5032c5a3eae29c64d6d5a76478a56c3fba40b
 
     //public boolean sendPrivateObjective(String privObj);
 }

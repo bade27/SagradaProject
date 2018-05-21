@@ -51,6 +51,11 @@ public class Graphic extends JFrame
         return "ok";
     }
 
+    private void reConnection ()
+    {
+
+    }
+
     /**
      * Inizializza la grafica di partita
      */

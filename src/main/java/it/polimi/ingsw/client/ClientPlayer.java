@@ -179,6 +179,8 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     {
         System.out.println("Game ended cause " + cause);
         return true;
+        //Graphic.setpopup connection down
+
     }
     //</editor-fold>
 
