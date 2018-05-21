@@ -8,6 +8,7 @@ import it.polimi.ingsw.utilities.LogFile;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+import javax.naming.event.ObjectChangeListener;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -20,6 +21,7 @@ import java.rmi.RemoteException;
 import java.rmi.server.RMISocketFactory;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.concurrent.*;
 
 public class ServerPlayer extends UnicastRemoteObject implements Runnable,ServerRemoteInterface
 {
@@ -37,6 +39,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     private ServerModelAdapter adapter;
     private String user;
     private LogFile log;
+    private ExecutorService executor;
 
     //Init phase
     private boolean connectionError;
@@ -85,6 +88,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
         connectionError = false;
         lockObject = 0;
         log = l;
+        executor = Executors.newFixedThreadPool(1);
         setRmiSocket();
     }
 
@@ -243,17 +247,19 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
      */
     private void login () throws ClientOutOfReachException
     {
-        setRMITimeout(ACTION_TIMEOUT);
+        //setRMITimeout(ACTION_TIMEOUT);
         String u;
         try{
             do{
-                u = communicator.login();
+                u = stopTask(() -> communicator.login(), 10000, executor);
+                if(u.equals(null))
+                    throw new ClientOutOfReachException();
             } while (!possibleUsers.contains(u));
             possibleUsers.remove(u);
             user = u;
             log.addLog("User: " + user + " Added");
         }
-        catch (ClientOutOfReachException|RemoteException e) {
+        catch (NullPointerException e) {
             log.addLog("Failed to add user" , e.getStackTrace());
             throw new ClientOutOfReachException();
         }
@@ -266,7 +272,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
      */
     private void initializeWindow () throws ClientOutOfReachException,ModelException
     {
-        setRMITimeout(ACTION_TIMEOUT);
+        //setRMITimeout(ACTION_TIMEOUT);
         String s1 ="";
         try {
             s1 = communicator.chooseWindow(windowCard1, windowCard2);
@@ -314,17 +320,43 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     //<editor-fold desc="Utilities">
     public boolean isClientAlive ()
     {
-        setRMITimeout(PING_TIMEOUT);
+        try {
+            boolean performed;
+            performed = stopTask(() -> communicator.ping(), 5000, executor);
+            return performed;
+        } catch (NullPointerException e) {
+            return false;
+        }
+        /*setRMITimeout(PING_TIMEOUT);
         try {
             return communicator.ping();
         }catch (RemoteException e) {
             return false;
+        }*/
+    }
+
+    private <T> T stopTask(Callable<T> task, int executionTime, ExecutorService executor) {
+        Object o = null;
+        Future future = executor.submit(task);
+        try {
+            o = future.get(executionTime, TimeUnit.MILLISECONDS);
+        } catch (TimeoutException te) {
+            //System.out.println(te.getMessage());
+            System.out.println("too late to reply");
+        } catch (InterruptedException ie) {
+            //System.out.println(ie.getMessage());
+            Thread.currentThread().interrupt();
+        } catch (ExecutionException ee) {
+            //System.out.println(ee.getMessage());
+        } finally {
+            future.cancel(true);
         }
+        return (T)o;
     }
 
     public void sendMessage (String s)
     {
-        setRMITimeout(PING_TIMEOUT);
+        //setRMITimeout(PING_TIMEOUT);
         try {
             communicator.sendMessage(s);
         }catch (Exception ex) {

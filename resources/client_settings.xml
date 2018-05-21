@@ -6,8 +6,8 @@
 
     <socket>
         <portNumber>6000</portNumber>
-        <init>20000</init>
-        <move>30000</move>
+        <init>10000</init>
+        <move>50000</move>
     </socket>
 
     <rmi>

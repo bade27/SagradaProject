@@ -10,7 +10,6 @@ import org.json.JSONException;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
 import java.net.SocketTimeoutException;
 
 public class ServerSocketHandler extends Thread implements ClientRemoteInterface
@@ -82,14 +81,6 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
      */
     public boolean ping()
     {
-        //setting up ping timeout
-        try {
-            client.setSoTimeout(PING_TIMEOUT);
-        } catch (SocketException e) {
-            log.addLog("Ping Failed" , e.getStackTrace());
-            return false;
-        }
-
         //ping-pong communication
         boolean reply = false;
         try {
@@ -150,12 +141,6 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
 
         boolean reachable = ping();
         if(reachable) {
-            //setting up messages timeout
-            try {
-                client.setSoTimeout(ACTION_TIMEOUT);
-            } catch (SocketException e) {
-                e.printStackTrace();
-            }
             outSocket.write("login\n");
             outSocket.flush();
             outSocket.write("Inserisci username\n");
@@ -189,12 +174,6 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
             JSONArray jsonArray = JSONFacilities.encodeStringArrays(s1, s2);
             boolean reachable = ping();
             if (reachable) {
-                //setting up messages timeout
-                try {
-                    client.setSoTimeout(ACTION_TIMEOUT);
-                } catch (SocketException e) {
-                    e.printStackTrace();
-                }
                 outSocket.write("windowinit\n");
                 outSocket.flush();
                 outSocket.write("Scegli la vetrata\n");
@@ -256,12 +235,12 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
         try {
             boolean reachable = ping();
             if (reachable) {
-                //setting up messages timeout
+                /*//setting up messages timeout
                 try {
                     client.setSoTimeout(ACTION_TIMEOUT);
                 } catch (SocketException e) {
                     e.printStackTrace();
-                }
+                }*/
                 String[] msgs = {"pub_objs\n", "tools\n"};
                 //System.out.println(s.length);
                 for(int i = 0; i < s.length; i++) {
