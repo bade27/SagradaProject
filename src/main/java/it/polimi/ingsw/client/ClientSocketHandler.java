@@ -14,8 +14,6 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
 
     private String HOSTNAME;
     private int PORT;
-    private int INIT_EXECUTE_TIME;
-    private int MOVE_EXECUTE_TIME;
 
     private Socket socket;
     private BufferedReader inSocket;
@@ -25,12 +23,10 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
 
     private ClientPlayer player;
 
-    public ClientSocketHandler(ClientPlayer cli, String host, int port, int init_time, int mov_time) throws ClientOutOfReachException {
+    public ClientSocketHandler(ClientPlayer cli, String host, int port) throws ClientOutOfReachException {
         player = cli;
         HOSTNAME = host;
         PORT = port;
-        INIT_EXECUTE_TIME = init_time;
-        MOVE_EXECUTE_TIME = mov_time;
         socket = null;
         try {
             System.out.println("Socket connection to host " + HOSTNAME + " port " + PORT + "...");
@@ -48,74 +44,65 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
 
     @Override
     public void run() {
-
+        ExecutorService executor = Executors.newCachedThreadPool();
+        Future<?> task = null;
+        String action = "";
+        boolean stop = false;
         try {
-            String action = "";
-            int executionTime = 0;
-            ExecutorService executor = Executors.newFixedThreadPool(1);
-            while( (action = inSocket.readLine()) != "stop" )  {
+            while( (action = inSocket.readLine()) != "close" )  {
                 switch (action) {
-                    case "windowinit":
-                        executionTime = INIT_EXECUTE_TIME;
-                        stopTask(() -> chooseWindow(), executionTime, executor);
-                        continue;
-                    /*case "privobj":
-                        executionTime = INIT_EXECUTE_TIME;
-                        stopTask(() -> myPrivateObj(), executionTime, executor);
-                        continue;*/
-                    case "login":
-                        executionTime = INIT_EXECUTE_TIME;
-                        stopTask(() -> login(), executionTime, executor);
-                        continue;
-                    case "pub_objs":
-                        executionTime = INIT_EXECUTE_TIME;
-                        stopTask(() -> receivePublicObjectives(), executionTime, executor);
-                        continue;
-                    case "close":
-                        close();
-                        continue;
                     case "ping":
-                        player.ping();
                         outSocket.write("pong\n");
                         outSocket.flush();
                         continue;
+                    case "login":
+                        task = executor.submit(() -> {login();});
+                        continue;
+                    case "pub_objs":
+                        String objs = inSocket.readLine();
+                        task = executor.submit(() -> {receivePublicObjectives(objs);});
+                        continue;
+                    case "windowinit":
+                        System.out.println(inSocket.readLine());
+                        String json = inSocket.readLine();
+                        task = executor.submit(() -> {chooseWindow(json);});
+                        continue;
+                    case "close":
+                        stop = true;
+                        break;
                     default:
-                        System.out.println(action);
+                        //System.out.println(action);
                         continue;
                 }
+                if(stop)
+                    break;
             }
+            close(task);
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            close(task);
         }
 
     }
 
-    private Boolean chooseWindow()
+    private Boolean chooseWindow(String json)
     {
         try {
-            System.out.println(inSocket.readLine());
-            String json = inSocket.readLine();
             StringBuilder choice = new StringBuilder(player.chooseWindow(JSONFacilities.decodeStringArrays(json)));
             choice.append("\n");
             outSocket.write(choice.toString());
             return outSocket.checkError();
-        } catch (IOException | JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
         return false;
     }
 
-    private Boolean receivePublicObjectives()
+    private Boolean receivePublicObjectives(String objs)
     {
-        try {
-            String objs = inSocket.readLine();
-            System.out.println(objs);
-            outSocket.write("ok\n");
-            return outSocket.checkError();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
+        System.out.println(objs);
+        outSocket.write("ok\n");
+        return outSocket.checkError();
     }
     /*public void myPrivateObj() {
         try {
@@ -129,48 +116,33 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
     private Boolean login() {
         try {
             //Da modificare con finestra a popup con username
-            inSocket.readLine();
             StringBuilder username = new StringBuilder(player.login());
             username.append("\n");
             outSocket.write(username.toString());
             return outSocket.checkError();
-        } catch (IOException | ClientOutOfReachException e) {
+        } catch (ClientOutOfReachException e) {
             e.printStackTrace();
         }
         return false;
     }
 
-    private <T> void stopTask(Callable<T> task, int executionTime, ExecutorService executor) {
-        Future future = executor.submit(task);
+    private void close(Future<?> task) {
+        String msg = "";
         try {
-            future.get(executionTime, TimeUnit.MILLISECONDS);
-        } catch (TimeoutException te) {
-            //System.out.println(te.getMessage());
-            System.out.println("too late to reply");
-        } catch (InterruptedException ie) {
-            //System.out.println(ie.getMessage());
-            Thread.currentThread().interrupt();
-        } catch (ExecutionException ee) {
-            //System.out.println(ee.getMessage());
-        } finally {
-            future.cancel(true);
-        }
-    }
-
-    private void close() {
-        outSocket.println("ok");
-        try {
+            msg = inSocket.readLine();
+            task.cancel(true);
             socket.close();
+            System.out.println("socket closed");
         } catch(Exception e) {
             System.out.println("Exception: "+e);
             e.printStackTrace();
         } finally {
-            // Always close it:
             try {
                 socket.close();
             } catch(IOException ex) {
                 System.err.println("Socket not closed");
             }
+            player.closeCommunication(msg);
         }
     }
 

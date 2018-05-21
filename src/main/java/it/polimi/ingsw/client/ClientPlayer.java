@@ -29,8 +29,6 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     private static int RMI_STUB_PORT;
     private static String HOSTNAME;
     private static int SOCKET_PORT;
-    private static int INIT_EXECUTE_TIME;
-    private static int MOVE_EXECUTE_TIME;
     private static boolean initialized = false;
 
 
@@ -55,8 +53,6 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
         //socket setup
         SOCKET_PORT = Integer.parseInt(document.getElementsByTagName("portNumber").item(0).getTextContent());
-        INIT_EXECUTE_TIME = Integer.parseInt(document.getElementsByTagName("init").item(0).getTextContent());
-        MOVE_EXECUTE_TIME = Integer.parseInt(document.getElementsByTagName("move").item(0).getTextContent());
     }
 
 
@@ -75,7 +71,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
             //if connection is socket, creates socket connect
             if (typeOfCOnnection == 0)
-                server = new ClientSocketHandler(this, HOSTNAME, SOCKET_PORT, INIT_EXECUTE_TIME, MOVE_EXECUTE_TIME);
+                server = new ClientSocketHandler(this, HOSTNAME, SOCKET_PORT);
 
             //if connection is RMI, creates RMI lookup of stub
             else if (typeOfCOnnection == 1)
@@ -153,8 +149,8 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     }
 
     @Override
-    public void sendCards(String[]... s) throws ClientOutOfReachException, RuntimeException {
-
+    public boolean sendCards(String[]... s) throws RemoteException {
+        return true;
     }
 
     //</editor-fold>
@@ -168,9 +164,18 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         return true;
     }
 
-    public void sendMessage (String s)
+    public boolean sendMessage (String s)
     {
         System.out.println(s);
+        return true;
+    }
+
+    public boolean closeCommunication (String cause)
+    {
+        System.out.println("Game ended because of " + cause);
+        return true;
+        //Graphic.setpopup connection down
+
     }
     //</editor-fold>
 

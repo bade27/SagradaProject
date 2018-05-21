@@ -3,12 +3,12 @@
 <server>
     <socket>
         <portNumber>6000</portNumber>
-        <ping>10000</ping>
-        <action>50000</action>
+        <ping>1000</ping>
+        <action>30000</action>
     </socket>
 
     <rmi>
-        <hostName>127.0.0.1</hostName>
+        <hostName>192.168.1.5</hostName>
         <registryPort>5000</registryPort>
         <stubPort>9000</stubPort>
     </rmi>

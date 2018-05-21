@@ -13,13 +13,11 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
-import java.rmi.server.RMISocketFactory;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.concurrent.*;
 
 public class ServerPlayer extends UnicastRemoteObject implements Runnable,ServerRemoteInterface
 {
@@ -37,6 +35,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     private ServerModelAdapter adapter;
     private String user;
     private LogFile log;
+    private ExecutorService executor;
 
     //Init phase
     private boolean connectionError;
@@ -51,13 +50,8 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     private String[] publicObjCard;
     private String privateObjCard;
 
-    private Socket RMISocket;
-
     /**
      * sets up connection parameters
-     * @throws ParserConfigurationException
-     * @throws IOException
-     * @throws SAXException
      */
     private static void connection_parameters_setup() throws ParserConfigurationException, IOException, SAXException {
         File file = new File(settings);
@@ -85,7 +79,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
         connectionError = false;
         lockObject = 0;
         log = l;
-        setRmiSocket();
+        executor = Executors.newCachedThreadPool();
     }
 
 
@@ -111,6 +105,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
             catch (ClientOutOfReachException|ModelException ex) {
                 //Notify token that client is dead
                 token.deletePlayer(user);
+                closeConnection("Timeout Expired");
                 token.endSetup();
                 synchronized (token) {
                     token.notifyAll();
@@ -198,7 +193,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
 
         //Socket connection creation
         try{
-            socketCon = new ServerSocketHandler(log, SOCKET_PORT, PING_TIMEOUT, ACTION_TIMEOUT);
+            socketCon = new ServerSocketHandler(log, SOCKET_PORT);
             socketCon.createConnection();
             if (socketCon.isConnected())
             {
@@ -227,7 +222,9 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     {
         synchronized (lockObject)
         {
+            //Stop accepting of socket
             socketCon.start();
+            //Set client stub
             communicator = client;
             lockObject.notifyAll();
             log.addLog("Client accepted with RMI connection");
@@ -243,17 +240,21 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
      */
     private void login () throws ClientOutOfReachException
     {
-        setRMITimeout(ACTION_TIMEOUT);
         String u;
         try{
             do{
-                u = communicator.login();
+                u = stopTask(() -> communicator.login(), ACTION_TIMEOUT, executor);
+                if(u == null)
+                {
+                    log.addLog("Failed to add user");
+                    throw new ClientOutOfReachException();
+                }
             } while (!possibleUsers.contains(u));
             possibleUsers.remove(u);
             user = u;
             log.addLog("User: " + user + " Added");
         }
-        catch (ClientOutOfReachException|RemoteException e) {
+        catch (Exception e) {
             log.addLog("Failed to add user" , e.getStackTrace());
             throw new ClientOutOfReachException();
         }
@@ -266,12 +267,16 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
      */
     private void initializeWindow () throws ClientOutOfReachException,ModelException
     {
-        setRMITimeout(ACTION_TIMEOUT);
-        String s1 ="";
+        String s1;
         try {
-            s1 = communicator.chooseWindow(windowCard1, windowCard2);
+            s1 = stopTask(() -> communicator.chooseWindow(windowCard1, windowCard2), PING_TIMEOUT, executor);//To change with ACTION when implement user choice
+            if(s1 == null)
+            {
+                log.addLog("(User:" + user + ") Failed to initialize Windows");
+                throw new ClientOutOfReachException();
+            }
         }
-        catch (ClientOutOfReachException|RemoteException e) {
+        catch (Exception e) {
             log.addLog("(User:" + user + ")" + e.getMessage() , e.getStackTrace());
             throw new ClientOutOfReachException();
         }
@@ -284,27 +289,27 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
             log.addLog("User: " + user + " Window initialized: " + s1);
         }
         catch (ModelException ex) {
-            log.addLog(ex.getMessage());
+            log.addLog("Impossible to set Window from XML", ex.getStackTrace());
             throw new ModelException();
         }
-    }
-
-    private void initializePrivateObjectives ()
-    {
-        //Comunicazione col client per la sua carta obbiettivo privato
     }
 
     /**
      * receives the public objectives and the tools chosen for the current match
      * and sets the corresponding parameters on the model adapter
-     * @throws ClientOutOfReachException
      */
     private void initializeCards () throws ClientOutOfReachException
     {
         try {
-            communicator.sendCards(publicObjCard);
+            boolean performed;
+            performed = stopTask(() -> communicator.sendCards(publicObjCard), PING_TIMEOUT, executor);
+            if(!performed)
+            {
+                log.addLog("(User:" + user + ") Failed to initialize cards");
+                throw new ClientOutOfReachException();
+            }
         }
-        catch (ClientOutOfReachException|RemoteException e) {
+        catch (Exception e) {
             log.addLog("(User:" + user + ")" + e.getMessage() , e.getStackTrace());
             throw new ClientOutOfReachException();
         }
@@ -314,25 +319,38 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     //<editor-fold desc="Utilities">
     public boolean isClientAlive ()
     {
-        setRMITimeout(PING_TIMEOUT);
         try {
-            return communicator.ping();
-        }catch (RemoteException e) {
+            boolean performed;
+            performed = stopTask(() -> communicator.ping(), PING_TIMEOUT, executor);
+            return performed;
+        } catch (NullPointerException e) {
             return false;
         }
     }
 
     public void sendMessage (String s)
     {
-        setRMITimeout(PING_TIMEOUT);
         try {
-            communicator.sendMessage(s);
+            boolean performed;
+            performed = stopTask(() -> communicator.sendMessage(s), PING_TIMEOUT, executor);
+            if (!performed)
+                log.addLog("Send message to client failed");
         }catch (Exception ex) {
             log.addLog("Send message to client failed", ex.getStackTrace());
         }
     }
-    public void closeCommunication ()
+
+    public void closeConnection (String s)
     {
+        try {
+            boolean performed;
+            performed = stopTask(() -> communicator.closeCommunication(s), PING_TIMEOUT, executor);
+            if (!performed)
+                log.addLog("Impossible to communicate to client (" + user + ") cause closed connection");
+        }catch (NullPointerException e) {
+            e.printStackTrace();
+            log.addLog("Impossible to communicate to client (" + user + ") cause closed connection");
+        }
 
     }
     //</editor-fold>
@@ -371,35 +389,25 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     }
     //</editor-fold>
 
-    //<editor-fold desc="RMI Settings">
-    private void setRmiSocket ()
-    {
-        try
-        {
-            RMISocketFactory.setSocketFactory(new RMISocketFactory() {
-                public Socket createSocket(String host, int port) throws IOException {
-                    Socket socket = new Socket(host, port);
-                    socket.setSoLinger(false, 0);
-                    RMISocket = socket;
-                    return socket;
-                }
-                public ServerSocket createServerSocket(int port) throws IOException {
-                    return new ServerSocket(port);
-                }
-            });
-        }catch (IOException e) {
-            log.addLog("Impossible to set RMI socket");
-        }
-    }
-
-    private void setRMITimeout (int millis)
-    {
+    //<editor-fold desc="Executor">
+    private <T> T stopTask(Callable<T> task, int executionTime, ExecutorService executor) {
+        Object o = null;
+        Future future = executor.submit(task);
         try {
-            RMISocket.setSoTimeout(millis);
-        }catch (Exception e) {
-            //log.addLog("Impossible to set RMI Timeout");
+            o = future.get(executionTime, TimeUnit.MILLISECONDS);
+        } catch (TimeoutException te) {
+            //System.out.println(te.getMessage());
+            log.addLog("Client too late to reply");
+            //System.out.println("too late to reply");
+        } catch (InterruptedException ie) {
+            //System.out.println(ie.getMessage());
+            Thread.currentThread().interrupt();
+        } catch (ExecutionException ee) {
+            //System.out.println(ee.getMessage());
+        } finally {
+            future.cancel(true);
         }
+        return (T)o;
     }
     //</editor-fold>
-
 }
