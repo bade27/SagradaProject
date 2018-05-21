@@ -11,6 +11,14 @@ public class MoveDadieraTraceTool extends Tools {
         this.price = 1;
     }
 
+    /**
+     * exchange one die in Dadiera and one die in RoundTrace
+     * @param d_dad die in Dadiera
+     * @param s Dadiera
+     * @param d_round die in RoundTrace
+     * @param pos_trace position in RoundTrace, in this position i have to extract the die
+     * @param rt RoundTrace
+     */
     public void exchangeDice(Dice d_dad, Dadiera s, Dice d_round, int pos_trace, RoundTrace rt){
         s.deleteDice(d_dad);
         rt.addDice(pos_trace,d_dad);

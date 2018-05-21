@@ -2,10 +2,12 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.exceptions.IllegalDiceException;
 import it.polimi.ingsw.exceptions.ParserXMLException;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.opentest4j.TestAbortedException;
 
 import java.awt.*;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -189,6 +191,58 @@ class WindowTest
         assertEquals(e5.getMessage(), "Die not placed near a compatible one");
         IllegalDiceException e6 = assertThrows(IllegalDiceException.class, () -> { w.addDice(3, 0, new Dice(5, Color.RED), 0); });
         assertEquals(e6.getMessage(), "Die not placed on compatible cell");
+    }
+
+    @RepeatedTest(1000)
+    void emptyCell() throws IllegalDiceException {
+        int i=new Random().nextInt(4);
+        int j=new Random().nextInt(5);
+
+        //creazione dado casuale
+        Random col = new Random();
+        Random num = new Random();
+        int number = num.nextInt(6) + 1;
+        Color color = null;
+        switch (col.nextInt(5)) {
+            case 0:
+                color = Color.red;
+                break;
+            case 1:
+                color = Color.green;
+                break;
+            case 2:
+                color = Color.blue;
+                break;
+            case 3:
+                color = Color.yellow;
+                break;
+            case 4:
+                color = Color.magenta;
+                break;
+
+            default:
+                break;
+        }
+        Dice d = new Dice(number, color);
+        w.addDice(i,j,d,-1);
+
+        Dice d1=w.getCell(i,j).getFrontDice();;
+        assertNotNull(d1);
+
+        w.emptyCell(i,j);
+
+        d1=w.getCell(i,j).getFrontDice();
+        assertNull(d1);
+
+        w.emptyCell(i,j);
+
+        d1=w.getCell(i,j).getFrontDice();
+        assertNull(d1);
+    }
+
+    @Test
+    void moveDice(){
+
     }
 
     @Test
