@@ -274,7 +274,7 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
         return true;
     }
 
-    public void closeComunication ( String cause)
+    public void closeComunication ( String cause) throws ClientOutOfReachException
     {
 
     }

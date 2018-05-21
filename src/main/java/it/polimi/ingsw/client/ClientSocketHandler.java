@@ -53,26 +53,16 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
             String action = "";
             int executionTime = 0;
             ExecutorService executor = Executors.newFixedThreadPool(1);
-            while( (action = inSocket.readLine()) != "stop" )  {
+            while( (action = inSocket.readLine()) != "close" )  {
                 switch (action) {
                     case "windowinit":
-                        executionTime = INIT_EXECUTE_TIME;
-                        stopTask(() -> chooseWindow(), executionTime, executor);
+                        chooseWindow();
                         continue;
-                    /*case "privobj":
-                        executionTime = INIT_EXECUTE_TIME;
-                        stopTask(() -> myPrivateObj(), executionTime, executor);
-                        continue;*/
                     case "login":
-                        executionTime = INIT_EXECUTE_TIME;
-                        stopTask(() -> login(), executionTime, executor);
+                        login();
                         continue;
                     case "pub_objs":
-                        executionTime = INIT_EXECUTE_TIME;
-                        stopTask(() -> receivePublicObjectives(), executionTime, executor);
-                        continue;
-                    case "close":
-                        close();
+                        receivePublicObjectives();
                         continue;
                     case "ping":
                         player.ping();
@@ -84,6 +74,7 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
                         continue;
                 }
             }
+            close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -158,8 +149,9 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
     }
 
     private void close() {
-        outSocket.println("ok");
+        String msg = "";
         try {
+            msg = inSocket.readLine();
             socket.close();
         } catch(Exception e) {
             System.out.println("Exception: "+e);
@@ -171,6 +163,7 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
             } catch(IOException ex) {
                 System.err.println("Socket not closed");
             }
+            player.closeComunication(msg);
         }
     }
 

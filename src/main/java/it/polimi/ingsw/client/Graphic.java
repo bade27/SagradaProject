@@ -43,6 +43,9 @@ public class Graphic extends JFrame
     }
 
 
+    public void restart(String msg) {
+    }
+
     public String myPrivateObj(String obj) {
         System.out.println(obj);
         return "ok";
@@ -116,6 +119,7 @@ public class Graphic extends JFrame
         dicePanel.updateUI();
     }
 
+/**
     /*class BoardListener implements ActionListener
     {
         private CellGraphic cellGraph;
@@ -162,7 +166,7 @@ public class Graphic extends JFrame
             else
                 selectedDice = cellGraph.getCurrentDice();
         }
-    }*/
+    }**/
 
     public static void main(String[] args)
     {
