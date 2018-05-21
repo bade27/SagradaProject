@@ -155,7 +155,6 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     @Override
     public boolean sendCards(String[]... s) throws RemoteException {
         return true;
-
     }
 
     //</editor-fold>
@@ -177,7 +176,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
     public boolean closeComunication (String cause)
     {
-        System.out.println("Game ended because " + cause);
+        System.out.println("Game ended because of " + cause);
         return true;
         //Graphic.setpopup connection down
 

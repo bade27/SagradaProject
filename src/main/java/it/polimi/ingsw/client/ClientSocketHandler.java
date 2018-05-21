@@ -48,27 +48,28 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
 
     @Override
     public void run() {
-
+        ExecutorService executor = Executors.newCachedThreadPool();
+        Future<?> task = null;
+        String action = "";
+        boolean stop = false;
         try {
-            String action = "";
-            int executionTime = 0;
-            ExecutorService executor = Executors.newCachedThreadPool();
-            Future<?> task = null;
-            boolean stop = false;
             while( (action = inSocket.readLine()) != "close" )  {
                 switch (action) {
-                    case "windowinit":
-                        chooseWindow();
+                    case "ping":
+                        outSocket.write("pong\n");
+                        outSocket.flush();
                         continue;
                     case "login":
                         task = executor.submit(() -> {login();});
                         continue;
                     case "pub_objs":
-                        receivePublicObjectives();
+                        String objs = inSocket.readLine();
+                        task = executor.submit(() -> {receivePublicObjectives(objs);});
                         continue;
-                    case "ping":
-                        outSocket.write("pong\n");
-                        outSocket.flush();
+                    case "windowinit":
+                        System.out.println(inSocket.readLine());
+                        String json = inSocket.readLine();
+                        task = executor.submit(() -> {chooseWindow(json);});
                         continue;
                     case "close":
                         stop = true;
@@ -82,37 +83,30 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
             }
             close(task);
         } catch (IOException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            close(task);
         }
 
     }
 
-    private Boolean chooseWindow()
+    private Boolean chooseWindow(String json)
     {
         try {
-            System.out.println(inSocket.readLine());
-            String json = inSocket.readLine();
             StringBuilder choice = new StringBuilder(player.chooseWindow(JSONFacilities.decodeStringArrays(json)));
             choice.append("\n");
             outSocket.write(choice.toString());
             return outSocket.checkError();
-        } catch (IOException | JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
         return false;
     }
 
-    private Boolean receivePublicObjectives()
+    private Boolean receivePublicObjectives(String objs)
     {
-        try {
-            String objs = inSocket.readLine();
-            System.out.println(objs);
-            outSocket.write("ok\n");
-            return outSocket.checkError();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
+        System.out.println(objs);
+        outSocket.write("ok\n");
+        return outSocket.checkError();
     }
     /*public void myPrivateObj() {
         try {
@@ -134,23 +128,6 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
             e.printStackTrace();
         }
         return false;
-    }
-
-    private <T> void stopTask(Callable<T> task, int executionTime, ExecutorService executor) {
-        Future future = executor.submit(task);
-        try {
-            future.get(executionTime, TimeUnit.MILLISECONDS);
-        } catch (TimeoutException te) {
-            //System.out.println(te.getMessage());
-            System.out.println("too late to reply");
-        } catch (InterruptedException ie) {
-            //System.out.println(ie.getMessage());
-            Thread.currentThread().interrupt();
-        } catch (ExecutionException ee) {
-            //System.out.println(ee.getMessage());
-        } finally {
-            future.cancel(true);
-        }
     }
 
     private void close(Future<?> task) {

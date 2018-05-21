@@ -229,6 +229,7 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
         String response = "";
 
         try {
+            System.out.println(s.length);
             boolean reachable = ping();
             if (reachable) {
                 String[] msgs = {"pub_objs\n", "tools\n"};

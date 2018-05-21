@@ -105,7 +105,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
             catch (ClientOutOfReachException|ModelException ex) {
                 //Notify token that client is dead
                 token.deletePlayer(user);
-                //closeConnection("Timeout Expired");
+                closeConnection("Timeout Expired");
                 token.endSetup();
                 synchronized (token) {
                     token.notifyAll();
