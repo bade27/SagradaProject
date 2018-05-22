@@ -284,11 +284,12 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
         outSocket.write(sb.toString());
         return outSocket.checkError();
     }
-/*
-    public void moves() {
-        //dico al client che è il suo turno, poi aspetto che invii la mossa fatta
-    }
 
+    public String doTurn ()
+    {
+        return null;
+    }
+/*
     public void close() {
         outSocket.println("close");
         try {

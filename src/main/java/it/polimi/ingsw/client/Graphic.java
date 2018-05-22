@@ -5,6 +5,8 @@ import it.polimi.ingsw.model.Window;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 import java.util.Scanner;
 
@@ -42,19 +44,12 @@ public class Graphic extends JFrame
         }
     }
 
-
-    public void restart(String msg) {
-    }
-
     public String myPrivateObj(String obj) {
         System.out.println(obj);
         return "ok";
     }
 
-    private void reConnection ()
-    {
 
-    }
 
     /**
      * Inizializza la grafica di partita
@@ -84,7 +79,7 @@ public class Graphic extends JFrame
             {
                 board[i][j] = new CellGraphic(finestra.getCell(i,j),i,j);
                 board[i][j].updateGrpahic();
-                //board[i][j].addActionListener(new BoardListener(board[i][j]));
+                board[i][j].addActionListener(new BoardListener(board[i][j]));
                 boardPanel.add(board[i][j]);
             }
         }
@@ -124,8 +119,7 @@ public class Graphic extends JFrame
         dicePanel.updateUI();
     }
 
-/**
-    /*class BoardListener implements ActionListener
+    class BoardListener implements ActionListener
     {
         private CellGraphic cellGraph;
         public BoardListener( CellGraphic c )
@@ -135,7 +129,8 @@ public class Graphic extends JFrame
 
         public void actionPerformed(ActionEvent arg)
         {
-            if (selectedDice != null)
+            player.setUserChoosing();
+            /*if (selectedDice != null)
             {
                 try
                 {
@@ -152,11 +147,11 @@ public class Graphic extends JFrame
 
             }
             else
-                JOptionPane.showMessageDialog(null, "No dice selected", "Error", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "No dice selected", "Error", JOptionPane.INFORMATION_MESSAGE);*/
         }
     }
 
-    class DicesListener implements ActionListener
+    /*class DicesListener implements ActionListener
     {
         private CellGraphic cellGraph;
         public DicesListener( CellGraphic c )
@@ -166,12 +161,12 @@ public class Graphic extends JFrame
 
         public void actionPerformed(ActionEvent arg)
         {
-            if (selectedDice != null)
+            /*if (selectedDice != null)
                 JOptionPane.showMessageDialog(null, "Dice already selected", "Error", JOptionPane.INFORMATION_MESSAGE);
             else
                 selectedDice = cellGraph.getCurrentDice();
         }
-    }**/
+    }*/
 
     public static void main(String[] args)
     {

@@ -7,12 +7,16 @@ import java.rmi.RemoteException;
 
 public interface ClientRemoteInterface extends Remote
 {
-    public String login() throws ClientOutOfReachException, RemoteException;
+    //Utilities
     public boolean ping () throws RemoteException;
-    public String chooseWindow(String[] s1, String[] s2)  throws ClientOutOfReachException, RemoteException;
-    public boolean sendCards(String[]... s) throws ClientOutOfReachException, RemoteException;
     public boolean sendMessage (String s) throws ClientOutOfReachException,RemoteException;
     public boolean closeCommunication (String cause) throws ClientOutOfReachException, RemoteException;
 
-    //public boolean sendPrivateObjective(String privObj);
+    //Setup
+    public String login() throws ClientOutOfReachException, RemoteException;
+    public String chooseWindow(String[] s1, String[] s2)  throws ClientOutOfReachException, RemoteException;
+    public boolean sendCards(String[]... s) throws ClientOutOfReachException, RemoteException;
+
+    //Game
+    public String doTurn () throws ClientOutOfReachException,RemoteException;
 }
