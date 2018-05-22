@@ -264,6 +264,9 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
     }
 
     public boolean sendMessage (String s) throws ClientOutOfReachException {
+        outSocket.write("msg\n");
+        if(outSocket.checkError())
+            isAlive = false;
         StringBuilder msg = new StringBuilder(s);
         msg.append("\n");
         outSocket.write(msg.toString());

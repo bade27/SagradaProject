@@ -70,6 +70,10 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
                     case "close":
                         stop = true;
                         break;
+                    case "msg":
+                        String msg = inSocket.readLine();
+                        player.sendMessage(msg);
+                        continue;
                     default:
                         //System.out.println(action);
                         continue;

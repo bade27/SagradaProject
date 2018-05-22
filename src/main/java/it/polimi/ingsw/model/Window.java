@@ -124,6 +124,38 @@ public class Window
         return false;
     }
 
+    /**
+     * Set cel[i][j] at null
+     * @param i ascissa
+     * @param j ordinata
+     */
+    public void emptyCell(int i, int j) {
+        board[i][j].setFrontDice(null);
+    }
+
+    /**
+     *Move one dice from pos_in to pos_fin
+     * @param pos_in start position
+     * @param pos_end final position
+     * @param level level of movement
+     * @throws IllegalDiceException
+     */
+    public void moveDice(int[] pos_in, int[]pos_end, int level) throws IllegalDiceException {
+        Cell c1=board[pos_in[0]][pos_in[0]];
+        Dice dice=c1.getFrontDice();
+        if(dice!=null) {
+            setDie(pos_in[0], pos_in[1],null,0);
+            try {
+                addDice(pos_end[0],pos_end[1],dice,level);
+            }catch(Exception ex) {
+                addDice(pos_in[0],pos_in[1],dice,0);
+                throw new IllegalDiceException();
+            }
+        } else {
+            throw new IllegalDiceException();
+        }
+
+    }
 
     public Cell getCell (int i , int j)
     {
