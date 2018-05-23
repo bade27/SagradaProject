@@ -2,7 +2,7 @@
 
 - Server
 	- [X] Handle right order turn
-	- [ ] Die placment RMI
+	- [ ] Die placement RMI
 	- [ ] Die placement Socket
 	- [X] Die placement bond
 	
