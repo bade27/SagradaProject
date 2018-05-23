@@ -49,7 +49,7 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
         String action = "";
         boolean stop = false;
         try {
-            while( (action = inSocket.readLine()) != "close" )  {
+            while( (action = inSocket.readLine()) != "close" && action != null)  {
                 switch (action) {
                     case "ping":
                         outSocket.write("pong\n");
@@ -134,12 +134,15 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
         String msg = "";
         try {
             msg = inSocket.readLine();
+            if(msg == null)
+                throw new NullPointerException();
             task.cancel(true);
             socket.close();
             System.out.println("socket closed");
         } catch(Exception e) {
-            System.out.println("Exception: "+e);
-            e.printStackTrace();
+            //System.out.println("Exception: "+e);
+            //e.printStackTrace();
+            msg = "server ended communication";
         } finally {
             try {
                 socket.close();
