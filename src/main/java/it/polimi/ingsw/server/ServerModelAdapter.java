@@ -17,6 +17,7 @@ public class ServerModelAdapter
     private PrivateObjective myPrivateObject;
     private PublicObjective[] publicObjectives;
     private Tools[] tools;
+    private String user;
 
     public ServerModelAdapter (Dadiera d)
     {
@@ -57,5 +58,15 @@ public class ServerModelAdapter
     public void setPublicObjectives(String path) throws ModelException
     {
         //publicObjectives[0] = ObjectivesFactory.getPublicObjective(path);
+    }
+
+    public void setUser (String s)
+    {
+        user = s;
+    }
+
+    public synchronized void testMove (String s)
+    {
+        System.out.println("User: " + user + "\t" + s);
     }
 }

@@ -35,11 +35,10 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
     private Graphic graph;
     private ClientModelAdapter adp;
-
-    private Boolean userChoosing;
-
     private ServerRemoteInterface server;
 
+
+    //<editor-fold desc="Initialization Phase">
     private static void connection_parameters_setup() throws ParserConfigurationException, IOException, SAXException {
         File file = new File(settings);
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -106,23 +105,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         }
         System.out.println("Client connected");
     }
-
-    public String doTurn ()
-    {
-        System.out.println("Your turn:");
-        userChoosing = true;
-        try
-        {
-            synchronized (userChoosing)
-            {
-                while (userChoosing)
-                    userChoosing.wait();
-            }
-        }catch (InterruptedException e){
-            System.out.println("Impossible to wait user's response");
-        }
-        return "ok";
-    }
+    //</editor-fold>
 
     //<editor-fold desc="Setup Phase">
     /**
@@ -177,7 +160,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
     //</editor-fold>
 
-    //<editor-fold desc="Utilities: Ping">
+    //<editor-fold desc="Utilities">
     /**
      * @return if we are alive
      */
@@ -201,15 +184,21 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     }
     //</editor-fold>
 
-    /*public synchronized Boolean getUserChoosing() {
-        return userChoosing;
-    }*/
+    public String doTurn ()
+    {
+        System.out.println("Your turn:");
+        graph.setEnableBoard(true);
+        return "ok";
+    }
 
-    public synchronized void setUserChoosing() {
-
-        synchronized (userChoosing) {
-            userChoosing = false;
-            userChoosing.notifyAll();
+    public void sendMove (String s)
+    {
+        try
+        {
+            server.responseTurn(s);
+        }catch (RemoteException e){
+            System.out.println("Impossible to send move");
         }
+
     }
 }

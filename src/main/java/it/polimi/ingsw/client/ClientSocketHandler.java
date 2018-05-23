@@ -159,4 +159,9 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
     public void setClient (ClientRemoteInterface client)
     {
     }
+
+    public void responseTurn (String s)
+    {
+
+    }
 }

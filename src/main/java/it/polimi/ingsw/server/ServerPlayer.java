@@ -19,7 +19,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.concurrent.*;
 
-public class ServerPlayer extends UnicastRemoteObject implements Runnable,ServerRemoteInterface
+public class ServerPlayer implements Runnable
 {
     //connection parameters
     private static final String settings = "resources/server_settings.xml";
@@ -120,7 +120,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
                 token.notifyAll();
             }
         }
-        catch (InterruptedException ex) {
+        catch (Exception ex) {
             System.out.println(ex.getMessage());
             log.addLog("Fatal error on thread " + user  , ex.getStackTrace());
             token.notifyFatalError();
@@ -138,42 +138,43 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
                     while (!token.isMyTurn(user))
                         token.wait();
 
-                    //Simulazione del turno
                     log.addLog("Turn of:" + user);
                     System.out.println(">>>Turn of:" + user);
-                    Thread.sleep(2000);
 
-                    //Per attivare il turno decommentare sotto e commentare la sleep
-                    /*try
-                    {
+                    //Thread.sleep(2000); Turn Simulation
+
+
+                    try {
                         clientTurn();
                     }catch (ClientOutOfReachException e){
                         //Notify token that client is dead
                         token.deletePlayer(user);
+                        token.nextTurn();
                         closeConnection("Timeout Expired");
-                        token.endSetup();
                         synchronized (token) {
                             token.notifyAll();
                         }
-                    }*/
+                    }
 
 
                     //End turn comunication
+                    //token.notifyAll();
+                    synchronized (adapter){
+                        adapter.wait();
+                    }
+                    token.nextTurn();
                     token.notifyAll();
-                    token.wait();
                 }
-                catch (InterruptedException ex)
+                catch (Exception ex)
                 {
                     System.out.println(ex.getMessage());
                     log.addLog("Fatal error on thread " + user  , ex.getStackTrace());
                     token.notifyFatalError();
                     Thread.currentThread().interrupt();
                 }
-
             }
         }
     }
-
 
 
     //<editor-fold desc="Initialization Phase">
@@ -193,13 +194,14 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
 
         //RMI Registry creation and bind server name
         try {
-            System.setProperty("sun.rmi.transport.connectionTimeout" , "1000");
+            ServerRmiHandler rmiCon = new ServerRmiHandler(adapter,this);
+
             String bindLocation = "rmi://" + HOSTNAME + ":" + RMI_REGISTRY_PORT + "/sagrada" + progressive;
             try{
                 java.rmi.registry.LocateRegistry.createRegistry(RMI_REGISTRY_PORT);
             }catch (Exception ex){}
 
-            Naming.bind(bindLocation, this );
+            Naming.bind(bindLocation, rmiCon );
 
             log.addLog("Server RMI waiting for client on port  " + RMI_REGISTRY_PORT);
         }catch (Exception e) {
@@ -228,15 +230,13 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
      * From this method client can connect with RMI
      * @param client client stub
      */
-    public void setClient (ClientRemoteInterface client) throws RemoteException
+    public void setCommunicator (ClientRemoteInterface client)
     {
         //Stop accepting of socket
         socketCon.start();
         //Set client stub
         communicator = client;
         log.addLog("Client accepted with RMI connection");
-
-
     }
     //</editor-fold>
 
@@ -259,6 +259,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
             } while (!possibleUsers.contains(u));
             possibleUsers.remove(u);
             user = u;
+            adapter.setUser(u);
             log.addLog("User: " + user + " Added");
         }
         catch (Exception e) {
@@ -327,13 +328,12 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     {
         String u;
         try{
-            u = stopTask(() -> communicator.doTurn(), TURN_TIMEOUT, executor);
+            u = stopTask(() -> communicator.doTurn(), PING_TIMEOUT, executor);
             if(u == null)
             {
                 log.addLog(" Move timeout expired");
                 throw new ClientOutOfReachException();
             }
-            System.out.println(u);
         }
         catch (Exception e) {
             log.addLog("" , e.getStackTrace());

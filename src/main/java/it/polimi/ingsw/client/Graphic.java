@@ -22,6 +22,9 @@ public class Graphic extends JFrame
     //Dado selezionato da quelli sopra
     private Dice selectedDice;
 
+
+    private boolean enableBoard;
+
     public Graphic()
     {
         initailizeComunication();
@@ -119,6 +122,14 @@ public class Graphic extends JFrame
         dicePanel.updateUI();
     }
 
+    public boolean isEnableBoard() {
+        return enableBoard;
+    }
+
+    public void setEnableBoard(boolean enableBoard) {
+        this.enableBoard = enableBoard;
+    }
+
     class BoardListener implements ActionListener
     {
         private CellGraphic cellGraph;
@@ -129,25 +140,11 @@ public class Graphic extends JFrame
 
         public void actionPerformed(ActionEvent arg)
         {
-            player.setUserChoosing();
-            /*if (selectedDice != null)
+            if (enableBoard)
             {
-                try
-                {
-                    giocatore.addDiceToBoard(cellGraph.getPosX(),cellGraph.getPosY(),selectedDice);
-                    giocatore.deleteDiceFromDadiera(selectedDice);
-
-                    updateGraphic();
-                }
-                catch (ModelException ex)
-                {
-                    JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.INFORMATION_MESSAGE);
-                }
-                selectedDice = null;
-
+                enableBoard = false;
+                player.sendMove("Cell clicked: x=" + cellGraph.getPosX() +   " y=" + cellGraph.getPosY());
             }
-            else
-                JOptionPane.showMessageDialog(null, "No dice selected", "Error", JOptionPane.INFORMATION_MESSAGE);*/
         }
     }
 
