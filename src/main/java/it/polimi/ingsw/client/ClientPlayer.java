@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 
 public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInterface
 {
@@ -142,10 +143,14 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     {
         String choice = "";
         try {
+            TimeUnit.SECONDS.sleep(3);
             choice = chooseWindow(list.get(0),list.get(1));
         }
         catch (ClientOutOfReachException ex){
             return "";
+        } catch (InterruptedException e) {
+            System.out.println("test sleep interrupted");
+            //e.printStackTrace();
         }
         return choice;
     }

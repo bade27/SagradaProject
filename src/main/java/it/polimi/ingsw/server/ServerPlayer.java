@@ -7,7 +7,6 @@ import it.polimi.ingsw.remoteInterface.ServerRemoteInterface;
 import it.polimi.ingsw.utilities.LogFile;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
-import sun.util.cldr.CLDRLocaleDataMetaInfo;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -29,7 +28,8 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     private static String HOSTNAME;
     private static int SOCKET_PORT;
     private static int PING_TIMEOUT; //10 sec
-    private static int ACTION_TIMEOUT; //5 min
+    private static int INIT_TIMEOUT;
+    private static int TURN_TIMEOUT; //5 min
 
     private ClientRemoteInterface communicator;
     private TokenTurn token;
@@ -67,7 +67,8 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
         //socket setup
         SOCKET_PORT = Integer.parseInt(document.getElementsByTagName("portNumber").item(0).getTextContent());
         PING_TIMEOUT = Integer.parseInt(document.getElementsByTagName("ping").item(0).getTextContent());
-        ACTION_TIMEOUT = Integer.parseInt(document.getElementsByTagName("action").item(0).getTextContent());
+        INIT_TIMEOUT = Integer.parseInt(document.getElementsByTagName("init").item(0).getTextContent());
+        TURN_TIMEOUT = Integer.parseInt(document.getElementsByTagName("turn").item(0).getTextContent());
     }
 
     public ServerPlayer(TokenTurn tok, ServerModelAdapter adp, ArrayList ps,LogFile l) throws RemoteException
@@ -249,7 +250,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
         String u;
         try{
             do{
-                u = stopTask(() -> communicator.login(), ACTION_TIMEOUT, executor);
+                u = stopTask(() -> communicator.login(), INIT_TIMEOUT, executor);
                 if(u == null)
                 {
                     log.addLog("Failed to add user");
@@ -275,7 +276,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     {
         String s1;
         try {
-            s1 = stopTask(() -> communicator.chooseWindow(windowCard1, windowCard2), PING_TIMEOUT, executor);//To change with ACTION when implement user choice
+            s1 = stopTask(() -> communicator.chooseWindow(windowCard1, windowCard2), INIT_TIMEOUT, executor);//To change with ACTION when implement user choice
             if(s1 == null)
             {
                 log.addLog("(User:" + user + ") Failed to initialize Windows");
@@ -308,7 +309,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     {
         try {
             boolean performed;
-            performed = stopTask(() -> communicator.sendCards(publicObjCard), PING_TIMEOUT, executor);
+            performed = stopTask(() -> communicator.sendCards(publicObjCard), INIT_TIMEOUT, executor);
             if(!performed)
             {
                 log.addLog("(User:" + user + ") Failed to initialize cards");
@@ -326,7 +327,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     {
         String u;
         try{
-            u = stopTask(() -> communicator.doTurn(), ACTION_TIMEOUT, executor);
+            u = stopTask(() -> communicator.doTurn(), TURN_TIMEOUT, executor);
             if(u == null)
             {
                 log.addLog(" Move timeout expired");

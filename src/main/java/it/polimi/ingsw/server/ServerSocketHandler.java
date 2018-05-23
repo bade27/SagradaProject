@@ -172,8 +172,6 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
             if (reachable) {
                 outSocket.write("windowinit\n");
                 outSocket.flush();
-                outSocket.write("Scegli la vetrata\n");
-                outSocket.flush();
                 StringBuilder windows = new StringBuilder(jsonArray.toString());
                 windows.append("\n");
                 outSocket.write(windows.toString());

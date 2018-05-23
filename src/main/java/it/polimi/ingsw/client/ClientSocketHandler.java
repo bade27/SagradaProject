@@ -63,7 +63,6 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
                         task = executor.submit(() -> {receivePublicObjectives(objs);});
                         continue;
                     case "windowinit":
-                        System.out.println(inSocket.readLine());
                         String json = inSocket.readLine();
                         task = executor.submit(() -> {chooseWindow(json);});
                         continue;
@@ -73,6 +72,8 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
                     case "msg":
                         String msg = inSocket.readLine();
                         player.sendMessage(msg);
+                        continue;
+                    case "content":
                         continue;
                     default:
                         //System.out.println(action);
@@ -92,6 +93,7 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
     private Boolean chooseWindow(String json)
     {
         try {
+            System.out.println("choose your window");
             StringBuilder choice = new StringBuilder(player.chooseWindow(JSONFacilities.decodeStringArrays(json)));
             choice.append("\n");
             outSocket.write(choice.toString());

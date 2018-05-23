@@ -4,7 +4,8 @@
     <socket>
         <portNumber>6000</portNumber>
         <ping>1000</ping>
-        <action>30000</action>
+        <init>30000</init>
+        <turn>50000</turn>
     </socket>
 
     <rmi>
