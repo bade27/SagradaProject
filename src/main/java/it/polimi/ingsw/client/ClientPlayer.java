@@ -30,12 +30,12 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     private static String HOSTNAME;
     private static int SOCKET_PORT;
     private static boolean initialized = false;
-
+    private int typeOfCOnnection; //1 rmi , 0 Socket
 
     private Graphic graph;
-    ClientModelAdapter adp;
+    private ClientModelAdapter adp;
 
-    int typeOfCOnnection; //1 rmi , 0 Socket
+    private Boolean userChoosing;
 
     private ServerRemoteInterface server;
 
@@ -104,6 +104,23 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             return;
         }
         System.out.println("Client connected");
+    }
+
+    public String doTurn ()
+    {
+        System.out.println("Your turn:");
+        userChoosing = true;
+        try
+        {
+            synchronized (userChoosing)
+            {
+                while (userChoosing)
+                    userChoosing.wait();
+            }
+        }catch (InterruptedException e){
+            System.out.println("Impossible to wait user's response");
+        }
+        return "ok";
     }
 
     //<editor-fold desc="Setup Phase">
@@ -179,4 +196,15 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     }
     //</editor-fold>
 
+    /*public synchronized Boolean getUserChoosing() {
+        return userChoosing;
+    }*/
+
+    public synchronized void setUserChoosing() {
+
+        synchronized (userChoosing) {
+            userChoosing = false;
+            userChoosing.notifyAll();
+        }
+    }
 }

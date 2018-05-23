@@ -7,6 +7,7 @@ import it.polimi.ingsw.remoteInterface.ServerRemoteInterface;
 import it.polimi.ingsw.utilities.LogFile;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
+import sun.util.cldr.CLDRLocaleDataMetaInfo;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -41,7 +42,6 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
     private boolean connectionError;
 
     //Setup Phase
-    private Integer lockObject;
     private ServerSocketHandler socketCon;
     private ArrayList<String> possibleUsers;
 
@@ -77,7 +77,6 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
         possibleUsers = ps;
         communicator = null;
         connectionError = false;
-        lockObject = 0;
         log = l;
         executor = Executors.newCachedThreadPool();
     }
@@ -143,6 +142,21 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
                     System.out.println(">>>Turn of:" + user);
                     Thread.sleep(2000);
 
+                    //Per attivare il turno decommentare sotto e commentare la sleep
+                    /*try
+                    {
+                        clientTurn();
+                    }catch (ClientOutOfReachException e){
+                        //Notify token that client is dead
+                        token.deletePlayer(user);
+                        closeConnection("Timeout Expired");
+                        token.endSetup();
+                        synchronized (token) {
+                            token.notifyAll();
+                        }
+                    }*/
+
+
                     //End turn comunication
                     token.notifyAll();
                     token.wait();
@@ -200,16 +214,11 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
                 communicator = socketCon;
                 log.addLog("Client accepted with Socket connection");
             }
-            synchronized (lockObject) {
-                lockObject.notifyAll();
-            }
         }
         catch (ClientOutOfReachException e) {
             log.addLog(e.getMessage() , e.getStackTrace());
-            synchronized (lockObject) {
-                connectionError = true;
-                lockObject.notifyAll();
-            }
+
+            connectionError = true;
         }
         return !connectionError;
     }
@@ -220,15 +229,12 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
      */
     public void setClient (ClientRemoteInterface client) throws RemoteException
     {
-        synchronized (lockObject)
-        {
-            //Stop accepting of socket
-            socketCon.start();
-            //Set client stub
-            communicator = client;
-            lockObject.notifyAll();
-            log.addLog("Client accepted with RMI connection");
-        }
+        //Stop accepting of socket
+        socketCon.start();
+        //Set client stub
+        communicator = client;
+        log.addLog("Client accepted with RMI connection");
+
 
     }
     //</editor-fold>
@@ -255,7 +261,7 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
             log.addLog("User: " + user + " Added");
         }
         catch (Exception e) {
-            log.addLog("Failed to add user" , e.getStackTrace());
+            log.addLog("" , e.getStackTrace());
             throw new ClientOutOfReachException();
         }
     }
@@ -315,6 +321,24 @@ public class ServerPlayer extends UnicastRemoteObject implements Runnable,Server
         }
     }
     //</editor-fold>
+
+    private void clientTurn () throws ClientOutOfReachException
+    {
+        String u;
+        try{
+            u = stopTask(() -> communicator.doTurn(), ACTION_TIMEOUT, executor);
+            if(u == null)
+            {
+                log.addLog(" Move timeout expired");
+                throw new ClientOutOfReachException();
+            }
+            System.out.println(u);
+        }
+        catch (Exception e) {
+            log.addLog("" , e.getStackTrace());
+            throw new ClientOutOfReachException();
+        }
+    }
 
     //<editor-fold desc="Utilities">
     public boolean isClientAlive ()
