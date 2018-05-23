@@ -139,7 +139,7 @@ public class ServerPlayer implements Runnable
                         token.wait();
 
                     log.addLog("Turn of:" + user);
-                    System.out.println(">>>Turn of:" + user);
+                    System.out.println("\n>>>Turn of:" + user);
 
                     //Thread.sleep(2000); Turn Simulation
 
@@ -162,8 +162,8 @@ public class ServerPlayer implements Runnable
                     synchronized (adapter){
                         adapter.wait();
                     }
-                    token.nextTurn();
                     token.notifyAll();
+                    token.wait();
                 }
                 catch (Exception ex)
                 {

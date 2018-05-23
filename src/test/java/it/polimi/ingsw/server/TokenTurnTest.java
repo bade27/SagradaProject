@@ -29,6 +29,40 @@ class TokenTurnTest {
     }
 
     @Test
+    void checkRoundTwoPlayers ()
+    {
+        token = new TokenTurn();
+
+        token.addPlayer("A");
+        token.addPlayer("B");
+
+        for (int i = 0 ; i < 10 ; i++)
+        {
+            token.nextTurn();
+            assertTurnA();
+            token.nextTurn();
+            assertTurnB();
+            token.nextTurn();
+            assertTurnB();
+            token.nextTurn();
+            assertTurnA();
+
+            assertTrue(token.isEndRound());
+
+            token.nextTurn();
+            assertTurnB();
+            token.nextTurn();
+            assertTurnA();
+            token.nextTurn();
+            assertTurnA();
+            token.nextTurn();
+            assertTurnB();
+
+            assertTrue(token.isEndRound());
+        }
+    }
+
+    @Test
     void roundTestWithoutExits ()
     {
         for (int i = 0 ; i < 7 ; i++)
