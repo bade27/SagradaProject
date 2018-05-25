@@ -3,6 +3,7 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.exceptions.ModelException;
 import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
+import it.polimi.ingsw.remoteInterface.Move;
 import it.polimi.ingsw.remoteInterface.Pair;
 import it.polimi.ingsw.remoteInterface.ServerRemoteInterface;
 import org.w3c.dom.Document;
@@ -37,6 +38,9 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     private Graphic graph;
     private ClientModelAdapter adp;
     private ServerRemoteInterface server;
+
+    //buffer mossa in upload
+    private Move move;
 
 
     //<editor-fold desc="Initialization Phase">
@@ -211,5 +215,17 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     @Override
     public void updateGraphic(Pair[][] grid) throws ClientOutOfReachException, RemoteException {
 
+    }
+
+    public void clearMove() {
+        move = new Move();
+    }
+
+    public void setMovePair(Pair p) {
+        this.move.setP(p);
+    }
+
+    public void setMoveIJ(int i, int j) {
+        this.move.setIJ(i, j);
     }
 }

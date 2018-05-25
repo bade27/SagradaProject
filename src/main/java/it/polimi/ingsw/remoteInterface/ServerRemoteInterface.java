@@ -9,5 +9,5 @@ public interface ServerRemoteInterface extends Remote
     public void responseTurn (String s) throws RemoteException;
 
     //game
-    public boolean makeMove(Pair p, int i, int j) throws RemoteException;
+    public boolean makeMove(Move move) throws RemoteException;
 }

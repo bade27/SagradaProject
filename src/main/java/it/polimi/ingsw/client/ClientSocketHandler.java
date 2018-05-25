@@ -2,7 +2,7 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
-import it.polimi.ingsw.remoteInterface.Pair;
+import it.polimi.ingsw.remoteInterface.Move;
 import it.polimi.ingsw.remoteInterface.ServerRemoteInterface;
 import it.polimi.ingsw.utilities.JSONFacilities;
 import org.json.JSONException;
@@ -10,7 +10,9 @@ import org.json.JSONException;
 import java.io.*;
 import java.net.Socket;
 import java.rmi.RemoteException;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
 
@@ -168,7 +170,7 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
     }
 
     @Override
-    public boolean makeMove(Pair p, int i, int j) throws RemoteException {
+    public boolean makeMove(Move move) throws RemoteException {
         return false;
     }
 }
