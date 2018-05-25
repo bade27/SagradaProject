@@ -31,7 +31,7 @@ public class SagradaGUI extends Application {
         new ToolsGUI(root);
         new RoundsGUI(pcenter);
         //new ConcorrentiGUI(pcenter);
-        DadieraGUI d=new DadieraGUI(pcenter);
+        DadieraGUI d=new DadieraGUI(pcenter, 5);
         new GridGUI(pcenter,d);
         new TargetGUI(root);
         dimWindows.dim(root);
