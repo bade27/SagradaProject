@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.GUI;
 import it.polimi.ingsw.model.Dice;
 import it.polimi.ingsw.model.Window;
 
@@ -10,7 +11,7 @@ import java.awt.event.ActionListener;
 import java.rmi.RemoteException;
 import java.util.Scanner;
 
-public class Graphic extends JFrame
+public class Graphic extends JFrame implements GUI
 {
     private JPanel boardPanel,textPanel,dicePanel;
     private int rows,cols;

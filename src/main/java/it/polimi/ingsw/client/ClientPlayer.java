@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.GUI;
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.exceptions.ModelException;
 import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
@@ -35,7 +36,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     private static boolean initialized = false;
     private int typeOfCOnnection; //1 rmi , 0 Socket
 
-    private Graphic graph;
+    private GUI graph;
     private ClientModelAdapter adp;
     private ServerRemoteInterface server;
 
@@ -61,7 +62,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     }
 
 
-    public ClientPlayer (int t,Graphic g) throws RemoteException
+    public ClientPlayer (int t,GUI g) throws RemoteException
     {
         typeOfCOnnection = t;
         this.graph = g;

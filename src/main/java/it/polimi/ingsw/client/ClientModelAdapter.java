@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import it.polimi.ingsw.GUI;
 import it.polimi.ingsw.exceptions.IllegalDiceException;
 import it.polimi.ingsw.exceptions.ModelException;
 import it.polimi.ingsw.exceptions.ParserXMLException;
@@ -12,10 +13,10 @@ public class ClientModelAdapter
     private Window board;
     private Dadiera dadiera;
     private int idTurn;
-    private Graphic graph;
+    private GUI graph;
 
 
-    public ClientModelAdapter (Graphic g)
+    public ClientModelAdapter (GUI g)
     {
         graph = g;
         board = null;
