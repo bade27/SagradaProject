@@ -6,7 +6,8 @@ public enum ColorEnum {
     GREEN("Green"),
     YELLOW("Yellow"),
     BLUE("Blue"),
-    PURPLE("Purple");
+    PURPLE("Purple"),
+    WHITE("White");
 
     private String color;
 
