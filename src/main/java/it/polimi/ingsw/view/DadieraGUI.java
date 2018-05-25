@@ -8,7 +8,9 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 
-public class DadieraGUI extends GridPane{
+import java.util.Random;
+
+public class DadieraGUI extends GridPane {
 
     private GridPane pane;
     private int numPlayers;
@@ -16,16 +18,17 @@ public class DadieraGUI extends GridPane{
     private String colore_dado_tolto;
     private String valore_dado_tolto;
     private boolean enable;
-    GridPane grid;
+    private GridPane grid;
+    private Pair[] pair;
 
     public DadieraGUI(GridPane pane, int num) {
-        this.pane=pane;
+        this.pane = pane;
         numPlayers = num;
         numOfDice = numPlayers * 2 + 1;
-        Pair[] pair = new Pair[numOfDice];
-        enable = false;
-        for(Pair p : pair)
-            p = new Pair(0, ColorEnum.WHITE);
+        pair = new Pair[numOfDice];
+        enable = true;
+        for (int i = 0; i < pair.length; i++)
+            pair[i] = new Pair(0, ColorEnum.WHITE);
 
         updateGraphic(pair);
         /*for (int i = 0; i < numOfDice; i++) {
@@ -48,29 +51,39 @@ public class DadieraGUI extends GridPane{
             });
 
         }*/
+        pane.add(grid, 0, 1);
         dimWindows.dimHeight(grid, 20);
     }
-    public String getColDadoTolto(){return colore_dado_tolto; }
 
-    public String getValDadoTolto(){return valore_dado_tolto; }
+    public String getColDadoTolto() {
+        return colore_dado_tolto;
+    }
 
-    public void setColDadoTolto(){colore_dado_tolto=null; }
+    public String getValDadoTolto() {
+        return valore_dado_tolto;
+    }
 
-    public void setValDadoTolto(){valore_dado_tolto=null; }
+    public void setColDadoTolto() {
+        colore_dado_tolto = null;
+    }
 
-    public void updateGraphic(Pair[] p){
+    public void setValDadoTolto() {
+        valore_dado_tolto = null;
+    }
+
+    public void updateGraphic(Pair[] p) {
         grid = new GridPane();
         for (int i = 0; i < p.length; i++) {
             Button b = new Button("  ");
             b.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
             grid.add(b, i, 0);
-            if(p[i].getValue() != 0)
-                b.setText(""+p[i].getValue());                         //setta numero correttamente
+            if (p[i].getValue() != 0)
+                b.setText("" + p[i].getValue());                         //setta numero correttamente
             b.setStyle("-fx-background-color: " + p[i].getColor());
             b.setOnAction(new EventHandler<ActionEvent>() {
                 @Override
                 public void handle(ActionEvent event) {
-                    if(enable&&colore_dado_tolto==null&&valore_dado_tolto==null) {
+                    if (enable && colore_dado_tolto == null && valore_dado_tolto == null) {
                         colore_dado_tolto = b.getStyle();
                         valore_dado_tolto = b.getText();
                         b.setText(null);
@@ -78,7 +91,55 @@ public class DadieraGUI extends GridPane{
                     }
                 }
             });
+
+            /*//bottone di prova
+            Button bprova=new Button("P");
+            grid.add(bprova,numOfDice,0);
+            bprova.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    setta_dadiera();
+                }
+            });*/
         }
-        pane.add(grid, 0, 1);
+    }
+
+    /*public void setta_dadiera() {
+        pair = new Pair[numOfDice];
+
+        ColorEnum Randomcolor=ColorEnum.WHITE;
+        for (int i = 0; i < pair.length; i++) {
+            int colint = new Random().nextInt(5);
+            switch (colint) {
+                case 0:
+                    Randomcolor = ColorEnum.BLUE;
+                    break;
+                case 1:
+                    Randomcolor = ColorEnum.GREEN;
+                    break;
+                case 2:
+                    Randomcolor = ColorEnum.PURPLE;
+                    break;
+                case 3:
+                    Randomcolor = ColorEnum.RED;
+                    break;
+                case 4:
+                    Randomcolor = ColorEnum.YELLOW;
+                    break;
+                default:
+                    break;
+            }
+            pair[i] = new Pair(new Random().nextInt(6) + 1, Randomcolor);
+            Button but=new Button();
+            but.setText(""+pair[i].getValue());
+            but.setStyle("-fx-background-color: "+pair[i].getColor());
+            grid.add(but,i,0);
+
+
+        }
+    }*/
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
     }
 }
