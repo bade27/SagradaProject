@@ -16,7 +16,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class LoginGUI extends Application {
-    public boolean log;
+    private boolean log;
     //public ClientSocketHandler clientConnectionHandler;
 
     public static void main(String[] args) {
@@ -27,15 +27,25 @@ public class LoginGUI extends Application {
     public void start(Stage primaryStage) {
         //clientConnectionHandler =new ClientSocketHandler();
         GridPane root=new GridPane();
+
+        //fascia del titolo
         Label l=new Label("LOGIN");
         l.setFont(Font.font("Tahoma", FontWeight.NORMAL,20));
+
+        //fascia dove inserirò il nome
         GridPane name=new GridPane();
+
+        //fascia dove inseriro la password
         GridPane pw=new GridPane();
+
+        //fascia dove inserirò il bottone invio
         Button st=new Button("INVIO");
-        root.add(l,0,0,2,1);
+
+        //inserimento degli elementi nella scena
+        root.add(l,0,0,1,1);
         root.add(name,0,1,1,1);
         root.add(pw,0,2,1,1);
-        root.add(st,0,3);
+        root.add(st,0,3,1,1);
 
         final TextField textname= new TextField();
         name.add(textname,0,0);

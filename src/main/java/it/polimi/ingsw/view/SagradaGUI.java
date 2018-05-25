@@ -1,5 +1,7 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.exceptions.IllegalDiceException;
+import it.polimi.ingsw.model.Dadiera;
 import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.*;
@@ -7,15 +9,14 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-public class
-SagradaGUI extends Application {
+public class SagradaGUI extends Application {
 
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws IllegalDiceException {
         GridPane root=new GridPane();
         GridPane pcenter=new GridPane();
         GridPane pleft=new GridPane();
@@ -30,8 +31,8 @@ SagradaGUI extends Application {
         new ToolsGUI(root);
         new RoundsGUI(pcenter);
         //new ConcorrentiGUI(pcenter);
-        pcenter.add(l,0,1);
-        new GridGUI(pcenter);
+        DadieraGUI d=new DadieraGUI(pcenter);
+        new GridGUI(pcenter,d);
         new TargetGUI(root);
         dimWindows.dim(root);
         dimWindows.dim(pright);

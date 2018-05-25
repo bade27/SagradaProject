@@ -1,14 +1,14 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.model.Dadiera;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.layout.*;
 
-
 public class GridGUI extends GridPane{
         public String num ="5";
-    public GridGUI (GridPane p){
+    public GridGUI (GridPane p, DadieraGUI dadiera){
 
         String s="Yellow";
         GridPane grid=new GridPane();
@@ -18,10 +18,14 @@ public class GridGUI extends GridPane{
                 b.setMaxSize(Double.MAX_VALUE,Double.MAX_VALUE);
                 grid.add(b,j,i);
                 b.setOnAction(new EventHandler<ActionEvent>() {
-                    @Override
+
                     public void handle(ActionEvent event) {
-                        b.setText(num);
-                        b.setStyle("-fx-background-color: "+s);
+                        if(dadiera.getValDadoTolto()!=null&&dadiera.getColDadoTolto()!=null) {
+                            b.setText(dadiera.getValDadoTolto());
+                            b.setStyle(dadiera.getColDadoTolto());
+                            dadiera.setValDadoTolto();
+                            dadiera.setColDadoTolto();
+                        }
                     }
                 });
 
