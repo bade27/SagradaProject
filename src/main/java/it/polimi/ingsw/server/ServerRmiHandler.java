@@ -2,6 +2,7 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
+import it.polimi.ingsw.remoteInterface.Pair;
 import it.polimi.ingsw.remoteInterface.ServerRemoteInterface;
 
 import java.rmi.RemoteException;
@@ -80,4 +81,18 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
         }
     }
 
+    @Override
+    public void updateGraphic(Pair[] dadiera) throws ClientOutOfReachException, RemoteException {
+
+    }
+
+    @Override
+    public void updateGraphic(Pair[][] grid) throws ClientOutOfReachException, RemoteException {
+
+    }
+
+    @Override
+    public boolean makeMove(Pair p, int i, int j) throws RemoteException {
+        return false;
+    }
 }

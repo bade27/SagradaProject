@@ -3,6 +3,7 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.exceptions.ModelException;
 import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
+import it.polimi.ingsw.remoteInterface.Pair;
 import it.polimi.ingsw.remoteInterface.ServerRemoteInterface;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -199,6 +200,16 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         }catch (RemoteException e){
             System.out.println("Impossible to send move");
         }
+
+    }
+
+    @Override
+    public void updateGraphic(Pair[] dadiera) throws ClientOutOfReachException, RemoteException {
+
+    }
+
+    @Override
+    public void updateGraphic(Pair[][] grid) throws ClientOutOfReachException, RemoteException {
 
     }
 }

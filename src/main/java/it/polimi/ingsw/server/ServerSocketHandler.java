@@ -2,6 +2,7 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
+import it.polimi.ingsw.remoteInterface.Pair;
 import it.polimi.ingsw.utilities.JSONFacilities;
 import it.polimi.ingsw.utilities.LogFile;
 import org.json.JSONArray;
@@ -11,6 +12,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
+import java.rmi.RemoteException;
 
 public class ServerSocketHandler extends Thread implements ClientRemoteInterface
 {
@@ -290,7 +292,18 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
     {
         return null;
     }
-/*
+
+    @Override
+    public void updateGraphic(Pair[] dadiera) throws ClientOutOfReachException, RemoteException {
+
+    }
+
+    @Override
+    public void updateGraphic(Pair[][] grid) throws ClientOutOfReachException, RemoteException {
+
+    }
+
+    /*
     public void close() {
         outSocket.println("close");
         try {

@@ -7,4 +7,7 @@ public interface ServerRemoteInterface extends Remote
 {
     public void setClient (ClientRemoteInterface client) throws RemoteException;
     public void responseTurn (String s) throws RemoteException;
+
+    //game
+    public boolean makeMove(Pair p, int i, int j) throws RemoteException;
 }
