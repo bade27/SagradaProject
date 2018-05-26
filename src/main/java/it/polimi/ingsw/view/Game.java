@@ -3,6 +3,7 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.GUI;
 import it.polimi.ingsw.client.ClientModelAdapter;
 import it.polimi.ingsw.client.ClientPlayer;
+import it.polimi.ingsw.remoteInterface.Pair;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
@@ -14,7 +15,7 @@ import java.util.Scanner;
 public class Game extends Application implements GUI {
 
 
-    private int num;
+    private int num=4;
     private ClientPlayer clientPlayer;
     private boolean enableBoard = true;
 
@@ -42,12 +43,21 @@ public class Game extends Application implements GUI {
     @Override
     public void start(Stage primaryStage) {
         GridPane root = new GridPane();
-        DadieraGUI d = new DadieraGUI(root, num);
-        GridGUI g = new GridGUI(root, d);
+        DadieraGUI d = new DadieraGUI(root, num, this);
+        GridGUI g = new GridGUI(root, d,this);
         Scene scene = new Scene(root, 400, 400);
         primaryStage.setTitle("Sagrada");
         primaryStage.setScene(scene);
         primaryStage.show();
+        dimWindows.dim(root);
+    }
+
+    public void modPair(Pair pair){
+        clientPlayer.setMovePair(pair);
+    }
+
+    public void modIJ(int i,int j){
+        clientPlayer.setMoveIJ(i,j);
     }
 
     @Override

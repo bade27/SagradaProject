@@ -9,9 +9,9 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
-public class SagradaGUI extends Application {
+public class SagradaGUI /*extends Application*/ {
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         launch(args);
     }
 
@@ -47,6 +47,6 @@ public class SagradaGUI extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
         primaryStage.setResizable(false);
-    }
+    }*/
 
 }
