@@ -14,4 +14,5 @@ public enum ColorEnum {
     ColorEnum(String s) {
         color = s;
     }
+
 }

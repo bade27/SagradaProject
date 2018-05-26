@@ -42,6 +42,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
     //buffer mossa in upload
     private Move move;
+    private boolean finishedMove = false;
 
 
     //<editor-fold desc="Initialization Phase">
@@ -192,6 +193,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
     public String doTurn ()
     {
+        clearMove();
         System.out.println("Your turn:");
         graph.setEnableBoard(true);
         return "ok";
@@ -218,15 +220,34 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
     }
 
-    public void clearMove() {
+    public synchronized void myMove() {
+
+        if(move.getP() != null) {
+            finishedMove = true;
+        } else {
+            finishedMove = false;
+        }
+
+        if(finishedMove) {
+            try {
+                server.makeMove(move);
+                graph.setEnableBoard(false);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+    public synchronized void clearMove() {
         move = new Move();
     }
 
-    public void setMovePair(Pair p) {
+    public synchronized void setMovePair(Pair p) {
         this.move.setP(p);
     }
 
-    public void setMoveIJ(int i, int j) {
+    public synchronized void setMoveIJ(int i, int j) {
         this.move.setIJ(i, j);
     }
 }

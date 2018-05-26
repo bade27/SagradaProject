@@ -94,6 +94,18 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
 
     @Override
     public boolean makeMove(Move move) throws RemoteException {
+        adapter.testMove("moved die" + move.getP().getValue() + ", " + move.getP().getColor().toString()
+                + " in position " + move.getI() + " ," + move.getJ());
+        try{
+            synchronized (adapter) {
+                adapter.notifyAll();
+            }
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+            //log.addLog("Fatal error on thread " + user  , e.getStackTrace());
+            //token.notifyFatalError();
+            Thread.currentThread().interrupt();
+        }
         return false;
     }
 }

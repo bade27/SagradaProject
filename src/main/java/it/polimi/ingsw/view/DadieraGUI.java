@@ -2,8 +2,6 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.remoteInterface.Pair;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 
@@ -17,11 +15,13 @@ public class DadieraGUI extends GridPane {
     private GridPane grid;
     private Pair[] pair;
     private Game game;
+    private boolean enable;
 
     public DadieraGUI(GridPane pane, int num,Game game) {
         this.game=game;
         this.pane = pane;
         numPlayers = num;
+        enable = false;
         numOfDice = numPlayers * 2 + 1;
         pair = new Pair[numOfDice];
         for (int i = 0; i < pair.length; i++)
@@ -70,6 +70,7 @@ public class DadieraGUI extends GridPane {
     public void updateGraphic(Pair[] p) {
         grid = new GridPane();
         dimWindows.dim(grid);
+        p[0] = new Pair(1, ColorEnum.BLUE);
         for (int i = 0; i < p.length; i++) {
             Button b = new Button("  ");
             b.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
@@ -77,13 +78,12 @@ public class DadieraGUI extends GridPane {
             //if (p[i].getValue() != 0)
                 b.setText("" + p[i].getValue());                         //setta numero correttamente
             b.setStyle("-fx-background-color: " + p[i].getColor());
-            b.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
+            b.setOnAction(event -> {
+                if(enable) {
                     String tok = b.getStyle().split(" ")[1];
                     int val = Integer.parseInt(b.getText());
                     ColorEnum color = ColorEnum.WHITE;
-                    switch(tok.toLowerCase()) {
+                    switch (tok.toLowerCase()) {
                         case "red":
                             color = ColorEnum.RED;
                             break;
@@ -94,16 +94,16 @@ public class DadieraGUI extends GridPane {
                             color = ColorEnum.YELLOW;
                             break;
                         case "blue":
-                            color =ColorEnum.BLUE;
+                            color = ColorEnum.BLUE;
                             break;
                         case "purple":
-                            color=ColorEnum.PURPLE;
+                            color = ColorEnum.PURPLE;
                             break;
                         default:
                             break;
                     }
-                    //game.modPair(new Pair(val, color));
-                    System.out.println(""+val+tok);
+                    game.modPair(new Pair(val, color));
+                    //System.out.println("" + val + tok);
                 }
             });
 
@@ -117,6 +117,10 @@ public class DadieraGUI extends GridPane {
                 }
             });*/
         }
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
     }
 
     /*public void setta_dadiera() {

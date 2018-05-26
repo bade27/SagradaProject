@@ -15,11 +15,15 @@ import java.util.Scanner;
 public class Game extends Application implements GUI {
 
 
+    private DadieraGUI d;
+    private GridGUI g;
+
     private int num=4;
     private ClientPlayer clientPlayer;
-    private boolean enableBoard = true;
+    private boolean enableBoard;
 
     public Game() {
+        enableBoard = false;
         initailizeComunication();
     }
 
@@ -43,13 +47,13 @@ public class Game extends Application implements GUI {
     @Override
     public void start(Stage primaryStage) {
         GridPane root = new GridPane();
-        DadieraGUI d = new DadieraGUI(root, num, this);
-        GridGUI g = new GridGUI(root, d,this);
+        d = new DadieraGUI(root, num, this);
+        g = new GridGUI(root, d,this);
         Scene scene = new Scene(root, 400, 400);
         primaryStage.setTitle("Sagrada");
         primaryStage.setScene(scene);
-        primaryStage.show();
         dimWindows.dim(root);
+        primaryStage.show();
     }
 
     public void modPair(Pair pair){
@@ -68,6 +72,12 @@ public class Game extends Application implements GUI {
     @Override
     public void setEnableBoard(boolean enableBoard) {
         this.enableBoard = enableBoard;
+        d.setEnable(enableBoard);
+        g.setEnable(enableBoard);
+    }
+
+    public void makeMove() {
+        clientPlayer.myMove();
     }
 
 
