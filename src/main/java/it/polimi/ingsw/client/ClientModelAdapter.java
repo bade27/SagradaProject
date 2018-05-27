@@ -30,7 +30,7 @@ public class ClientModelAdapter
             if(path.equals(""))
                 throw new ModelException("void field");
             board = new Window(path);
-            graph.initGraphic(this);
+            //graph.initGraphic(this);
         }
         catch (ParserXMLException ex) {
             throw new ModelException(ex.getMessage());

@@ -15,8 +15,8 @@ import java.util.Scanner;
 public class Game extends Application implements GUI {
 
 
-    private DadieraGUI d;
-    private GridGUI g;
+    private DadieraGUI dadieraG;
+    private GridGUI gridG;
 
     private int num=4;
     private ClientPlayer clientPlayer;
@@ -27,6 +27,7 @@ public class Game extends Application implements GUI {
         initailizeComunication();
     }
 
+    //<editor-fold desc="Initialization pahse">
     private void initailizeComunication ()
     {
         try {
@@ -47,14 +48,15 @@ public class Game extends Application implements GUI {
     @Override
     public void start(Stage primaryStage) {
         GridPane root = new GridPane();
-        d = new DadieraGUI(root, num, this);
-        g = new GridGUI(root, d,this);
+        dadieraG = new DadieraGUI(root, num, this);
+        gridG = new GridGUI(root, dadieraG,this);
         Scene scene = new Scene(root, 400, 400);
         primaryStage.setTitle("Sagrada");
         primaryStage.setScene(scene);
         dimWindows.dim(root);
         primaryStage.show();
     }
+    //</editor-fold>
 
     public void modPair(Pair pair){
         clientPlayer.setMovePair(pair);
@@ -65,15 +67,34 @@ public class Game extends Application implements GUI {
     }
 
     @Override
-    public void initGraphic(ClientModelAdapter giocatore) {
-        System.out.println("ecco la grafica!");
+    public void updateDadiera(Pair[] p) {
+        //Manca l'update della dadiera
+        //dadieraG.updateGraphic(p);
+        System.out.println("Dadiera:");
+        for(int i = 0; i < p.length ; i++)
+            System.out.print(p[i].toString() + " ");
+        System.out.println();
     }
+
+    @Override
+    public void updateWindow(Pair[][] p) {
+        //Manca l'update della dadiera
+        //gridG.updateGrid();
+        System.out.println("Window:");
+        for(int i = 0; i < p.length ; i++)
+        {
+            for (int j = 0; j<p[i].length ;j++)
+                System.out.print(p[i][j].toString() + " ");
+            System.out.println();
+        }
+    }
+
 
     @Override
     public void setEnableBoard(boolean enableBoard) {
         this.enableBoard = enableBoard;
-        d.setEnable(enableBoard);
-        g.setEnable(enableBoard);
+        dadieraG.setEnable(enableBoard);
+        gridG.setEnable(enableBoard);
     }
 
     public void makeMove() {

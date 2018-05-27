@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.exceptions.IllegalDiceException;
 import it.polimi.ingsw.exceptions.ParserXMLException;
+import it.polimi.ingsw.remoteInterface.Pair;
 import it.polimi.ingsw.utilities.ParserXML;
 
 import java.awt.*;
@@ -186,9 +187,9 @@ public class Window
             for (int j = 0; j < cols; j++)
             {
                 if (board[i][j].getFrontDice() == null)
-                    ret = ret + " p:" + board[i][j].getPlacement().getValue() + "-" + getColor(board[i][j].getPlacement()) + "|";
+                    ret = ret + " p:" + board[i][j].getPlacement().getValue() + "-" + board[i][j].getPlacement().getColorEnum() + "|";
                 else
-                    ret = ret + " D:" + board[i][j].getFrontDice().getValue() + "-" + getColor(board[i][j].getFrontDice()) + "|";
+                    ret = ret + " D:" + board[i][j].getFrontDice().getValue() + "-" + board[i][j].getFrontDice().getColorEnum() + "|";
             }
 
             ret = ret + "\n";
@@ -196,34 +197,12 @@ public class Window
         return ret;
     }
 
-    private String getColor (Placement p)
+    public Pair[][] getPairMatrix ()
     {
-        if (p.getColor() == Color.RED)
-            return "Red    ";
-        if (p.getColor() == Color.BLUE)
-            return "Blue   ";
-        if (p.getColor() == Color.YELLOW)
-            return "Yellow ";
-        if (p.getColor() == Color.MAGENTA)
-            return "Violet ";
-        if (p.getColor() == Color.GREEN)
-            return "Green  ";
-        return "n/d    ";
+        Pair[][] mat = new Pair[rows][cols];
+        for (int i = 0; i < rows ; i++)
+            for (int j = 0; j<cols ; j++)
+                mat[i][j] = new Pair(board[i][j].getDiceValue(),board[i][j].getDiceColor());
+        return mat;
     }
-
-    private String getColor (Dice p)
-    {
-        if (p.getColor() == Color.RED)
-            return "Red    ";
-        if (p.getColor() == Color.BLUE)
-            return "Blue   ";
-        if (p.getColor() == Color.YELLOW)
-            return "Yellow ";
-        if (p.getColor() == Color.MAGENTA)
-            return "Violet ";
-        if (p.getColor() == Color.GREEN)
-            return "Green  ";
-        return "n/d    ";
-    }
-
 }

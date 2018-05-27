@@ -106,7 +106,6 @@ public class DadieraGUI extends GridPane {
                     //System.out.println("" + val + tok);
                 }
             });
-
             /*//bottone di prova
             Button bprova=new Button("P");
             grid.add(bprova,numOfDice,0);

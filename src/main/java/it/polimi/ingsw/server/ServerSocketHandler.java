@@ -294,13 +294,13 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
     }
 
     @Override
-    public void updateGraphic(Pair[] dadiera) throws ClientOutOfReachException, RemoteException {
-
+    public String updateGraphic(Pair[] dadiera) throws ClientOutOfReachException, RemoteException {
+        return null;
     }
 
     @Override
-    public void updateGraphic(Pair[][] grid) throws ClientOutOfReachException, RemoteException {
-
+    public String updateGraphic(Pair[][] grid) throws ClientOutOfReachException, RemoteException {
+        return null;
     }
 
     /*

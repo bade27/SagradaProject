@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.exceptions.*;
+import it.polimi.ingsw.remoteInterface.Pair;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -83,6 +84,14 @@ public class Dadiera
             throw new IllegalDiceException("Dice not init");
         }
 
+    }
+
+    public Pair[] toPairArray ()
+    {
+        Pair[] arr = new Pair[listaDadi.size()];
+        for (int i = 0; i < listaDadi.size() ; i++)
+            arr[i] = new Pair(listaDadi.get(i).getValue(),listaDadi.get(i).getColorEnum());
+        return arr;
     }
 
     /**

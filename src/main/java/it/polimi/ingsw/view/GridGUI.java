@@ -47,4 +47,10 @@ public class GridGUI extends GridPane{
         public int geti(){return i;}
         public int getj(){return j;}
     }
+
+    public void updateGrid ()
+    {
+
+    }
 }
+

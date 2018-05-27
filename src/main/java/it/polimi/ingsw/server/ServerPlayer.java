@@ -145,6 +145,8 @@ public class ServerPlayer implements Runnable
 
 
                     try {
+                        updateDadiera();
+                        updateWindow();
                         clientTurn();
                     }catch (ClientOutOfReachException e){
                         //Notify token that client is dead
@@ -332,6 +334,40 @@ public class ServerPlayer implements Runnable
             if(u == null)
             {
                 log.addLog(" Move timeout expired");
+                throw new ClientOutOfReachException();
+            }
+        }
+        catch (Exception e) {
+            log.addLog("" , e.getStackTrace());
+            throw new ClientOutOfReachException();
+        }
+    }
+
+    private void updateDadiera () throws ClientOutOfReachException
+    {
+        String s;
+        try{
+            s = stopTask(() -> communicator.updateGraphic(adapter.getDadieraPair()), PING_TIMEOUT, executor);
+            if(s == null)
+            {
+                log.addLog(" Dadiera update timeout expired");
+                throw new ClientOutOfReachException();
+            }
+        }
+        catch (Exception e) {
+            log.addLog("" , e.getStackTrace());
+            throw new ClientOutOfReachException();
+        }
+    }
+
+    private void updateWindow () throws ClientOutOfReachException
+    {
+        String s;
+        try{
+            s = stopTask(() -> communicator.updateGraphic(adapter.getWindowPair()), PING_TIMEOUT, executor);
+            if(s == null)
+            {
+                log.addLog(" Window update timeout expired");
                 throw new ClientOutOfReachException();
             }
         }

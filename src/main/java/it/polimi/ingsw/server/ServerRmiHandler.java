@@ -22,7 +22,8 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
     }
 
 
-    //<editor-fold desc="Client Remote">
+
+    //<editor-fold desc="From server to client">
     @Override
     public String login() throws ClientOutOfReachException, RemoteException {
         return client.login();
@@ -58,8 +59,20 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
         return client.doTurn();
     }
 
+    @Override
+    public String updateGraphic(Pair[] dadiera) throws ClientOutOfReachException, RemoteException {
+        return client.updateGraphic(dadiera);
+    }
+
+    @Override
+    public String updateGraphic(Pair[][] grid) throws ClientOutOfReachException, RemoteException {
+        return client.updateGraphic(grid);
+    }
     //</editor-fold>
 
+
+
+    //<editor-fold desc="From client to server">
     @Override
     public void setClient(ClientRemoteInterface client) throws RemoteException
     {
@@ -67,35 +80,26 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
         player.setCommunicator(this);
     }
 
+    @Override
     public void responseTurn (String s)
     {
         adapter.testMove(s);
-        try{
-            synchronized (adapter) {
-                adapter.notifyAll();
-            }
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-            //log.addLog("Fatal error on thread " + user  , e.getStackTrace());
-            //token.notifyFatalError();
-            Thread.currentThread().interrupt();
-        }
+        notifyServer();
     }
 
-    @Override
-    public void updateGraphic(Pair[] dadiera) throws ClientOutOfReachException, RemoteException {
-
-    }
-
-    @Override
-    public void updateGraphic(Pair[][] grid) throws ClientOutOfReachException, RemoteException {
-
-    }
 
     @Override
     public boolean makeMove(Move move) throws RemoteException {
         adapter.testMove("moved die" + move.getP().getValue() + ", " + move.getP().getColor().toString()
                 + " in position " + move.getI() + " ," + move.getJ());
+        notifyServer();
+        return false;
+    }
+    //</editor-fold>
+
+
+    private void notifyServer ()
+    {
         try{
             synchronized (adapter) {
                 adapter.notifyAll();
@@ -106,6 +110,5 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
             //token.notifyFatalError();
             Thread.currentThread().interrupt();
         }
-        return false;
     }
 }

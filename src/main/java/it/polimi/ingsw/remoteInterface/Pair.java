@@ -21,4 +21,9 @@ public class Pair implements Serializable {
     public ColorEnum getColor() {
         return color;
     }
+
+    @Override
+    public String toString() {
+        return "Value: " + value + " Color: " + color ;
+    }
 }

@@ -66,6 +66,22 @@ public class Cell
         return back;
     }
 
+    public int getDiceValue ()
+    {
+        if (frontDice == null)
+            return back.getValue();
+        else
+            return frontDice.getValue();
+    }
+
+    public ColorEnum getDiceColor ()
+    {
+        if (frontDice == null)
+            return back.getColorEnum();
+        else
+            return frontDice.getColorEnum();
+    }
+
 }
 
 

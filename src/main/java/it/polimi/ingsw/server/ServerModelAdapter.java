@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.Window;
 import it.polimi.ingsw.model.objectives.Private.PrivateObjective;
 import it.polimi.ingsw.model.objectives.Public.PublicObjective;
 import it.polimi.ingsw.model.tools.Tools;
+import it.polimi.ingsw.remoteInterface.Pair;
 
 public class ServerModelAdapter
 {
@@ -68,5 +69,15 @@ public class ServerModelAdapter
     public synchronized void testMove (String s)
     {
         System.out.println("User: " + user + "\t" + s);
+    }
+
+    public Pair[] getDadieraPair ()
+    {
+        return dadiera.toPairArray();
+    }
+
+    public Pair[][] getWindowPair ()
+    {
+        return board.getPairMatrix();
     }
 }

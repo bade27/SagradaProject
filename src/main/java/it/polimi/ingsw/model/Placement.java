@@ -73,6 +73,24 @@ public class Placement
         return false;
     }
 
+    public ColorEnum getColorEnum ()
+    {
+        if (color == null)
+            return ColorEnum.WHITE;
+        if (color == Color.red)
+            return ColorEnum.RED;
+        if (color == Color.green)
+            return ColorEnum.GREEN;
+        if (color == Color.yellow)
+            return ColorEnum.YELLOW;
+        if (color == Color.blue)
+            return ColorEnum.BLUE;
+        if (color == Color.MAGENTA)
+            return ColorEnum.PURPLE;
+
+        return ColorEnum.WHITE;
+    }
+
     /**
      *
      * @return String representation of placement

@@ -37,7 +37,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     private int typeOfCOnnection; //1 rmi , 0 Socket
 
     private GUI graph;
-    private ClientModelAdapter adp;
+    //private ClientModelAdapter adp;
     private ServerRemoteInterface server;
 
     //buffer mossa in upload
@@ -67,7 +67,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     {
         typeOfCOnnection = t;
         this.graph = g;
-        adp = new ClientModelAdapter(graph);
+        //adp = new ClientModelAdapter(graph);
         try
         {
             //since the parameters are static, the initialization is performed once
@@ -150,13 +150,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
      */
     public String chooseWindow(String[] s1, String[] s2)  throws ClientOutOfReachException
     {
-        try
-        {
-            adp.initializeWindow(s1[0]);
-        }
-        catch (ModelException ex){
-            return "";
-        }
+        //Ora qui ci deve essere la scelta dell'utente della carta
         return s1[0];
     }
 
@@ -166,6 +160,22 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     }
 
     //</editor-fold>
+
+    //<editor-fold desc="Update graphic turn">
+    @Override
+    public String updateGraphic(Pair[] dadiera) throws ClientOutOfReachException, RemoteException {
+        graph.updateDadiera(dadiera);
+        return "ok";
+    }
+
+    @Override
+    public String updateGraphic(Pair[][] grid) throws ClientOutOfReachException, RemoteException {
+        graph.updateWindow(grid);
+        return "ok";
+    }
+    //</editor-fold>
+
+
 
     //<editor-fold desc="Utilities">
     /**
@@ -207,16 +217,6 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         }catch (RemoteException e){
             System.out.println("Impossible to send move");
         }
-
-    }
-
-    @Override
-    public void updateGraphic(Pair[] dadiera) throws ClientOutOfReachException, RemoteException {
-
-    }
-
-    @Override
-    public void updateGraphic(Pair[][] grid) throws ClientOutOfReachException, RemoteException {
 
     }
 

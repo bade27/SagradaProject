@@ -3,6 +3,7 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.GUI;
 import it.polimi.ingsw.model.Dice;
 import it.polimi.ingsw.model.Window;
+import it.polimi.ingsw.remoteInterface.Pair;
 
 import javax.swing.*;
 import java.awt.*;
@@ -52,6 +53,7 @@ public class Graphic extends JFrame implements GUI
         System.out.println(obj);
         return "ok";
     }
+
 
 
 
@@ -125,6 +127,16 @@ public class Graphic extends JFrame implements GUI
 
     public boolean isEnableBoard() {
         return enableBoard;
+    }
+
+    @Override
+    public void updateDadiera(Pair[] dadiera) {
+
+    }
+
+    @Override
+    public void updateWindow(Pair[][] window) {
+
     }
 
     public void setEnableBoard(boolean enableBoard) {
