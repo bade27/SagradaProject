@@ -69,10 +69,10 @@ public class Game extends Application implements GUI {
     @Override
     public void updateDadiera(Pair[] p) {
         //Manca l'update della dadiera
-        dadieraG.updateGraphic(p);
+        //dadieraG.updateGraphic(p);
         System.out.println("Dadiera:");
         for(int i = 0; i < p.length ; i++)
-            System.out.print(p[i].toString() + " ");
+            System.out.print(p[i].toString() + "\t|\t");
         System.out.println();
     }
 
@@ -84,7 +84,7 @@ public class Game extends Application implements GUI {
         for(int i = 0; i < p.length ; i++)
         {
             for (int j = 0; j<p[i].length ;j++)
-                System.out.print(p[i][j].toString() + " ");
+                System.out.print(p[i][j].toString() + "\t|\t");
             System.out.println();
         }
     }

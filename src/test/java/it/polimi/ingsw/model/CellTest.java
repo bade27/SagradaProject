@@ -15,7 +15,7 @@ class CellTest
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
         backColorVoid = new Cell(new Placement(3, null));
-        backValueVoid = new Cell(new Placement(0,Color.BLUE ));
+        backValueVoid = new Cell(new Placement(0,ColorEnum.BLUE ));
         backVoid = new Cell(new Placement(0, null));
 
         assertNull(backColorVoid.getFrontDice());
@@ -25,40 +25,40 @@ class CellTest
 
     @Test
     void setDiceTest () {
-        assertTrue(backColorVoid.setDice(new Dice(3,Color.RED)));
-        assertFalse(backColorVoid.setDice(new Dice(5,Color.RED)));
+        assertTrue(backColorVoid.setDice(new Dice(3,ColorEnum.RED)));
+        assertFalse(backColorVoid.setDice(new Dice(5,ColorEnum.RED)));
 
-        assertTrue(backValueVoid.setDice(new Dice(5,Color.BLUE)));
-        assertFalse(backValueVoid.setDice(new Dice(3,Color.RED)));
+        assertTrue(backValueVoid.setDice(new Dice(5,ColorEnum.BLUE)));
+        assertFalse(backValueVoid.setDice(new Dice(3,ColorEnum.RED)));
 
-        assertTrue(backVoid.setDice(new Dice(3,Color.RED)));
-        assertTrue(backVoid.setDice(new Dice(5,Color.BLUE)));
+        assertTrue(backVoid.setDice(new Dice(3,ColorEnum.RED)));
+        assertTrue(backVoid.setDice(new Dice(5,ColorEnum.BLUE)));
     }
 
 
     @Test
     void setDiceByColor() {
-        assertTrue(backColorVoid.setDiceByColor(new Dice(3,Color.RED)));
-        assertTrue(backColorVoid.setDiceByColor(new Dice(5,Color.BLUE)));
+        assertTrue(backColorVoid.setDiceByColor(new Dice(3,ColorEnum.RED)));
+        assertTrue(backColorVoid.setDiceByColor(new Dice(5,ColorEnum.BLUE)));
 
-        assertTrue(backValueVoid.setDiceByColor(new Dice(5,Color.BLUE)));
-        assertFalse(backValueVoid.setDiceByColor(new Dice(3,Color.RED)));
+        assertTrue(backValueVoid.setDiceByColor(new Dice(5,ColorEnum.BLUE)));
+        assertFalse(backValueVoid.setDiceByColor(new Dice(3,ColorEnum.RED)));
 
-        assertTrue(backVoid.setDiceByColor(new Dice(3,Color.RED)));
-        assertTrue(backVoid.setDiceByColor(new Dice(5,Color.BLUE)));
+        assertTrue(backVoid.setDiceByColor(new Dice(3,ColorEnum.RED)));
+        assertTrue(backVoid.setDiceByColor(new Dice(5,ColorEnum.BLUE)));
     }
 
 
 
     @Test
     void setDiceByValue() {
-        assertTrue(backColorVoid.setDiceByColor(new Dice(3,Color.RED)));
-        assertFalse(backColorVoid.setDice(new Dice(5,Color.BLUE)));
+        assertTrue(backColorVoid.setDiceByColor(new Dice(3,ColorEnum.RED)));
+        assertFalse(backColorVoid.setDice(new Dice(5,ColorEnum.BLUE)));
 
-        assertTrue(backValueVoid.setDiceByColor(new Dice(5,Color.BLUE)));
-        assertFalse(backValueVoid.setDiceByColor(new Dice(3,Color.RED)));
+        assertTrue(backValueVoid.setDiceByColor(new Dice(5,ColorEnum.BLUE)));
+        assertFalse(backValueVoid.setDiceByColor(new Dice(3,ColorEnum.RED)));
 
-        assertTrue(backVoid.setDiceByColor(new Dice(3,Color.RED)));
-        assertTrue(backVoid.setDiceByColor(new Dice(5,Color.BLUE)));
+        assertTrue(backVoid.setDiceByColor(new Dice(3,ColorEnum.RED)));
+        assertTrue(backVoid.setDiceByColor(new Dice(5,ColorEnum.BLUE)));
     }
 }

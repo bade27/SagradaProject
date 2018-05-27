@@ -2,6 +2,7 @@ package it.polimi.ingsw.utilities;
 
 import it.polimi.ingsw.exceptions.ParserXMLException;
 import it.polimi.ingsw.model.Cell;
+import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.model.Placement;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -53,15 +54,15 @@ public class ParserXML
                     else
                     {
                         if (currentColor.equals("rosso"))
-                            board[i][j] = new Cell(new Placement(currentValue, Color.red));
+                            board[i][j] = new Cell(new Placement(currentValue, ColorEnum.RED));
                         if (currentColor.equals("verde"))
-                            board[i][j] = new Cell(new Placement(currentValue,Color.green));
+                            board[i][j] = new Cell(new Placement(currentValue,ColorEnum.GREEN));
                         if (currentColor.equals("giallo"))
-                            board[i][j] = new Cell(new Placement(currentValue,Color.yellow));
+                            board[i][j] = new Cell(new Placement(currentValue,ColorEnum.YELLOW));
                         if (currentColor.equals("azzurro"))
-                            board[i][j] = new Cell(new Placement(currentValue,Color.blue));
+                            board[i][j] = new Cell(new Placement(currentValue,ColorEnum.BLUE));
                         if (currentColor.equals("viola"))
-                            board[i][j] = new Cell(new Placement(currentValue,Color.magenta));
+                            board[i][j] = new Cell(new Placement(currentValue,ColorEnum.PURPLE));
                     }
                     k++;
                 }

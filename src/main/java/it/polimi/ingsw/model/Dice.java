@@ -5,18 +5,19 @@ public class Dice
 {
     //Il colore di default è null e il valore di default è 0
     private int value;
-    private Color color;
+    //private Color color;
+    private ColorEnum color;
 
-    public Dice (int v,Color c)
+    /*public Dice (int v,Color c)
     {
         value = v;
         color = c;
-    }
+    }*/
 
     public Dice (int v,ColorEnum c)
     {
         value = v;
-        color = Color.white;
+        color = c;
     }
 
     public int getValue ()
@@ -24,7 +25,7 @@ public class Dice
         return value;
     }
 
-    public Color getColor ()
+    public ColorEnum getColor ()
     {
         return color;
     }
@@ -69,7 +70,7 @@ public class Dice
         return copy;
     }
 
-    public ColorEnum getColorEnum ()
+    /*public ColorEnum getColorEnum ()
     {
         if (color == null)
             return ColorEnum.WHITE;
@@ -85,7 +86,7 @@ public class Dice
             return ColorEnum.PURPLE;
 
         return ColorEnum.WHITE;
-    }
+    }*/
 
     /**
      *

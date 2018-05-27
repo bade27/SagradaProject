@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.tools;
 
 import it.polimi.ingsw.exceptions.IllegalDiceException;
 import it.polimi.ingsw.exceptions.IllegalStepException;
+import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.model.Dadiera;
 import it.polimi.ingsw.model.Dice;
 import org.junit.jupiter.api.BeforeEach;
@@ -54,7 +55,7 @@ class SetValueToolTest {
             //valore originale
             int oldval = finalDice.getValue();
             //colore originale
-            Color oldcol=finalDice.getColor();
+            ColorEnum oldcol=finalDice.getColor();
             //prezzo prima aver usato il tool
             int price1=svt.getPrice();
 
@@ -64,7 +65,7 @@ class SetValueToolTest {
             //nuovo valore
             int newval = finalDice.getValue();
             //nuovo colore
-            Color newcol=finalDice.getColor();
+            ColorEnum newcol=finalDice.getColor();
             //prezzo dopo aver usato il tool
             int price2=svt.getPrice();
 
@@ -125,7 +126,7 @@ class SetValueToolTest {
         //valore originale
         int oldval = finalDice.getValue();
         //colore originale
-        Color oldcol=finalDice.getColor();
+        ColorEnum oldcol=finalDice.getColor();
         //prezzo prima aver usato il tool
         int price1=svt.getPrice();
 
@@ -135,7 +136,7 @@ class SetValueToolTest {
         //nuovo valore
         int newval = finalDice.getValue();
         //nuovo colore
-        Color newcol=finalDice.getColor();
+        ColorEnum newcol=finalDice.getColor();
         //prezzo dopo aver usato il tool
         int price2=svt.getPrice();
 
@@ -178,14 +179,14 @@ class SetValueToolTest {
 
         int price1=svt.getPrice();
         int oldval=dice.getValue();
-        Color oldcol=dice.getColor();
+        ColorEnum oldcol=dice.getColor();
 
         //chiamo la funzione
         svt.turnDice(dice,d);
 
         int price2=svt.getPrice();
         int newval=dice.getValue();
-        Color newcol=dice.getColor();
+        ColorEnum newcol=dice.getColor();
 
         assertEquals(7-oldval, newval);
         assertEquals(price2,2);
@@ -200,14 +201,14 @@ class SetValueToolTest {
         Dice dice=d.getDice(i);
 
         int price1=svt.getPrice();
-        Color oldcol=dice.getColor();
+        ColorEnum oldcol=dice.getColor();
 
         //chiamo la funzione
         svt.relaunchDice(dice,d);
 
         int price2=svt.getPrice();
         int newval=dice.getValue();
-        Color newcol=dice.getColor();
+        ColorEnum newcol=dice.getColor();
 
         assertNotNull(newval);
         assertEquals(price2,2);

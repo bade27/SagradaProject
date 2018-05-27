@@ -31,23 +31,23 @@ class RoundTraceTest {
         Random col=new Random();
         Random num=new Random();
         int number=num.nextInt(6)+1;
-        Color color=null;
+        ColorEnum color=null;
         switch (col.nextInt(5))
         {
             case 0:
-                color = Color.red;
+                color = ColorEnum.RED;
                 break;
             case 1:
-                color = Color.green;
+                color = ColorEnum.GREEN;
                 break;
             case 2:
-                color = Color.blue;
+                color = ColorEnum.BLUE;
                 break;
             case 3:
-                color = Color.yellow;
+                color = ColorEnum.YELLOW;
                 break;
             case 4:
-                color = Color.magenta;
+                color = ColorEnum.PURPLE;
                 break;
 
             default:
@@ -89,23 +89,23 @@ class RoundTraceTest {
             Random col=new Random();
             Random num=new Random();
             int number=num.nextInt(6)+1;
-            Color color=null;
+            ColorEnum color=null;
             switch (col.nextInt(5))
             {
                 case 0:
-                    color = Color.red;
+                    color = ColorEnum.RED;
                     break;
                 case 1:
-                    color = Color.green;
+                    color = ColorEnum.GREEN;
                     break;
                 case 2:
-                    color = Color.blue;
+                    color = ColorEnum.BLUE;
                     break;
                 case 3:
-                    color = Color.yellow;
+                    color = ColorEnum.YELLOW;
                     break;
                 case 4:
-                    color = Color.magenta;
+                    color = ColorEnum.PURPLE;
                     break;
 
                 default:

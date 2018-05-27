@@ -77,9 +77,9 @@ public class Cell
     public ColorEnum getDiceColor ()
     {
         if (frontDice == null)
-            return back.getColorEnum();
+            return back.getColor();
         else
-            return frontDice.getColorEnum();
+            return frontDice.getColor();
     }
 
 }

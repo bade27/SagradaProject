@@ -73,7 +73,8 @@ public class DadieraGUI extends GridPane {
                         default:
                             break;
                     }
-                    game.modPair(new Pair(val, color));
+                    //game.modPair(new Pair(val, color));
+                    game.modPair(new Pair(3,ColorEnum.RED));
                 }
             });
         }

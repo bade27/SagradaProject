@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.objectives.Public;
 
 import it.polimi.ingsw.model.Cell;
+import it.polimi.ingsw.model.ColorEnum;
 
 import java.awt.*;
 import java.util.*;
@@ -21,12 +22,12 @@ public class DiagonalScore implements ScoreInterface {
      */
     public int calcScore(int valore, Cell[][] grid) {
         //0 red, 1 green, 2 blue, 3 yellow, 4 magenta
-        Map<Integer, Color> colors = new HashMap<>();
-        colors.put(0, Color.red);
-        colors.put(1, Color.green);
-        colors.put(2, Color.blue);
-        colors.put(3, Color.yellow);
-        colors.put(4, Color.magenta);
+        Map<Integer, ColorEnum> colors = new HashMap<>();
+        colors.put(0, ColorEnum.RED);
+        colors.put(1, ColorEnum.GREEN);
+        colors.put(2, ColorEnum.BLUE);
+        colors.put(3, ColorEnum.YELLOW);
+        colors.put(4, ColorEnum.PURPLE);
 
         int points = 0;
 
@@ -35,7 +36,7 @@ public class DiagonalScore implements ScoreInterface {
             //lista che contiene le liste di celle (adiacenti in diagonale)
             // che contengono dadi dello stesso colore
             ArrayList<ArrayList<Coppia>> root = new ArrayList<>();
-            Color current_color = colors.get(i);
+            ColorEnum current_color = colors.get(i);
 
             //compilo root
             for(int h = 0; h < grid.length; h++) {

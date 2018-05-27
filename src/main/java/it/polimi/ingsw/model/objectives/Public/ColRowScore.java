@@ -25,7 +25,7 @@ public class ColRowScore implements ScoreInterface {
      * @return *il punteggio totalizzato dal giocatore*
      */
     public int calcScore(int value, Cell[][] grid) {
-        int colonne_valide = 0;
+        /*int colonne_valide = 0;
         boolean flag;
         switch (pattern) {
             case "row":
@@ -61,7 +61,8 @@ public class ColRowScore implements ScoreInterface {
             if(flag)
                 colonne_valide++;
         }
-        return value * colonne_valide;
+        return value * colonne_valide;*/
+        return 0;
     }
 
     /**
@@ -69,9 +70,9 @@ public class ColRowScore implements ScoreInterface {
      * @param d
      * @return *la sfumatura o il colore del dado attuale a seconda del tipo di obbiettivo*
      */
-    private int getElement(Dice d) {
+    /*private int getElement(Dice d) {
         return tag.equals("shade") ? d.getValue()
                 : d.getColor() != null ? d.getColor().getRGB() : -1;
-    }
+    }*/
 
 }

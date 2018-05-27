@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.objectives.Public;
 
 import it.polimi.ingsw.model.Cell;
+import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.model.Dice;
 import it.polimi.ingsw.model.Placement;
 import org.junit.jupiter.api.Test;
@@ -63,20 +64,20 @@ class PairScoreTest {
         int here = 0;
         for (int i = 0; i < fh; i++) {
             Coordinates current = cells.get(i);
-            grid[current.getI()][current.getJ()].setDice(new Dice(pair[0], Color.green));
+            grid[current.getI()][current.getJ()].setDice(new Dice(pair[0], ColorEnum.GREEN));
             here = i;
         }
         here++;
         for (int i = 0; i < sh; i++) {
             Coordinates current = cells.get(i + here);
-            grid[current.getI()][current.getJ()].setDice(new Dice(pair[1], Color.green));
+            grid[current.getI()][current.getJ()].setDice(new Dice(pair[1], ColorEnum.GREEN));
         }
 
         for(int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 Cell current = grid[i][j];
                 if(current.getFrontDice() == null)
-                    current.setDice(new Dice(0, Color.green));
+                    current.setDice(new Dice(0, ColorEnum.GREEN));
             }
         }
 
@@ -94,7 +95,7 @@ class PairScoreTest {
                 for (int j = 0; j < cols; j++) {
                     Cell current = grid[i][j];
                     if (current.getFrontDice() == null)
-                        current.setDice(new Dice(0, Color.green));
+                        current.setDice(new Dice(0, ColorEnum.GREEN));
                 }
             }
 
@@ -104,9 +105,9 @@ class PairScoreTest {
                 for (int j = 0; j < cols; j++) {
                     Cell current = grid[i][j];
                     if (i == 0)
-                        current.setDice(new Dice(pair[0], Color.green));
+                        current.setDice(new Dice(pair[0], ColorEnum.GREEN));
                     if (current.getFrontDice() == null)
-                        current.setDice(new Dice(0, Color.green));
+                        current.setDice(new Dice(0, ColorEnum.GREEN));
                 }
             }
 

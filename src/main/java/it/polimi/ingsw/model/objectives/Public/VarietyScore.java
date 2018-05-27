@@ -22,7 +22,7 @@ public class VarietyScore implements ScoreInterface {
      * @return *il punteggio totalizzato dal giocatore*
      */
     public int calcScore(int valore, Cell[][] grid) {
-        int[] frequency = tag.equals("color") ? new int[5]
+        /*int[] frequency = tag.equals("color") ? new int[5]
                 : new int[6];
 
         for (int column = 0; column < grid[0].length; column++) {
@@ -37,7 +37,7 @@ public class VarietyScore implements ScoreInterface {
             }
         }
         OptionalInt min = Arrays.stream(frequency).min();
-        return min.getAsInt() * valore;
+        return min.getAsInt() * valore;*/return 0;
     }
 
     /**
@@ -45,10 +45,10 @@ public class VarietyScore implements ScoreInterface {
      * @param d
      * @return *la sfumatura o il colore del dado corrente a seconda dell'obbiettivo*
      */
-    private int getElement(Dice d) {
+    /*private int getElement(Dice d) {
         return tag.equals("shade") ? d.getValue()
                 : d.getColor() != null ? d.getColor().getRGB() : -1;
-    }
+    }*/
 
     /**
      *

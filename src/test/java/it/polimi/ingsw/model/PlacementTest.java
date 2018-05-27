@@ -12,49 +12,49 @@ class PlacementTest {
 
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
-        place = new Placement(3, Color.BLUE);
+        place = new Placement(3, ColorEnum.BLUE);
     }
 
     @Test
     void isEqualTrue () {
-        assertTrue(place.isEqual(new Dice (3,Color.BLUE)));
+        assertTrue(place.isEqual(new Dice (3,ColorEnum.BLUE)));
     }
 
     @Test
     void isEqualValueFalse () {
-        assertFalse(place.isEqual(new Dice (5,Color.BLUE)));
+        assertFalse(place.isEqual(new Dice (5,ColorEnum.BLUE)));
     }
 
     @Test
     void isEqualColorFalse () {
-        assertFalse(place.isEqual(new Dice (3,Color.RED)));
+        assertFalse(place.isEqual(new Dice (3,ColorEnum.RED)));
     }
 
     @Test
     void isSimilarValueColorTrue () {
-        assertTrue(place.isSimilar(new Dice (3,Color.BLUE)));
+        assertTrue(place.isSimilar(new Dice (3,ColorEnum.BLUE)));
     }
 
     @Test
     void isSimilarValueTrue () {
-        assertTrue(place.isSimilar(new Dice (3,Color.RED)));
+        assertTrue(place.isSimilar(new Dice (3,ColorEnum.RED)));
     }
 
     @Test
     void isSimilarColorTrue () {
-        assertTrue(place.isSimilar(new Dice (5,Color.BLUE)));
+        assertTrue(place.isSimilar(new Dice (5,ColorEnum.BLUE)));
     }
 
     @Test
     void isSimilarColorFalse () {
-        assertFalse(place.isSimilar(new Dice (5,Color.RED)));
+        assertFalse(place.isSimilar(new Dice (5,ColorEnum.RED)));
     }
 
     @Test
-    void isColorEquals() { assertTrue(place.isColorEquals(new Dice (5,Color.BLUE))); assertFalse(place.isColorEquals(new Dice (5,Color.RED)));}
+    void isColorEquals() { assertTrue(place.isColorEquals(new Dice (5,ColorEnum.BLUE))); assertFalse(place.isColorEquals(new Dice (5,ColorEnum.RED)));}
 
     @Test
-    void isValueEquals() { assertTrue(place.isValueEquals(new Dice (3,Color.RED))); assertFalse(place.isValueEquals(new Dice (5,Color.BLUE)));}
+    void isValueEquals() { assertTrue(place.isValueEquals(new Dice (3,ColorEnum.RED))); assertFalse(place.isValueEquals(new Dice (5,ColorEnum.BLUE)));}
 
 
     @Test

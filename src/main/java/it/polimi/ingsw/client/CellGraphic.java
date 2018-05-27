@@ -39,7 +39,7 @@ public class CellGraphic extends JButton
         Integer aa = d.getValue();
         if (aa != 0)
             this.setText(aa.toString());
-        this.setBackground(d.getColor());
+        //this.setBackground(d.getColor());
         if (cella.getFrontDice() != null)
             this.setFont(new Font("TimesRoman", Font.BOLD, 50));
     }

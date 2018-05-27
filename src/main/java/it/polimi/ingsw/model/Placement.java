@@ -5,9 +5,9 @@ import java.awt.*;
 public class Placement
 {
     private int value;
-    private Color color;
+    private ColorEnum color;
 
-    public Placement (int v,Color c)
+    public Placement (int v,ColorEnum c)
     {
         value = v;
         color = c;
@@ -17,7 +17,7 @@ public class Placement
         return value;
     }
 
-    public Color getColor() {
+    public ColorEnum getColor() {
         return color;
     }
 
@@ -71,24 +71,6 @@ public class Placement
         if (d.getValue() == value || value == 0)
             return true;
         return false;
-    }
-
-    public ColorEnum getColorEnum ()
-    {
-        if (color == null)
-            return ColorEnum.WHITE;
-        if (color == Color.red)
-            return ColorEnum.RED;
-        if (color == Color.green)
-            return ColorEnum.GREEN;
-        if (color == Color.yellow)
-            return ColorEnum.YELLOW;
-        if (color == Color.blue)
-            return ColorEnum.BLUE;
-        if (color == Color.MAGENTA)
-            return ColorEnum.PURPLE;
-
-        return ColorEnum.WHITE;
     }
 
     /**

@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class VarietyScoreTest {
 
-    static Cell[][] grid;
+    /*static Cell[][] grid;
     static int rows;
     static int cols;
 
@@ -104,6 +104,6 @@ class VarietyScoreTest {
             bothZero = score.calcScore(value, grid) == 0 ? true : false;
         }
         assertTrue(bothZero);
-    }
+    }*/
 
 }

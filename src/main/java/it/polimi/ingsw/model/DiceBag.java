@@ -32,41 +32,41 @@ public class DiceBag {
                 = num_of_yellow = num_of_magenta = DICE_PER_COLOR;
         Random value = new Random();
         Random color = new Random();
-        Color col = null;
+        ColorEnum col = null;
         for(int k = 0; k < N_OF_DICE; k++) {
             repeat_switch:
             switch (color.nextInt(5)) {
                 case 0:
                     if(num_of_red > 0) {
-                        col = Color.red;
+                        col = ColorEnum.RED;
                         num_of_red--;
                         break;
                     }
                     break repeat_switch;
                 case 1:
                     if(num_of_green > 0) {
-                        col = Color.green;
+                        col = ColorEnum.GREEN;
                         num_of_green--;
                         break;
                     }
                     break repeat_switch;
                 case 2:
                     if(num_of_blue > 0) {
-                        col = Color.blue;
+                        col = ColorEnum.BLUE;
                         num_of_blue--;
                         break;
                     }
                     break repeat_switch;
                 case 3:
                     if(num_of_yellow > 0) {
-                        col = Color.yellow;
+                        col = ColorEnum.YELLOW;
                         num_of_yellow--;
                         break;
                     }
                     break repeat_switch;
                 case 4:
                     if(num_of_magenta > 0) {
-                        col = Color.magenta;
+                        col = ColorEnum.PURPLE;
                         num_of_magenta--;
                         break;
                     }

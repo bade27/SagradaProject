@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.objectives.Public;
 
 import it.polimi.ingsw.model.Cell;
+import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.model.Dice;
 import it.polimi.ingsw.model.Placement;
 
@@ -48,14 +49,14 @@ class ColRowScoreTest {
 
         for(int n = 0; n < numRows; n++) {
             for (int i = 0; i < cols; i++)
-                grid[rs.get(n)][i].setDice(new Dice((i + 1), Color.red));
+                grid[rs.get(n)][i].setDice(new Dice((i + 1), ColorEnum.RED));
         }
 
 
         for(int i = 0; i < rows; i++)
             for(int j = 0; j < cols; j++)
                 if(!rs.contains(i))
-                    grid[i][j].setDice(new Dice(3, Color.yellow));
+                    grid[i][j].setDice(new Dice(3, ColorEnum.YELLOW));
 
         assertEquals(value * numRows, score.calcScore(value, grid));
     }
@@ -74,14 +75,14 @@ class ColRowScoreTest {
 
         for(int n = 0; n < numCols; n++) {
             for (int i = 0; i < rows; i++)
-                grid[i][cs.get(n)].setDice(new Dice((i + 1), Color.red));
+                grid[i][cs.get(n)].setDice(new Dice((i + 1), ColorEnum.RED));
         }
 
 
         for(int i = 0; i < rows; i++)
             for(int j = 0; j < cols; j++)
                 if(!cs.contains(j))
-                    grid[i][j].setDice(new Dice(3, Color.yellow));
+                    grid[i][j].setDice(new Dice(3, ColorEnum.YELLOW));
 
         assertEquals(value * numCols, score.calcScore(value, grid));
     }
@@ -91,7 +92,7 @@ class ColRowScoreTest {
     void calcScoreRowColorNonZero() {
         ColRowScore score = new ColRowScore("row", "color");
 
-        Color[] arr = {Color.red, Color.magenta, Color.yellow, Color.blue, Color.green};
+        ColorEnum[] arr = {ColorEnum.RED, ColorEnum.PURPLE, ColorEnum.YELLOW, ColorEnum.BLUE, ColorEnum.GREEN};
 
         int numRows = new Random().nextInt(rows) + 1;
         ArrayList<Integer> rs = new ArrayList<>();
@@ -110,7 +111,7 @@ class ColRowScoreTest {
         for(int i = 1; i < rows; i++)
             for(int j = 0; j < cols; j++)
                 if(!rs.contains(i))
-                    grid[i][j].setDice(new Dice(3, Color.yellow));
+                    grid[i][j].setDice(new Dice(3, ColorEnum.YELLOW));
 
         assertEquals(value * numRows, score.calcScore(value, grid));
     }
@@ -119,7 +120,7 @@ class ColRowScoreTest {
     void calcScoreColColorNonZero() {
         ColRowScore score = new ColRowScore("col", "color");
 
-        Color[] arr = {Color.red, Color.magenta, Color.yellow, Color.blue, Color.green};
+        ColorEnum[] arr = {ColorEnum.RED, ColorEnum.PURPLE, ColorEnum.YELLOW, ColorEnum.BLUE, ColorEnum.GREEN};
 
         int numCols = new Random().nextInt(cols) + 1;
         ArrayList<Integer> cs = new ArrayList<>();
@@ -137,7 +138,7 @@ class ColRowScoreTest {
         for(int i = 0; i < rows; i++)
             for(int j = 0; j < cols; j++)
                 if(!cs.contains(j))
-                    grid[i][j].setDice(new Dice(3, Color.yellow));
+                    grid[i][j].setDice(new Dice(3, ColorEnum.YELLOW));
 
         assertEquals(value * numCols, score.calcScore(value, grid));
 
@@ -156,7 +157,7 @@ class ColRowScoreTest {
 
                 for (int i = 0; i < rows; i++)
                     for (int j = 0; j < cols; j++)
-                        grid[i][j].setDice(new Dice(3, Color.yellow));
+                        grid[i][j].setDice(new Dice(3, ColorEnum.YELLOW));
 
                 if (score.calcScore(value, grid) == 0)
                     allZero = true;

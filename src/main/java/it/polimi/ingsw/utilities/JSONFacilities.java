@@ -1,5 +1,6 @@
 package it.polimi.ingsw.utilities;
 
+import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.model.Dice;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -25,15 +26,12 @@ public class JSONFacilities {
 
         //oggetto dado e valori associati
         JSONObject dice = obj.getJSONObject("dice");
-        int value = dice.getInt("value");
-        //il campo colore è memoriazzato in rgb
-        JSONObject rgb = dice.getJSONObject("color");
-        int r = rgb.getInt("r");
-        int g = rgb.getInt("g");
-        int b = rgb.getInt("b");
-        Color c = new Color(r, g, b);
 
-        return new Move(new Pair(x, y), new Dice(value, c), player);
+        int value = dice.getInt("value");
+        ColorEnum col  = (ColorEnum) dice.get("col");
+
+
+        return new Move(new Pair(x, y), new Dice(value, col), player);
     }
 
     public static JSONObject encodeMove(Move m) throws JSONException {
@@ -46,11 +44,7 @@ public class JSONFacilities {
 
         JSONObject dice = new JSONObject();
         dice.put("value", 3);
-        JSONObject rgb = new JSONObject();
-        rgb.put("r", m.getDice().getColor().getRed());
-        rgb.put("g", m.getDice().getColor().getGreen());
-        rgb.put("b", m.getDice().getColor().getBlue());
-        dice.put("color", rgb);
+        dice.put("color",  m.getDice().getColor());
 
         move.put("pair", pair);
         move.put("dice", dice);

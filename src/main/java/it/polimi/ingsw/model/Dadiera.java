@@ -90,7 +90,7 @@ public class Dadiera
     {
         Pair[] arr = new Pair[listaDadi.size()];
         for (int i = 0; i < listaDadi.size() ; i++)
-            arr[i] = new Pair(listaDadi.get(i).getValue(),listaDadi.get(i).getColorEnum());
+            arr[i] = new Pair(listaDadi.get(i).getValue(),listaDadi.get(i).getColor());
         return arr;
     }
 

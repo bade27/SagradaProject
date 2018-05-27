@@ -92,8 +92,8 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
 
     @Override
     public boolean makeMove(Move move) throws RemoteException {
-        /*adapter.testMove("moved die" + move.getP().getValue() + ", " + move.getP().getColor().toString()
-                + " in position " + move.getI() + " ," + move.getJ());*/
+        adapter.testMove("moved die" + move.getP().getValue() + ", " + move.getP().getColor().toString()
+                + " in position " + move.getI() + " ," + move.getJ());
         try {
             adapter.addDiceToBoard(move.getI(),move.getJ(),new Dice(move.getP().getValue(),move.getP().getColor()));
         }

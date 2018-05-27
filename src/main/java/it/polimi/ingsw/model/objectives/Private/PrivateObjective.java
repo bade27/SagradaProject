@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.objectives.Private;
 
+import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.model.Window;
 import it.polimi.ingsw.model.Cell;
 
@@ -41,7 +42,7 @@ public class PrivateObjective {
      */
     public int calcolaPunteggio(Window vetrata) {
         Cell[][] grid = vetrata.getGrid();
-        Color current_color = null;
+        ColorEnum current_color = null;
         int total = 0;
         for(int i = 0; i < grid.length; i++)
             for(int j = 0; j < grid[0].length; j++) {

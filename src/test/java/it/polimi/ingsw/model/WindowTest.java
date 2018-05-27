@@ -52,10 +52,10 @@ class WindowTest
     void firstDiceCheck()
     {
         //Check first die position
-        IllegalDiceException e1 = assertThrows(IllegalDiceException.class, () -> { w.addDice(2, 3, new Dice(3, Color.RED), 0); });
+        IllegalDiceException e1 = assertThrows(IllegalDiceException.class, () -> { w.addDice(2, 3, new Dice(3, ColorEnum.RED), 0); });
         assertEquals(e1.getMessage(), "First die not placed on edge");
         try {
-            w.addDice(0, 3, new Dice(3, Color.RED), 0);
+            w.addDice(0, 3, new Dice(3, ColorEnum.RED), 0);
         }
         catch (IllegalDiceException e) {
             throw new Error(e.getMessage(), e);
@@ -66,9 +66,9 @@ class WindowTest
     void positionOutOfBoundCheck ()
     {
         //Check position index
-        IllegalDiceException e1 = assertThrows(IllegalDiceException.class, () -> { w.addDice(4, 4, new Dice(3, Color.RED), 0); });
+        IllegalDiceException e1 = assertThrows(IllegalDiceException.class, () -> { w.addDice(4, 4, new Dice(3, ColorEnum.RED), 0); });
         assertEquals(e1.getMessage(), "Position out of bound");
-        IllegalDiceException e2 = assertThrows(IllegalDiceException.class, () -> { w.addDice(3, 5, new Dice(3, Color.RED), 0); });
+        IllegalDiceException e2 = assertThrows(IllegalDiceException.class, () -> { w.addDice(3, 5, new Dice(3, ColorEnum.RED), 0); });
         assertEquals(e2.getMessage(), "Position out of bound");
     }
 
@@ -84,19 +84,19 @@ class WindowTest
         firstDiceCheck();
         //System.out.println(w.toString());
         //Check overlapped die
-        IllegalDiceException e1 = assertThrows(IllegalDiceException.class, () -> { w.addDice(0, 3, new Dice(2, Color.GREEN), 0); });
+        IllegalDiceException e1 = assertThrows(IllegalDiceException.class, () -> { w.addDice(0, 3, new Dice(2, ColorEnum.GREEN), 0); });
         assertEquals(e1.getMessage(), "Die placed on another one");
 
         //Check positioning
-        IllegalDiceException e2 = assertThrows(IllegalDiceException.class, () -> { w.addDice(0, 4, new Dice(3, Color.GREEN), 0); });
+        IllegalDiceException e2 = assertThrows(IllegalDiceException.class, () -> { w.addDice(0, 4, new Dice(3, ColorEnum.GREEN), 0); });
         assertEquals(e2.getMessage(), "Die not placed near a compatible one");
 
         //Check positioning
-        IllegalDiceException e3 = assertThrows(IllegalDiceException.class, () -> { w.addDice(0, 4, new Dice(4, Color.RED), 0); });
+        IllegalDiceException e3 = assertThrows(IllegalDiceException.class, () -> { w.addDice(0, 4, new Dice(4, ColorEnum.RED), 0); });
         assertEquals(e3.getMessage(), "Die not placed near a compatible one");
 
         //Check Placement compatible
-        IllegalDiceException e4 = assertThrows(IllegalDiceException.class, () -> { w.addDice(0, 4, new Dice(4, Color.GREEN), 0); });
+        IllegalDiceException e4 = assertThrows(IllegalDiceException.class, () -> { w.addDice(0, 4, new Dice(4, ColorEnum.GREEN), 0); });
         assertEquals(e4.getMessage(), "Die not placed on compatible cell");
     }
 
@@ -106,8 +106,8 @@ class WindowTest
         placmentCheck();
         try {
             //Diagonal positioning accepted
-            w.addDice(1,2,new Dice (5, Color.RED),0);
-            w.addDice(1,4,new Dice (4, Color.RED),0);
+            w.addDice(1,2,new Dice (5, ColorEnum.RED),0);
+            w.addDice(1,4,new Dice (4, ColorEnum.RED),0);
             /*
                 p:0-Yellow | p:0-Blue   | p:0-n/d    | D:3-Red    | p:1-n/d    |
                 p:0-Green  | p:0-n/d    | D:5-Red    | p:0-n/d    | D:4-Red    |
@@ -120,16 +120,16 @@ class WindowTest
         }
 
         //Vertical/Horizontal positioning not accepted
-        IllegalDiceException e1 = assertThrows(IllegalDiceException.class, () -> { w.addDice(1, 3, new Dice(5, Color.GREEN), 0); });
+        IllegalDiceException e1 = assertThrows(IllegalDiceException.class, () -> { w.addDice(1, 3, new Dice(5, ColorEnum.GREEN), 0); });
         assertEquals(e1.getMessage(), "Die not placed near a compatible one");
 
-        IllegalDiceException e2 = assertThrows(IllegalDiceException.class, () -> { w.addDice(1, 3, new Dice(2, Color.RED), 0); });
+        IllegalDiceException e2 = assertThrows(IllegalDiceException.class, () -> { w.addDice(1, 3, new Dice(2, ColorEnum.RED), 0); });
         assertEquals(e2.getMessage(), "Die not placed near a compatible one");
 
         try {
             //Vertical/Horizontal positioning accepted
-            w.addDice(1,3,new Dice (2, Color.GREEN),0);
-            w.addDice(2,3,new Dice (3, Color.BLUE),0);
+            w.addDice(1,3,new Dice (2, ColorEnum.GREEN),0);
+            w.addDice(2,3,new Dice (3, ColorEnum.BLUE),0);
 
             /*
                 p:0-Yellow | p:0-Blue   | p:0-n/d    | D:3-Red    | p:1-n/d    |
@@ -139,9 +139,9 @@ class WindowTest
              */
 
             //Massive positioning accepted
-            w.addDice(0,4,new Dice (1, Color.BLUE),0);
-            w.addDice(2,4,new Dice (5, Color.GREEN),0);
-            w.addDice(3,4,new Dice (1, Color.YELLOW),0);
+            w.addDice(0,4,new Dice (1, ColorEnum.BLUE),0);
+            w.addDice(2,4,new Dice (5, ColorEnum.GREEN),0);
+            w.addDice(3,4,new Dice (1, ColorEnum.YELLOW),0);
 
             /*
                 p:0-Yellow | p:0-Blue   | p:0-n/d    | D:3-Red    | D:1-Blue   |
@@ -150,12 +150,12 @@ class WindowTest
                 p:2-n/d    | p:0-n/d    | p:0-n/d    | p:0-Blue   | D:1-Yellow |
              */
 
-            w.addDice(0,2,new Dice (1, Color.YELLOW),0);
-            w.addDice(3,2,new Dice (3, Color.BLUE),0);
-            w.addDice(0,1,new Dice (3, Color.BLUE),0);
-            w.addDice(1,1,new Dice (6, Color.GREEN),0);
-            w.addDice(2,1,new Dice (4, Color.YELLOW),0);
-            w.addDice(3,1,new Dice (2, Color.GREEN),0);
+            w.addDice(0,2,new Dice (1, ColorEnum.YELLOW),0);
+            w.addDice(3,2,new Dice (3, ColorEnum.BLUE),0);
+            w.addDice(0,1,new Dice (3, ColorEnum.BLUE),0);
+            w.addDice(1,1,new Dice (6, ColorEnum.GREEN),0);
+            w.addDice(2,1,new Dice (4, ColorEnum.YELLOW),0);
+            w.addDice(3,1,new Dice (2, ColorEnum.GREEN),0);
 
             /*
                 p:0-Yellow | D:3-Blue   | D:1-Yellow | D:3-Red    | D:1-Blue   |
@@ -164,8 +164,8 @@ class WindowTest
                 p:2-n/d    | D:2-Green  | D:3-Blue   | p:0-Blue   | D:1-Yellow |
              */
 
-            w.addDice(0,0,new Dice (1, Color.YELLOW),0);
-            w.addDice(2,0,new Dice (3, Color.MAGENTA),0);
+            w.addDice(0,0,new Dice (1, ColorEnum.YELLOW),0);
+            w.addDice(2,0,new Dice (3, ColorEnum.PURPLE),0);
         }
 
         /*
@@ -180,16 +180,16 @@ class WindowTest
 
         //Dice not possible to place cause restriction: 3,3 2,2 1,0 3,0
 
-        //Color Restriction (3,3):
-        IllegalDiceException e3 = assertThrows(IllegalDiceException.class, () -> { w.addDice(3, 3, new Dice(2, Color.BLUE), 0); });
+        //ColorEnum Restriction (3,3):
+        IllegalDiceException e3 = assertThrows(IllegalDiceException.class, () -> { w.addDice(3, 3, new Dice(2, ColorEnum.BLUE), 0); });
         assertEquals(e3.getMessage(), "Die not placed near a compatible one");
-        IllegalDiceException e4 = assertThrows(IllegalDiceException.class, () -> { w.addDice(3, 3, new Dice(2, Color.MAGENTA), 0); });
+        IllegalDiceException e4 = assertThrows(IllegalDiceException.class, () -> { w.addDice(3, 3, new Dice(2, ColorEnum.PURPLE), 0); });
         assertEquals(e4.getMessage(), "Die not placed on compatible cell");
 
         //Number Restriction (3,0):
-        IllegalDiceException e5 = assertThrows(IllegalDiceException.class, () -> { w.addDice(3, 0, new Dice(2, Color.BLUE), 0); });
+        IllegalDiceException e5 = assertThrows(IllegalDiceException.class, () -> { w.addDice(3, 0, new Dice(2, ColorEnum.BLUE), 0); });
         assertEquals(e5.getMessage(), "Die not placed near a compatible one");
-        IllegalDiceException e6 = assertThrows(IllegalDiceException.class, () -> { w.addDice(3, 0, new Dice(5, Color.RED), 0); });
+        IllegalDiceException e6 = assertThrows(IllegalDiceException.class, () -> { w.addDice(3, 0, new Dice(5, ColorEnum.RED), 0); });
         assertEquals(e6.getMessage(), "Die not placed on compatible cell");
     }
 
@@ -202,22 +202,22 @@ class WindowTest
         Random col = new Random();
         Random num = new Random();
         int number = num.nextInt(6) + 1;
-        Color color = null;
+        ColorEnum color = null;
         switch (col.nextInt(5)) {
             case 0:
-                color = Color.red;
+                color = ColorEnum.RED;
                 break;
             case 1:
-                color = Color.green;
+                color = ColorEnum.GREEN;
                 break;
             case 2:
-                color = Color.blue;
+                color = ColorEnum.BLUE;
                 break;
             case 3:
-                color = Color.yellow;
+                color = ColorEnum.YELLOW;
                 break;
             case 4:
-                color = Color.magenta;
+                color = ColorEnum.PURPLE;
                 break;
 
             default:
@@ -250,11 +250,11 @@ class WindowTest
     {
         placmentCheck();
 
-        //Control type 2 (Control to placement Color)
+        //Control type 2 (Control to placement ColorEnum)
         try {
             //Control type 2 accepted
-            w.addDice(0,4,new Dice (5, Color.BLUE),2);
-            w.addDice(1,4,new Dice (6, Color.GREEN),2);
+            w.addDice(0,4,new Dice (5, ColorEnum.BLUE),2);
+            w.addDice(1,4,new Dice (6, ColorEnum.GREEN),2);
 
             /*
              p:0-Yellow | p:0-Blue   | p:0-n/d    | D:3-Red    | D:5-Blue   |
@@ -268,19 +268,19 @@ class WindowTest
         }
         //System.out.println(w.toString());
         //Control type 2 rejected
-        IllegalDiceException e1 = assertThrows(IllegalDiceException.class, () -> { w.addDice(2, 4, new Dice(5, Color.RED), 2); });
+        IllegalDiceException e1 = assertThrows(IllegalDiceException.class, () -> { w.addDice(2, 4, new Dice(5, ColorEnum.RED), 2); });
         assertEquals(e1.getMessage(), "Die not placed on compatible cell");
-        IllegalDiceException e3 = assertThrows(IllegalDiceException.class, () -> { w.addDice(1, 3, new Dice(5, Color.RED), 2); });
+        IllegalDiceException e3 = assertThrows(IllegalDiceException.class, () -> { w.addDice(1, 3, new Dice(5, ColorEnum.RED), 2); });
         assertEquals(e3.getMessage(), "Die not placed near a compatible one");
-        IllegalDiceException e2 = assertThrows(IllegalDiceException.class, () -> { w.addDice(2, 0, new Dice(5, Color.RED), 2); });
+        IllegalDiceException e2 = assertThrows(IllegalDiceException.class, () -> { w.addDice(2, 0, new Dice(5, ColorEnum.RED), 2); });
         assertEquals(e2.getMessage(), "Die not placed near a compatible one");
 
         //Control type 1 (Control to placement Value)
         try {
             //Control type 1 accepted
-            w.addDice(2,4,new Dice (5, Color.RED),1);
-            w.addDice(2,3,new Dice (6, Color.GREEN),1);
-            w.addDice(3,4,new Dice (3, Color.BLUE),1);
+            w.addDice(2,4,new Dice (5, ColorEnum.RED),1);
+            w.addDice(2,3,new Dice (6, ColorEnum.GREEN),1);
+            w.addDice(3,4,new Dice (3, ColorEnum.BLUE),1);
             /*
               p:0-Yellow | p:0-Blue   | p:0-n/d    | D:3-Red    | D:5-Blue   |
               p:0-Green  | p:0-n/d    | p:5-n/d    | p:0-n/d    | D:6-Green  |
@@ -293,19 +293,19 @@ class WindowTest
         }
         //System.out.println(w.toString());
         //Control type 1 rejected
-        IllegalDiceException e4 = assertThrows(IllegalDiceException.class, () -> { w.addDice(1, 2, new Dice(3, Color.RED), 1); });
+        IllegalDiceException e4 = assertThrows(IllegalDiceException.class, () -> { w.addDice(1, 2, new Dice(3, ColorEnum.RED), 1); });
         assertEquals(e4.getMessage(), "Die not placed on compatible cell");
-        IllegalDiceException e5 = assertThrows(IllegalDiceException.class, () -> { w.addDice(0, 2, new Dice(5, Color.RED), 1); });
+        IllegalDiceException e5 = assertThrows(IllegalDiceException.class, () -> { w.addDice(0, 2, new Dice(5, ColorEnum.RED), 1); });
         assertEquals(e5.getMessage(), "Die not placed near a compatible one");
-        IllegalDiceException e6 = assertThrows(IllegalDiceException.class, () -> { w.addDice(2, 0, new Dice(3, Color.RED), 1); });
+        IllegalDiceException e6 = assertThrows(IllegalDiceException.class, () -> { w.addDice(2, 0, new Dice(3, ColorEnum.RED), 1); });
         assertEquals(e6.getMessage(), "Die not placed near a compatible one");
 
         //Control type 3 (Control to no near die)
         try {
             //Control type 3 accepted
-            w.addDice(3,1,new Dice (3, Color.RED),3);
-            w.addDice(2,0,new Dice (3, Color.GREEN),3);
-            w.addDice(0,2,new Dice (4, Color.BLUE),3);
+            w.addDice(3,1,new Dice (3, ColorEnum.RED),3);
+            w.addDice(2,0,new Dice (3, ColorEnum.GREEN),3);
+            w.addDice(0,2,new Dice (4, ColorEnum.BLUE),3);
             /*
                p:0-Yellow | p:0-Blue   | D:4-Blue   | D:3-Red    | D:5-Blue   |
                p:0-Green  | p:0-n/d    | p:5-n/d    | p:0-n/d    | D:6-Green  |
@@ -318,11 +318,11 @@ class WindowTest
         }
         //System.out.println(w.toString());
         //Control type 3 rejected
-        IllegalDiceException e7 = assertThrows(IllegalDiceException.class, () -> { w.addDice(0, 0, new Dice(3, Color.RED), 3); });
+        IllegalDiceException e7 = assertThrows(IllegalDiceException.class, () -> { w.addDice(0, 0, new Dice(3, ColorEnum.RED), 3); });
         assertEquals(e7.getMessage(), "Die not placed on compatible cell");
-        IllegalDiceException e8 = assertThrows(IllegalDiceException.class, () -> { w.addDice(2, 1, new Dice(5, Color.GREEN), 3); });
+        IllegalDiceException e8 = assertThrows(IllegalDiceException.class, () -> { w.addDice(2, 1, new Dice(5, ColorEnum.GREEN), 3); });
         assertEquals(e8.getMessage(), "Die not placed near a compatible one");
-        IllegalDiceException e9 = assertThrows(IllegalDiceException.class, () -> { w.addDice(3, 2, new Dice(3, Color.RED), 3); });
+        IllegalDiceException e9 = assertThrows(IllegalDiceException.class, () -> { w.addDice(3, 2, new Dice(3, ColorEnum.RED), 3); });
         assertEquals(e9.getMessage(), "Die not placed near a compatible one");
     }
 }
