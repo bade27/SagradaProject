@@ -24,6 +24,9 @@ public class Pair implements Serializable {
 
     @Override
     public String toString() {
-        return "Value: " + value + " Color: " + color ;
+        if (value != 0 && color != null)
+            return "D:"+ value + "-" + color ;
+        else
+            return "p:"+ value + "-" + color ;
     }
 }

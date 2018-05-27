@@ -50,6 +50,7 @@ public class ServerModelAdapter
     {
         try {
             board.addDice(i,j,d,0);
+            //System.out.println(board.toString());
         }
         catch (IllegalDiceException ex) {
             throw new ModelException("Impossible to place dice: " + ex.getMessage());

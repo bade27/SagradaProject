@@ -251,6 +251,6 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     }
 
     public synchronized void setMoveIJ(int i, int j) {
-        this.move.setIJ(i, j);
-    }
+        this.move.setIJ(j, i);
+    }//C'è qualcosa che non va
 }

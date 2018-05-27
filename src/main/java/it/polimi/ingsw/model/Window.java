@@ -187,9 +187,9 @@ public class Window
             for (int j = 0; j < cols; j++)
             {
                 if (board[i][j].getFrontDice() == null)
-                    ret = ret + " p:" + board[i][j].getPlacement().getValue() + "-" + board[i][j].getPlacement().getColor() + "|";
+                    ret = ret + " p:" + board[i][j].getPlacement().getValue() + "-" + board[i][j].getPlacement().getColor() + "\t|\t";
                 else
-                    ret = ret + " D:" + board[i][j].getFrontDice().getValue() + "-" + board[i][j].getFrontDice().getColor() + "|";
+                    ret = ret + " D:" + board[i][j].getFrontDice().getValue() + "-" + board[i][j].getFrontDice().getColor() + "\t|\t";
             }
 
             ret = ret + "\n";
