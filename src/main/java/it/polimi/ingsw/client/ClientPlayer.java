@@ -201,23 +201,13 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     }
     //</editor-fold>
 
+
     public String doTurn ()
     {
         clearMove();
-        System.out.println("Your turn:");
+        System.out.println("\nYour turn:");
         graph.setEnableBoard(true);
         return "ok";
-    }
-
-    public void sendMove (String s)
-    {
-        try
-        {
-            server.responseTurn(s);
-        }catch (RemoteException e){
-            System.out.println("Impossible to send move");
-        }
-
     }
 
     public synchronized void myMove() {
@@ -230,10 +220,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
         if(finishedMove) {
             try {
-                if (server.makeMove(move))
-                    System.out.println("Move ok");
-                else
-                    System.out.println("Move not ok");
+                System.out.println(server.makeMove(move));
                 graph.setEnableBoard(false);
             } catch (RemoteException e) {
                 e.printStackTrace();
@@ -251,6 +238,6 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     }
 
     public synchronized void setMoveIJ(int i, int j) {
-        this.move.setIJ(j, i);
-    }//C'è qualcosa che non va
+        this.move.setIJ(j, i);//C'è qualcosa che non va (invertire i e j ma così è giusto)
+    }
 }

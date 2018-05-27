@@ -82,27 +82,18 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
         player.setCommunicator(this);
     }
 
-    @Override
-    public void responseTurn (String s)
-    {
-        adapter.testMove(s);
-        notifyServer();
-    }
-
 
     @Override
-    public boolean makeMove(Move move) throws RemoteException {
-        adapter.testMove("moved die" + move.getP().getValue() + ", " + move.getP().getColor()
-                + " in position " + move.getI() + " ," + move.getJ());
+    public String makeMove(Move move) throws RemoteException {
         try {
             adapter.addDiceToBoard(move.getI(),move.getJ(),new Dice(move.getP().getValue(),move.getP().getColor()));
         }
         catch (ModelException e) {
             notifyServer();
-            return false;
+            return e.getMessage();
         }
         notifyServer();
-        return true;
+        return "Move ok";
     }
     //</editor-fold>
 

@@ -67,10 +67,6 @@ public class ServerModelAdapter
         user = s;
     }
 
-    public synchronized void testMove (String s)
-    {
-        System.out.println("User: " + user + "\t" + s);
-    }
 
     public Pair[] getDadieraPair ()
     {

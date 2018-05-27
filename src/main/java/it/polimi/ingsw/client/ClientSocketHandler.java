@@ -170,7 +170,7 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
     }
 
     @Override
-    public boolean makeMove(Move move) throws RemoteException {
-        return false;
+    public String makeMove(Move move) throws RemoteException {
+        return "";
     }
 }
