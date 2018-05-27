@@ -68,7 +68,7 @@ public class Game extends Application implements GUI {
     @Override
     public void updateDadiera(Pair[] p) {
         //Manca l'update della dadiera
-        //dadieraG.updateGraphic(p);
+        dadieraG.updateGraphic(p);
         System.out.println("Dadiera:");
         for(int i = 0; i < p.length ; i++)
             System.out.print(p[i].toString() + "\t|\t");
@@ -78,7 +78,7 @@ public class Game extends Application implements GUI {
     @Override
     public void updateWindow(Pair[][] p) {
         //Manca l'update della dadiera
-        //gridG.updateGrid();
+        gridG.updateGrid();
         System.out.println("Window:");
         for(int i = 0; i < p.length ; i++)
         {

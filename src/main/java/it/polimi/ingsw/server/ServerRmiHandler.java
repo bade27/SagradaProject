@@ -87,6 +87,7 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
     public String makeMove(Move move) throws RemoteException {
         try {
             adapter.addDiceToBoard(move.getI(),move.getJ(),new Dice(move.getP().getValue(),move.getP().getColor()));
+            System.out.println(move.getP().getColor());
         }
         catch (ModelException e) {
             notifyServer();

@@ -2,10 +2,9 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.remoteInterface.Pair;
+import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
-
-import java.util.ArrayList;
 
 public class DadieraGUI extends GridPane {
 
@@ -20,6 +19,7 @@ public class DadieraGUI extends GridPane {
         this.game=game;
         this.pane = pane;
         enable = false;
+        grid = new GridPane();
         initGraphic();
 
         pane.add(grid, 0, 1);
@@ -38,46 +38,51 @@ public class DadieraGUI extends GridPane {
 
     public void updateGraphic(Pair[] p)
     {
-        grid = new GridPane();
-        dimWindows.dim(grid);
-        //p[0] = new Pair(1, ColorEnum.BLUE);
-        for (int i = 0; i < p.length; i++) {
-            Button b = new Button("  ");
-            b.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-            grid.add(b, i, 0);
-            //if (p[i].getValue() != 0)
-            b.setText("" + p[i].getValue());                         //setta numero correttamente
-            b.setStyle("-fx-background-color: " + p[i].getColor());
+        Platform.runLater(() -> {
+            //grid = new GridPane();
+            grid.getChildren().clear();
+            dimWindows.dim(grid);
+            //p[0] = new Pair(1, ColorEnum.BLUE);
+            for (int i = 0; i < p.length; i++) {
+                Button b = new Button("  ");
+                b.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
 
-            b.setOnAction(event -> {
-                if(enable) {
-                    String tok = b.getStyle().split(" ")[1];
-                    int val = Integer.parseInt(b.getText());
-                    ColorEnum color = ColorEnum.WHITE;
-                    switch (tok.toLowerCase()) {
-                        case "red":
-                            color = ColorEnum.RED;
-                            break;
-                        case "green":
-                            color = ColorEnum.GREEN;
-                            break;
-                        case "yellow":
-                            color = ColorEnum.YELLOW;
-                            break;
-                        case "blue":
-                            color = ColorEnum.BLUE;
-                            break;
-                        case "purple":
-                            color = ColorEnum.PURPLE;
-                            break;
-                        default:
-                            break;
+                Pair current = p[i];
+                int k = i;
+
+                    b.setText("" + current.getValue());
+                    b.setStyle("-fx-background-color: " + current.getColor());
+                    b.setOnAction(event -> {
+                    if(enable) {
+                        String tok = b.getStyle().split(" ")[1];
+                        int val = Integer.parseInt(b.getText());
+                        ColorEnum color = ColorEnum.WHITE;
+                        switch (tok.toLowerCase()) {
+                            case "red":
+                                color = ColorEnum.RED;
+                                break;
+                            case "green":
+                                color = ColorEnum.GREEN;
+                                break;
+                            case "yellow":
+                                color = ColorEnum.YELLOW;
+                                break;
+                            case "blue":
+                                color = ColorEnum.BLUE;
+                                break;
+                            case "purple":
+                                color = ColorEnum.PURPLE;
+                                break;
+                            default:
+                                break;
+                        }
+                        game.modPair(new Pair(val, color));
+                        //game.modPair(new Pair(3,ColorEnum.RED));
                     }
-                    //game.modPair(new Pair(val, color));
-                    game.modPair(new Pair(3,ColorEnum.RED));
-                }
-            });
-        }
+                });
+                    grid.add(b, k, 0);
+            }
+        });
     }
 
     public void setEnable(boolean enable) {

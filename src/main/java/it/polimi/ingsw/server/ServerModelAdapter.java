@@ -55,6 +55,7 @@ public class ServerModelAdapter
         catch (IllegalDiceException ex) {
             throw new ModelException("Impossible to place dice: " + ex.getMessage());
         }
+        dadiera.deleteDice(d);
     }
 
     public void setPublicObjectives(String path) throws ModelException
@@ -76,5 +77,9 @@ public class ServerModelAdapter
     public Pair[][] getWindowPair ()
     {
         return board.getPairMatrix();
+    }
+
+    public void setDadiera(Dadiera dadiera) {
+        this.dadiera = dadiera;
     }
 }

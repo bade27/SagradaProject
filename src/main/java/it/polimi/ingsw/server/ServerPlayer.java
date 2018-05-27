@@ -330,7 +330,7 @@ public class ServerPlayer implements Runnable
     {
         String u;
         try{
-            u = stopTask(() -> communicator.doTurn(), PING_TIMEOUT, executor);
+            u = stopTask(() -> communicator.doTurn(), TURN_TIMEOUT, executor);
             if(u == null)
             {
                 log.addLog(" Move timeout expired");
@@ -347,7 +347,7 @@ public class ServerPlayer implements Runnable
     {
         String s;
         try{
-            s = stopTask(() -> communicator.updateGraphic(adapter.getDadieraPair()), PING_TIMEOUT, executor);
+            s = stopTask(() -> communicator.updateGraphic(adapter.getDadieraPair()), INIT_TIMEOUT, executor);
             if(s == null)
             {
                 log.addLog(" Dadiera update timeout expired");
@@ -364,7 +364,7 @@ public class ServerPlayer implements Runnable
     {
         String s;
         try{
-            s = stopTask(() -> communicator.updateGraphic(adapter.getWindowPair()), PING_TIMEOUT, executor);
+            s = stopTask(() -> communicator.updateGraphic(adapter.getWindowPair()), INIT_TIMEOUT, executor);
             if(s == null)
             {
                 log.addLog(" Window update timeout expired");

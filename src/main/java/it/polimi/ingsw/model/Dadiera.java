@@ -1,15 +1,13 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.exceptions.*;
+import it.polimi.ingsw.exceptions.IllegalDiceException;
 import it.polimi.ingsw.remoteInterface.Pair;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class Dadiera
 {
     private ArrayList<Dice> listaDadi;
-    private final Color [] listaColori = {null,Color.red,Color.blue,Color.magenta,Color.yellow,Color.green};
     private DiceBag bag;
 
     /**
