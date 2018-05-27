@@ -13,6 +13,12 @@ public class Dice
         color = c;
     }
 
+    public Dice (int v,ColorEnum c)
+    {
+        value = v;
+        color = Color.white;
+    }
+
     public int getValue ()
     {
         return value;

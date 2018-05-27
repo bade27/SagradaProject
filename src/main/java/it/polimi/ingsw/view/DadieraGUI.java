@@ -5,79 +5,50 @@ import it.polimi.ingsw.remoteInterface.Pair;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 
+import java.util.ArrayList;
+
 public class DadieraGUI extends GridPane {
 
     private GridPane pane;
-    private int numPlayers;
-    private int numOfDice;
     private String colore_dado_tolto;
     private String valore_dado_tolto;
     private GridPane grid;
-    private Pair[] pair;
     private Game game;
     private boolean enable;
 
     public DadieraGUI(GridPane pane, int num,Game game) {
         this.game=game;
         this.pane = pane;
-        numPlayers = num;
         enable = false;
-        numOfDice = numPlayers * 2 + 1;
-        pair = new Pair[numOfDice];
-        for (int i = 0; i < pair.length; i++)
-            pair[i] = new Pair(0, ColorEnum.WHITE);
-        updateGraphic(pair);
-        /*for (int i = 0; i < numOfDice; i++) {
-            Button b = new Button("  ");
-            b.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-            grid.add(b, i, 0);
-            if(pair[i].getValue() != 0)
-                b.setText(""+pair[i].getValue());                         //setta numero correttamente
-            b.setStyle("-fx-background-color: " + pair[i].getColor());
-            b.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    if(enable&&colore_dado_tolto==null&&valore_dado_tolto==null) {
-                        colore_dado_tolto = b.getStyle();
-                        valore_dado_tolto = b.getText();
-                        b.setText(null);
-                        b.setStyle(null);
-                    }
-                }
-            });
+        initGraphic();
 
-        }*/
         pane.add(grid, 0, 1);
         dimWindows.dimHeight(grid, 20);
     }
 
-    public String getColDadoTolto() {
-        return colore_dado_tolto;
+
+
+    private void initGraphic ()
+    {
+        Pair [] pair = new Pair[9];
+        for (int i = 0; i < pair.length; i++)
+            pair[i] = new Pair(0, ColorEnum.WHITE);
+        updateGraphic(pair);
     }
 
-    public String getValDadoTolto() {
-        return valore_dado_tolto;
-    }
-
-    public void setColDadoTolto() {
-        colore_dado_tolto = null;
-    }
-
-    public void setValDadoTolto() {
-        valore_dado_tolto = null;
-    }
-
-    public void updateGraphic(Pair[] p) {
+    public void updateGraphic(Pair[] p)
+    {
         grid = new GridPane();
         dimWindows.dim(grid);
-        p[0] = new Pair(1, ColorEnum.BLUE);
+        //p[0] = new Pair(1, ColorEnum.BLUE);
         for (int i = 0; i < p.length; i++) {
             Button b = new Button("  ");
             b.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
             grid.add(b, i, 0);
             //if (p[i].getValue() != 0)
-                b.setText("" + p[i].getValue());                         //setta numero correttamente
+            b.setText("" + p[i].getValue());                         //setta numero correttamente
             b.setStyle("-fx-background-color: " + p[i].getColor());
+
             b.setOnAction(event -> {
                 if(enable) {
                     String tok = b.getStyle().split(" ")[1];
@@ -103,18 +74,8 @@ public class DadieraGUI extends GridPane {
                             break;
                     }
                     game.modPair(new Pair(val, color));
-                    //System.out.println("" + val + tok);
                 }
             });
-            /*//bottone di prova
-            Button bprova=new Button("P");
-            grid.add(bprova,numOfDice,0);
-            bprova.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent event) {
-                    setta_dadiera();
-                }
-            });*/
         }
     }
 
@@ -156,4 +117,52 @@ public class DadieraGUI extends GridPane {
 
         }
     }*/
+    public String getColDadoTolto() {
+        return colore_dado_tolto;
+    }
+
+    public String getValDadoTolto() {
+        return valore_dado_tolto;
+    }
+
+    public void setColDadoTolto() {
+        colore_dado_tolto = null;
+    }
+
+    public void setValDadoTolto() {
+        valore_dado_tolto = null;
+    }
 }
+
+
+/*for (int i = 0; i < numOfDice; i++) {
+            Button b = new Button("  ");
+            b.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+            grid.add(b, i, 0);
+            if(pair[i].getValue() != 0)
+                b.setText(""+pair[i].getValue());                         //setta numero correttamente
+            b.setStyle("-fx-background-color: " + pair[i].getColor());
+            b.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    if(enable&&colore_dado_tolto==null&&valore_dado_tolto==null) {
+                        colore_dado_tolto = b.getStyle();
+                        valore_dado_tolto = b.getText();
+                        b.setText(null);
+                        b.setStyle(null);
+                    }
+                }
+            });
+
+        }*/
+
+
+            /*//bottone di prova
+            Button bprova=new Button("P");
+            grid.add(bprova,numOfDice,0);
+            bprova.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    setta_dadiera();
+                }
+            });*/

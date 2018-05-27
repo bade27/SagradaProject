@@ -230,7 +230,10 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
         if(finishedMove) {
             try {
-                server.makeMove(move);
+                if (server.makeMove(move))
+                    System.out.println("Move ok");
+                else
+                    System.out.print("Move not ok");
                 graph.setEnableBoard(false);
             } catch (RemoteException e) {
                 e.printStackTrace();
