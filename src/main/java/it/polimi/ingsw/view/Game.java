@@ -1,7 +1,6 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.GUI;
-import it.polimi.ingsw.client.ClientModelAdapter;
 import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.remoteInterface.Pair;
 import javafx.application.Application;

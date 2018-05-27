@@ -9,7 +9,7 @@
     </socket>
 
     <rmi>
-        <hostName>127.0.0.1</hostName>
+        <hostName>192.168.1.5</hostName>
         <registryPort>5000</registryPort>
         <stubPort>9000</stubPort>
     </rmi>
