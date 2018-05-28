@@ -48,7 +48,7 @@ public class Game extends Application implements GUI {
     public void start(Stage primaryStage) {
         GridPane root = new GridPane();
         dadieraG = new DadieraGUI(root, num, this);
-        gridG = new GridGUI(root, dadieraG,this);
+        gridG = new GridGUI(root,this);
         Scene scene = new Scene(root, 400, 400);
         primaryStage.setTitle("Sagrada");
         primaryStage.setScene(scene);
@@ -78,7 +78,7 @@ public class Game extends Application implements GUI {
     @Override
     public void updateWindow(Pair[][] p) {
         //Manca l'update della dadiera
-        gridG.updateGrid();
+        //gridG.updateGrid(p);
         System.out.println("Window:");
         for(int i = 0; i < p.length ; i++)
         {

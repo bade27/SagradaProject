@@ -134,14 +134,6 @@ public class ServerPlayer implements Runnable
             {
                 try
                 {
-                    while (!token.isGameStarted()) {
-                        token.wait();
-                        //token.notifyAll();
-                    }
-
-                    updateDadiera();
-                    updateWindow();
-
                     //Wait his turn
                     while (!token.isMyTurn(user))
                         token.wait();
@@ -173,8 +165,7 @@ public class ServerPlayer implements Runnable
                         adapter.wait();
                     }
 
-                    updateDadiera();
-                    updateWindow();
+                    updateClient();
                     token.notifyAll();
                     token.wait();
                 }
@@ -424,6 +415,16 @@ public class ServerPlayer implements Runnable
             log.addLog("Impossible to communicate to client (" + user + ") cause closed connection");
         }
 
+    }
+
+    public void updateClient ()
+    {
+        try{
+            updateDadiera();
+            updateWindow();
+        }catch (Exception e){
+            log.addLog("Impossible to update client");
+        }
     }
     //</editor-fold>
 

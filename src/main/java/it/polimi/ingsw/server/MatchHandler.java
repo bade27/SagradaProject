@@ -42,8 +42,12 @@ public class MatchHandler implements Runnable
         log.addLog("Game Phase started");
         //clientConnectionUpdateMessage("playing");
         dices.mix(tok.getNumPlayers());
-        tok.setGameStarted(true);
+        //tok.setGameStarted(true);
         log.addLog("Dadiera Mixed");
+
+        for (int i = 0; i < player.size() ; i++)
+            player.get(i).updateClient();
+
         while (true)
         {
             synchronized (tok)
@@ -56,7 +60,8 @@ public class MatchHandler implements Runnable
                     dices.mix(tok.getNumPlayers());
                     System.out.println(">>>Dadiera Mixed");
                     log.addLog("Dadiera Mixed");
-                    //tok.setGameStarted(false);
+                    for (int i = 0; i < player.size() ; i++)
+                        player.get(i).updateClient();
                 }
                 tok.nextTurn();
                 tok.notifyAll();
@@ -324,6 +329,7 @@ public class MatchHandler implements Runnable
                 while (tok.getOnSetup())
                     tok.wait();
                 log.addLog("Setup Phase ended");
+
             }
             catch (InterruptedException ex) {
                 log.addLog("" , ex.getStackTrace());
