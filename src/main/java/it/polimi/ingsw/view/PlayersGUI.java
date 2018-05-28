@@ -1,10 +1,11 @@
 package it.polimi.ingsw.view;
 
-import com.sun.javafx.scene.control.skin.LabeledImpl;
 import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.remoteInterface.Pair;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.GridPane;
 
 
 public class PlayersGUI extends GridPane {
@@ -31,23 +32,27 @@ public class PlayersGUI extends GridPane {
             }
             updateGraphic(pair, k);
         }
+        giocatori.setAlignment(Pos.CENTER);
         root.add(giocatori, 0, 2);
     }
 
     public void updateGraphic(Pair[][] pair,int index) {
 
         GridPane griglia = new GridPane();            //griglia
-
+        griglia.setDisable(true);
         for (int j = 0; j < 4; j++) {
             for (int i = 0; i < 5; i++) {
-                Label l = new Label();
+                //Label l = new Label();
+                Button l=new Button();
                 griglia.add(l, i, j);
                 l.setText("" + pair[i][j].getValue());
                 l.setStyle("-fx-background-color: " + pair[i][j].getColor());
                 griglia.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
             }
         }
+        griglia.setAlignment(Pos.CENTER);
         singolo_giocatore.add(griglia, 0, 1);
+        singolo_giocatore.setAlignment(Pos.CENTER);
         giocatori.add(singolo_giocatore,index,0);
     }
 

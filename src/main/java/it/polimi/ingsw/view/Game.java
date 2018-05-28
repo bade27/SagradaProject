@@ -5,7 +5,7 @@ import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.remoteInterface.Pair;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 import java.rmi.RemoteException;
@@ -63,9 +63,9 @@ public class Game extends Application implements GUI {
         plaG= new PlayersGUI(root,this);
 
         msgb = new MessageBox("wellcome");
-        root.add(msgb, 0, 4);
+        root.add(msgb, 0, 3);
 
-        Scene scene = new Scene(root, 500, 400);
+        Scene scene = new Scene(root, 600, 400);
         primaryStage.setTitle("Sagrada");
         primaryStage.setScene(scene);
         dimWindows.dim(root);
