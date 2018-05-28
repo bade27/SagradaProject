@@ -16,6 +16,7 @@ public class Game extends Application implements GUI {
 
     private DadieraGUI dadieraG;
     private GridGUI gridG;
+    private PlayersGUI plaG;
 
     private int num=4;
     private ClientPlayer clientPlayer;
@@ -49,7 +50,7 @@ public class Game extends Application implements GUI {
         GridPane root = new GridPane();
         dadieraG = new DadieraGUI(root, num, this);
         gridG = new GridGUI(root,this);
-        dimWindows.dim(gridG);
+        plaG= new PlayersGUI(root,this);
         Scene scene = new Scene(root, 400, 400);
         primaryStage.setTitle("Sagrada");
         primaryStage.setScene(scene);
