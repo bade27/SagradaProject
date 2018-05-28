@@ -175,7 +175,18 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     }
     //</editor-fold>
 
-
+    public void updateOpponents(Pair[][]... grids) {
+        for(int k = 0; k < grids.length; k++){
+            System.out.println("opponent " + (k + 1) );
+            Pair[][] p = grids[k];
+            for(int i = 0; i < p.length ; i++)
+            {
+                for (int j = 0; j<p[i].length ;j++)
+                    System.out.print(p[i][j].toString() + "\t|\t");
+                System.out.println();
+            }
+        }
+    }
 
     //<editor-fold desc="Utilities">
     /**

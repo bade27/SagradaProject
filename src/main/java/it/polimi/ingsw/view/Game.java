@@ -60,11 +60,10 @@ public class Game extends Application implements GUI {
         dimWindows.dim(gridG);
         //root.add(gridG,0,2);
 
-        msgb = new MessageBox("wellcome");
-        root.add(msgb, 0, 3);
-
-
         plaG= new PlayersGUI(root,this);
+
+        msgb = new MessageBox("wellcome");
+        root.add(msgb, 0, 4);
 
         Scene scene = new Scene(root, 500, 400);
         primaryStage.setTitle("Sagrada");
@@ -82,9 +81,12 @@ public class Game extends Application implements GUI {
         clientPlayer.setMoveIJ(i,j);
     }
 
+    /**
+     * updates the dice displayed on dadiera
+     * @param p
+     */
     @Override
     public void updateDadiera(Pair[] p) {
-        //Manca l'update della dadiera
         dadieraG.updateGraphic(p);
         /*System.out.println("Dadiera:");
         for(int i = 0; i < p.length ; i++)
@@ -92,25 +94,35 @@ public class Game extends Application implements GUI {
         System.out.println();*/
     }
 
+    /**
+     * updates the dice on the grid
+     * @param p
+     */
     @Override
     public void updateWindow(Pair[][] p) {
-        //Manca l'update della dadiera
-        //gridG.updateGrid(p);
         gridG.updateGrid(p);
-        System.out.println("Window:");
+        /*System.out.println("Window:");
         for(int i = 0; i < p.length ; i++)
         {
             for (int j = 0; j<p[i].length ;j++)
                 System.out.print(p[i][j].toString() + "\t|\t");
             System.out.println();
-        }
+        }*/
     }
 
 
+    /**
+     * displays the message relative to the status of the move
+     * @param msg
+     */
     public void updateMessage(String msg) {
         msgb.updateGraphic(msg);
     }
 
+    /**
+     * enables or disables the board
+     * @param enableBoard
+     */
     @Override
     public void setEnableBoard(boolean enableBoard) {
         this.enableBoard = enableBoard;
@@ -118,6 +130,9 @@ public class Game extends Application implements GUI {
         gridG.setEnable(enableBoard);
     }
 
+    /**
+     * send to client player the move made by the user
+     */
     public void makeMove() {
         clientPlayer.myMove();
     }

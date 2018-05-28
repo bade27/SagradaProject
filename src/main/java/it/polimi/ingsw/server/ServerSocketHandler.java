@@ -303,6 +303,11 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
         return null;
     }
 
+    @Override
+    public void updateOpponents(Pair[][]... grids) throws ClientOutOfReachException, RemoteException {
+
+    }
+
     /*
     public void close() {
         outSocket.println("close");

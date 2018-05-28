@@ -3,7 +3,7 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.exceptions.ModelException;
 import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
-import it.polimi.ingsw.remoteInterface.ServerRemoteInterface;
+import it.polimi.ingsw.remoteInterface.Pair;
 import it.polimi.ingsw.utilities.LogFile;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -15,7 +15,6 @@ import java.io.File;
 import java.io.IOException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.concurrent.*;
 
@@ -426,6 +425,22 @@ public class ServerPlayer implements Runnable
             log.addLog("Impossible to update client");
         }
     }
+
+    public void updateOpponents(Pair[][]... grids) throws ClientOutOfReachException {
+
+        try{
+            stopTask(new Callable<Void>() {
+                @Override
+                public Void call() throws Exception {
+                    communicator.updateOpponents(grids);
+                    return null;
+                }
+            }, INIT_TIMEOUT, executor);
+        } catch (Exception e) {
+            log.addLog("" , e.getStackTrace());
+            throw new ClientOutOfReachException();
+        }
+    }
     //</editor-fold>
 
     //<editor-fold desc="Set Windows/Objects/Tools">
@@ -483,4 +498,5 @@ public class ServerPlayer implements Runnable
         return (T)o;
     }
     //</editor-fold>
+
 }

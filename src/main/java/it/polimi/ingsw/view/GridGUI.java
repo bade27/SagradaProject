@@ -21,10 +21,14 @@ public class GridGUI extends GridPane{
             for(int j = 0 ; j < 5; j++)
                 pair[i][j]=new Pair(0, ColorEnum.WHITE);
         updateGrid(pair);
-        p.add(grid,0,2);
+        p.add(grid,0,3);
 
     }
 
+    /**
+     *
+     * @param pair grid of pairs value-color that represent the player's grid
+     */
     public void updateGrid (Pair[][] pair)
     {
         Platform.runLater(() -> {
@@ -48,10 +52,17 @@ public class GridGUI extends GridPane{
         });
     }
 
+    /**
+     * enables or disables the grid
+     * @param enable
+     */
     public void setEnable(boolean enable) {
         this.enable = enable;
     }
 
+    /**
+     * element of the grid
+     */
     private class CellButton extends Button{
 
         int i;
