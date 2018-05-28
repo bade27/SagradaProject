@@ -30,6 +30,7 @@ public class TokenTurn
     //ControlMatch
     private boolean fatalError;
     private boolean justDeleting;
+    private boolean gameStarted;
 
     public TokenTurn ()
     {
@@ -42,6 +43,7 @@ public class TokenTurn
         toolInUsing = false;
         tempPlayers = new ArrayList<>();
         justDeleting = false;
+        gameStarted = false;
     }
 
     /**
@@ -346,6 +348,14 @@ public class TokenTurn
         }
         r = r + "Turn: " + currentTurn + " End Round:" + endRound + "\n" ;
         return r;
+    }
+
+    public boolean isGameStarted() {
+        return gameStarted;
+    }
+
+    public void setGameStarted(boolean gameStarted) {
+        this.gameStarted = gameStarted;
     }
     //</editor-fold>
 

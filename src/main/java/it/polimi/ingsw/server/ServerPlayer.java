@@ -134,6 +134,14 @@ public class ServerPlayer implements Runnable
             {
                 try
                 {
+                    while (!token.isGameStarted()) {
+                        token.wait();
+                        //token.notifyAll();
+                    }
+
+                    updateDadiera();
+                    updateWindow();
+
                     //Wait his turn
                     while (!token.isMyTurn(user))
                         token.wait();
@@ -164,6 +172,9 @@ public class ServerPlayer implements Runnable
                     synchronized (adapter){
                         adapter.wait();
                     }
+
+                    updateDadiera();
+                    updateWindow();
                     token.notifyAll();
                     token.wait();
                 }
