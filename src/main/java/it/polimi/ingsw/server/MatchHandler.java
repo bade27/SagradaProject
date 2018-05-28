@@ -20,7 +20,7 @@ public class MatchHandler implements Runnable
     private TokenTurn tok;
     private Dadiera dices;
 
-    private final static int MAXGIOC = 1;//Da modificare a 4
+    private final static int MAXGIOC = 2;//Da modificare a 4
 
     public synchronized void run ()
     {
@@ -42,6 +42,7 @@ public class MatchHandler implements Runnable
         log.addLog("Game Phase started");
         //clientConnectionUpdateMessage("playing");
         dices.mix(tok.getNumPlayers());
+        tok.setGameStarted(true);
         log.addLog("Dadiera Mixed");
         while (true)
         {
@@ -55,6 +56,7 @@ public class MatchHandler implements Runnable
                     dices.mix(tok.getNumPlayers());
                     System.out.println(">>>Dadiera Mixed");
                     log.addLog("Dadiera Mixed");
+                    //tok.setGameStarted(false);
                 }
                 tok.nextTurn();
                 tok.notifyAll();
