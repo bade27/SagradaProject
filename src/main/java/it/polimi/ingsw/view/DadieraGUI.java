@@ -3,8 +3,9 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.remoteInterface.Pair;
 import javafx.application.Platform;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
 
 public class DadieraGUI extends GridPane {
 
@@ -22,8 +23,8 @@ public class DadieraGUI extends GridPane {
         grid = new GridPane();
         //dimWindows.dim(grid);
         initGraphic();
-
         pane.add(grid, 0, 0);
+        grid.setAlignment(Pos.CENTER);
     }
 
 

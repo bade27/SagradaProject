@@ -3,9 +3,10 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.remoteInterface.Pair;
 import javafx.application.Platform;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
 
 public class GridGUI extends GridPane{
 
@@ -23,6 +24,7 @@ public class GridGUI extends GridPane{
                 pair[i][j]=new Pair(0, ColorEnum.WHITE);
         updateGrid(pair);
         //dimWindows.dim(grid);
+        grid.setAlignment(Pos.CENTER);
         p.add(grid,0,1);
     }
 
