@@ -22,7 +22,7 @@ public class Dadiera
     /**
      * Generate a new set of dice randomly with dim of numGioc
      */
-    public void mix (int numGioc)
+    public synchronized void mix (int numGioc)
     {
         listaDadi = bag.pickDices(numGioc*2 + 1);
         assert listaDadi != null;
@@ -32,7 +32,7 @@ public class Dadiera
      * Delete passed die from dadiera
      * @param d die to delete
      */
-    public void deleteDice (Dice d)
+    public synchronized void deleteDice (Dice d)
     {
         for (int i=0;i < listaDadi.size();i++)
             if (listaDadi.get(i).isEqual(d))
@@ -46,7 +46,7 @@ public class Dadiera
      * add dice x
      * @param x index of the dice that i must add
      */
-    public void addDice (Dice x){
+    public synchronized void addDice (Dice x){
         listaDadi.add(x);
     }
 
@@ -57,7 +57,7 @@ public class Dadiera
      * @param d die
      * @throws IllegalDiceException
      */
-    public void setDiceValue(int n, Dice d) throws IllegalDiceException {
+    public synchronized void setDiceValue(int n, Dice d) throws IllegalDiceException {
         if(n>0&&n<7) {
             for (int i = 0; i < listaDadi.size(); i++)
                 if (d.equals(listaDadi.get(i))) {
@@ -73,7 +73,7 @@ public class Dadiera
      * @return die selected
      * @throws IllegalDiceException die not present
      */
-    public Dice getDice (int i) throws IllegalDiceException
+    public synchronized Dice getDice (int i) throws IllegalDiceException
     {
         try {
             return listaDadi.get(i);
@@ -84,7 +84,7 @@ public class Dadiera
 
     }
 
-    public Pair[] toPairArray ()
+    public synchronized Pair[] toPairArray ()
     {
         Pair[] arr = new Pair[listaDadi.size()];
         for (int i = 0; i < listaDadi.size() ; i++)
@@ -96,7 +96,7 @@ public class Dadiera
      * return entire list of dice
      * @return
      */
-    public ArrayList<Dice> getListaDadi() { return listaDadi; }
+    public synchronized ArrayList<Dice> getListaDadi() { return listaDadi; }
 
     /**
      *
