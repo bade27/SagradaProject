@@ -20,10 +20,10 @@ public class DadieraGUI extends GridPane {
         this.pane = pane;
         enable = false;
         grid = new GridPane();
+        //dimWindows.dim(grid);
         initGraphic();
 
-        pane.add(grid, 0, 1);
-        dimWindows.dimHeight(grid, 20);
+        pane.add(grid, 0, 0);
     }
 
 
@@ -39,20 +39,14 @@ public class DadieraGUI extends GridPane {
     public void updateGraphic(Pair[] p)
     {
         Platform.runLater(() -> {
-            //grid = new GridPane();
             grid.getChildren().clear();
-            dimWindows.dim(grid);
-            //p[0] = new Pair(1, ColorEnum.BLUE);
             for (int i = 0; i < p.length; i++) {
                 Button b = new Button("  ");
                 b.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-
                 Pair current = p[i];
-                int k = i;
-
-                    b.setText("" + current.getValue());
-                    b.setStyle("-fx-background-color: " + current.getColor());
-                    b.setOnAction(event -> {
+                b.setText("" + current.getValue());
+                b.setStyle("-fx-background-color: " + current.getColor());
+                b.setOnAction(event -> {
                     if(enable) {
                         String tok = b.getStyle().split(" ")[1];
                         int val = Integer.parseInt(b.getText());
@@ -80,7 +74,7 @@ public class DadieraGUI extends GridPane {
                         //game.modPair(new Pair(3,ColorEnum.RED));
                     }
                 });
-                    grid.add(b, k, 0);
+                grid.add(b, i, 0);
             }
         });
     }

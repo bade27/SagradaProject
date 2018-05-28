@@ -2,7 +2,6 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.GUI;
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
-import it.polimi.ingsw.exceptions.ModelException;
 import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
 import it.polimi.ingsw.remoteInterface.Move;
 import it.polimi.ingsw.remoteInterface.Pair;
@@ -238,6 +237,6 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     }
 
     public synchronized void setMoveIJ(int i, int j) {
-        this.move.setIJ(j, i);//C'è qualcosa che non va (invertire i e j ma così è giusto)
+        this.move.setIJ(i, j);//C'è qualcosa che non va (invertire i e j ma così è giusto)
     }
 }

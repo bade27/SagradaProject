@@ -2,6 +2,8 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.remoteInterface.Pair;
+import javafx.application.Platform;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 
@@ -9,45 +11,43 @@ public class GridGUI extends GridPane{
 
     Game game;
     private boolean enable;
-    private GridPane g;
+    private GridPane grid;
 
     public GridGUI (GridPane p, Game game){
         this.game=game;
         enable = false;
-        GridPane grid=new GridPane();
-        Pair [][] pair=new Pair[5][4];
-        for(int j=0;j<4;j++){
-            for(int i=0;i<5;i++){
+        grid=new GridPane();
+        Pair [][] pair=new Pair[4][5];
+        for(int i = 0 ; i < 4; i++)
+            for(int j = 0 ; j < 5; j++)
                 pair[i][j]=new Pair(0, ColorEnum.WHITE);
-                CellButton b = new CellButton(i,j);
-                b.setMaxSize(Double.MAX_VALUE,Double.MAX_VALUE);
-                grid.add(b,i,j);
-                b.setOnAction(event -> {
-                    if(enable) {
-                        game.modIJ(b.geti(),b.getj());
-                        game.makeMove();
-                        //System.out.println("x:" + b.geti() + ", y:" + b.getj());
-                    }
-                });
-                }
-        }
         updateGrid(pair);
-        p.add(grid,0,2);
-        dimWindows.dim(grid);
+        //dimWindows.dim(grid);
+        p.add(grid,0,1);
     }
 
     public void updateGrid (Pair[][] pair)
     {
-        g=new GridPane();
-        for(int j=0;j<4;j++){
-            for(int i=0;i<5;i++) {
-                CellButton b = new CellButton(i,j);
-                b.setMaxSize(Double.MAX_VALUE,Double.MAX_VALUE);
-                g.add(b,i,j);
-                b.setText(""+pair[i][j].getValue());
-                b.setStyle("-fx-background-color: " + pair[i][j].getColor());
+        Platform.runLater(() -> {
+            grid.getChildren().clear();
+            //grid = new GridPane();
+            Node[][] nodeG = new Node[4][5];
+            for (int i = 0, k = 0; i < 4; i++) {
+                for (int j = 0; j < 5; j++) {
+                    CellButton b = new CellButton(i, j);
+                    b.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+                    b.setText("" + pair[i][j].getValue());
+                    b.setStyle("-fx-background-color: " + pair[i][j].getColor());
+                    b.setOnAction(event -> {
+                        if (enable) {
+                            game.modIJ(b.geti(), b.getj());
+                            game.makeMove();
+                        }
+                    });
+                    grid.add(b, j, i);
+                }
             }
-        }
+        });
     }
 
     public void setEnable(boolean enable) {
