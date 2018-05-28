@@ -6,4 +6,5 @@ public interface GUI {
     public void updateDadiera (Pair[] dadiera);
     public void updateWindow (Pair[][] window);
     public void setEnableBoard(boolean enableBoard);
+    public void updateMessage(String msg);
 }

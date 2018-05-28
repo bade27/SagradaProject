@@ -23,7 +23,7 @@ public class DadieraGUI extends GridPane {
         //dimWindows.dim(grid);
         initGraphic();
 
-        pane.add(grid, 0, 0);
+        pane.add(grid, 0, 1);
     }
 
 

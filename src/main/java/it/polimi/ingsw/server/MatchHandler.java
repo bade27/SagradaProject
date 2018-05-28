@@ -27,7 +27,7 @@ public class MatchHandler implements Runnable
         log = new LogFile("ServerLog");
 
         acceptConnection();
-        initiliazeWindowPlayers();
+        initializeWindowPlayers();
         initializePublicObjectiveCards();
         waitInitialition();
         System.out.println(">>>Initialization ended");
@@ -136,7 +136,7 @@ public class MatchHandler implements Runnable
     /**
      *  Initialization board game for each players
      */
-    private boolean initiliazeWindowPlayers ()
+    private boolean initializeWindowPlayers()
     {
         int c1,c2;
         ArrayList<String []> cards;

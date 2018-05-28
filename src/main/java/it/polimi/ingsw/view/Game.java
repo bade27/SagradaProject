@@ -4,6 +4,7 @@ import it.polimi.ingsw.GUI;
 import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.remoteInterface.Pair;
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -16,6 +17,8 @@ public class Game extends Application implements GUI {
 
     private DadieraGUI dadieraG;
     private GridGUI gridG;
+
+    private MessageBox msgb;
 
     private int num=4;
     private ClientPlayer clientPlayer;
@@ -47,10 +50,20 @@ public class Game extends Application implements GUI {
     @Override
     public void start(Stage primaryStage) {
         GridPane root = new GridPane();
+        root.setAlignment(Pos.CENTER);
+
         dadieraG = new DadieraGUI(root, num, this);
+        dimWindows.dim(dadieraG);
+        //root.add(dadieraG, 0, 1);
+
         gridG = new GridGUI(root,this);
         dimWindows.dim(gridG);
-        Scene scene = new Scene(root, 400, 400);
+        //root.add(gridG,0,2);
+
+        msgb = new MessageBox("wellcome");
+        root.add(msgb, 0, 3);
+
+        Scene scene = new Scene(root, 500, 400);
         primaryStage.setTitle("Sagrada");
         primaryStage.setScene(scene);
         dimWindows.dim(root);
@@ -70,10 +83,10 @@ public class Game extends Application implements GUI {
     public void updateDadiera(Pair[] p) {
         //Manca l'update della dadiera
         dadieraG.updateGraphic(p);
-        System.out.println("Dadiera:");
+        /*System.out.println("Dadiera:");
         for(int i = 0; i < p.length ; i++)
             System.out.print(p[i].toString() + "\t|\t");
-        System.out.println();
+        System.out.println();*/
     }
 
     @Override
@@ -90,6 +103,10 @@ public class Game extends Application implements GUI {
         }
     }
 
+
+    public void updateMessage(String msg) {
+        msgb.updateGraphic(msg);
+    }
 
     @Override
     public void setEnableBoard(boolean enableBoard) {

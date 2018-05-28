@@ -3,7 +3,6 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.remoteInterface.Pair;
 import javafx.application.Platform;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 
@@ -22,8 +21,8 @@ public class GridGUI extends GridPane{
             for(int j = 0 ; j < 5; j++)
                 pair[i][j]=new Pair(0, ColorEnum.WHITE);
         updateGrid(pair);
-        //dimWindows.dim(grid);
-        p.add(grid,0,1);
+        p.add(grid,0,2);
+
     }
 
     public void updateGrid (Pair[][] pair)
@@ -31,11 +30,10 @@ public class GridGUI extends GridPane{
         Platform.runLater(() -> {
             grid.getChildren().clear();
             //grid = new GridPane();
-            Node[][] nodeG = new Node[4][5];
-            for (int i = 0, k = 0; i < 4; i++) {
+            for (int i = 0; i < 4; i++) {
                 for (int j = 0; j < 5; j++) {
                     CellButton b = new CellButton(i, j);
-                    b.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+                    b.setPrefSize(100, 80);
                     b.setText("" + pair[i][j].getValue());
                     b.setStyle("-fx-background-color: " + pair[i][j].getColor());
                     b.setOnAction(event -> {
