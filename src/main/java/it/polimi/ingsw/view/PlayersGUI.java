@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+import com.sun.javafx.scene.control.skin.LabeledImpl;
 import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.remoteInterface.Pair;
 import javafx.scene.control.*;
@@ -8,21 +9,29 @@ import javafx.scene.layout.*;
 
 public class PlayersGUI extends GridPane {
 
-    private GridPane p;
+    private GridPane root;
+    private GridPane singolo_giocatore;
+    private GridPane giocatori;
 
-    public PlayersGUI(GridPane p,String [] name, SagradaGUI game) {
-        name= new String[]{"pippo", "pluto","camillo"};
-        this.p = p;
+    public PlayersGUI(GridPane root, Game game) {
+        String [] name= new String[]{"pippo", "pluto","camillo"};
+        giocatori=new GridPane();
+        giocatori.setHgap(20);
+        singolo_giocatore=new GridPane();
+        this.root = root;
+
         for(int k=0;k<name.length;k++) {
+            singolo_giocatore=new GridPane();
+            singolo_giocatore.add(new Label(name[k]),0,0);
             Pair[][] pair = new Pair[5][4];
             for (int j = 0; j < 4; j++) {
                 for (int i = 0; i < 5; i++) {
                     pair[i][j] = new Pair(0, ColorEnum.WHITE);
                 }
             }
-            p.add(new Label(name[k]), k, 0);
             updateGraphic(pair, k);
         }
+        root.add(giocatori, 0, 2);
     }
 
     public void updateGraphic(Pair[][] pair,int index) {
@@ -38,7 +47,8 @@ public class PlayersGUI extends GridPane {
                 griglia.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
             }
         }
-        p.add(griglia, index, 1);
+        singolo_giocatore.add(griglia, 0, 1);
+        giocatori.add(singolo_giocatore,index,0);
     }
 
     /*//greazione dello schema nome-->griglia di un singolo giocatore

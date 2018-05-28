@@ -4,7 +4,6 @@ import it.polimi.ingsw.GUI;
 import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.remoteInterface.Pair;
 import javafx.application.Application;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
@@ -17,6 +16,7 @@ public class Game extends Application implements GUI {
 
     private DadieraGUI dadieraG;
     private GridGUI gridG;
+    private PlayersGUI plaG;
 
     private MessageBox msgb;
 
@@ -50,7 +50,7 @@ public class Game extends Application implements GUI {
     @Override
     public void start(Stage primaryStage) {
         GridPane root = new GridPane();
-        root.setAlignment(Pos.CENTER);
+        //root.setAlignment(Pos.CENTER);
 
         dadieraG = new DadieraGUI(root, num, this);
         dimWindows.dim(dadieraG);
@@ -62,6 +62,9 @@ public class Game extends Application implements GUI {
 
         msgb = new MessageBox("wellcome");
         root.add(msgb, 0, 3);
+
+
+        plaG= new PlayersGUI(root,this);
 
         Scene scene = new Scene(root, 500, 400);
         primaryStage.setTitle("Sagrada");
