@@ -39,7 +39,7 @@ public class PlayersGUI extends GridPane {
 
     public void updateGraphic(Pair[][] pair,String n) {
 
-        GridPane griglia = new GridPane();            //griglia
+        /*GridPane griglia = new GridPane();            //griglia
         griglia.setDisable(true);
         for (int j = 0; j < 4; j++) {
             for (int i = 0; i < 5; i++) {
@@ -61,7 +61,7 @@ public class PlayersGUI extends GridPane {
                 g.setAlignment(Pos.CENTER);
                 giocatori.add(g, k, 0);
             }
-        }
+        }*/
     }
 
     /*//greazione dello schema nome-->griglia di un singolo giocatore
