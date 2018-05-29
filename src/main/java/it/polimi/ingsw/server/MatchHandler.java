@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.exceptions.ParserXMLException;
 import it.polimi.ingsw.model.Dadiera;
 import it.polimi.ingsw.utilities.LogFile;
@@ -45,9 +46,11 @@ public class MatchHandler implements Runnable
         //tok.setGameStarted(true);
         log.addLog("Dadiera Mixed");
 
-        updateClient(); //Controlla se è possibile toglierlo, dovrebbe essere inutile
+        //updateClient(); //Controlla se è possibile toglierlo, dovrebbe essere inutile
 
-        while (true)
+        boolean b = true;
+
+        while (b)
         {
             synchronized (tok)
             {
@@ -256,11 +259,19 @@ public class MatchHandler implements Runnable
     {
         for (int i = 0; i < player.size() ; i++)
         {
-            player.get(i).updateClient();
-            /*for (int j = 0; j < player.size() ; j++) {
-                //player.get(j).updateOpponents(player.get(i).getUser(),player.get(i).getGrid());
-                //serve exception
-            }*/
+            if(player.get(i).updateClient()) {
+                for (int j = 0; j < player.size(); j++) {
+                    if (player.get(j).getUser() != player.get(i).getUser()) {
+
+                        try {
+                            player.get(j).updateOpponents(player.get(i).getUser(), player.get(i).getGrid());
+                        } catch (ClientOutOfReachException e) {
+                            log.addLog("Client " + player.get(j).getUser() + " temporarily unreachable");
+                        }
+
+                    }
+                }
+            }
         }
 
     }

@@ -434,20 +434,23 @@ public class ServerPlayer implements Runnable
             if (!performed)
                 log.addLog("Impossible to communicate to client (" + user + ") cause closed connection");
         }catch (NullPointerException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
             log.addLog("Impossible to communicate to client (" + user + ") cause closed connection");
         }
 
     }
 
-    public void updateClient ()
+    public boolean updateClient ()
     {
+        boolean exit = true;
         try{
             updateDadiera();
             updateWindow();
         }catch (Exception e){
             log.addLog("Impossible to update client");
+            exit = false;
         }
+        return exit;
     }
 
     public Pair[][] getGrid ()
