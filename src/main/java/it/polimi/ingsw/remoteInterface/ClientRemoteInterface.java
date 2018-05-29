@@ -19,9 +19,9 @@ public interface ClientRemoteInterface extends Remote
 
     //Game
     public String doTurn () throws ClientOutOfReachException,RemoteException;
+    //Game updates
     public String updateGraphic(Pair[] dadiera) throws ClientOutOfReachException,RemoteException;
     public String updateGraphic(Pair[][] grid) throws ClientOutOfReachException,RemoteException;
-
     public void updateOpponents(Pair[][]... grids) throws ClientOutOfReachException,RemoteException;
 
 }

@@ -20,7 +20,7 @@ public class MatchHandler implements Runnable
     private TokenTurn tok;
     private Dadiera dices;
 
-    private final static int MAXGIOC = 1;//Da modificare a 4
+    private final static int MAXGIOC = 2;//Da modificare a 4
 
     public synchronized void run ()
     {
@@ -45,8 +45,7 @@ public class MatchHandler implements Runnable
         //tok.setGameStarted(true);
         log.addLog("Dadiera Mixed");
 
-        for (int i = 0; i < player.size() ; i++)
-            player.get(i).updateClient();
+        updateClient();
 
         while (true)
         {
@@ -60,9 +59,8 @@ public class MatchHandler implements Runnable
                     dices.mix(tok.getNumPlayers());
                     System.out.println(">>>Dadiera Mixed");
                     log.addLog("Dadiera Mixed");
-                    for (int i = 0; i < player.size() ; i++)
-                        player.get(i).updateClient();
                 }
+                updateClient();
                 tok.nextTurn();
                 tok.notifyAll();
 
@@ -253,6 +251,13 @@ public class MatchHandler implements Runnable
     //</editor-fold>
 
     //<editor-fold desc="Utilities">
+
+    private void updateClient ()
+    {
+        for (int i = 0; i < player.size() ; i++)
+            player.get(i).updateClient();
+
+    }
     /**
      * To modify in reading from XML or DB possible users
      * @return

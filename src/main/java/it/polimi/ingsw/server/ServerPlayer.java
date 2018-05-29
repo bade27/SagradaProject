@@ -144,8 +144,6 @@ public class ServerPlayer implements Runnable
 
 
                     try {
-                        updateDadiera();
-                        updateWindow();
                         clientTurn();
                     }catch (ClientOutOfReachException e){
                         //Notify token that client is dead
@@ -159,12 +157,10 @@ public class ServerPlayer implements Runnable
 
 
                     //End turn comunication
-                    //token.notifyAll();
                     synchronized (adapter){
                         adapter.wait();
                     }
 
-                    updateClient();
                     token.notifyAll();
                     token.wait();
                 }
@@ -327,6 +323,9 @@ public class ServerPlayer implements Runnable
     }
     //</editor-fold>
 
+    /**
+     * Send to client a massage that inform about his turn
+     */
     private void clientTurn () throws ClientOutOfReachException
     {
         String u;
@@ -344,6 +343,9 @@ public class ServerPlayer implements Runnable
         }
     }
 
+    /**
+     *  Update Dadiera information on client's side
+     */
     private void updateDadiera () throws ClientOutOfReachException
     {
         String s;
@@ -361,6 +363,9 @@ public class ServerPlayer implements Runnable
         }
     }
 
+    /**
+     *  Update Window information on client's side
+     */
     private void updateWindow () throws ClientOutOfReachException
     {
         String s;
@@ -373,6 +378,25 @@ public class ServerPlayer implements Runnable
             }
         }
         catch (Exception e) {
+            log.addLog("" , e.getStackTrace());
+            throw new ClientOutOfReachException();
+        }
+    }
+
+    /**
+     *  Update opponent's situation on client's side
+     */
+    public void updateOpponents(Pair[][]... grids) throws ClientOutOfReachException {
+
+        try{
+            stopTask(new Callable<Void>() {
+                @Override
+                public Void call() throws Exception {
+                    communicator.updateOpponents(grids);
+                    return null;
+                }
+            }, INIT_TIMEOUT, executor);
+        } catch (Exception e) {
             log.addLog("" , e.getStackTrace());
             throw new ClientOutOfReachException();
         }
@@ -426,21 +450,6 @@ public class ServerPlayer implements Runnable
         }
     }
 
-    public void updateOpponents(Pair[][]... grids) throws ClientOutOfReachException {
-
-        try{
-            stopTask(new Callable<Void>() {
-                @Override
-                public Void call() throws Exception {
-                    communicator.updateOpponents(grids);
-                    return null;
-                }
-            }, INIT_TIMEOUT, executor);
-        } catch (Exception e) {
-            log.addLog("" , e.getStackTrace());
-            throw new ClientOutOfReachException();
-        }
-    }
     //</editor-fold>
 
     //<editor-fold desc="Set Windows/Objects/Tools">
