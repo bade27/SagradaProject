@@ -13,9 +13,10 @@ public class PlayersGUI extends GridPane {
     private GridPane root;
     private GridPane singolo_giocatore;
     private GridPane giocatori;
+    String [] name;
 
     public PlayersGUI(GridPane root, Game game) {
-        String [] name= new String[]{"pippo", "pluto","camillo"};
+        name= new String[]{"pippo", "pluto","camillo"};
         giocatori=new GridPane();
         giocatori.setHgap(20);
         singolo_giocatore=new GridPane();
@@ -30,13 +31,13 @@ public class PlayersGUI extends GridPane {
                     pair[i][j] = new Pair(0, ColorEnum.WHITE);
                 }
             }
-            updateGraphic(pair, k);
+            updateGraphic(pair, name[k]);
         }
         giocatori.setAlignment(Pos.CENTER);
         root.add(giocatori, 0, 2);
     }
 
-    public void updateGraphic(Pair[][] pair,int index) {
+    public void updateGraphic(Pair[][] pair,String n) {
 
         GridPane griglia = new GridPane();            //griglia
         griglia.setDisable(true);
@@ -51,9 +52,16 @@ public class PlayersGUI extends GridPane {
             }
         }
         griglia.setAlignment(Pos.CENTER);
-        singolo_giocatore.add(griglia, 0, 1);
-        singolo_giocatore.setAlignment(Pos.CENTER);
-        giocatori.add(singolo_giocatore,index,0);
+
+        for(int k=0;k<name.length;k++) {
+            GridPane g = (GridPane) giocatori.getChildren().get(k);
+            Label l = (Label) g.getChildren().get(0);
+            if (l.getText() == n) {
+                g.add(griglia, 0, 1);
+                g.setAlignment(Pos.CENTER);
+                giocatori.add(g, k, 0);
+            }
+        }
     }
 
     /*//greazione dello schema nome-->griglia di un singolo giocatore

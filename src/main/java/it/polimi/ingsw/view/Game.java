@@ -51,7 +51,7 @@ public class Game extends Application implements GUI {
     public void start(Stage primaryStage) {
         GridPane root = new GridPane();
         //root.setAlignment(Pos.CENTER);
-
+        root.setVgap(30);
         dadieraG = new DadieraGUI(root, num, this);
         dimWindows.dim(dadieraG);
         //root.add(dadieraG, 0, 1);
