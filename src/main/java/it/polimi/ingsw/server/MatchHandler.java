@@ -3,31 +3,94 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.exceptions.ParserXMLException;
 import it.polimi.ingsw.model.Dadiera;
+import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
 import it.polimi.ingsw.utilities.LogFile;
 import it.polimi.ingsw.utilities.ParserXML;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.IOException;
+import java.rmi.Naming;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 
 public class MatchHandler implements Runnable
 {
     private LogFile log;
 
-    //List of active serverPlayer
     private ArrayList<ServerPlayer> player;
     private ArrayList<Thread> threadPlayers;
+    private ArrayList possibleUsrs;
 
-    //Number of client connected
     private int nConn;
     private TokenTurn tok;
     private Dadiera dices;
 
     private final static int MAXGIOC = 2;//Da modificare a 4
 
+    //connection parameters
+    private static final String settings = "resources/server_settings.xml";
+    private static int RMI_REGISTRY_PORT;
+    private static String HOSTNAME;
+    private static int SOCKET_PORT;
+    private int progressive;
+
+    /**
+     * sets up connection parameters
+     */
+    private static void connection_parameters_setup() throws ParserConfigurationException, IOException, SAXException {
+        File file = new File(settings);
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document document = documentBuilder.parse(file);
+
+        //rmi setup
+        RMI_REGISTRY_PORT = Integer.parseInt(document.getElementsByTagName("registryPort").item(0).getTextContent());
+        HOSTNAME = document.getElementsByTagName("hostName").item(0).getTextContent();
+
+        //socket setup
+        SOCKET_PORT = Integer.parseInt(document.getElementsByTagName("portNumber").item(0).getTextContent());
+    }
+
+
     public synchronized void run ()
     {
         log = new LogFile("ServerLog");
+        possibleUsrs = initializePossibleUsers();
+        player = new ArrayList<ServerPlayer>();
+        tok = new TokenTurn();
+        dices = new Dadiera();
+        progressive = 0;
+        try {
+            connection_parameters_setup();
+        } catch (ParserConfigurationException| IOException | SAXException e) {
+            log.addLog("Impossible to read settings parameters" , e.getStackTrace());
+        }
+        nConn = 0;
 
-        acceptConnection();
+
+        System.out.println(">>>Server started");
+        log.addLog(">>>Server started");
+
+        InitializerConnection initializer = new InitializerConnection(this);
+        initializer.start();
+
+        try{
+            synchronized (tok){
+                tok.wait();
+            }
+        }catch (Exception e){
+            log.addLog("Impossible to put in wait Server");
+        }
+
+
+        System.out.println(">>>Connection Ended");
+
+        initializeServer();
         initializeWindowPlayers();
         initializePublicObjectiveCards();
         waitInitialition();
@@ -41,12 +104,8 @@ public class MatchHandler implements Runnable
     private void startGame ()
     {
         log.addLog("Game Phase started");
-        //clientConnectionUpdateMessage("playing");
         dices.mix(tok.getNumPlayers());
-        //tok.setGameStarted(true);
         log.addLog("Dadiera Mixed");
-
-        //updateClient(); //Controlla se è possibile toglierlo, dovrebbe essere inutile
 
         boolean b = true;
 
@@ -81,39 +140,15 @@ public class MatchHandler implements Runnable
         }
     }
 
+    //<editor-fold desc="Initialization Phase">
     /**
      * Initialize connection with server for each players
      */
-    private void acceptConnection()
+    private void initializeServer()
     {
-        System.out.println(">>>server Started");
-        log.addLog("server Started");
-        nConn = 0;
         threadPlayers = new ArrayList<Thread>();
-        player = new ArrayList<ServerPlayer>();
         try
         {
-            tok = new TokenTurn();
-            dices = new Dadiera();
-
-            //Initialize possible username
-            ArrayList possibleUsrs = initializePossibleUsers();
-
-            //progressive is a progressive number of connection created
-            int progressive = 0;
-            //For each players starts waiting for connection
-            for (int i =0 ;i< MAXGIOC;i ++)
-            {
-                ServerPlayer pl = new ServerPlayer(tok,new ServerModelAdapter(dices),possibleUsrs,log);
-                if (pl.initializeCommunication(progressive))
-                    player.add(pl);
-                else
-                    i--;
-                int n = checkClientAlive();
-                clientConnectionUpdateMessage("connected");
-                i = i-n;
-                progressive++;
-            }
             nConn = MAXGIOC - checkClientAlive();
             log.addLog("Number of client(s) connected:" + nConn);
             tok.setInitNumberOfPlayers(nConn);
@@ -132,6 +167,80 @@ public class MatchHandler implements Runnable
         }
     }
 
+    /**
+     * Registration of client's communicator object passed and starting of relative thread
+     * @param cli communicator object, used for interact with client
+     */
+    private void clientRegistration (ClientRemoteInterface cli)
+    {
+        //If max number of connection is reached communicate the client he is one too many
+        if (nConn == MAXGIOC)
+        {
+            try {
+                cli.sendMessage("Too many client connected");
+                return;
+            }catch (ClientOutOfReachException | RemoteException e){
+                log.addLog("Impossible to communicate the client he is one too many");
+            }
+
+        }
+        ServerModelAdapter adp = new ServerModelAdapter(dices);
+        try{
+            cli.setModelAdapter(adp);
+        }catch (RemoteException e){
+
+        }
+
+        ServerPlayer pl = new ServerPlayer(tok,adp,possibleUsrs,log,cli);
+        player.add(pl);
+        nConn++;
+        int n = checkClientAlive();
+        clientConnectionUpdateMessage("connected");
+        nConn = nConn-n;
+
+        try
+        {
+            //If max number of connection is reached starts game
+            if (nConn == MAXGIOC)
+            {
+                synchronized (tok){
+                    tok.notifyAll();
+                }
+            }
+        }catch ( Exception e){
+            e.printStackTrace();
+            log.addLog("Impossible to notify server handler");
+        }
+
+    }
+
+    /**
+     * Update RMI's registry after an RMI's connection and call clientRegistration
+     * @param cli communicator object, used for interact with client
+     */
+    public void setClient (ClientRemoteInterface cli)
+    {
+        ServerRmiHandler rmiCon;
+        progressive++;
+        log.addLog("Client accepted with RMI connection");
+        //RMI Registry creation and bind server name
+        try {
+            rmiCon = new ServerRmiHandler(this);
+
+            String bindLocation = "rmi://" + HOSTNAME + ":" + RMI_REGISTRY_PORT + "/sagrada" + progressive;
+            try{
+                java.rmi.registry.LocateRegistry.createRegistry(RMI_REGISTRY_PORT);
+            }catch (Exception ex){}
+
+            Naming.bind(bindLocation, rmiCon );
+
+            log.addLog("Server RMI waiting for client on port  " + RMI_REGISTRY_PORT);
+        }catch (Exception e) {
+            log.addLog("RMI Bind failed" , e.getStackTrace());
+        }
+        clientRegistration(cli);
+    }
+    //</editor-fold>
 
     //<editor-fold desc = "Window and objects initialization">
     /**
@@ -255,6 +364,9 @@ public class MatchHandler implements Runnable
 
     //<editor-fold desc="Utilities">
 
+    /**
+     * Update all client's graphic
+     */
     private void updateClient ()
     {
         for (int i = 0; i < player.size() ; i++)
@@ -372,6 +484,57 @@ public class MatchHandler implements Runnable
     {
         (new Thread(new MatchHandler())).start();
     }
+
+    //<editor-fold desc="Initializer connection class">
+    /**
+     * This thread-class is used to accept client's connection through RMI and Socket in a parallel process
+     */
+    private class InitializerConnection extends Thread
+    {
+        MatchHandler match;
+        private InitializerConnection (MatchHandler m)
+        {
+            match = m;
+        }
+
+        public void run ()
+        {
+            ServerRmiHandler rmiCon;
+            //RMI Registry creation and bind server name
+            try {
+                rmiCon = new ServerRmiHandler(match);
+
+                String bindLocation = "rmi://" + HOSTNAME + ":" + RMI_REGISTRY_PORT + "/sagrada" + progressive;
+                try{
+                    java.rmi.registry.LocateRegistry.createRegistry(RMI_REGISTRY_PORT);
+                }catch (Exception ex){}
+
+                Naming.bind(bindLocation, rmiCon );
+
+                log.addLog("Server RMI waiting for client on port  " + RMI_REGISTRY_PORT);
+            }catch (Exception e) {
+                log.addLog("RMI Bind failed" , e.getStackTrace());
+            }
+
+            //Socket creation and accept
+            while (true)
+            {
+                ServerSocketHandler socketCon;
+                try{
+                    socketCon = new ServerSocketHandler(log, SOCKET_PORT);
+                    socketCon.createConnection();
+                    if (socketCon.isConnected()) {
+                        log.addLog("Client accepted with Socket connection");
+                    }
+                    match.clientRegistration(socketCon);
+                }
+                catch (ClientOutOfReachException e) {
+                    log.addLog(e.getMessage() , e.getStackTrace());
+                }
+            }
+        }
+    }
+    //</editor-fold>
 }
 
 

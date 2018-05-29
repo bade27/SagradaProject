@@ -22,10 +22,6 @@ public class ServerPlayer implements Runnable
 {
     //connection parameters
     private static final String settings = "resources/server_settings.xml";
-    private static int RMI_REGISTRY_PORT;
-    private static int RMI_STUB_PORT;
-    private static String HOSTNAME;
-    private static int SOCKET_PORT;
     private static int PING_TIMEOUT; //10 sec
     private static int INIT_TIMEOUT;
     private static int TURN_TIMEOUT; //5 min
@@ -58,19 +54,14 @@ public class ServerPlayer implements Runnable
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document document = documentBuilder.parse(file);
 
-        //rmi setup
-        RMI_REGISTRY_PORT = Integer.parseInt(document.getElementsByTagName("registryPort").item(0).getTextContent());
-        RMI_STUB_PORT = Integer.parseInt(document.getElementsByTagName("stubPort").item(0).getTextContent());
-        HOSTNAME = document.getElementsByTagName("hostName").item(0).getTextContent();
-
-        //socket setup
-        SOCKET_PORT = Integer.parseInt(document.getElementsByTagName("portNumber").item(0).getTextContent());
+        //SOCKET_PORT = Integer.parseInt(document.getElementsByTagName("portNumber").item(0).getTextContent());
         PING_TIMEOUT = Integer.parseInt(document.getElementsByTagName("ping").item(0).getTextContent());
         INIT_TIMEOUT = Integer.parseInt(document.getElementsByTagName("init").item(0).getTextContent());
         TURN_TIMEOUT = Integer.parseInt(document.getElementsByTagName("turn").item(0).getTextContent());
     }
 
-    public ServerPlayer(TokenTurn tok, ServerModelAdapter adp, ArrayList ps,LogFile l) throws RemoteException
+
+    public ServerPlayer(TokenTurn tok, ServerModelAdapter adp, ArrayList ps,LogFile l, ClientRemoteInterface cli)
     {
         adapter = adp;
         token = tok;
@@ -79,9 +70,13 @@ public class ServerPlayer implements Runnable
         connectionError = false;
         log = l;
         executor = Executors.newCachedThreadPool();
+        communicator = cli;
+        try {
+            connection_parameters_setup();
+        } catch (ParserConfigurationException| IOException | SAXException e) {
+            log.addLog("Impossible to read settings parameters" , e.getStackTrace());
+        }
     }
-
-
 
     public synchronized void run ()
     {
@@ -174,70 +169,6 @@ public class ServerPlayer implements Runnable
             }
         }
     }
-
-
-    //<editor-fold desc="Initialization Phase">
-    /**
-     * Generate 2 method for accepting client (Rmi and Socket)
-     * For socket this method creates a thread in waiting of Connection client
-     * For RMI this method put a bind of ServerPlayer
-     * @return true if connection goes well, false otherwise
-     */
-    public boolean initializeCommunication (int progressive)
-    {
-        try {
-            connection_parameters_setup();
-        } catch (ParserConfigurationException| IOException | SAXException e) {
-            log.addLog("Impossible to read settings parameters" , e.getStackTrace());
-        }
-
-        //RMI Registry creation and bind server name
-        try {
-            ServerRmiHandler rmiCon = new ServerRmiHandler(adapter,this);
-
-            String bindLocation = "rmi://" + HOSTNAME + ":" + RMI_REGISTRY_PORT + "/sagrada" + progressive;
-            try{
-                java.rmi.registry.LocateRegistry.createRegistry(RMI_REGISTRY_PORT);
-            }catch (Exception ex){}
-
-            Naming.bind(bindLocation, rmiCon );
-
-            log.addLog("Server RMI waiting for client on port  " + RMI_REGISTRY_PORT);
-        }catch (Exception e) {
-            log.addLog("RMI Bind failed" , e.getStackTrace());
-        }
-
-        //Socket connection creation
-        try{
-            socketCon = new ServerSocketHandler(log, SOCKET_PORT);
-            socketCon.createConnection();
-            if (socketCon.isConnected())
-            {
-                communicator = socketCon;
-                log.addLog("Client accepted with Socket connection");
-            }
-        }
-        catch (ClientOutOfReachException e) {
-            log.addLog(e.getMessage() , e.getStackTrace());
-
-            connectionError = true;
-        }
-        return !connectionError;
-    }
-
-    /**
-     * From this method client can connect with RMI
-     * @param client client stub
-     */
-    public void setCommunicator (ClientRemoteInterface client)
-    {
-        //Stop accepting of socket
-        socketCon.start();
-        //Set client stub
-        communicator = client;
-        log.addLog("Client accepted with RMI connection");
-    }
-    //</editor-fold>
 
     //<editor-fold desc="Setup Phase">
     /**
@@ -343,6 +274,7 @@ public class ServerPlayer implements Runnable
         }
     }
 
+    //<editor-fold desc="Update Client's information">
     /**
      *  Update Dadiera information on client's side
      */
@@ -401,6 +333,7 @@ public class ServerPlayer implements Runnable
             throw new ClientOutOfReachException();
         }
     }
+    //</editor-fold>
 
     //<editor-fold desc="Utilities">
     public boolean isClientAlive ()

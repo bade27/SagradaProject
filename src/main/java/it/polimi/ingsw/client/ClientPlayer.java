@@ -6,6 +6,7 @@ import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
 import it.polimi.ingsw.remoteInterface.Move;
 import it.polimi.ingsw.remoteInterface.Pair;
 import it.polimi.ingsw.remoteInterface.ServerRemoteInterface;
+import it.polimi.ingsw.server.ServerModelAdapter;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -189,8 +190,6 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     }
     //</editor-fold>
 
-
-
     //<editor-fold desc="Utilities">
     /**
      * @return if we are alive
@@ -211,6 +210,12 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         System.out.println("Game ended because " + cause);
         return true;
         //Graphic.setpopup connection down
+
+    }
+
+    //Da modificare in qualche modo non va bene che ci sia un reference al package server
+    @Override
+    public void setModelAdapter(ServerModelAdapter adp) {
 
     }
     //</editor-fold>
