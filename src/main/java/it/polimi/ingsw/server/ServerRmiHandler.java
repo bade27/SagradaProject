@@ -100,8 +100,8 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
 
 
     @Override
-    public void updateOpponents(Pair[][]... grids) throws ClientOutOfReachException, RemoteException {
-        client.updateOpponents(grids);
+    public void updateOpponents(String user,Pair[][] grid) throws ClientOutOfReachException, RemoteException {
+        client.updateOpponents(user,grid);
     }
 
     private void notifyServer ()

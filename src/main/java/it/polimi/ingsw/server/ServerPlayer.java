@@ -386,13 +386,13 @@ public class ServerPlayer implements Runnable
     /**
      *  Update opponent's situation on client's side
      */
-    public void updateOpponents(Pair[][]... grids) throws ClientOutOfReachException {
+    public void updateOpponents(String user, Pair[][] grids) throws ClientOutOfReachException {
 
         try{
             stopTask(new Callable<Void>() {
                 @Override
                 public Void call() throws Exception {
-                    communicator.updateOpponents(grids);
+                    communicator.updateOpponents(user,grids);
                     return null;
                 }
             }, INIT_TIMEOUT, executor);
@@ -448,6 +448,16 @@ public class ServerPlayer implements Runnable
         }catch (Exception e){
             log.addLog("Impossible to update client");
         }
+    }
+
+    public Pair[][] getGrid ()
+    {
+        return adapter.getWindowPair();
+    }
+
+    public String getUser ()
+    {
+        return user;
     }
 
     //</editor-fold>

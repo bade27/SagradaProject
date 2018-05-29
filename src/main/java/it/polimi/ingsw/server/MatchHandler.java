@@ -45,7 +45,7 @@ public class MatchHandler implements Runnable
         //tok.setGameStarted(true);
         log.addLog("Dadiera Mixed");
 
-        updateClient();
+        updateClient(); //Controlla se è possibile toglierlo, dovrebbe essere inutile
 
         while (true)
         {
@@ -255,7 +255,13 @@ public class MatchHandler implements Runnable
     private void updateClient ()
     {
         for (int i = 0; i < player.size() ; i++)
+        {
             player.get(i).updateClient();
+            /*for (int j = 0; j < player.size() ; j++) {
+                //player.get(j).updateOpponents(player.get(i).getUser(),player.get(i).getGrid());
+                //serve exception
+            }*/
+        }
 
     }
     /**

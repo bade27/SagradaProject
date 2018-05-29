@@ -304,7 +304,7 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
     }
 
     @Override
-    public void updateOpponents(Pair[][]... grids) throws ClientOutOfReachException, RemoteException {
+    public void updateOpponents(String user, Pair[][] grid) throws ClientOutOfReachException, RemoteException {
 
     }
 
