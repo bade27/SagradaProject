@@ -179,7 +179,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         /*for(int k = 0; k < grids.length; k++){
             System.out.println("opponent " + (k + 1) );
             Pair[][] p = grids[k];*/
-        System.out.println("User: " + user);
+        System.out.println("Opponent: " + user);
         for (int i = 0; i < grids.length; i++) {
             for (int j = 0; j < grids[i].length; j++)
                 System.out.print(grids[i][j].toString() + "\t|\t");
@@ -254,6 +254,6 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     }
 
     public synchronized void setMoveIJ(int i, int j) {
-        this.move.setIJ(i, j);//C'è qualcosa che non va (invertire i e j ma così è giusto)
+        this.move.setIJ(i, j);
     }
 }
