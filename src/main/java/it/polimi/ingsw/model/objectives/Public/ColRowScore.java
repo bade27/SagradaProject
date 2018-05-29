@@ -25,7 +25,7 @@ public class ColRowScore implements ScoreInterface {
      * @return *il punteggio totalizzato dal giocatore*
      */
     public int calcScore(int value, Cell[][] grid) {
-        /*int colonne_valide = 0;
+        int valid_cols = 0;
         boolean flag;
         switch (pattern) {
             case "row":
@@ -40,14 +40,14 @@ public class ColRowScore implements ScoreInterface {
 
         for (int i = 0; i < maxi; i++) {
             flag = true;
-            Set<Integer> foundElem = new HashSet<>();
+            Set<String> foundElem = new HashSet<>();
             for (int j = 0; j < maxj; j++) {
                 Cell current;
                 if(pattern.equals("row"))
                     current = grid[i][j];
                 else current = grid[j][i];
                 if(current.getFrontDice() != null) {
-                    Integer element = getElement(current.getFrontDice());
+                    String element = getElement(current.getFrontDice());
                     if (foundElem.contains(element)) {
                         flag = false;
                         break;
@@ -59,20 +59,19 @@ public class ColRowScore implements ScoreInterface {
                 }
             }
             if(flag)
-                colonne_valide++;
+                valid_cols++;
         }
-        return value * colonne_valide;*/
-        return 0;
+        return value * valid_cols;
     }
 
     /**
      *
      * @param d
-     * @return *la sfumatura o il colore del dado attuale a seconda del tipo di obbiettivo*
+     * @return *the shade or color of the current die (depending on the objective)*
      */
-    /*private int getElement(Dice d) {
-        return tag.equals("shade") ? d.getValue()
-                : d.getColor() != null ? d.getColor().getRGB() : -1;
-    }*/
+    private String getElement(Dice d) {
+        return tag.equals("shade") ? String.valueOf(d.getValue())
+                : d.getColor() != null ? d.getColor().toString() : "missing";
+    }
 
 }
