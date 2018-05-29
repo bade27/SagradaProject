@@ -1,9 +1,9 @@
 package it.polimi.ingsw.model.objectives.Public;
 
-import it.polimi.ingsw.model.Dice;
 import it.polimi.ingsw.model.Cell;
+import it.polimi.ingsw.model.ColorEnum;
+import it.polimi.ingsw.model.Dice;
 
-import java.awt.*;
 import java.util.Arrays;
 import java.util.OptionalInt;
 
@@ -22,14 +22,14 @@ public class VarietyScore implements ScoreInterface {
      * @return *il punteggio totalizzato dal giocatore*
      */
     public int calcScore(int valore, Cell[][] grid) {
-        /*int[] frequency = tag.equals("color") ? new int[5]
+        int[] frequency = tag.equals("color") ? new int[5]
                 : new int[6];
 
         for (int column = 0; column < grid[0].length; column++) {
             for (int row = 0; row < grid.length; row++) {
                 Cell current_cell = grid[row][column];
                 if(current_cell.getFrontDice() != null) {
-                    Integer element = getElement(current_cell.getFrontDice());
+                    String element = getElement(current_cell.getFrontDice());
                     if(tag.equals("color"))
                         incrementColor(element, frequency);
                     else incrementShade(element, frequency);
@@ -37,7 +37,7 @@ public class VarietyScore implements ScoreInterface {
             }
         }
         OptionalInt min = Arrays.stream(frequency).min();
-        return min.getAsInt() * valore;*/return 0;
+        return min.getAsInt() * valore;
     }
 
     /**
@@ -45,10 +45,10 @@ public class VarietyScore implements ScoreInterface {
      * @param d
      * @return *la sfumatura o il colore del dado corrente a seconda dell'obbiettivo*
      */
-    /*private int getElement(Dice d) {
-        return tag.equals("shade") ? d.getValue()
-                : d.getColor() != null ? d.getColor().getRGB() : -1;
-    }*/
+    private String getElement(Dice d) {
+        return tag.equals("shade") ? String.valueOf(d.getValue())
+                : d.getColor() != null ? d.getColor().toString() : "missing";
+    }
 
     /**
      *
@@ -56,9 +56,9 @@ public class VarietyScore implements ScoreInterface {
      * @param f
      * se l'obbiettivo è relativo alle sfumature, incrementa la frequenza della sfumatura corrente
      */
-    private void incrementShade(Integer value, int[] f) {
+    private void incrementShade(String value, int[] f) {
         for(int i = 0; i < f.length; i++)
-            if(value == (i + 1))
+            if(Integer.parseInt(value) == (i + 1))
                 f[i]++;
     }
 
@@ -68,17 +68,17 @@ public class VarietyScore implements ScoreInterface {
      * @param f
      * se l'obbiettivo è relativo ai colori, incrementa la frequenza del colore corrente
      */
-    private void incrementColor(Integer value, int[] f) {
+    private void incrementColor(String value, int[] f) {
 
-        if(value == Color.red.getRGB())
+        if(value == ColorEnum.RED.toString())
             f[0]++;
-        if(value == Color.green.getRGB())
+        if(value == ColorEnum.GREEN.toString())
             f[1]++;
-        if(value == Color.blue.getRGB())
+        if(value == ColorEnum.BLUE.toString())
             f[2]++;
-        if(value == Color.yellow.getRGB())
+        if(value == ColorEnum.YELLOW.toString())
             f[3]++;
-        if(value == Color.magenta.getRGB())
+        if(value == ColorEnum.PURPLE.toString())
             f[4]++;
 
     }

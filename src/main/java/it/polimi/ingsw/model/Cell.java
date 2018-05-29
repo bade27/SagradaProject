@@ -82,6 +82,13 @@ public class Cell
             return frontDice.getColor();
     }
 
+
+    @Override
+    public String toString() {
+        return "Cell{" +
+                "frontDice=" + frontDice.toString() +
+                '}';
+    }
 }
 
 

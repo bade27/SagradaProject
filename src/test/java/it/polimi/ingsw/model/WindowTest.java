@@ -2,11 +2,9 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.exceptions.IllegalDiceException;
 import it.polimi.ingsw.exceptions.ParserXMLException;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.opentest4j.TestAbortedException;
 
-import java.awt.*;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -193,7 +191,7 @@ class WindowTest
         assertEquals(e6.getMessage(), "Die not placed on compatible cell");
     }
 
-    @RepeatedTest(1000)
+    @Test
     void emptyCell() throws IllegalDiceException {
         int i=new Random().nextInt(4);
         int j=new Random().nextInt(5);

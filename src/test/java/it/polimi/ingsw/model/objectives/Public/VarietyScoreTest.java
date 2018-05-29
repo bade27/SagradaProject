@@ -1,13 +1,13 @@
 package it.polimi.ingsw.model.objectives.Public;
 
 import it.polimi.ingsw.model.Cell;
+import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.model.Dice;
 import it.polimi.ingsw.model.Placement;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class VarietyScoreTest {
 
-    /*static Cell[][] grid;
+    static Cell[][] grid;
     static int rows;
     static int cols;
 
@@ -43,12 +43,12 @@ class VarietyScoreTest {
         for (int i = 0, n = 1, cont = 1;  i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 if(cont <= 6) {
-                    grid[i][j].setDice(new Dice(cont++, Color.gray));
+                    grid[i][j].setDice(new Dice(cont++, ColorEnum.WHITE));
                 } else {
                     n++;
                     if(n <= numClust)
                         cont = 1;
-                    grid[i][j].setDice(new Dice(0, Color.gray));
+                    grid[i][j].setDice(new Dice(0, ColorEnum.WHITE));
                 }
             }
         }
@@ -60,7 +60,7 @@ class VarietyScoreTest {
     void ColorVariety() {
         int value = 4;
         VarietyScore score = new VarietyScore("color");
-        Color[] colors = {Color.red, Color.magenta, Color.yellow, Color.blue, Color.green};
+        ColorEnum[] colors = {ColorEnum.RED, ColorEnum.PURPLE, ColorEnum.YELLOW, ColorEnum.BLUE, ColorEnum.GREEN};
         int numClust = new Random().nextInt(rows * cols / colors.length) + 1;
         int n = 1;
         int i = 0, j = 0;
@@ -81,7 +81,7 @@ class VarietyScoreTest {
             for (j = 0; j < cols; j++) {
                 Cell current = grid[i][j];
                 if(current.getFrontDice() == null)
-                    grid[i][j].setDice(new Dice(0, Color.gray));
+                    grid[i][j].setDice(new Dice(0, ColorEnum.WHITE));
             }
         }
 
@@ -98,12 +98,12 @@ class VarietyScoreTest {
             score = new VarietyScore(s);
             for(int i = 0; i < rows; i++) {
                 for (int j = 0; j < cols; j++) {
-                    grid[i][j].setDice(new Dice(0, Color.gray));
+                    grid[i][j].setDice(new Dice(0, ColorEnum.WHITE));
                 }
             }
             bothZero = score.calcScore(value, grid) == 0 ? true : false;
         }
         assertTrue(bothZero);
-    }*/
+    }
 
 }
