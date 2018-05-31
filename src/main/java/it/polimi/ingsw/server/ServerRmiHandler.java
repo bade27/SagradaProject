@@ -57,11 +57,6 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
     }
 
     @Override
-    public void setModelAdapter(ServerModelAdapter adp) {
-        adapter = adp;
-    }
-
-    @Override
     public String doTurn() throws ClientOutOfReachException, RemoteException {
         return client.doTurn();
     }
@@ -88,8 +83,7 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
     public void setClient(ClientRemoteInterface client) throws RemoteException
     {
         this.client = client;
-        //player.setCommunicator(this);
-        match.setClient(this);
+        adapter = match.setClient(this);
     }
 
 

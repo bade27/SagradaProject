@@ -59,42 +59,16 @@ public class MatchHandler implements Runnable
 
     public synchronized void run ()
     {
-        log = new LogFile("ServerLog");
-        possibleUsrs = initializePossibleUsers();
-        player = new ArrayList<ServerPlayer>();
-        tok = new TokenTurn();
-        dices = new Dadiera();
-        progressive = 0;
-        try {
-            connection_parameters_setup();
-        } catch (ParserConfigurationException| IOException | SAXException e) {
-            log.addLog("Impossible to read settings parameters" , e.getStackTrace());
-        }
-        nConn = 0;
-
-
-        System.out.println(">>>Server started");
-        log.addLog(">>>Server started");
-
-        InitializerConnection initializer = new InitializerConnection(this);
-        initializer.start();
-
-        try{
-            synchronized (tok){
-                tok.wait();
-            }
-        }catch (Exception e){
-            log.addLog("Impossible to put in wait Server");
-        }
-
-
-        System.out.println(">>>Connection Ended");
-
         initializeServer();
+        initializeClients();
+        System.out.println(">>>Connection Phase Ended");
+
         initializeWindowPlayers();
         initializePublicObjectiveCards();
         waitInitialition();
-        System.out.println(">>>Initialization ended");
+        System.out.println(">>>Setup Phase ended");
+
+
         startGame();
     }
 
@@ -140,11 +114,45 @@ public class MatchHandler implements Runnable
         }
     }
 
-    //<editor-fold desc="Initialization Phase">
+    //<editor-fold desc="Connection Phase">
+    private void initializeServer ()
+    {
+        log = new LogFile("ServerLog");
+        possibleUsrs = initializePossibleUsers();
+        player = new ArrayList<ServerPlayer>();
+        tok = new TokenTurn();
+        dices = new Dadiera();
+        progressive = 0;
+        try {
+            connection_parameters_setup();
+        } catch (ParserConfigurationException| IOException | SAXException e) {
+            log.addLog("Impossible to read settings parameters" , e.getStackTrace());
+        }
+        nConn = 0;
+
+
+        System.out.println(">>>Server started");
+        log.addLog(">>>Server started");
+
+        InitializerConnection initializer = new InitializerConnection(this);
+        initializer.start();
+
+        try{
+            synchronized (tok){
+                tok.wait();
+            }
+        }catch (Exception e){
+            log.addLog("Fatal Error: Impossible to put in wait Server");
+            Thread.currentThread().interrupt();
+        }
+    }
+
+
+
     /**
      * Initialize connection with server for each players
      */
-    private void initializeServer()
+    private void initializeClients()
     {
         threadPlayers = new ArrayList<Thread>();
         try
@@ -171,25 +179,21 @@ public class MatchHandler implements Runnable
      * Registration of client's communicator object passed and starting of relative thread
      * @param cli communicator object, used for interact with client
      */
-    private void clientRegistration (ClientRemoteInterface cli)
+    private ServerModelAdapter clientRegistration (ClientRemoteInterface cli)
     {
         //If max number of connection is reached communicate the client he is one too many
         if (nConn == MAXGIOC)
         {
             try {
+                log.addLog("Client Rejected cause too many client connected");
                 cli.sendMessage("Too many client connected");
-                return;
+                return null;
             }catch (ClientOutOfReachException | RemoteException e){
                 log.addLog("Impossible to communicate the client he is one too many");
             }
 
         }
         ServerModelAdapter adp = new ServerModelAdapter(dices);
-        try{
-            cli.setModelAdapter(adp);
-        }catch (RemoteException e){
-
-        }
 
         ServerPlayer pl = new ServerPlayer(tok,adp,possibleUsrs,log,cli);
         player.add(pl);
@@ -211,14 +215,14 @@ public class MatchHandler implements Runnable
             e.printStackTrace();
             log.addLog("Impossible to notify server handler");
         }
-
+        return adp;
     }
 
     /**
      * Update RMI's registry after an RMI's connection and call clientRegistration
      * @param cli communicator object, used for interact with client
      */
-    public void setClient (ClientRemoteInterface cli)
+    public ServerModelAdapter setClient (ClientRemoteInterface cli)
     {
         ServerRmiHandler rmiCon;
         progressive++;
@@ -238,7 +242,39 @@ public class MatchHandler implements Runnable
         }catch (Exception e) {
             log.addLog("RMI Bind failed" , e.getStackTrace());
         }
-        clientRegistration(cli);
+        return clientRegistration(cli);
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="Setup Phase">
+    /**
+     * Start client's setup comunication (Windows and it.polimi.ingsw.model.objectives)
+     */
+    private synchronized void waitInitialition ()
+    {
+        //Signal to start setup phase
+        tok.startSetup();
+
+        synchronized (tok)
+        {
+            try
+            {
+                log.addLog("Setup Phase started");
+                //Wake Up all ServerPlayers to start setup phase
+                tok.notifyAll();
+
+                //Wait until end setup phase
+                while (tok.getOnSetup())
+                    tok.wait();
+                log.addLog("Setup Phase ended");
+
+            }
+            catch (InterruptedException ex) {
+                log.addLog("" , ex.getStackTrace());
+                Thread.currentThread().interrupt();
+                closeAllConnection();
+            }
+        }
     }
     //</editor-fold>
 
@@ -441,36 +477,6 @@ public class MatchHandler implements Runnable
             closeAllConnection();
         }
         return nDisc;
-    }
-
-    /**
-     * Start client's setup comunication (Windows and it.polimi.ingsw.model.objectives)
-     */
-    private synchronized void waitInitialition ()
-    {
-        //Signal to start setup phase
-        tok.startSetup();
-
-        synchronized (tok)
-        {
-            try
-            {
-                log.addLog("Setup Phase started");
-                //Wake Up all ServerPlayers to start setup phase
-                tok.notifyAll();
-
-                //Wait until end setup phase
-                while (tok.getOnSetup())
-                    tok.wait();
-                log.addLog("Setup Phase ended");
-
-            }
-            catch (InterruptedException ex) {
-                log.addLog("" , ex.getStackTrace());
-                Thread.currentThread().interrupt();
-                closeAllConnection();
-            }
-        }
     }
 
     private void clientConnectionUpdateMessage (String str)

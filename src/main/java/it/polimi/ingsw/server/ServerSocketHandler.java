@@ -275,11 +275,6 @@ public class ServerSocketHandler implements ClientRemoteInterface
         return outSocket.checkError();
     }
 
-    @Override
-    public void setModelAdapter(ServerModelAdapter adp) {
-
-    }
-
     public String doTurn ()
     {
         return null;

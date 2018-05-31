@@ -12,7 +12,6 @@ public interface ClientRemoteInterface extends Remote
     public boolean ping () throws RemoteException;
     public boolean sendMessage (String s) throws ClientOutOfReachException,RemoteException;
     public boolean closeCommunication (String cause) throws ClientOutOfReachException, RemoteException;
-    public void setModelAdapter (ServerModelAdapter adp) throws RemoteException;
 
     //Setup
     public String login() throws ClientOutOfReachException, RemoteException;
