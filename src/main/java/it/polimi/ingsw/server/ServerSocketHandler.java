@@ -14,12 +14,12 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.rmi.RemoteException;
 
-public class ServerSocketHandler extends Thread implements ClientRemoteInterface
+public class ServerSocketHandler implements ClientRemoteInterface
 {
     private LogFile log;
+    private ServerModelAdapter adapter;
 
     private int PORT;
-
     private Socket client;
     private BufferedReader inSocket;
     private PrintWriter outSocket;
@@ -29,7 +29,7 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
     private boolean isConnected;
 
 
-    public ServerSocketHandler(LogFile l, int port) throws ClientOutOfReachException
+    public ServerSocketHandler(LogFile l, int port)
     {
         PORT = port;
         isConnected = false;
@@ -57,19 +57,6 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
             } catch(Exception ex) {
                 //ex.printStackTrace();
             }
-        }
-    }
-
-    /**
-     * Used for close socket connection for RMI
-     */
-    public void run ()
-    {
-        try{
-            serverSocket.close();
-            client.close();
-        }catch (Exception e){
-            //log.addLog("Impossible to stop socket accept");
         }
     }
 
@@ -307,6 +294,7 @@ public class ServerSocketHandler extends Thread implements ClientRemoteInterface
     public void updateOpponents(String user, Pair[][] grid) throws ClientOutOfReachException, RemoteException {
 
     }
+
 
     /*
     public void close() {

@@ -189,8 +189,6 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     }
     //</editor-fold>
 
-
-
     //<editor-fold desc="Utilities">
     /**
      * @return if we are alive
