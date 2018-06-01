@@ -6,7 +6,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.RowConstraints;
 
-public class dimWindows {
+public class DimWindows {
     public static void dim(GridPane pane){
         for(int rowIndex=0;rowIndex<getRowCount(pane);rowIndex++){
             RowConstraints rc=new RowConstraints();
