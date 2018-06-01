@@ -227,7 +227,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         if(move.getP() == null && move.getI() == null && move.getJ() == null)
             pass();
 
-        if(move.getP() != null) {
+        if(move.getP() != null && move.getI() != null && move.getJ() != null) {
             finishedMove = true;
         } else {
             finishedMove = false;

@@ -11,7 +11,7 @@ public class ToolsGUI {
             b.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
             t.add(b, 0, i);
         }
-        dimWindows.dimWidth(t,300);
+        DimWindows.dimWidth(t,300);
         pane.add(t,0,0);
     }
 }

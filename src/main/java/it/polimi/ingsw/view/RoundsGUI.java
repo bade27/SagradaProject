@@ -14,7 +14,7 @@ public class RoundsGUI extends GridPane {
             if(i==turn-1)
                 b.setStyle("-fx-background-color: Red");
         }
-        dimWindows.dimHeight(r,20);
+        DimWindows.dimHeight(r,20);
         p.add(r,0,0);
     }
 }

@@ -15,6 +15,6 @@ public class TargetGUI {
                 t.add(b,0,i+1);
         }
         p.add(t,2,0);
-        dimWindows.dimWidth(t,300);
+        DimWindows.dimWidth(t,300);
     }
 }
