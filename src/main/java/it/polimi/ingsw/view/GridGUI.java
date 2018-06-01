@@ -49,7 +49,7 @@ public class GridGUI extends GridPane{
                         b.setFont(Font.font("ComicSans", FontWeight.EXTRA_BOLD,30));
                     b.setOnAction(event -> {
                         if (enable) {
-                            //b.setStyle("-fx-border-color");
+                            //b.setStyle("-fx-border-color: " + ColorEnum.YELLOW);
                             game.modIJ(b.geti(), b.getj());
                             //game.makeMove();
                         }

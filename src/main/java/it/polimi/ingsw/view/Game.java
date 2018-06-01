@@ -24,7 +24,7 @@ public class Game extends Application implements GUI {
     private int num=4;
     private ClientPlayer clientPlayer;
     private boolean enableBoard;
-    
+
 
     public Game() {
         enableBoard = false;

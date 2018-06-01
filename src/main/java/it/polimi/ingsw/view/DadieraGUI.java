@@ -49,6 +49,7 @@ public class DadieraGUI extends GridPane {
                 b.setStyle("-fx-background-color: " + current.getColor());
                 b.setOnAction(event -> {
                     if(enable) {
+                        //b.setStyle("-fx-border-color: " + ColorEnum.YELLOW);
                         String tok = b.getStyle().split(" ")[1];
                         int val = Integer.parseInt(b.getText());
                         ColorEnum color = ColorEnum.WHITE;
