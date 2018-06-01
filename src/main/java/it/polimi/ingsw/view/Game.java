@@ -55,11 +55,11 @@ public class Game extends Application implements GUI {
         //root.setAlignment(Pos.CENTER);
         root.setVgap(30);
         dadieraG = new DadieraGUI(root, num, this);
-        dimWindows.dim(dadieraG);
+        DimWindows.dim(dadieraG);
         //root.add(dadieraG, 0, 1);
 
         gridG = new GridGUI(root,this);
-        dimWindows.dim(gridG);
+        DimWindows.dim(gridG);
         //root.add(gridG,0,2);
 
         plaG= new PlayersGUI(root,this);
@@ -78,7 +78,7 @@ public class Game extends Application implements GUI {
         Scene scene = new Scene(root, 600, 400);
         primaryStage.setTitle("Sagrada");
         primaryStage.setScene(scene);
-        dimWindows.dim(root);
+        DimWindows.dim(root);
         primaryStage.show();
     }
     //</editor-fold>
