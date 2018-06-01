@@ -5,7 +5,8 @@ import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.remoteInterface.Pair;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.rmi.RemoteException;
@@ -23,6 +24,7 @@ public class Game extends Application implements GUI {
     private int num=4;
     private ClientPlayer clientPlayer;
     private boolean enableBoard;
+    
 
     public Game() {
         enableBoard = false;
@@ -62,8 +64,16 @@ public class Game extends Application implements GUI {
 
         plaG= new PlayersGUI(root,this);
 
-        msgb = new MessageBox("wellcome");
-        root.add(msgb, 0, 3);
+
+        //message and end of turn button
+        BorderPane bottom = new BorderPane();
+        msgb = new MessageBox("Wellcome!");
+        bottom.setLeft(msgb);
+
+        EndButton pass = new EndButton("End Turn", this);
+        bottom.setRight(pass);
+
+        root.add(bottom, 0, 3);
 
         Scene scene = new Scene(root, 600, 400);
         primaryStage.setTitle("Sagrada");
@@ -131,7 +141,7 @@ public class Game extends Application implements GUI {
     }
 
     /**
-     * send to client player the move made by the user
+     * sends to client player the move made by the user
      */
     public void makeMove() {
         clientPlayer.myMove();

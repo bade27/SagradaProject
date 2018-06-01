@@ -173,4 +173,9 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
     public String makeMove(Move move) throws RemoteException {
         return "";
     }
+
+    @Override
+    public String passTurn() throws RemoteException {
+        return null;
+    }
 }

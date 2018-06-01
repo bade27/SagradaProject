@@ -90,16 +90,22 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
     @Override
     public String makeMove(Move move) throws RemoteException {
         try {
-            adapter.addDiceToBoard(move.getI(),move.getJ(),new Dice(move.getP().getValue(),move.getP().getColor()));
+            adapter.addDiceToBoard(move.getI(), move.getJ(), new Dice(move.getP().getValue(), move.getP().getColor()));
             System.out.println(move.getP().getColor());
-        }
-        catch (ModelException e) {
+        } catch (ModelException e) {
             notifyServer();
             return e.getMessage();
         }
         notifyServer();
         return "Move ok";
     }
+
+    @Override
+    public String passTurn() throws RemoteException {
+        notifyServer();
+        return "Turn passed";
+    }
+
     //</editor-fold>
 
 

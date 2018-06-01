@@ -1,16 +1,20 @@
 package it.polimi.ingsw.view;
 
 import javafx.application.Platform;
-import javafx.geometry.Pos;
-import javafx.scene.control.Label;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 
 /**
  * describes the status of the move made
  */
-public class MessageBox extends Label {
+public class MessageBox extends Text {
 
     public MessageBox(String text) {
         super(text);
+        this.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 15));
     }
 
     /**
@@ -21,13 +25,18 @@ public class MessageBox extends Label {
         Platform.runLater(() -> {
             switch (msg) {
                 case "Move ok":
-                    this.setStyle("-fx-background-color: Green");
+                    this.setFill(Color.FORESTGREEN);
+                    break;
+                case "My turn":
+                    this.setFill(Color.STEELBLUE);
+                    break;
+                case "Turn passed":
+                    this.setFill(Color.ORANGERED);
                     break;
                 default:
-                    this.setStyle("-fx-background-color: Red");
+                    this.setFill(Color.INDIANRED);
                     break;
             }
-            this.setAlignment(Pos.CENTER);
             this.setText(msg);
         });
     }

@@ -5,9 +5,8 @@ import it.polimi.ingsw.remoteInterface.Pair;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.layout.*;
+import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 
 public class GridGUI extends GridPane{
@@ -47,11 +46,12 @@ public class GridGUI extends GridPane{
                     b.setText("" + pair[i][j].getValue());
                     b.setStyle("-fx-background-color: " + pair[i][j].getColor());
                     if(pair[i][j].getColor() != null && pair[i][j].getValue() != 0)
-                        b.setFont(Font.font("ComicSans",FontWeight.EXTRA_BOLD,30));
+                        b.setFont(Font.font("ComicSans", FontWeight.EXTRA_BOLD,30));
                     b.setOnAction(event -> {
                         if (enable) {
+                            //b.setStyle("-fx-border-color");
                             game.modIJ(b.geti(), b.getj());
-                            game.makeMove();
+                            //game.makeMove();
                         }
                     });
                     grid.add(b, j, i);

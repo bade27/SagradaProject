@@ -217,12 +217,15 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     public String doTurn ()
     {
         clearMove();
-        System.out.println("\nYour turn:");
+        graph.updateMessage("My turn");
         graph.setEnableBoard(true);
         return "ok";
     }
 
     public synchronized void myMove() {
+
+        if(move.getP() == null && move.getI() == null && move.getJ() == null)
+            pass();
 
         if(move.getP() != null) {
             finishedMove = true;
@@ -232,7 +235,6 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
         if(finishedMove) {
             try {
-                //System.out.println(server.makeMove(move));
                 String msg = server.makeMove(move);
                 graph.updateMessage(msg);
                 graph.setEnableBoard(false);
@@ -253,5 +255,14 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
     public synchronized void setMoveIJ(int i, int j) {
         this.move.setIJ(i, j);
+    }
+
+    public synchronized void pass() {
+        try {
+            String s = server.passTurn();
+            graph.updateMessage(s);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 }

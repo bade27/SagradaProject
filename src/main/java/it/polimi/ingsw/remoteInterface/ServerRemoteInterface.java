@@ -9,4 +9,5 @@ public interface ServerRemoteInterface extends Remote
 
     //game
     public String makeMove(Move move) throws RemoteException;
+    public String passTurn() throws RemoteException;
 }
