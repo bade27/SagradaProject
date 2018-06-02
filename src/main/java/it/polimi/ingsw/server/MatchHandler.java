@@ -443,7 +443,7 @@ public class MatchHandler implements Runnable
     /**
      * Update all client's graphic
      */
-    private void updateClient ()
+    public void updateClient ()
     {
         for (int i = 0; i < player.size() ; i++)
         {

@@ -1,16 +1,17 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.GUI;
 import javafx.scene.control.Button;
 
 public class EndButton extends Button {
 
-    private Game game;
+    private GUI game;
 
-    public EndButton(String text, Game game) {
-        super(text);
+    public EndButton(GUI game) {
+        super("Fine turno");
         this.game = game;
         this.setOnAction(actionEvent -> {
-            game.makeMove();
+            game.passTurn();
         });
     }
 

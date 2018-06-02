@@ -59,6 +59,11 @@ public class ServerModelAdapter
         dadiera.deleteDice(d);
     }
 
+    public void useTool() {
+        //questa classe si deve occupare di eseguire l'effetto del tool
+        //la sua implementazione va cambiata
+    }
+
     public void setPublicObjectives(String path) throws ModelException
     {
         //publicObjectives[0] = ObjectivesFactory.getPublicObjective(path);

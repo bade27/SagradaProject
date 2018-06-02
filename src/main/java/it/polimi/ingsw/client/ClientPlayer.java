@@ -2,10 +2,7 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.GUI;
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
-import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
-import it.polimi.ingsw.remoteInterface.Move;
-import it.polimi.ingsw.remoteInterface.Pair;
-import it.polimi.ingsw.remoteInterface.ServerRemoteInterface;
+import it.polimi.ingsw.remoteInterface.*;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -41,7 +38,9 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
     //buffer mossa in upload
     private Move move;
+    private ToolMove tmove;
     private boolean finishedMove = false;
+    private int num_of_moves = 0;
 
 
     //<editor-fold desc="Initialization Phase">
@@ -225,7 +224,9 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
     public String doTurn ()
     {
+        num_of_moves = 0;
         clearMove();
+        clearTool();
         graph.updateMessage("My turn");
         graph.setEnableBoard(true);
         return "ok";
@@ -233,28 +234,36 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
     public synchronized void myMove() {
 
-        if(move.getP() == null && move.getI() == null && move.getJ() == null)
-            pass();
+        if (num_of_moves == 0) {
+            if (move.getP() != null && move.getI() != null && move.getJ() != null) {
+                finishedMove = true;
+            } else {
+                finishedMove = false;
+            }
+            if (finishedMove) {
+                try {
+                    String msg = server.makeMove(move);
+                    graph.updateMessage(msg);
+                    //graph.setEnableBoard(false);
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                    if (finishedMove) {
+                        try {
+                            String msg = server.makeMove(move);
+                            graph.updateMessage(msg);
+                            graph.setEnableBoard(false);
+                            num_of_moves++;
+                        } catch (RemoteException ex) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
 
-        if(move.getP() != null && move.getI() != null && move.getJ() != null) {
-            finishedMove = true;
-        } else {
-            finishedMove = false;
-        }
-
-        if(finishedMove) {
-            try {
-                String msg = server.makeMove(move);
-                graph.updateMessage(msg);
-                //graph.setEnableBoard(false);
-            } catch (RemoteException e) {
-                e.printStackTrace();
             }
         }
-
     }
 
-    public synchronized void clearMove() {
+    public synchronized void clearMove () {
         move = new Move();
     }
 
@@ -274,5 +283,49 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+    }
+
+    public boolean toolPermission(int toolID) {
+        boolean response = false;
+        try {
+            response = server.askToolPermission();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return response;
+    }
+
+    public synchronized void useTool() {
+        try {
+            if(tmove.getId() != 0) {
+                if(server.useTool(tmove)) {
+                    System.out.println("hi");
+                    graph.setToolPhase(false);
+                    clearTool();
+                }
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public synchronized void clearTool() {
+        tmove = new ToolMove();
+    }
+
+    public synchronized void setToolMovePair(Pair p) {
+        this.tmove.setP(p);
+    }
+
+    public synchronized void setToolMoveIJ(int i, int j) {
+        this.tmove.setIJ(i, j);
+    }
+
+    public synchronized void setToolInstruction(String instruction) {
+        this.tmove.setInstruction(instruction);
+    }
+
+    public synchronized void setToolMoveID(int id) {
+        tmove.setId(id);
     }
 }

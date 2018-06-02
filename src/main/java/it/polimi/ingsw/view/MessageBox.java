@@ -33,6 +33,9 @@ public class MessageBox extends Text {
                 case "Turn passed":
                     this.setFill(Color.ORANGERED);
                     break;
+                case "Using a tool":
+                    this.setFill(Color.BROWN);
+                    break;
                 default:
                     this.setFill(Color.INDIANRED);
                     break;

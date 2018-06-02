@@ -1,9 +1,9 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.GUI;
 import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.remoteInterface.Pair;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
@@ -15,7 +15,7 @@ public class PlayersGUI extends GridPane {
     private GridPane giocatori;
     String [] name;
 
-    public PlayersGUI(GridPane root, Game game) {
+    public PlayersGUI(GridPane root, GUI game) {
         name= new String[]{"pippo", "pluto","camillo"};
         giocatori=new GridPane();
         giocatori.setHgap(20);

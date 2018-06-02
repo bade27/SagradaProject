@@ -3,10 +3,7 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.exceptions.ModelException;
 import it.polimi.ingsw.model.Dice;
-import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
-import it.polimi.ingsw.remoteInterface.Move;
-import it.polimi.ingsw.remoteInterface.Pair;
-import it.polimi.ingsw.remoteInterface.ServerRemoteInterface;
+import it.polimi.ingsw.remoteInterface.*;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -87,13 +84,21 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
     }
 
 
+    /**
+     * allows the client to make a move
+     * @param move the move sent by the client
+     * @return a message saying weather the move is valid or not
+     * @throws RemoteException if the server is unreachable
+     */
     @Override
     public String makeMove(Move move) throws RemoteException {
         try {
             if (!adapter.CanMove())
                 return "You have already moved on this turn";
-
             adapter.addDiceToBoard(move.getI(), move.getJ(), new Dice(move.getP().getValue(), move.getP().getColor()));
+
+            match.updateClient();
+
         } catch (ModelException e) {
             //notifyServer();
             return e.getMessage();
@@ -103,6 +108,28 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
         return "Move ok";
     }
 
+
+    @Override
+    public boolean askToolPermission() throws RemoteException {
+        //questo metodo si occupa di cotrollare se il tool scelto dall'utente può essere utilizzato
+        //restituisce ok se lo può usare, ko altrimenti
+        return true;
+    }
+
+    @Override
+    public boolean useTool(ToolMove toolMove) throws RemoteException {
+        //è l'equivalente di makeMove: dialoga con il model per applicare l'effetto del tool
+        //restituisce true o false
+        //la sua implementazione va cambiata
+        System.out.println(toolMove.toString());
+        return true;
+    }
+
+    /**
+     * if the client doesn't want to make a move, he can pass the turn using this method
+     * @return a string saying the turn is passed
+     * @throws RemoteException if the server is unreachable
+     */
     @Override
     public String passTurn() throws RemoteException {
         notifyServer();

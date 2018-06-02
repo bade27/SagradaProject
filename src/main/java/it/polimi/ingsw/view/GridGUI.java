@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.GUI;
 import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.remoteInterface.Pair;
 import javafx.application.Platform;
@@ -11,11 +12,12 @@ import javafx.scene.text.FontWeight;
 
 public class GridGUI extends GridPane{
 
-    Game game;
+    private GUI game;
     private boolean enable;
+    private boolean tool;
     private GridPane grid;
 
-    public GridGUI (GridPane p, Game game){
+    public GridGUI (GridPane p, GUI game){
         this.game=game;
         enable = false;
         grid=new GridPane();
@@ -27,7 +29,7 @@ public class GridGUI extends GridPane{
 
         //dimWindows.dim(grid);
         grid.setAlignment(Pos.CENTER);
-        p.add(grid,0,1);
+        p.add(grid,0,2);
     }
 
     /**
@@ -49,9 +51,12 @@ public class GridGUI extends GridPane{
                         b.setFont(Font.font("ComicSans", FontWeight.EXTRA_BOLD,30));
                     b.setOnAction(event -> {
                         if (enable) {
-                            //b.setStyle("-fx-border-color: " + ColorEnum.YELLOW);
-                            game.modIJ(b.geti(), b.getj());
-                            //game.makeMove();
+                            if(tool) {
+                                game.modToolMoveIJ(b.geti(), b.getj());
+                            } else {
+                                game.modMoveIJ(b.geti(), b.getj());
+                                game.makeMove();
+                            }
                         }
                     });
                     grid.add(b, j, i);
@@ -66,6 +71,10 @@ public class GridGUI extends GridPane{
      */
     public void setEnable(boolean enable) {
         this.enable = enable;
+    }
+
+    public void setTool(boolean tool) {
+        this.tool = tool;
     }
 
     /**
