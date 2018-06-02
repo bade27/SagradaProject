@@ -4,6 +4,7 @@ import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
 import it.polimi.ingsw.remoteInterface.Move;
 import it.polimi.ingsw.remoteInterface.ServerRemoteInterface;
+import it.polimi.ingsw.remoteInterface.ToolMove;
 import it.polimi.ingsw.utilities.JSONFacilities;
 import org.json.JSONException;
 
@@ -177,5 +178,15 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
     @Override
     public String passTurn() throws RemoteException {
         return null;
+    }
+
+    @Override
+    public boolean askToolPermission() throws RemoteException {
+        return true;
+    }
+
+    @Override
+    public boolean useTool(ToolMove move) throws RemoteException {
+        return false;
     }
 }

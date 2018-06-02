@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 
@@ -15,6 +16,7 @@ public class RoundsGUI extends GridPane {
                 b.setStyle("-fx-background-color: Red");
         }
         DimWindows.dimHeight(r,20);
+        r.setAlignment(Pos.TOP_CENTER);
         p.add(r,0,0);
     }
 }
