@@ -113,12 +113,10 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
     }
 
     @Override
-    public boolean useTool(ToolMove toolMove) throws RemoteException {
-        //è l'equivalente di makeMove: dialoga con il model per applicare l'effetto del tool
-        //restituisce true o false
-        //la sua implementazione va cambiata
-        System.out.println(toolMove.toString());
-        return true;
+    public String useTool(ToolMove toolMove) throws RemoteException {
+        String ret = adapter.useTool(toolMove);
+        match.updateClient();
+        return ret;
     }
 
     /**

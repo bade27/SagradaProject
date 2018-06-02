@@ -60,7 +60,7 @@ public class Dadiera
     public synchronized void setDiceValue(int n, Dice d) throws IllegalDiceException {
         if(n>0&&n<7) {
             for (int i = 0; i < listaDadi.size(); i++)
-                if (d.equals(listaDadi.get(i))) {
+                if (d.isEqual(listaDadi.get(i))) {
                     listaDadi.get(i).setValue(n);
                     break;
                 }

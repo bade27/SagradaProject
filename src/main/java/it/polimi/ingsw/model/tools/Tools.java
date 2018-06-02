@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.Dadiera;
 import it.polimi.ingsw.model.Dice;
 import it.polimi.ingsw.model.RoundTrace;
 import it.polimi.ingsw.model.Window;
+import it.polimi.ingsw.remoteInterface.ToolMove;
 
 public abstract class Tools {
 
@@ -34,7 +35,12 @@ public abstract class Tools {
 
     abstract public int getType();
 
-
+    public void setToolMove (ToolMove tm)
+    {
+        d1 = new Dice(tm.getP().getValue(),tm.getP().getColor());
+        index = tm.getInstruction();
+        dadiera = tm.getDadiera();
+    }
 
 
 
@@ -46,13 +52,13 @@ public abstract class Tools {
         this.rt = rt;
     }
 
-    public Dice getD1() {
+    /*public Dice getD1() {
         return d1;
     }
 
     public void setD1(Dice d1) {
         this.d1 = d1;
-    }
+    }*/
 
     public Dice getD2() {
         return d2;
@@ -118,9 +124,9 @@ public abstract class Tools {
         this.pos_rt=pos_rt;
     }
 
-    public int getIndex(){ return index;}
+    /*public int getIndex(){ return index;}
 
-    public void setIndex(int index){ this.index=index; }
+    public void setIndex(int index){ this.index=index; }*/
 
     abstract public void use() throws IllegalStepException, IllegalDiceException;
 

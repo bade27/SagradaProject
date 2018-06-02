@@ -195,7 +195,7 @@ public class SagradaGUI extends Application implements GUI {
         clientPlayer.setToolMovePair(pair);
     }
 
-    public void modToolMoveInstruction(String instruction) {
+    public void modToolMoveInstruction(int instruction) {
         clientPlayer.setToolInstruction(instruction);
     }
 
@@ -225,9 +225,9 @@ public class SagradaGUI extends Application implements GUI {
                 Optional<ButtonType> result = alert.showAndWait();
 
                 if (result.get() == buttonType1) {
-                    modToolMoveInstruction("inc");
+                    modToolMoveInstruction(0);//inc
                 } else {
-                    modToolMoveInstruction("dec");
+                    modToolMoveInstruction(1);//dec
                 }
             });
         }

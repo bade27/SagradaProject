@@ -10,6 +10,6 @@ public interface ServerRemoteInterface extends Remote
     //game
     public String makeMove(Move move) throws RemoteException;
     public boolean askToolPermission(int nrTool) throws RemoteException;
-    public boolean useTool(ToolMove move) throws RemoteException;
+    public String useTool(ToolMove move) throws RemoteException;
     public String passTurn() throws RemoteException;
 }

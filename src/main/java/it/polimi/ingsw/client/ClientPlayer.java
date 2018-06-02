@@ -269,11 +269,9 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     public synchronized void useTool() {
         try {
             if(tmove.getId() != 0) {
-                if(server.useTool(tmove)) {
-                    System.out.println("hi");
-                    graph.setToolPhase(false);
-                    clearTool();
-                }
+                System.out.println(server.useTool(tmove));
+                graph.setToolPhase(false);
+                clearTool();
             }
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -292,7 +290,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         this.tmove.setIJ(i, j);
     }
 
-    public synchronized void setToolInstruction(String instruction) {
+    public synchronized void setToolInstruction(int instruction) {
         this.tmove.setInstruction(instruction);
     }
 

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.exceptions.IllegalDiceException;
+import it.polimi.ingsw.exceptions.IllegalStepException;
 import it.polimi.ingsw.exceptions.ModelException;
 import it.polimi.ingsw.exceptions.ParserXMLException;
 import it.polimi.ingsw.model.Dadiera;
@@ -12,6 +13,7 @@ import it.polimi.ingsw.model.objectives.Public.PublicObjective;
 import it.polimi.ingsw.model.tools.Tools;
 import it.polimi.ingsw.model.tools.ToolsFactory;
 import it.polimi.ingsw.remoteInterface.Pair;
+import it.polimi.ingsw.remoteInterface.ToolMove;
 
 public class ServerModelAdapter
 {
@@ -35,11 +37,23 @@ public class ServerModelAdapter
         dadiera = d;
         publicObjectives = new PublicObjective[numPublicObj];
         tools = new Tools[numTools];
+        toolInUse = null;
     }
 
-    public void useTool() {
+    public String useTool(ToolMove mv)
+    {
+        if (toolInUse == null)
+            return "Not using tool permission asked";
 
-
+        mv.setDadiera(dadiera);
+        toolInUse.setToolMove(mv);
+        try{
+            toolInUse.use();
+            toolInUse = null;
+        }catch (IllegalDiceException | IllegalStepException e){
+            return e.getMessage();
+        }
+        return "Tool used correctly";
     }
 
     public boolean toolRequest (int nrTool)

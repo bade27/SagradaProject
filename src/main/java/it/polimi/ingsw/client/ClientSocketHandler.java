@@ -186,7 +186,7 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
     }
 
     @Override
-    public boolean useTool(ToolMove move) throws RemoteException {
-        return false;
+    public String useTool(ToolMove move) throws RemoteException {
+        return null;
     }
 }
