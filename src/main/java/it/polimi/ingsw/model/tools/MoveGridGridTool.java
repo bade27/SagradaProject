@@ -11,63 +11,82 @@ import javax.tools.Tool;
 public class MoveGridGridTool extends Tools {
 
     private int price;
+    private String type;
 
-    public MoveGridGridTool() {
+    public MoveGridGridTool(String type, String name) {
+
         this.price = 1;
+        this.type=type;
+        this.name=name;
     }
 
+
+    @Override
+    public void use() throws IllegalStepException, IllegalDiceException {
+        switch (type)
+        {case "tool2":
+            //ho dado, dadiera e i che mi arrivano lato client
+            moveOneDieTool();
+            break;
+            case "tool3":
+                moveOneDieTool();
+                break;
+            case "tool4":
+                moveTwoDieTool();
+                break;
+            case "":
+                break;
+            default:
+                break;
+
+        }
+    }
 
     /**
      * Sposta un dado presente nella griglia di gioco da una cella ad un'altra ignorando le restrizioni in base al valore di level
      *
-     * @param w       griglia di gioco
-     * @param pos_in  posizione del dado da spostare
-     * @param pos_end posizione nella quale spostare il dado
-     * @throws IllegalStepException
      */
-    public void moveOneDieTool(Window w, int[] pos_in, int[] pos_end, int level) throws IllegalStepException {
-        Dice d = w.getCell(pos_in[0], pos_in[1]).getFrontDice();
+
+
+    public void moveOneDieTool(/*Window w, int[] pos_in, int[] pos_end, int level*/) throws IllegalStepException {
+        Dice d = window.getCell(pos_iniz1[0], pos_fin1[1]).getFrontDice();
         try {
-            w.moveDice(pos_in,pos_end, level);
+            window.moveDice(pos_iniz1,pos_fin1, index);
         } catch (Exception ex) {
             throw new IllegalStepException();
         }
 
-        if (w.getCell(pos_in[0], pos_in[1]).getFrontDice() == null &&
-                w.getCell(pos_end[0], pos_end[1]).getFrontDice() == d &&
+        if (window.getCell(pos_iniz1[0], pos_iniz1[1]).getFrontDice() == null &&
+                window.getCell(pos_fin1[0], pos_fin1[1]).getFrontDice() == d &&
                 d != null)
             setPrice();
     }
 
     /**
      * Sposto esattamente 2 dadi presenti nella griglia di gioco dalle rispettive celle iniziali a quelle finali
-     * @param w griglia di gioco
-     * @param pos_in1 posizione iniziale primo dado
-     * @param pos_end1 posizione finale primo dado
-     * @param pos_in2 posizione iniziale secondo dado
-     * @param pos_end2 posizione finale secondo dado
+     *
      * @throws IllegalStepException
      * @throws IllegalDiceException
      */
-    public void useTool(Window w, int[] pos_in1, int[] pos_end1, int[] pos_in2, int[] pos_end2) throws IllegalStepException, IllegalDiceException {   //perche mi son fatto passare dado?
-        Dice d1 = w.getCell(pos_in1[0], pos_in1[1]).getFrontDice();
-        Dice d2 = w.getCell(pos_in2[0], pos_in2[1]).getFrontDice();
+    public void moveTwoDieTool() throws IllegalStepException, IllegalDiceException {   //perche mi son fatto passare dado?
+        Dice d1 = window.getCell(pos_iniz1[0], pos_iniz1[1]).getFrontDice();
+        Dice d2 = window.getCell(pos_iniz2[0], pos_iniz2[1]).getFrontDice();
         try {
-            w.moveDice(pos_in1, pos_end1, 0);
+            window.moveDice(pos_iniz1, pos_fin1, 0);
         } catch (Exception ex) {
             throw new IllegalStepException();
         }
-        if (w.getCell(pos_in1[0], pos_in1[1]).getFrontDice() == null &&
-                w.getCell(pos_end1[0], pos_end1[1]).getFrontDice() == d1 &&
+        if (window.getCell(pos_iniz1[0], pos_iniz1[1]).getFrontDice() == null &&
+                window.getCell(pos_fin1[0], pos_fin1[1]).getFrontDice() == d1 &&
                 d1 != null) {
             try {
-                w.moveDice(pos_in2, pos_end2, 0);
+                window.moveDice(pos_iniz2, pos_fin2, 0);
             } catch (Exception ex) {
-                w.moveDice(pos_end1, pos_in1, 1);
+                window.moveDice(pos_fin1, pos_iniz1, 1);
                 throw new IllegalStepException();
             }
-            if (w.getCell(pos_in2[0], pos_in2[1]).getFrontDice() == null &&
-                    w.getCell(pos_end2[0], pos_end2[1]).getFrontDice() == d2 &&
+            if (window.getCell(pos_iniz2[0], pos_iniz2[1]).getFrontDice() == null &&
+                    window.getCell(pos_fin2[0], pos_fin2[1]).getFrontDice() == d2 &&
                     d2 != null)
                 setPrice();
         }
