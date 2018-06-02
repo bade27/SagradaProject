@@ -30,7 +30,7 @@ public class MatchHandler implements Runnable
     private TokenTurn tok;
     private Dadiera dices;
 
-    private final static int MAXGIOC = 1;//Da modificare a 4
+    private final static int MAXGIOC = 2;//Da modificare a 4
 
     //connection parameters
     private static final String settings = "resources/server_settings.xml";
@@ -59,12 +59,19 @@ public class MatchHandler implements Runnable
 
     public synchronized void run ()
     {
+        //Connection Phase
         initializeServer();
         initializeClients();
         System.out.println(">>>Connection Phase Ended");
 
-        initializeWindowPlayers();
-        initializePublicObjectiveCards();
+        //Initialization clients' cards
+        if (! (initializeWindowPlayers() && initializePublicObjectiveCards() && initializeTools()))
+        {
+            System.out.println(">>>Failed to initialize cards, server aborted");
+            return;
+        }
+
+        //Setup Phase
         waitInitialition();
         System.out.println(">>>Setup Phase ended");
 
@@ -292,8 +299,7 @@ public class MatchHandler implements Runnable
             cards = ParserXML.readWindowsName("resources/vetrate/xml/windows_list.xml");
         }
         catch (ParserXMLException ex){
-            System.out.println(ex.getMessage());
-            log.addLog("" , ex.getStackTrace());
+            log.addLog("Impossible to read XML Window",ex.getStackTrace());
             return false;
         }
 
@@ -337,7 +343,7 @@ public class MatchHandler implements Runnable
             cards = ParserXML.readObjectiveNames("resources/carte/obbiettivi/obbiettiviPrivati/xml/privateObjectiveList.xml");
         }
         catch (ParserXMLException ex){
-            System.out.println(ex.getMessage());
+            log.addLog("Impossible to read XML Private Obj",ex.getStackTrace());
             return false;
         }
 
@@ -352,7 +358,7 @@ public class MatchHandler implements Runnable
             }
         }
         catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            log.addLog("Impossible to set XML private Obj",ex.getStackTrace());
             return false;
         }
         return true;
@@ -371,7 +377,7 @@ public class MatchHandler implements Runnable
             cards = ParserXML.readObjectiveNames("resources/carte/obbiettivi/obbiettiviPubblici/xml/publicObjectiveList.xml");
         }
         catch (ParserXMLException ex){
-            System.out.println(ex.getMessage());
+            log.addLog("Impossible to read XML publicObj",ex.getStackTrace());
             return false;
         }
 
@@ -390,12 +396,46 @@ public class MatchHandler implements Runnable
                 player.get(i).setPublicObjCard(objs);
         }
         catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            log.addLog("Impossible to set XML publicObj",ex.getStackTrace());
             return false;
         }
         return true;
     }
 
+    private boolean initializeTools ()
+    {
+        int c;
+        ArrayList<String> cards;
+
+        //Take all xml names of tool cards
+        try{
+            cards = ParserXML.readToolsNames("resources/carte/tools/tools.xml");
+        }
+        catch (ParserXMLException ex){
+            log.addLog("Impossible to read XML tools",ex.getStackTrace());
+            return false;
+        }
+
+        try
+        {
+            String [] tools = new String[3];
+            //Select randomly 3 tool cards from list
+            for (int i = 0; i < 3; i++)
+            {
+                c = (int)(Math.random()* (cards.size()));
+                tools[i]=cards.get(c);
+                cards.remove(c);
+            }
+            //For each players initialize tool cards already selected
+            for (int i=0;i<nConn;i++)
+                player.get(i).setToolCards(tools);
+        }
+        catch (Exception ex) {
+            log.addLog("Impossible to set XML tools",ex.getStackTrace());
+            return false;
+        }
+        return true;
+    }
     //</editor-fold>
 
     //<editor-fold desc="Utilities">

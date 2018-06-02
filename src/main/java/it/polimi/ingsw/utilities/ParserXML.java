@@ -16,10 +16,10 @@ import java.util.ArrayList;
 public class ParserXML
 {
     /**
-     * Legge dal file xml passato come parametro la carta corrispondente e ne crea la board corrispondente
-     * @param path Locazione del file da leggere
-     * @param b Board da inizializzare
-     * @return Board inizializzata
+     * Read from xml window's pattern and initialize an empty board
+     * @param path XML file location
+     * @param b Board to initialize
+     * @return Board initialized
      */
     public static Cell[][] readWindowFromPath (String path, Cell[][] b) throws ParserXMLException
     {
@@ -75,7 +75,9 @@ public class ParserXML
     }
 
     /**
-     * NON TESTATA
+     * Read from xml all windows' names and return a list with those
+     * @param path XML file location
+     * @return list of names
      */
     public static ArrayList readWindowsName (String path) throws ParserXMLException
     {
@@ -108,7 +110,11 @@ public class ParserXML
 
     }
 
-
+    /**
+     * Read from xml all objectives' names and return a list with those
+     * @param path XML file location
+     * @return list of names
+     */
     public static ArrayList readObjectiveNames (String path) throws ParserXMLException
     {
         try
@@ -126,6 +132,38 @@ public class ParserXML
             {
                 String card = cards.item(i).getTextContent();
                 arr.add(card);
+            }
+            return arr;
+        }
+        catch (Exception ex){
+            throw new ParserXMLException("Impossible to read file: " + path);
+        }
+    }
+
+    /**
+     * Read from xml all tools' names and return a list with those
+     * @param path XML file location
+     * @return list of names
+     */
+    public static ArrayList readToolsNames (String path) throws ParserXMLException
+    {
+        try
+        {
+            ArrayList<String> arr = new ArrayList<String>();
+            File file = new File(path);
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document document = documentBuilder.parse(file);
+
+            int nCard = Integer.parseInt(document.getElementsByTagName("numberOfCards").item(0).getTextContent());
+
+
+            for (int i = 0; i < nCard;i++)
+            {
+                String s = "tool" + (i + 1);
+                int numtool = Integer.parseInt(document.getElementsByTagName(s).item(0).getAttributes().getNamedItem("num").getTextContent());
+                String name = document.getElementsByTagName("name").item(numtool-1).getTextContent();
+                arr.add(name);
             }
             return arr;
         }

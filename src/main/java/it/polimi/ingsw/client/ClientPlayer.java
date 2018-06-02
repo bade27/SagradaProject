@@ -132,7 +132,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     {
         String choice = "";
         try {
-            TimeUnit.SECONDS.sleep(3);
+            TimeUnit.SECONDS.sleep(3);//why?
             choice = chooseWindow(list.get(0),list.get(1));
         }
         catch (ClientOutOfReachException ex){
@@ -150,12 +150,21 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     public String chooseWindow(String[] s1, String[] s2)  throws ClientOutOfReachException
     {
         //Ora qui ci deve essere la scelta dell'utente della carta
-        System.out.println(s1[0]);
+        System.out.println("Window selected:" + s1[0]);
         return s1[0];
     }
 
     @Override
     public boolean sendCards(String[]... s) throws RemoteException {
+        for (int i = 0; i < s.length ; i++)
+        {
+            if (i == 0)
+                System.out.println("Obbiettivi Pubblici: ");
+            else
+                System.out.println("Strumenti: ");
+            for (int j = 0; j< s[i].length ; j++)
+                System.out.println(s[i][j]);
+        }
         return true;
     }
 
@@ -175,7 +184,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     }
 
     @Override
-    public void updateOpponents(String user, Pair[][] grids) {
+    public void updateOpponents (String user, Pair[][] grids) {
         /*for(int k = 0; k < grids.length; k++){
             System.out.println("opponent " + (k + 1) );
             Pair[][] p = grids[k];*/
@@ -237,7 +246,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             try {
                 String msg = server.makeMove(move);
                 graph.updateMessage(msg);
-                graph.setEnableBoard(false);
+                //graph.setEnableBoard(false);
             } catch (RemoteException e) {
                 e.printStackTrace();
             }
@@ -260,6 +269,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     public synchronized void pass() {
         try {
             String s = server.passTurn();
+            graph.setEnableBoard(false);
             graph.updateMessage(s);
         } catch (RemoteException e) {
             e.printStackTrace();

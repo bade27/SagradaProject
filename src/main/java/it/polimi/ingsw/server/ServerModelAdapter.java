@@ -19,6 +19,7 @@ public class ServerModelAdapter
     private PublicObjective[] publicObjectives;
     private Tools[] tools;
     private String user;
+    private boolean canMove;
 
     public ServerModelAdapter (Dadiera d)
     {
@@ -50,11 +51,11 @@ public class ServerModelAdapter
     {
         try {
             board.addDice(i,j,d,0);
-            //System.out.println(board.toString());
         }
         catch (IllegalDiceException ex) {
             throw new ModelException("Impossible to place dice: " + ex.getMessage());
         }
+        canMove = false;
         dadiera.deleteDice(d);
     }
 
@@ -81,5 +82,13 @@ public class ServerModelAdapter
 
     public void setDadiera(Dadiera dadiera) {
         this.dadiera = dadiera;
+    }
+
+    public boolean CanMove() {
+        return canMove;
+    }
+
+    public void setCanMove() {
+        this.canMove = true;
     }
 }

@@ -33,9 +33,6 @@ public class ServerPlayer implements Runnable
     private LogFile log;
     private ExecutorService executor;
 
-    //Init phase
-    private boolean connectionError;
-
     //Setup Phase
     private ServerSocketHandler socketCon;
     private ArrayList<String> possibleUsers;
@@ -43,7 +40,9 @@ public class ServerPlayer implements Runnable
     //passed parameters
     private String[] windowCard1,windowCard2;
     private String[] publicObjCard;
+    private String[] toolCard;
     private String privateObjCard;
+
 
     /**
      * sets up connection parameters
@@ -67,7 +66,6 @@ public class ServerPlayer implements Runnable
         token = tok;
         possibleUsers = ps;
         communicator = null;
-        connectionError = false;
         log = l;
         executor = Executors.newCachedThreadPool();
         communicator = cli;
@@ -139,6 +137,7 @@ public class ServerPlayer implements Runnable
 
 
                     try {
+                        adapter.setCanMove();
                         clientTurn();
                     }catch (ClientOutOfReachException e){
                         //Notify token that client is dead
@@ -240,7 +239,7 @@ public class ServerPlayer implements Runnable
     {
         try {
             boolean performed;
-            performed = stopTask(() -> communicator.sendCards(publicObjCard), INIT_TIMEOUT, executor);
+            performed = stopTask(() -> communicator.sendCards(publicObjCard,toolCard), INIT_TIMEOUT, executor);
             if(!performed)
             {
                 log.addLog("(User:" + user + ") Failed to initialize cards");
@@ -251,6 +250,8 @@ public class ServerPlayer implements Runnable
             log.addLog("(User:" + user + ")" + e.getMessage() , e.getStackTrace());
             throw new ClientOutOfReachException();
         }
+
+
     }
     //</editor-fold>
 
@@ -401,7 +402,6 @@ public class ServerPlayer implements Runnable
     //<editor-fold desc="Set Windows/Objects/Tools">
     /**
      * receives from the match the window cards among which the client need to choose
-     * and sends them to the client
      * @param c1 first card (two sides)
      * @param c2 second card (two sides)
      */
@@ -413,7 +413,6 @@ public class ServerPlayer implements Runnable
 
     /**
      * receives from the match the array of the public objectives of the current match
-     * and sends them to the client
      * @param c array of the public objectives of the current match
      */
     public void setPublicObjCard (String[] c)
@@ -423,12 +422,20 @@ public class ServerPlayer implements Runnable
 
     /**
      * receives from the match the player's private objective for the current match
-     * and sends them to the client
      * @param c array of the public objectives of the current match
      */
     public void setPrivateObjCard (String c)
     {
         privateObjCard = c;
+    }
+
+    /**
+     * receives from the match the player's tool cards for the current match
+     * @param c array of the tool cards of the current match
+     */
+    public void setToolCards (String [] c)
+    {
+        toolCard = c;
     }
     //</editor-fold>
 

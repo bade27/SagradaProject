@@ -90,13 +90,16 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
     @Override
     public String makeMove(Move move) throws RemoteException {
         try {
+            if (!adapter.CanMove())
+                return "You have already moved on this turn";
+
             adapter.addDiceToBoard(move.getI(), move.getJ(), new Dice(move.getP().getValue(), move.getP().getColor()));
-            System.out.println(move.getP().getColor());
         } catch (ModelException e) {
-            notifyServer();
+            //notifyServer();
             return e.getMessage();
         }
-        notifyServer();
+        //notifyServer();
+
         return "Move ok";
     }
 
@@ -109,6 +112,9 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
     //</editor-fold>
 
 
+    /**
+     * Notify server the end of current turn
+     */
     private void notifyServer ()
     {
         try{
