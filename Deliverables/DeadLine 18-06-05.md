@@ -1,4 +1,4 @@
-## List of goals for 29/05/18
+## List of goals for 05/06/18
 
 - Server
 	- [ ] Tool upload from XML
