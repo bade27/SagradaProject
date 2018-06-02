@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.objectives;
 
+import it.polimi.ingsw.exceptions.ModelException;
 import it.polimi.ingsw.model.objectives.Private.PrivateObjective;
 import it.polimi.ingsw.model.objectives.Public.*;
 import org.w3c.dom.Document;
@@ -10,7 +11,8 @@ import java.io.File;
 
 public class ObjectivesFactory {
 
-    public static PrivateObjective getPrivateObjective(String path) {
+    public static PrivateObjective getPrivateObjective(String path) throws ModelException
+    {
 
         try {
 
@@ -27,13 +29,12 @@ public class ObjectivesFactory {
 
         } catch (Exception e) {
             e.printStackTrace();
+            throw new ModelException("Impossible to read Private Objectives XML");
         }
-
-        return null;
 
     }
 
-    public static PublicObjective getPublicObjective(String path) {
+    public static PublicObjective getPublicObjective(String path) throws ModelException {
 
         try {
 
@@ -65,10 +66,9 @@ public class ObjectivesFactory {
 
         } catch (Exception e) {
             e.printStackTrace();
+            throw new ModelException("Impossible to read Public Objectives XML");
         }
-
         return null;
-
     }
 
 }

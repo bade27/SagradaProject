@@ -91,8 +91,8 @@ public class ServerPlayer implements Runnable
             try {
                 login();
                 token.addPlayer(user);
-                initializeCards();
                 initializeWindow();
+                initializeCards();
             }
             catch (ClientOutOfReachException|ModelException ex) {
                 //Notify token that client is dead
@@ -223,7 +223,7 @@ public class ServerPlayer implements Runnable
 
         try {
             adapter.initializeWindow(s1);
-            log.addLog("User: " + user + " Window initialized: " + s1);
+            log.addLog("User: " + user + " Window initialized ");
         }
         catch (ModelException ex) {
             log.addLog("Impossible to set Window from XML", ex.getStackTrace());
@@ -235,7 +235,7 @@ public class ServerPlayer implements Runnable
      * receives the public objectives and the tools chosen for the current match
      * and sets the corresponding parameters on the model adapter
      */
-    private void initializeCards () throws ClientOutOfReachException
+    private void initializeCards () throws ClientOutOfReachException,ModelException
     {
         try {
             boolean performed;
@@ -251,10 +251,20 @@ public class ServerPlayer implements Runnable
             throw new ClientOutOfReachException();
         }
 
+        try {
+            adapter.initializePublicObjectives(publicObjCard);
+            adapter.initializeToolCards(toolCard);
+            log.addLog("User: " + user + " Tools and Objectives initialized ");
+
+        }catch (ModelException e ){
+            log.addLog("", e.getStackTrace());
+            throw new ModelException();
+        }
 
     }
     //</editor-fold>
 
+    //<editor-fold desc="Update Client's information">
     /**
      * Send to client a massage that inform about his turn
      */
@@ -275,7 +285,6 @@ public class ServerPlayer implements Runnable
         }
     }
 
-    //<editor-fold desc="Update Client's information">
     /**
      *  Update Dadiera information on client's side
      */

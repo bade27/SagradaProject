@@ -234,13 +234,15 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
     public synchronized void myMove() {
 
-        if (num_of_moves == 0) {
-            if (move.getP() != null && move.getI() != null && move.getJ() != null) {
+        if (num_of_moves == 0)
+        {
+            if (move.getP() != null && move.getI() != null && move.getJ() != null)
                 finishedMove = true;
-            } else {
+            else
                 finishedMove = false;
-            }
-            if (finishedMove) {
+
+            if (finishedMove)
+            {
                 try {
                     String msg = server.makeMove(move);
                     graph.updateMessage(msg);

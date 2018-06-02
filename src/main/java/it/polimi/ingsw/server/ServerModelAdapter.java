@@ -6,13 +6,18 @@ import it.polimi.ingsw.exceptions.ParserXMLException;
 import it.polimi.ingsw.model.Dadiera;
 import it.polimi.ingsw.model.Dice;
 import it.polimi.ingsw.model.Window;
+import it.polimi.ingsw.model.objectives.ObjectivesFactory;
 import it.polimi.ingsw.model.objectives.Private.PrivateObjective;
 import it.polimi.ingsw.model.objectives.Public.PublicObjective;
 import it.polimi.ingsw.model.tools.Tools;
+import it.polimi.ingsw.model.tools.ToolsFactory;
 import it.polimi.ingsw.remoteInterface.Pair;
 
 public class ServerModelAdapter
 {
+    private static final int numPublicObj = 3;
+    private static final int numTools = 3;
+
     private Window board;
     private Dadiera dadiera;
     private PrivateObjective myPrivateObject;
@@ -25,6 +30,8 @@ public class ServerModelAdapter
     {
         board = null;
         dadiera = d;
+        publicObjectives = new PublicObjective[numPublicObj];
+        tools = new Tools[numTools];
     }
 
     /**
@@ -64,9 +71,28 @@ public class ServerModelAdapter
         //la sua implementazione va cambiata
     }
 
-    public void setPublicObjectives(String path) throws ModelException
+    public void initializePublicObjectives(String[] path) throws ModelException
     {
-        //publicObjectives[0] = ObjectivesFactory.getPublicObjective(path);
+        try
+        {
+            for (int i = 0 ; i < numPublicObj ; i++)
+                publicObjectives[i] = ObjectivesFactory.getPublicObjective(path[i]);
+
+        }catch (Exception ex){
+            throw new ModelException("Impossible to create public objectives");
+        }
+    }
+
+    public void initializeToolCards(String[] names) throws ModelException
+    {
+        try
+        {
+            for (int i = 0 ; i < numPublicObj ; i++)
+                tools[i] = ToolsFactory.getTools(names[i]);
+
+        }catch (Exception ex){
+            throw new ModelException("Impossible to create public objectives");
+        }
     }
 
     public void setUser (String s)
@@ -96,4 +122,6 @@ public class ServerModelAdapter
     public void setCanMove() {
         this.canMove = true;
     }
+
+
 }

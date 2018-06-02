@@ -4,10 +4,10 @@
 
     <numberOfCards>10</numberOfCards>
 
-    <card n = "1">resources/carte/obbiettivi/obbiettiviPubblici/xml/color/colori_diversi_colonna.xml</card>
-    <card n = "2">resources/carte/obbiettivi/obbiettiviPubblici/xml/color/colori_diversi_riga.xml</card>
-    <card n = "3">resources/carte/obbiettivi/obbiettiviPubblici/xml/color/diagonali_colorate.xml</card>
-    <card n = "4">resources/carte/obbiettivi/obbiettiviPubblici/xml/color/varieta_di_colore.xml</card>
+    <card n = "1">resources/carte/obbiettivi/obbiettiviPubblici/xml/colore/colori_diversi_colonna.xml</card>
+    <card n = "2">resources/carte/obbiettivi/obbiettiviPubblici/xml/colore/colori_diversi_riga.xml</card>
+    <card n = "3">resources/carte/obbiettivi/obbiettiviPubblici/xml/colore/diagonali_colorate.xml</card>
+    <card n = "4">resources/carte/obbiettivi/obbiettiviPubblici/xml/colore/varieta_di_colore.xml</card>
     <card n = "5">resources/carte/obbiettivi/obbiettiviPubblici/xml/sfumatura/sfumature_chiare.xml</card>
     <card n = "6">resources/carte/obbiettivi/obbiettiviPubblici/xml/sfumatura/sfumature_diverse.xml</card>
     <card n = "7">resources/carte/obbiettivi/obbiettiviPubblici/xml/sfumatura/sfumature_diverse_colonna.xml</card>

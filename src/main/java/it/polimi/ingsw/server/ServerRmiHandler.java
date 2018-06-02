@@ -100,10 +100,8 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
             match.updateClient();
 
         } catch (ModelException e) {
-            //notifyServer();
             return e.getMessage();
         }
-        //notifyServer();
 
         return "Move ok";
     }
