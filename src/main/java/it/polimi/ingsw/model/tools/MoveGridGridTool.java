@@ -10,10 +10,8 @@ import javax.tools.Tool;
 
 public class MoveGridGridTool extends Tools {
 
-    private int price;
-    private String type;
 
-    public MoveGridGridTool(String type, String name) {
+    public MoveGridGridTool(int type, String name) {
 
         this.price = 1;
         this.type=type;
@@ -24,17 +22,15 @@ public class MoveGridGridTool extends Tools {
     @Override
     public void use() throws IllegalStepException, IllegalDiceException {
         switch (type)
-        {case "tool2":
+        {case 2:
             //ho dado, dadiera e i che mi arrivano lato client
             moveOneDieTool();
             break;
-            case "tool3":
+            case 3:
                 moveOneDieTool();
                 break;
-            case "tool4":
+            case 4:
                 moveTwoDieTool();
-                break;
-            case "":
                 break;
             default:
                 break;
@@ -103,6 +99,10 @@ public class MoveGridGridTool extends Tools {
      */
     public int getPrice(){
         return price;
+    }
+
+    public int getType(){
+        return type;
     }
 
 }

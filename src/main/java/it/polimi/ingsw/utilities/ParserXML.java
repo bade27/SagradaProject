@@ -1,5 +1,7 @@
 package it.polimi.ingsw.utilities;
 
+import com.sun.org.apache.xml.internal.resolver.readers.ExtendedXMLCatalogReader;
+import it.polimi.ingsw.exceptions.ModelException;
 import it.polimi.ingsw.exceptions.ParserXMLException;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.ColorEnum;
@@ -169,6 +171,20 @@ public class ParserXML
         }
         catch (Exception ex){
             throw new ParserXMLException("Impossible to read file: " + path);
+        }
+    }
+
+    public static int readBoardDifficult (String path) throws ParserXMLException
+    {
+        try {
+            File file = new File(path);
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document document = documentBuilder.parse(file);
+
+            return Integer.parseInt(document.getElementsByTagName("difficulty").item(0).getTextContent());
+        }catch (Exception e){
+            throw new ParserXMLException("Impossible to read difficult from XML " + path);
         }
     }
 

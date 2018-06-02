@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class SetValueTool extends Tools {
 
-    public SetValueTool(String type, String name) {  //qua avrò oltre a type un array con dentro i dati
+    public SetValueTool(int type, String name) {  //qua avrò oltre a type un array con dentro i dati
         this.price = 1;                  // necessari a usare i metodi
         this.type = type;
         this.name=name;
@@ -16,13 +16,13 @@ public class SetValueTool extends Tools {
     @Override
     public void use() throws IllegalStepException, IllegalDiceException {
         switch (type)
-        {case "tool1":
+        {case 1:
             addSub();
             break;
-         case "tool6":
+         case 6:
              turnDice();
                 break;
-          case "tool10":
+          case 10:
              relaunchDice();
                 break;
             default:
@@ -92,5 +92,9 @@ public class SetValueTool extends Tools {
      */
     public int getPrice(){
         return price;
+    }
+
+    public int getType(){
+        return type;
     }
 }

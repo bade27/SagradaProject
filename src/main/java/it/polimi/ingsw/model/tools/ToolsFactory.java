@@ -32,11 +32,11 @@ public class ToolsFactory
                 {
                     switch (effect) {
                         case "SetDiceValue":
-                            return new SetValueTool(s,name);
+                            return new SetValueTool((i+1),name);
                         case "MoveGridGrid":
-                            return new MoveGridGridTool(s,name);
+                            return new MoveGridGridTool((i+1),name);
                         case "MoveDadieraTrace":
-                            return new MoveDadieraTraceTool(s,name);
+                            return new MoveDadieraTraceTool((i+1),name);
                         //...
                         default:
                     }

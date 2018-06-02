@@ -108,10 +108,8 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
 
 
     @Override
-    public boolean askToolPermission() throws RemoteException {
-        //questo metodo si occupa di cotrollare se il tool scelto dall'utente può essere utilizzato
-        //restituisce ok se lo può usare, ko altrimenti
-        return true;
+    public boolean askToolPermission(int nrTool) throws RemoteException {
+        return adapter.toolRequest(nrTool);
     }
 
     @Override

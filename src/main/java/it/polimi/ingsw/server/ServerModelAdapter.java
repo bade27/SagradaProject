@@ -25,6 +25,9 @@ public class ServerModelAdapter
     private Tools[] tools;
     private String user;
     private boolean canMove;
+    private int marker;
+
+    private Tools toolInUse;
 
     public ServerModelAdapter (Dadiera d)
     {
@@ -34,25 +37,27 @@ public class ServerModelAdapter
         tools = new Tools[numTools];
     }
 
-    /**
-     * Inizializza l'oggetto window andando a prendere il design dal file xml passato
-     * @param path percorso dell'immagine
-     */
-    public void initializeWindow (String path) throws ModelException
+    public void useTool() {
+
+
+    }
+
+    public boolean toolRequest (int nrTool)
     {
-        try {
-            board = new Window(path);
-        }
-        catch (ParserXMLException ex) {
-            throw new ModelException("Impossible to read XML: " + ex.getMessage());
-        }
+        for (int i = 0; i < tools.length ; i++)
+            if (tools[i].getType() == nrTool)
+                if (tools[i].getPrice() < marker) {
+                    toolInUse = tools[i];
+                    return true;
+                }
+        return false;
     }
 
     /**
-     * Aggiunge se possibile un dado alla board
-     * @param i riga del piazzamento
-     * @param j colonna del piazzamento
-     * @param d dado da piazzare
+     * Add die passed , if possible, to board in specific position
+     * @param i placement's row
+     * @param j placement's column
+     * @param d die to place
      */
     public void addDiceToBoard (int i, int j, Dice d) throws ModelException
     {
@@ -66,11 +71,27 @@ public class ServerModelAdapter
         dadiera.deleteDice(d);
     }
 
-    public void useTool() {
-        //questa classe si deve occupare di eseguire l'effetto del tool
-        //la sua implementazione va cambiata
+
+    //<editor-fold desc="Setup Phase">
+    /**
+     * Initialize window with path passed
+     * @param path path of windows' pattern
+     */
+    public void initializeWindow (String path) throws ModelException
+    {
+        try {
+            board = new Window(path);
+            marker = board.getDifficult();
+        }
+        catch (ParserXMLException ex) {
+            throw new ModelException("Impossible to read XML: " + ex.getMessage());
+        }
     }
 
+    /**
+     * Initialize Public objectives with path passed
+     * @param path path of objectives' pattern
+     */
     public void initializePublicObjectives(String[] path) throws ModelException
     {
         try
@@ -83,12 +104,17 @@ public class ServerModelAdapter
         }
     }
 
+    /**
+     * Initialize tool cards with path passed
+     * @param names names of tools' pattern
+     */
     public void initializeToolCards(String[] names) throws ModelException
     {
         try
         {
-            for (int i = 0 ; i < numPublicObj ; i++)
-                tools[i] = ToolsFactory.getTools(names[i]);
+            /*for (int i = 0 ; i < numPublicObj ; i++)
+                tools[i] = ToolsFactory.getTools(names[i]);*/
+            tools[0] = ToolsFactory.getTools("Pinza Sgrossatrice");
 
         }catch (Exception ex){
             throw new ModelException("Impossible to create public objectives");
@@ -99,8 +125,9 @@ public class ServerModelAdapter
     {
         user = s;
     }
+    //</editor-fold>
 
-
+    //<editor-fold desc="Utilities">
     public Pair[] getDadieraPair ()
     {
         return dadiera.toPairArray();
@@ -121,7 +148,8 @@ public class ServerModelAdapter
 
     public void setCanMove() {
         this.canMove = true;
+        toolInUse = null;
     }
-
+    //</editor-fold>
 
 }

@@ -7,7 +7,7 @@ import it.polimi.ingsw.model.RoundTrace;
 public class MoveDadieraTraceTool extends Tools {
 
 
-    public MoveDadieraTraceTool(String type,String name) {
+    public MoveDadieraTraceTool(int type,String name) {
 
         this.price = 1;
         this.type=type;
@@ -45,5 +45,9 @@ public class MoveDadieraTraceTool extends Tools {
      */
     public int getPrice(){
         return price;
+    }
+
+    public int getType(){
+        return type;
     }
 }

@@ -197,31 +197,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     }
     //</editor-fold>
 
-    //<editor-fold desc="Utilities">
-    /**
-     * @return if we are alive
-     */
-    public boolean ping ()
-    {
-        return true;
-    }
-
-    public boolean sendMessage (String s)
-    {
-        System.out.println(s);
-        return true;
-    }
-
-    public boolean closeCommunication (String cause)
-    {
-        System.out.println("Game ended because " + cause);
-        return true;
-        //Graphic.setpopup connection down
-
-    }
-    //</editor-fold>
-
-
+    //<editor-fold desc="Turn communication">
     public String doTurn ()
     {
         num_of_moves = 0;
@@ -276,21 +252,14 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     public synchronized void setMoveIJ(int i, int j) {
         this.move.setIJ(i, j);
     }
+    //</editor-fold>
 
-    public synchronized void pass() {
-        try {
-            String s = server.passTurn();
-            graph.setEnableBoard(false);
-            graph.updateMessage(s);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-    }
-
+    //<editor-fold desc="Tool communication">
     public boolean toolPermission(int toolID) {
         boolean response = false;
         try {
-            response = server.askToolPermission();
+            response = server.askToolPermission(toolID);
+            System.out.println("tool response: " + response);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -330,4 +299,39 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     public synchronized void setToolMoveID(int id) {
         tmove.setId(id);
     }
+    //</editor-fold>
+
+    public synchronized void pass() {
+        try {
+            String s = server.passTurn();
+            graph.setEnableBoard(false);
+            graph.updateMessage(s);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //<editor-fold desc="Utilities">
+    /**
+     * @return if we are alive
+     */
+    public boolean ping ()
+    {
+        return true;
+    }
+
+    public boolean sendMessage (String s)
+    {
+        System.out.println(s);
+        return true;
+    }
+
+    public boolean closeCommunication (String cause)
+    {
+        System.out.println("Game ended because " + cause);
+        return true;
+        //Graphic.setpopup connection down
+
+    }
+    //</editor-fold>
 }

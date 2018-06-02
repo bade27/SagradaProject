@@ -10,7 +10,7 @@ import it.polimi.ingsw.model.Window;
 public abstract class Tools {
 
     protected int price;
-    protected String type;
+    protected int type;
     protected String name;
 
     protected RoundTrace rt;
@@ -26,22 +26,17 @@ public abstract class Tools {
     protected int [] pos_fin2;
     protected int index;
 
-    public Tools() {
-        //this.rt = rt;
-        //this.dadiera = dadiera;
-        //this.window = window;
-    }
+    public Tools() { }
 
-    /**
-     * If it is the first time i use the tool set tool's price at 2
-     */
     abstract void setPrice();
 
-    /**
-     * return the price of the tool
-     * @return *price of the tool*
-     */
     abstract public int getPrice();
+
+    abstract public int getType();
+
+
+
+
 
     public RoundTrace getRt() {
         return rt;

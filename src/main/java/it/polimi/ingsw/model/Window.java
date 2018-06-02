@@ -26,8 +26,10 @@ public class Window
         firstTurn = true;
         board = new Cell[rows][cols];
         board = ParserXML.readWindowFromPath(boardPath,board);
+        difficult = ParserXML.readBoardDifficult(boardPath);
     }
 
+    //<editor-fold desc="Add dice to board">
     /**
      * Adds to window indicated die in indicated position, if window rejects insertion this method throw an exception
      * @param i Row index to add die
@@ -124,7 +126,9 @@ public class Window
             return board[i][j].setDice(d);
         return false;
     }
+    //</editor-fold>
 
+    //<editor-fold desc="Move dice in board">
     /**
      * Set cel[i][j] at null
      * @param i ascissa
@@ -157,7 +161,9 @@ public class Window
         }
 
     }
+    //</editor-fold>
 
+    //<editor-fold desc="Utilities">
     public Cell getCell (int i , int j)
     {
         return board[i][j];
@@ -205,4 +211,9 @@ public class Window
                 mat[i][j] = new Pair(board[i][j].getDiceValue(),board[i][j].getDiceColor());
         return mat;
     }
+
+    public int getDifficult() {
+        return difficult;
+    }
+    //</editor-fold>
 }
