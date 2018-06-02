@@ -6,33 +6,52 @@ import java.util.Random;
 
 public class SetValueTool extends Tools {
 
-
-    public SetValueTool() {
-        this.price = 1;
+    public SetValueTool(String type, String name) {  //qua avrò oltre a type un array con dentro i dati
+        this.price = 1;                  // necessari a usare i metodi
+        this.type = type;
+        this.name=name;
     }
 
+
+    @Override
+    public void use() throws IllegalStepException, IllegalDiceException {
+        switch (type)
+        {case "tool1":
+            addSub();
+            break;
+         case "tool6":
+             turnDice();
+                break;
+          case "tool10":
+             relaunchDice();
+                break;
+            default:
+                break;
+
+        }
+    }
 
     /**
      * The dice value increase (i=0) or decrease (i=1)by one
      *
-     * @param i index
-     * @param x die
-     * @param s dadiera that contains x
+
      * @throws IllegalStepException
      * @throws IllegalDiceException
      */
 
-    public void addSub(Dice x, Dadiera s, int i) throws IllegalStepException, IllegalDiceException {
-        int value = x.getValue();
-        if (i==0) {
+
+
+    private void addSub() throws IllegalStepException, IllegalDiceException {
+        int value = d1.getValue();
+        if (index==0) {
             if(value<6) {
-                s.setDiceValue(value + 1, x);
+                dadiera.setDiceValue(value + 1, d1);
                 setPrice();
             } else throw new IllegalStepException();
 
-        }    else if (i==1) {
+        }    else if (index==1) {
             if (value>1) {
-                s.setDiceValue(value - 1, x);
+                dadiera.setDiceValue(value - 1, d1);
                 setPrice();
             } else throw new IllegalStepException();
         } else throw new IllegalStepException();
@@ -41,24 +60,21 @@ public class SetValueTool extends Tools {
     /**
      * turn the die x
      *
-     * @param x die that it turn
-     * @param s dadiera that contains x
      * @throws IllegalDiceException
      */
-    public void turnDice(Dice x, Dadiera s) throws IllegalDiceException {
-        int value = x.getValue();
-            s.setDiceValue(7 - value, x);
+    private void turnDice(/*Dice x, Dadiera s*/) throws IllegalDiceException {
+        int value = d1.getValue();
+            dadiera.setDiceValue(7 - value,d1);
             setPrice();
     }
 
     /**
      * relaunch the die
-     * @param x die
-     * @param s dadiera that contains x
+
      * @throws IllegalDiceException
      */
-    public void relaunchDice(Dice x, Dadiera s) throws IllegalDiceException {
-            s.setDiceValue(new Random().nextInt(6) + 1, x);
+    private void relaunchDice(/*Dice x, Dadiera s*/) throws IllegalDiceException {
+            dadiera.setDiceValue(new Random().nextInt(6) + 1, d1);
             setPrice();
     }
 

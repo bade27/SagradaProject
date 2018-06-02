@@ -7,23 +7,27 @@ import it.polimi.ingsw.model.RoundTrace;
 public class MoveDadieraTraceTool extends Tools {
 
 
-    public MoveDadieraTraceTool() {
+    public MoveDadieraTraceTool(String type,String name) {
+
         this.price = 1;
+        this.type=type;
+        this.name=name;
+    }
+
+    @Override
+    public void use() {
+        exchangeDice();
     }
 
     /**
      * exchange one die in Dadiera and one die in RoundTrace
-     * @param d_dad die in Dadiera
-     * @param s Dadiera
-     * @param d_round die in RoundTrace
-     * @param pos_trace position in RoundTrace, in this position i have to extract the die
-     * @param rt RoundTrace
+
      */
-    public void exchangeDice(Dice d_dad, Dadiera s, Dice d_round, int pos_trace, RoundTrace rt){
-        s.deleteDice(d_dad);
-        rt.addDice(pos_trace,d_dad);
-        rt.deleteDice(pos_trace,d_round);
-        s.addDice(d_round);
+    public void exchangeDice(){
+        dadiera.deleteDice(d1);              //d1=dado dadiera
+        rt.addDice(pos_rt,d1);               //pos_fin=posizione tracciato round
+        rt.deleteDice(pos_rt,d2);            //d2=dado tracciato round
+        dadiera.addDice(d2);
         setPrice();
     }
 

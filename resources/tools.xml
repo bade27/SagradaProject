@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<tool1 num="1">
+		<name>Pinza Sgrossatrice</name>
+		<class>SetDiceValue</class>
+	</tool1>
+
+	<tool2 num="2">
+  		<name>Pennello per Eglomise</name>
+		<class>MoveGridGrid</class>
+        </tool2>
+
+	<tool3 num="3">
+		<name>Alesatore per lamina di rame</name>
+		<class>MoveGridGrid</class>
+	</tool3>
+
+	<tool4 num="4">
+		<name>Lathekin</name>
+		<class>MoveGridGrid</class>
+        </tool4>
+
+	<tool5 num="5">
+		<name>Taglierina circolare</name>
+		<class>MoveDadieraTrace</class>
+	</tool5>
+
+	<tool6 num="6">
+		<name>Pennello per Pasta Salda</name>  
+		<class>SetDiceValue</class>
+        </tool6>
+	
+	<tool7 num="7">
+		<name>Martelletto</name>
+		<class>ToolAborto</class>
+	</tool7>
+
+	<tool8 num="8">
+		<name>Tenaglia a Rotelle</name>
+		<class>SecondoToolAborto</class>
+        </tool8>
+
+	<tool9 num="9">
+		<name>Riga in Sughero</name>
+		<class>MoveDadieraGrid</class>
+	</tool9>
+
+	<tool10 num="10">
+		<name>Tampone Diamantato</name>
+		<class>SetDiceValue</class>
+        </tool10>
+
+	<tool11 num="11">
+		<name>Diluente per Pasta Salda</name>
+		<class>MoveDadieraBagGrid</class>
+	</tool11>
+
+	<tool12 num="12">
+		<name>Taglierina Manuale</name>
+		<class>MoveGridGrid</class>
+        </tool12>
+</root>
