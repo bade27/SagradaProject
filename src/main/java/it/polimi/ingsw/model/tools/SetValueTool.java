@@ -1,7 +1,8 @@
 package it.polimi.ingsw.model.tools;
 
-import it.polimi.ingsw.exceptions.*;
-import it.polimi.ingsw.model.*;
+import it.polimi.ingsw.exceptions.IllegalDiceException;
+import it.polimi.ingsw.exceptions.IllegalStepException;
+
 import java.util.Random;
 
 public class SetValueTool extends Tools {
@@ -12,9 +13,8 @@ public class SetValueTool extends Tools {
         this.name=name;
     }
 
-
     @Override
-    public void use() throws IllegalStepException, IllegalDiceException {
+    public void use() throws IllegalStepException {
         switch (type)
         {case 1:
             addSub();
@@ -27,7 +27,6 @@ public class SetValueTool extends Tools {
                 break;
             default:
                 break;
-
         }
     }
 
@@ -40,10 +39,32 @@ public class SetValueTool extends Tools {
      */
 
 
+    /**
+     * increments or decrements the value of the selected dice
+     * @throws IllegalStepException in case the move is invalid
+     */
+    private void addSub() throws IllegalStepException {
+        if(instruction == null || d1 == null || dadiera == null)
+            throw new IllegalStepException();
 
-    private void addSub() throws IllegalStepException, IllegalDiceException {
         int value = d1.getValue();
-        if (index==0) {
+        int toSum;
+
+        if(instruction.equals("inc")) {
+            toSum = 1;
+        } else {
+            toSum = -1;
+        }
+
+        try {
+            dadiera.setDiceValue(value + toSum, d1);
+        } catch (IllegalDiceException ide) {
+            throw new IllegalStepException();
+        }
+
+        setPrice();
+
+        /*if (index==0) {
             if(value<6) {
                 dadiera.setDiceValue(value + 1, d1);
                 setPrice();
@@ -54,18 +75,25 @@ public class SetValueTool extends Tools {
                 dadiera.setDiceValue(value - 1, d1);
                 setPrice();
             } else throw new IllegalStepException();
-        } else throw new IllegalStepException();
+        } else throw new IllegalStepException();*/
     }
 
     /**
      * turn the die x
      *
-     * @throws IllegalDiceException
+     * @throws IllegalStepException
      */
-    private void turnDice(/*Dice x, Dadiera s*/) throws IllegalDiceException {
+    private void turnDice(/*Dice x, Dadiera s*/) throws IllegalStepException {
+        if(d1 == null || dadiera == null)
+            throw new IllegalStepException();
+
         int value = d1.getValue();
-            dadiera.setDiceValue(7 - value,d1);
-            setPrice();
+        try {
+            dadiera.setDiceValue(7 - value, d1);
+        } catch (IllegalDiceException ise) {
+            throw new IllegalStepException();
+        }
+        setPrice();
     }
 
     /**
@@ -73,9 +101,16 @@ public class SetValueTool extends Tools {
 
      * @throws IllegalDiceException
      */
-    private void relaunchDice(/*Dice x, Dadiera s*/) throws IllegalDiceException {
+    private void relaunchDice(/*Dice x, Dadiera s*/) throws IllegalStepException {
+        if(d1 == null || dadiera == null)
+            throw new IllegalStepException();
+
+        try {
             dadiera.setDiceValue(new Random().nextInt(6) + 1, d1);
-            setPrice();
+        } catch (IllegalDiceException ide) {
+            throw new IllegalStepException();
+        }
+        setPrice();
     }
 
     /**

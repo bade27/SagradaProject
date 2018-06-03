@@ -1,16 +1,18 @@
 package it.polimi.ingsw.remoteInterface;
 
 import it.polimi.ingsw.model.Dadiera;
+import it.polimi.ingsw.model.Window;
 
 import java.io.Serializable;
 
 public class ToolMove implements Serializable {
 
-    private int id; //non serve
     private Pair p;
-    private int instruction; //per il primo tool memorizza inc o dec, in base a quello si usa la funzionalità opportuna
-    private int i, j;
+    private String instruction;
+    private Integer i_start, j_start;
+    private Integer i_end, j_end;
     private Dadiera d;
+    private Window w;
 
     public Pair getP() {
         return p;
@@ -20,43 +22,47 @@ public class ToolMove implements Serializable {
         this.p = p;
     }
 
-    public int getInstruction() {
+    public String getInstruction() {
         return instruction;
     }
 
-    public void setInstruction(int instruction) {
+    public void setInstruction(String instruction) {
         this.instruction = instruction;
     }
 
-    public int getI() {
-        return i;
+    public Integer getI_start() {
+        return i_start;
     }
 
-    public int getJ() {
-        return j;
+    public Integer getJ_start() {
+        return j_start;
     }
 
-    public void setIJ(int i, int j) {
-        this.i = i;
-        this.j = j;
+    public void setIJStart(int i, int j) {
+        this.i_start = i;
+        this.j_start = j;
     }
 
-    public int getId() {
-        return id;
-    } //non serve
+    public Integer getI_end() {
+        return i_end;
+    }
 
-    public void setId(int id) {
-        this.id = id;
-    } //non serve
+    public Integer getJ_end() {
+        return j_end;
+    }
+
+    public void setIJEnd(int i, int j) {
+        this.i_end = i;
+        this.j_end = j;
+    }
 
     @Override
     public String toString() {
         return "ToolMove{" +
-                "id=" + id +
                 ", p=" + p +
                 ", instruction='" + instruction + '\'' +
-                ", i=" + i +
-                ", j=" + j +
+                ", i_start=" + i_start +
+                ", j_start=" + j_start +
                 '}';
     }
 
@@ -66,5 +72,13 @@ public class ToolMove implements Serializable {
 
     public void setDadiera(Dadiera d) {
         this.d = d;
+    }
+
+    public Window getW() {
+        return w;
+    }
+
+    public void setW(Window w) {
+        this.w = w;
     }
 }

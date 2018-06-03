@@ -157,12 +157,16 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     public boolean sendCards(String[]... s) throws RemoteException {
         for (int i = 0; i < s.length ; i++)
         {
-            if (i == 0)
+            if (i == 0) {
                 System.out.println("Obbiettivi Pubblici: ");
-            else
+            }
+            else {
                 System.out.println("Strumenti: ");
+                graph.updateTools(s[i]);
+            }
             for (int j = 0; j< s[i].length ; j++)
                 System.out.println(s[i][j]);
+
         }
         return true;
     }
@@ -268,11 +272,9 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
     public synchronized void useTool() {
         try {
-            if(tmove.getId() != 0) {
-                System.out.println(server.useTool(tmove));
-                graph.setToolPhase(false);
-                clearTool();
-            }
+            graph.updateMessage(server.useTool(tmove));
+            graph.setToolPhase(false);
+            clearTool();
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -287,16 +289,26 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     }
 
     public synchronized void setToolMoveIJ(int i, int j) {
-        this.tmove.setIJ(i, j);
+        if(this.tmove.getI_start() == null && this.tmove.getJ_start() == null)
+            setToolMoveIJStart(i, j);
+        else setToolMoveIJEnd(i, j);
     }
 
-    public synchronized void setToolInstruction(int instruction) {
+    //setta i valori della posizione iniziale
+    public synchronized void setToolMoveIJStart(int i, int j) {
+        this.tmove.setIJStart(i, j);
+    }
+
+    //setta i valori della posizione finale
+    public synchronized void setToolMoveIJEnd(int i, int j) {
+        this.tmove.setIJEnd(i, j);
+    }
+
+    //setta inc o dec del primo tool
+    public synchronized void setToolInstruction(String instruction) {
         this.tmove.setInstruction(instruction);
     }
 
-    public synchronized void setToolMoveID(int id) {
-        tmove.setId(id);
-    }
     //</editor-fold>
 
     public synchronized void pass() {

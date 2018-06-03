@@ -1,9 +1,6 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.exceptions.IllegalDiceException;
-import it.polimi.ingsw.exceptions.IllegalStepException;
-import it.polimi.ingsw.exceptions.ModelException;
-import it.polimi.ingsw.exceptions.ParserXMLException;
+import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.Dadiera;
 import it.polimi.ingsw.model.Dice;
 import it.polimi.ingsw.model.Window;
@@ -46,12 +43,15 @@ public class ServerModelAdapter
             return "Not using tool permission asked";
 
         mv.setDadiera(dadiera);
+        mv.setW(board);
         toolInUse.setToolMove(mv);
-        try{
+
+        try {
             toolInUse.use();
             toolInUse = null;
-        }catch (IllegalDiceException | IllegalStepException e){
-            return e.getMessage();
+        } catch (IllegalDiceException | IllegalStepException e) {
+            //return e.getMessage();
+            return "Invalid input";
         }
         return "Tool used correctly";
     }
@@ -126,9 +126,11 @@ public class ServerModelAdapter
     {
         try
         {
-            /*for (int i = 0 ; i < numPublicObj ; i++)
-                tools[i] = ToolsFactory.getTools(names[i]);*/
-            tools[0] = ToolsFactory.getTools("Pinza Sgrossatrice");
+            for (int i = 0 ; i < numTools ; i++) {
+                tools[i] = ToolsFactory.getTools(names[i]);
+                System.out.println(names[i]);
+            }
+            /*tools[0] = ToolsFactory.getTools("Pinza Sgrossatrice");*/
 
         }catch (Exception ex){
             throw new ModelException("Impossible to create public objectives");

@@ -1,12 +1,8 @@
 package it.polimi.ingsw.model.tools;
 
-import com.sun.org.apache.bcel.internal.generic.IF_ACMPEQ;
 import it.polimi.ingsw.exceptions.IllegalDiceException;
 import it.polimi.ingsw.exceptions.IllegalStepException;
 import it.polimi.ingsw.model.Dice;
-import it.polimi.ingsw.model.Window;
-
-import javax.tools.Tool;
 
 public class MoveGridGridTool extends Tools {
 
@@ -18,14 +14,18 @@ public class MoveGridGridTool extends Tools {
         this.name=name;
     }
 
-
     @Override
     public void use() throws IllegalStepException, IllegalDiceException {
+
+        if(type == 2)
+            index = 1;
+        else if(type == 3)
+            index = 2;
+
         switch (type)
-        {case 2:
-            //ho dado, dadiera e i che mi arrivano lato client
-            moveOneDieTool();
-            break;
+        {   //case 2 e case 3 si chiamano la stessa funzione, che si comporta in modo diverso a seconda del type
+            case 2:
+                //...
             case 3:
                 moveOneDieTool();
                 break;
@@ -45,6 +45,9 @@ public class MoveGridGridTool extends Tools {
 
 
     public void moveOneDieTool(/*Window w, int[] pos_in, int[] pos_end, int level*/) throws IllegalStepException {
+        if(window == null || pos_iniz1 == null || pos_fin1 == null)
+            throw new IllegalStepException();
+
         Dice d = window.getCell(pos_iniz1[0], pos_fin1[1]).getFrontDice();
         try {
             window.moveDice(pos_iniz1,pos_fin1, index);

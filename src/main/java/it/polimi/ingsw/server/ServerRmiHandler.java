@@ -114,6 +114,7 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
 
     @Override
     public String useTool(ToolMove toolMove) throws RemoteException {
+        System.out.println(toolMove.toString());//temporaneo per il debug
         String ret = adapter.useTool(toolMove);
         match.updateClient();
         return ret;

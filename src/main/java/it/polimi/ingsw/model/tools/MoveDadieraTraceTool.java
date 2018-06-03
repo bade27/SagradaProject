@@ -1,9 +1,5 @@
 package it.polimi.ingsw.model.tools;
 
-import it.polimi.ingsw.model.Dadiera;
-import it.polimi.ingsw.model.Dice;
-import it.polimi.ingsw.model.RoundTrace;
-
 public class MoveDadieraTraceTool extends Tools {
 
 

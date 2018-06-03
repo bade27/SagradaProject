@@ -155,6 +155,11 @@ public class SagradaGUI extends Application implements GUI {
     }
 
 
+
+    public void updateTools(String[] toolNames) {
+        tools.updateTools(toolNames);
+    }
+
     /**
      * enables or disables the board
      * @param enableBoard
@@ -186,7 +191,6 @@ public class SagradaGUI extends Application implements GUI {
         if(toolPhase) {
             setToolPhase(true);
             msgb.updateGraphic("Using a tool");
-            clientPlayer.setToolMoveID(i);
             PopUPMessage(i);
         }
     }
@@ -195,7 +199,7 @@ public class SagradaGUI extends Application implements GUI {
         clientPlayer.setToolMovePair(pair);
     }
 
-    public void modToolMoveInstruction(int instruction) {
+    public void modToolMoveInstruction(String instruction) {
         clientPlayer.setToolInstruction(instruction);
     }
 
@@ -225,9 +229,9 @@ public class SagradaGUI extends Application implements GUI {
                 Optional<ButtonType> result = alert.showAndWait();
 
                 if (result.get() == buttonType1) {
-                    modToolMoveInstruction(0);//inc
+                    modToolMoveInstruction("inc");
                 } else {
-                    modToolMoveInstruction(1);//dec
+                    modToolMoveInstruction("dec");
                 }
             });
         }

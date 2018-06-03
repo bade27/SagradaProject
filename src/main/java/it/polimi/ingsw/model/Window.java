@@ -5,8 +5,6 @@ import it.polimi.ingsw.exceptions.ParserXMLException;
 import it.polimi.ingsw.remoteInterface.Pair;
 import it.polimi.ingsw.utilities.ParserXML;
 
-import java.awt.*;
-
 public class Window
 {
     private int difficult;
@@ -146,10 +144,10 @@ public class Window
      * @throws IllegalDiceException
      */
     public void moveDice(int[] pos_in, int[]pos_end, int level) throws IllegalDiceException {
-        Cell c1=board[pos_in[0]][pos_in[0]];
+        Cell c1=board[pos_in[0]][pos_in[1]];
         Dice dice=c1.getFrontDice();
         if(dice!=null) {
-            setDie(pos_in[0], pos_in[1],null,0);
+            emptyCell(pos_in[0], pos_in[1]);
             try {
                 addDice(pos_end[0],pos_end[1],dice,level);
             }catch(Exception ex) {

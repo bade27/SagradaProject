@@ -14,7 +14,8 @@ public interface GUI {
     public void toolPermission(int i);
     public void setToolPhase(boolean toolPhase);
     public void modToolMovePair(Pair p);
-    public void modToolMoveInstruction(int instruction);
+    public void modToolMoveInstruction(String instruction);
     public void modToolMoveIJ(int i, int j);
     public void makeToolMove();
+    public void updateTools(String[] toolNames);
 }

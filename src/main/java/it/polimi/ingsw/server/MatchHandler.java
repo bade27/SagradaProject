@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class MatchHandler implements Runnable
 {
@@ -30,7 +31,7 @@ public class MatchHandler implements Runnable
     private TokenTurn tok;
     private Dadiera dices;
 
-    private final static int MAXGIOC = 2;//Da modificare a 4
+    private final static int MAXGIOC = 1;//Da modificare a 4
 
     //connection parameters
     private static final String settings = "resources/server_settings.xml";
@@ -405,16 +406,25 @@ public class MatchHandler implements Runnable
     private boolean initializeTools ()
     {
         int c;
-        ArrayList<String> cards;
+        ArrayList<String> cardsTmp;
+        String[] cards;
 
         //Take all xml names of tool cards
         try{
-            cards = ParserXML.readToolsNames("resources/carte/tools/tools.xml");
+            cardsTmp = ParserXML.readToolsNames("resources/carte/tools/tools.xml");
+            cards = cardsTmp.toArray(new String[cardsTmp.size()]);
         }
         catch (ParserXMLException ex){
             log.addLog("Impossible to read XML tools",ex.getStackTrace());
             return false;
         }
+
+        ArrayList<Integer> toolNum = new ArrayList<>();
+        do {
+            int i = new Random().nextInt(3);
+            if(!toolNum.contains(i))
+                toolNum.add(i);
+        } while(toolNum.size() < 3);
 
         try
         {
@@ -422,9 +432,9 @@ public class MatchHandler implements Runnable
             //Select randomly 3 tool cards from list
             for (int i = 0; i < 3; i++)
             {
-                c = (int)(Math.random()* (cards.size()));
-                tools[i]=cards.get(c);
-                cards.remove(c);
+                //c = new Random().nextInt(3); //per il momento estraggo solo i primi 3
+                c = toolNum.get(i);
+                tools[i]=cards[c];
             }
             //For each players initialize tool cards already selected
             for (int i=0;i<nConn;i++)

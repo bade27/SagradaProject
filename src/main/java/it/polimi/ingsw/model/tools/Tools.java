@@ -25,6 +25,7 @@ public abstract class Tools {
     protected int [] pos_fin1;
     protected int [] pos_iniz2;
     protected int [] pos_fin2;
+    protected String instruction;
     protected int index;
 
     public Tools() { }
@@ -35,11 +36,19 @@ public abstract class Tools {
 
     abstract public int getType();
 
-    public void setToolMove (ToolMove tm)
-    {
-        d1 = new Dice(tm.getP().getValue(),tm.getP().getColor());
-        index = tm.getInstruction();
+    //recupera tutti i valori memorizzati in toolmove. sono poi i singoli figli a controllare che
+    //ci sia tutto ciò che serve
+    public void setToolMove (ToolMove tm) {
+        d1 = tm.getP() !=null ?new Dice(tm.getP().getValue(), tm.getP().getColor()) : null;
+        instruction = tm.getInstruction();
         dadiera = tm.getDadiera();
+        window = tm.getW();
+        pos_iniz1 = (tm.getI_start() != null || tm.getJ_start() != null)
+                ? new int[] {tm.getI_start(), tm.getJ_start()}
+                : null;
+        pos_fin1 = (tm.getI_end() != null || tm.getJ_end() != null)
+                ? new int[] {tm.getI_end(), tm.getJ_end()}
+                : null;
     }
 
 

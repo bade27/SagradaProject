@@ -254,6 +254,7 @@ public class ServerPlayer implements Runnable
         try {
             adapter.initializePublicObjectives(publicObjCard);
             adapter.initializeToolCards(toolCard);
+            assert publicObjCard != null && toolCard != null;
             log.addLog("User: " + user + " Tools and Objectives initialized ");
 
         }catch (ModelException e ){
