@@ -2,7 +2,7 @@
 
 <client>
 
-    <hostName>127.0.0.1</hostName>
+    <hostName>localhost</hostName>
 
     <socket>
         <portNumber>6000</portNumber>

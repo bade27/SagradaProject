@@ -1,36 +1,50 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.GUI;
+import it.polimi.ingsw.model.tools.Tools;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 
 public class ToolsGUI {
 
     private GUI game;
+    private GridPane pane;
+    private GridPane t;
 
-    public ToolsGUI(GridPane pane, GUI game){
+    public ToolsGUI(GridPane pane,GUI game){
 
         this.game = game;
+        this.pane=pane;
 
-        GridPane t = new GridPane();
+        t = new GridPane();
+        int []index={1,2,3};
+        String [] name={"tool 1","tool 2","tool3"};
+        updateTools(name);
+        DimWindows.dimWidth(t,300);
+        pane.add(t,0,0);
 
-        Button b1 = new Button("tool n° 1");
-        b1.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+    }
+
+    public void updateTools(String[] name){                     //name e description sono momentanei,
+        Button b1 = new Button(name[0]);                       //dal momento che avremo le immagini delle carte
+        b1.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);    //diventeranno superflui
         b1.setOnAction(actionEvent -> {
             game.toolPermission(1);
-            game.setToolPhase(true);
         });
         t.add(b1, 0, 0);
 
-        Button b2 = new Button("tool n° 2");
+        Button b2 = new Button(name[1]);
         b2.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        b2.setOnAction(actionEvent -> {
+            game.toolPermission(2);
+        });
         t.add(b2, 0, 1);
 
-        Button b3 = new Button("tool n° 3");
+        Button b3 = new Button(name[2]);
         b3.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+        b3.setOnAction(actionEvent -> {
+            game.toolPermission(3);
+        });
         t.add(b3, 0, 2);
-
-        DimWindows.dimWidth(t,300);
-        pane.add(t,0,0);
     }
 }
