@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.GUI;
+import it.polimi.ingsw.model.tools.Tools;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
@@ -25,8 +26,8 @@ public class ToolsGUI {
 
     }
 
-    public void updateTools(String[] name){                     //name e description sono momentanei,
-        Platform.runLater(() -> {
+    public void updateTools(String[] name){
+        Platform.runLater(() -> {                                   //name e description sono momentanei,
             Button b1 = new Button(name[0]);                       //dal momento che avremo le immagini delle carte
             b1.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);    //diventeranno superflui
             b1.setOnAction(actionEvent -> {

@@ -90,7 +90,7 @@ public class SagradaGUI extends Application implements GUI {
 
         //placing the different gui components
         tools = new ToolsGUI(mainContent, this);
-        rounds = new RoundsGUI(pcenter);
+        rounds = new RoundsGUI(pcenter, this);
         dadieraG =new DadieraGUI(pcenter, 5, this);
         gridG = new GridGUI(pcenter, this);
         target = new TargetGUI(mainContent);
