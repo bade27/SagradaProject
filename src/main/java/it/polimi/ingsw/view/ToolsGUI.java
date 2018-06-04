@@ -1,7 +1,6 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.GUI;
-import it.polimi.ingsw.model.tools.Tools;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
@@ -45,7 +44,7 @@ public class ToolsGUI {
             Button b3 = new Button(name[2]);
             b3.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
             b3.setOnAction(actionEvent -> {
-                game.toolPermission(3);
+                game.toolPermission(6);
             });
             t.add(b3, 0, 2);
         });

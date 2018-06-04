@@ -163,6 +163,10 @@ public class SagradaGUI extends Application implements GUI {
         tools.updateTools(toolNames);
     }
 
+    public void updateOpponents(Pair[][] pair, String user) {
+        plaG.updateGraphic(pair, user);
+    }
+
     /**
      * enables or disables the board
      * @param enableBoard
