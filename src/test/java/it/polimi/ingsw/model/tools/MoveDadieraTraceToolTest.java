@@ -17,7 +17,7 @@ import java.util.function.BiFunction;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MoveDadieraTraceToolTest {
-    /*
+
         private Dadiera d;
         private int n;
         private int expectedDice;
@@ -29,13 +29,12 @@ class MoveDadieraTraceToolTest {
             n = new Random().nextInt(9) + 1;
             d = new Dadiera();
             expectedDice = 2 * n + 1;               //numero dadi nella dadiera
-            mdtt = new MoveDadieraTreTool();
             rt = new RoundTrace();
         }
-    /*
-        @Test()
-        void exchangeDice() throws IllegalDiceException {
 
+        @RepeatedTest(1000) //Test()
+        void exchangeDice() throws IllegalDiceException {
+            mdtt = new MoveDadieraTraceTool(5,"Taglierina circolare");
             d.mix(n);
             Dice dice_tr;
 
@@ -167,7 +166,13 @@ class MoveDadieraTraceToolTest {
     //        System.out.println("");
 
             //applico metodo
-            mdtt.exchangeDice(dice1,d,dice2,pos_tr,rt);
+            mdtt.setD1(dice1);
+            mdtt.setD2(dice2);
+            mdtt.setDadiera(d);
+            mdtt.setPos_rt(pos_tr);
+            mdtt.setRt(rt);
+
+            mdtt.exchangeDice();
 
 
             //numero dadi in dadiera dopo il metodo
@@ -220,6 +225,7 @@ class MoveDadieraTraceToolTest {
 
     @Test
     void setPrice() {
+
         int price1=mdtt.getPrice();
         mdtt.setPrice();
         int price2=mdtt.getPrice();
@@ -235,5 +241,5 @@ class MoveDadieraTraceToolTest {
         int price=mdtt.getPrice();
         assertNotNull(price);
     }
-    */
+
 }

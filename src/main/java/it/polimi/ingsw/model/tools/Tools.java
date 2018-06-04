@@ -77,13 +77,13 @@ public abstract class Tools {
         this.rt = rt;
     }
 
-    /*public Dice getD1() {
+    public Dice getD1() {
         return d1;
     }
 
     public void setD1(Dice d1) {
         this.d1 = d1;
-    }*/
+    }
 
     public Dice getD2() {
         return d2;
@@ -149,11 +149,16 @@ public abstract class Tools {
         this.pos_rt=pos_rt;
     }
 
-    /*public int getIndex(){ return index;}
+    public int getLevel(){ return level;}
 
-    public void setIndex(int index){ this.index=index; }*/
+    public void setLevel(int level){ this.level=level; }
 
     abstract public void use() throws IllegalStepException, IllegalDiceException;
 
+    public String getInstruction() { return instruction; }
+
+    public void setInstruction(String instruction) {
+        this.instruction=instruction;
+    }
 
 }

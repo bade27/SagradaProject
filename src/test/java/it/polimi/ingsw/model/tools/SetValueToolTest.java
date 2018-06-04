@@ -5,6 +5,7 @@ import it.polimi.ingsw.exceptions.IllegalStepException;
 import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.model.Dadiera;
 import it.polimi.ingsw.model.Dice;
+import it.polimi.ingsw.remoteInterface.ToolMove;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -17,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class SetValueToolTest {
-/*
+
     private Dadiera d;
     private int n;
     private int expectedDice;
@@ -28,11 +29,13 @@ class SetValueToolTest {
         n = new Random().nextInt(9) + 1;
         d=new Dadiera();
         expectedDice = 2*n + 1;
-        svt=new SetValueTool();
     }
+
 
     @Test()
     void addSub0() throws IllegalDiceException, IllegalStepException {
+        svt=new SetValueTool(1,"Pinza Sgrossatrice");
+
         boolean found = false;
         d.mix(n);
         //estraggo dado a caso
@@ -59,8 +62,13 @@ class SetValueToolTest {
             //prezzo prima aver usato il tool
             int price1=svt.getPrice();
 
+            svt.setD1(finalDice);
+            svt.setDadiera(d);
+            svt.setInstruction("inc");
+
+
             //chiamo la funzione
-            svt.addSub(finalDice, d, 0);
+            svt.addSub();
 
             //nuovo valore
             int newval = finalDice.getValue();
@@ -68,8 +76,7 @@ class SetValueToolTest {
             ColorEnum newcol=finalDice.getColor();
             //prezzo dopo aver usato il tool
             int price2=svt.getPrice();
-
-            assertEquals(oldval + 1, newval);
+            assertEquals(oldval+1, newval);
             assertEquals(price2,2);
             assertEquals(price1,1);
             assertEquals(oldcol,newcol);
@@ -77,6 +84,7 @@ class SetValueToolTest {
 
     @Test()
     void addSub0Exception() throws IllegalDiceException {
+        svt=new SetValueTool(1,"Pinza Sgrossatrice");
         boolean found = false;
         d.mix(n);
         //estraggo dado a caso
@@ -97,13 +105,16 @@ class SetValueToolTest {
             }
         }
         Dice finalDice = dice;
-        int price=svt.getPrice();
-        assertThrows(IllegalStepException.class, () -> svt.addSub(finalDice,d,0));
+        svt.setD1(finalDice);
+        svt.setDadiera(d);
+        svt.setInstruction("inc");
+        assertThrows(IllegalStepException.class, () -> svt.addSub());
     }
 
 
     @Test()
     void addSub1() throws IllegalDiceException, IllegalStepException {
+        svt=new SetValueTool(1,"Pinza Sgrossatrice");
         boolean found = false;
         d.mix(n);
         //estraggo dado a caso
@@ -131,7 +142,7 @@ class SetValueToolTest {
         int price1=svt.getPrice();
 
         //chiamo la funzione
-        svt.addSub(finalDice, d, 1);
+        //svt.addSub(finalDice, d, 1);
 
         //nuovo valore
         int newval = finalDice.getValue();
@@ -148,6 +159,7 @@ class SetValueToolTest {
 
     @Test()
     void addSub1Exception() throws IllegalDiceException {
+        svt=new SetValueTool(1,"Pinza Sgrossatrice");
         boolean found = false;
         d.mix(n);
         //estraggo dado a caso
@@ -168,25 +180,42 @@ class SetValueToolTest {
             }
         }
         Dice finalDice = dice;
-        assertThrows(IllegalStepException.class, () -> svt.addSub(finalDice,d,1));
+        svt.setD1(finalDice);
+        svt.setDadiera(d);
+        svt.setInstruction("dec");
+        assertThrows(IllegalStepException.class, () -> svt.addSub());
     }
 
     @Test()
-    void turnDice() throws IllegalDiceException {
+    void turnDice() throws IllegalDiceException, IllegalStepException {
+        svt=new SetValueTool(10,"Tampone Diamantato");
         d.mix(n);
         int i=new Random().nextInt(expectedDice);
-        Dice dice=d.getDice(i);
 
+        Dice dice1=d.getDice(i);
         int price1=svt.getPrice();
-        int oldval=dice.getValue();
-        ColorEnum oldcol=dice.getColor();
+        int oldval=dice1.getValue();
+        ColorEnum oldcol=dice1.getColor();
+
+        svt.setD1(dice1);
+        svt.setDadiera(d);
+
+        System.out.println(dice1);
+        System.out.println(oldval);
+        System.out.println(oldcol);
+        System.out.println(d);
 
         //chiamo la funzione
-        svt.turnDice(dice,d);
+        svt.turnDice();
 
         int price2=svt.getPrice();
-        int newval=dice.getValue();
-        ColorEnum newcol=dice.getColor();
+        int newval=dice1.getValue();
+        ColorEnum newcol=dice1.getColor();
+
+        System.out.println(dice1);
+        System.out.println(newval);
+        System.out.println(newcol);
+        System.out.println(d);
 
         assertEquals(7-oldval, newval);
         assertEquals(price2,2);
@@ -195,7 +224,8 @@ class SetValueToolTest {
     }
 
     @Test()
-    void relaunchDice() throws IllegalDiceException {
+    void relaunchDice() throws IllegalDiceException, IllegalStepException {
+        svt=new SetValueTool(6,"Pennello per Pasta Calda");
         d.mix(n);
         int i=new Random().nextInt(expectedDice);
         Dice dice=d.getDice(i);
@@ -203,8 +233,10 @@ class SetValueToolTest {
         int price1=svt.getPrice();
         ColorEnum oldcol=dice.getColor();
 
+        svt.setD1(dice);
+        svt.setDadiera(d);
         //chiamo la funzione
-        svt.relaunchDice(dice,d);
+        svt.relaunchDice();
 
         int price2=svt.getPrice();
         int newval=dice.getValue();
@@ -219,6 +251,7 @@ class SetValueToolTest {
 
     @Test()
     void setPrice() {
+        svt=new SetValueTool(6,"Pennello per Pasta Calda");
         int price1=svt.getPrice();
         svt.setPrice();
         int price2=svt.getPrice();
@@ -231,7 +264,8 @@ class SetValueToolTest {
 
     @Test()
     void getPrice() {
+        svt=new SetValueTool(6,"Pennello per Pasta Calda");
         int price=svt.getPrice();
         assertNotNull(price);
-    }*/
+    }
 }

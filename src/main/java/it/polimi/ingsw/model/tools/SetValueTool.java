@@ -39,7 +39,7 @@ public class SetValueTool extends Tools {
      * increments or decrements the value of the selected dice
      * @throws IllegalStepException in case the move is invalid
      */
-    private void addSub() throws IllegalStepException {
+    protected void addSub() throws IllegalStepException {
         if(instruction == null || d1 == null || dadiera == null)
             throw new IllegalStepException();
 
@@ -66,7 +66,7 @@ public class SetValueTool extends Tools {
      *
      * @throws IllegalStepException
      */
-    private void turnDice(/*Dice x, Dadiera s*/) throws IllegalStepException {
+    protected void turnDice(/*Dice x, Dadiera s*/) throws IllegalStepException {
         if(d1 == null || dadiera == null)
             throw new IllegalStepException();
 
@@ -82,7 +82,7 @@ public class SetValueTool extends Tools {
     /**
      * Tool nr. 6 function
      */
-    private void relaunchDice(/*Dice x, Dadiera s*/) throws IllegalStepException {
+    protected void relaunchDice(/*Dice x, Dadiera s*/) throws IllegalStepException {
         if(d1 == null || dadiera == null)
             throw new IllegalStepException();
         int v;

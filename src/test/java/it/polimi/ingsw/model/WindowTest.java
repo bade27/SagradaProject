@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.exceptions.IllegalDiceException;
 import it.polimi.ingsw.exceptions.ParserXMLException;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.opentest4j.TestAbortedException;
 
@@ -238,9 +239,68 @@ class WindowTest
         assertNull(d1);
     }
 
-    @Test
-    void moveDice(){
+    @Test()
+    void moveDicenocontrol() throws IllegalDiceException {
+        int value=new Random().nextInt(6)+1;
+        ColorEnum color=null;
+        int col = new Random().nextInt(5);
+        switch (col) {
+            case 0:
+                color = ColorEnum.RED;
+                break;
+            case 1:
+                color = ColorEnum.GREEN;
+                break;
+            case 2:
+                color = ColorEnum.BLUE;
+                break;
+            case 3:
+                color = ColorEnum.YELLOW;
+                break;
+            case 4:
+                color = ColorEnum.PURPLE;
+                break;
 
+            default:
+                break;
+        }
+        Dice d = new Dice(value, color);
+        int i1=new Random().nextInt(4);
+        int j1=new Random().nextInt(5);
+
+        while(i1!=0&&i1!=4&&j1!=0&&j1!=3) {
+            i1 = new Random().nextInt(4);
+            j1 = new Random().nextInt(5);
+        }
+        int [] pos_in={i1,j1};
+        w.addDice(i1,j1,d,-1);
+
+        int i2=new Random().nextInt(4);
+        int j2=new Random().nextInt(5);
+
+        while(i2!=0&&i2!=4&&j2!=0&&j2!=3) {
+            i2 = new Random().nextInt(4);
+            j2 = new Random().nextInt(5);
+        }
+        int [] pos_fin={i2,j2};
+
+        Dice di1=w.getCell(i1,j1).getFrontDice();
+        Dice di2=w.getCell(i2,j2).getFrontDice();
+
+        w.moveDice(pos_in,pos_fin,-1);
+
+        Dice df1=w.getCell(i1,j1).getFrontDice();
+        Dice df2=w.getCell(i2,j2).getFrontDice();
+
+        if(i1!=i2||j1!=j2){
+            assertEquals(di1,d);
+            assertNull(di2);
+            assertEquals(df2,d);
+            assertNull(df1);
+        }else{
+            assertEquals(di1,d);
+            assertEquals(df1,d);
+        }
     }
 
     @Test
