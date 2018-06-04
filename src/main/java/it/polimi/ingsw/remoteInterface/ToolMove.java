@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Dadiera;
 import it.polimi.ingsw.model.Window;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class ToolMove implements Serializable {
 
@@ -13,6 +14,35 @@ public class ToolMove implements Serializable {
     private Integer i_end, j_end;
     private Dadiera d;
     private Window w;
+
+    private ArrayList<int[]> first = new ArrayList<>();
+    private ArrayList<int[]> second = new ArrayList<>();
+    private ArrayList<Pair> pair = new ArrayList<>();
+
+    public ArrayList<Pair> getPair() {
+        return pair;
+    }
+
+    public void setPair(Pair pair) {
+        this.pair.add(pair);
+    }
+
+    public ArrayList<int[]> getFirst() {
+        return first;
+    }
+
+    public void setFirst(int[] pos) {
+        this.first.add(pos);
+    }
+
+    public ArrayList<int[]> getSecond() {
+        return second;
+    }
+
+    public void setSecond(int[] pos) {
+        this.second.add(pos);
+    }
+
 
     public Pair getP() {
         return p;
@@ -56,15 +86,7 @@ public class ToolMove implements Serializable {
         this.j_end = j;
     }
 
-    @Override
-    public String toString() {
-        return "ToolMove{" +
-                ", p=" + p +
-                ", instruction='" + instruction + '\'' +
-                ", i_start=" + i_start +
-                ", j_start=" + j_start +
-                '}';
-    }
+
 
     public Dadiera getDadiera() {
         return d;

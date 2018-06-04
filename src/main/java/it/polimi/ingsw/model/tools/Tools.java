@@ -41,16 +41,23 @@ public abstract class Tools {
     //recupera tutti i valori memorizzati in toolmove. sono poi i singoli figli a controllare che
     //ci sia tutto ciò che serve
     public void setToolMove (ToolMove tm) {
-        d1 = tm.getP() !=null ?new Dice(tm.getP().getValue(), tm.getP().getColor()) : null;
+        //d1 = tm.getP() !=null ?new Dice(tm.getP().getValue(), tm.getP().getColor()) : null;
+        d1 = tm.getPair().size() > 0 ? new Dice(tm.getPair().get(0).getValue(), tm.getPair().get(0).getColor()) : null;
+        d2 = tm.getPair().size() == 2 ? new Dice(tm.getPair().get(0).getValue(), tm.getPair().get(0).getColor()) : null;
         instruction = tm.getInstruction();
         dadiera = tm.getDadiera();
         window = tm.getW();
-        pos_iniz1 = (tm.getI_start() != null || tm.getJ_start() != null)
+        /*pos_iniz1 = (tm.getI_start() != null || tm.getJ_start() != null)
                 ? new int[] {tm.getI_start(), tm.getJ_start()}
                 : null;
         pos_fin1 = (tm.getI_end() != null || tm.getJ_end() != null)
                 ? new int[] {tm.getI_end(), tm.getJ_end()}
-                : null;
+                : null;*/
+        pos_iniz1 = tm.getFirst().size() > 0 ? tm.getFirst().get(0) : null;
+        pos_fin1 = tm.getFirst().size() == 2 ? tm.getFirst().get(1) : null;
+
+        pos_iniz2 = tm.getSecond().size() > 0 ? tm.getSecond().get(0) : null;
+        pos_fin2 = tm.getSecond().size() == 2 ? tm.getSecond().get(1) : null;
     }
 
 
