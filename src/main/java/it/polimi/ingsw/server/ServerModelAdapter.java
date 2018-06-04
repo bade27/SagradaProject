@@ -49,7 +49,8 @@ public class ServerModelAdapter
 
         try {
             toolInUse.use();
-            toolInUse = null;
+
+            //toolInUse = null;
         } catch (IllegalDiceException | IllegalStepException e) {
             //return e.getMessage();
             return "Invalid input";
@@ -59,6 +60,10 @@ public class ServerModelAdapter
 
     public boolean toolRequest (int nrTool)
     {
+        if (toolInUse != null)
+            if (!toolInUse.isToolFinished())
+                return false;
+
         for (int i = 0; i < tools.length ; i++)
             if (tools[i].getId() == nrTool)
                 if (tools[i].getPrice() < marker) {
@@ -82,6 +87,8 @@ public class ServerModelAdapter
 
         try {
             board.addDice(i,j,d,0);
+            if (toolInUse != null)
+                toolInUse.setToolFinished(true); //Always
         }
         catch (IllegalDiceException ex) {
             throw new ModelException("Impossible to place die: " + ex.getMessage());

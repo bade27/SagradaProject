@@ -25,10 +25,10 @@ public class SetValueTool extends Tools {
             addSub();
             break;
          case 6:
-             turnDice();
+             relaunchDice();
                 break;
           case 10:
-             relaunchDice();
+             turnDice();
                 break;
             default:
                 break;
@@ -76,24 +76,24 @@ public class SetValueTool extends Tools {
         } catch (IllegalDiceException ise) {
             throw new IllegalStepException();
         }
-        remember = d1;
         setPrice();
     }
 
     /**
-     * relaunch the die
-
-     * @throws IllegalDiceException
+     * Tool nr. 6 function
      */
     private void relaunchDice(/*Dice x, Dadiera s*/) throws IllegalStepException {
         if(d1 == null || dadiera == null)
             throw new IllegalStepException();
-
+        int v;
         try {
-            dadiera.setDiceValue(new Random().nextInt(6) + 1, d1);
+            v = new Random().nextInt(6) + 1;
+            dadiera.setDiceValue(v, d1);
         } catch (IllegalDiceException ide) {
             throw new IllegalStepException();
         }
+        remember = new Dice(v,d1.getColor());
+        finished = false;
         setPrice();
     }
 
@@ -121,10 +121,12 @@ public class SetValueTool extends Tools {
     public boolean canPlaceDie(Dice d) {
         if (id == 6)
         {
+            if (remember == null)
+                return false;
             if (remember.isEqual(d))
                 return true;
             return false;
         }
-        return false;
+        return true;
     }
 }
