@@ -17,7 +17,7 @@ import java.util.function.BiFunction;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MoveDadieraTraceToolTest {
-
+/*
         private Dadiera d;
         private int n;
         private int expectedDice;
@@ -241,5 +241,5 @@ class MoveDadieraTraceToolTest {
         int price=mdtt.getPrice();
         assertNotNull(price);
     }
-
+*/
 }
