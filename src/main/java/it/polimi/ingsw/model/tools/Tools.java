@@ -27,14 +27,21 @@ public abstract class Tools {
     protected int [] pos_fin2;
     protected String instruction;
     protected int level;
+    protected boolean finished;
 
-    public Tools() { }
+    public Tools() {
+        finished = true;
+    }
 
     abstract void setPrice();
 
     abstract public int getPrice();
 
     abstract public int getId();
+
+    public boolean isToolFinished (){ return finished; }
+
+    public void setToolFinished (boolean f){ finished=f; }
 
     abstract public boolean canPlaceDie (Dice d);
 
