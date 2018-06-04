@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 public class ParserXML
 {
+    //<editor-fold desc="Window XML">
     /**
      * Read from xml window's pattern and initialize an empty board
      * @param path XML file location
@@ -110,6 +111,27 @@ public class ParserXML
     }
 
     /**
+     * Read and return from xml the difficult about board passed in path
+     * @param path XML file location
+     * @return difficult of board
+     */
+    public static int readBoardDifficult (String path) throws ParserXMLException
+    {
+        try {
+            File file = new File(path);
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document document = documentBuilder.parse(file);
+
+            return Integer.parseInt(document.getElementsByTagName("difficulty").item(0).getTextContent());
+        }catch (Exception e){
+            throw new ParserXMLException("Impossible to read difficult from XML " + path);
+        }
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="Objective XML">
+    /**
      * Read from xml all objectives' names and return a list with those
      * @param path XML file location
      * @return list of names
@@ -138,7 +160,9 @@ public class ParserXML
             throw new ParserXMLException("Impossible to read file: " + path);
         }
     }
+    //</editor-fold>
 
+    //<editor-fold desc="Tool XML">
     /**
      * Read from xml all tools' names and return a list with those
      * @param path XML file location
@@ -171,18 +195,5 @@ public class ParserXML
         }
     }
 
-    public static int readBoardDifficult (String path) throws ParserXMLException
-    {
-        try {
-            File file = new File(path);
-            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            Document document = documentBuilder.parse(file);
-
-            return Integer.parseInt(document.getElementsByTagName("difficulty").item(0).getTextContent());
-        }catch (Exception e){
-            throw new ParserXMLException("Impossible to read difficult from XML " + path);
-        }
-    }
-
+    //</editor-fold>
 }

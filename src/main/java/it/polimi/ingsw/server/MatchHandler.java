@@ -4,6 +4,7 @@ import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.exceptions.ParserXMLException;
 import it.polimi.ingsw.model.Dadiera;
 import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
+import it.polimi.ingsw.utilities.FileLocator;
 import it.polimi.ingsw.utilities.LogFile;
 import it.polimi.ingsw.utilities.ParserXML;
 import org.w3c.dom.Document;
@@ -31,7 +32,7 @@ public class MatchHandler implements Runnable
     private TokenTurn tok;
     private Dadiera dices;
 
-    private final static int MAXGIOC = 1;//Da modificare a 4
+    private final static int MAXGIOC = 2;//Da modificare a 4
 
     //connection parameters
     private static final String settings = "resources/server_settings.xml";
@@ -297,7 +298,7 @@ public class MatchHandler implements Runnable
 
         //Take all xml names of windows cards
         try{
-            cards = ParserXML.readWindowsName("resources/vetrate/xml/windows_list.xml");
+            cards = ParserXML.readWindowsName(FileLocator.getWindowListPath());
         }
         catch (ParserXMLException ex){
             log.addLog("Impossible to read XML Window",ex.getStackTrace());
@@ -341,7 +342,7 @@ public class MatchHandler implements Runnable
 
         //Take all xml names of private objective cards
         try{
-            cards = ParserXML.readObjectiveNames("resources/carte/obbiettivi/obbiettiviPrivati/xml/privateObjectiveList.xml");
+            cards = ParserXML.readObjectiveNames(FileLocator.getPrivateObjectivesListPath());
         }
         catch (ParserXMLException ex){
             log.addLog("Impossible to read XML Private Obj",ex.getStackTrace());
@@ -375,7 +376,7 @@ public class MatchHandler implements Runnable
 
         //Take all xml names of public objective cards
         try{
-            cards = ParserXML.readObjectiveNames("resources/carte/obbiettivi/obbiettiviPubblici/xml/publicObjectiveList.xml");
+            cards = ParserXML.readObjectiveNames(FileLocator.getPublicObjectivesListPath());
         }
         catch (ParserXMLException ex){
             log.addLog("Impossible to read XML publicObj",ex.getStackTrace());
@@ -411,7 +412,7 @@ public class MatchHandler implements Runnable
 
         //Take all xml names of tool cards
         try{
-            cardsTmp = ParserXML.readToolsNames("resources/carte/tools/tools.xml");
+            cardsTmp = ParserXML.readToolsNames(FileLocator.getToolsListPath());
             cards = cardsTmp.toArray(new String[cardsTmp.size()]);
         }
         catch (ParserXMLException ex){

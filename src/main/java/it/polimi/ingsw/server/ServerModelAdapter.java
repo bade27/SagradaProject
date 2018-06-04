@@ -142,8 +142,6 @@ public class ServerModelAdapter
                 tools[i] = ToolsFactory.getTools(names[i]);
                 System.out.println(names[i]);
             }
-            /*tools[0] = ToolsFactory.getTools("Pinza Sgrossatrice");*/
-
         }catch (Exception ex){
             throw new ModelException("Impossible to create public objectives");
         }

@@ -85,9 +85,6 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
                 System.out.println("RMI connection to host " + HOSTNAME + " port " + RMI_REGISTRY_PORT +  "...");
                 String[] e = Naming.list(remote);
 
-                /*for (int i = 0; i < e.length ; i++)
-                    System.out.println(e[i]);*/
-
                 String s = Collections.max(new ArrayList<>(Arrays.asList(e)));
 
                 server=(ServerRemoteInterface) Naming.lookup(s);
