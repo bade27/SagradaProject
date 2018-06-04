@@ -44,6 +44,7 @@ public class ServerModelAdapter
 
         mv.setDadiera(dadiera);
         mv.setW(board);
+        marker = marker - toolInUse.getPrice();
         toolInUse.setToolMove(mv);
 
         try {
