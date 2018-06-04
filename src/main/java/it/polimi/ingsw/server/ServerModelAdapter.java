@@ -76,11 +76,15 @@ public class ServerModelAdapter
      */
     public void addDiceToBoard (int i, int j, Dice d) throws ModelException
     {
+        if (toolInUse != null)
+            if (!toolInUse.canPlaceDie(d))
+                throw new ModelException("Impossible to place die, wrong die selected: ");
+
         try {
             board.addDice(i,j,d,0);
         }
         catch (IllegalDiceException ex) {
-            throw new ModelException("Impossible to place dice: " + ex.getMessage());
+            throw new ModelException("Impossible to place die: " + ex.getMessage());
         }
         canMove = false;
         dadiera.deleteDice(d);

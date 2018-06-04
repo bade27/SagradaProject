@@ -36,6 +36,8 @@ public abstract class Tools {
 
     abstract public int getId();
 
+    abstract public boolean canPlaceDie (Dice d);
+
     //recupera tutti i valori memorizzati in toolmove. sono poi i singoli figli a controllare che
     //ci sia tutto ciò che serve
     public void setToolMove (ToolMove tm) {

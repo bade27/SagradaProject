@@ -1,5 +1,9 @@
 package it.polimi.ingsw.model.tools;
 
+//Tool nr.5
+
+import it.polimi.ingsw.model.Dice;
+
 public class MoveDadieraTraceTool extends Tools {
 
 
@@ -46,4 +50,10 @@ public class MoveDadieraTraceTool extends Tools {
     public int getId(){
         return id;
     }
+
+    @Override
+    public boolean canPlaceDie(Dice d) {
+        return true;
+    }
+
 }

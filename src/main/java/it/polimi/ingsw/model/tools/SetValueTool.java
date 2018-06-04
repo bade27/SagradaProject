@@ -1,11 +1,16 @@
 package it.polimi.ingsw.model.tools;
 
+//Tool nr. 1-6-10
+
 import it.polimi.ingsw.exceptions.IllegalDiceException;
 import it.polimi.ingsw.exceptions.IllegalStepException;
+import it.polimi.ingsw.model.Dice;
 
 import java.util.Random;
 
 public class SetValueTool extends Tools {
+
+    private Dice remember;
 
     public SetValueTool(int id, String name) {  //qua avrò oltre a id un array con dentro i dati
         this.price = 1;                  // necessari a usare i metodi
@@ -31,15 +36,6 @@ public class SetValueTool extends Tools {
     }
 
     /**
-     * The dice value increase (i=0) or decrease (i=1)by one
-     *
-
-     * @throws IllegalStepException
-     * @throws IllegalDiceException
-     */
-
-
-    /**
      * increments or decrements the value of the selected dice
      * @throws IllegalStepException in case the move is invalid
      */
@@ -63,19 +59,6 @@ public class SetValueTool extends Tools {
         }
 
         setPrice();
-
-        /*if (index==0) {
-            if(value<6) {
-                dadiera.setDiceValue(value + 1, d1);
-                setPrice();
-            } else throw new IllegalStepException();
-
-        }    else if (index==1) {
-            if (value>1) {
-                dadiera.setDiceValue(value - 1, d1);
-                setPrice();
-            } else throw new IllegalStepException();
-        } else throw new IllegalStepException();*/
     }
 
     /**
@@ -93,6 +76,7 @@ public class SetValueTool extends Tools {
         } catch (IllegalDiceException ise) {
             throw new IllegalStepException();
         }
+        remember = d1;
         setPrice();
     }
 
@@ -131,5 +115,16 @@ public class SetValueTool extends Tools {
 
     public int getId(){
         return id;
+    }
+
+    @Override
+    public boolean canPlaceDie(Dice d) {
+        if (id == 6)
+        {
+            if (remember.isEqual(d))
+                return true;
+            return false;
+        }
+        return false;
     }
 }

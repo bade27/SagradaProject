@@ -4,6 +4,9 @@ import it.polimi.ingsw.exceptions.IllegalDiceException;
 import it.polimi.ingsw.exceptions.IllegalStepException;
 import it.polimi.ingsw.model.Dice;
 
+//Tool nr. 2-3-4
+
+
 public class MoveGridGridTool extends Tools {
 
 
@@ -106,6 +109,11 @@ public class MoveGridGridTool extends Tools {
 
     public int getId(){
         return id;
+    }
+
+    @Override
+    public boolean canPlaceDie(Dice d) {
+        return true;
     }
 
 }
