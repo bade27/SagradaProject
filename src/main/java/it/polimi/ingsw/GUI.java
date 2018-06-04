@@ -18,4 +18,5 @@ public interface GUI {
     public void modToolMoveIJ(int i, int j);
     public void makeToolMove();
     public void updateTools(String[] toolNames);
+    public void updateOpponents(Pair[][] pair, String user);
 }

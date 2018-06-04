@@ -1,14 +1,11 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.GUI;
-import it.polimi.ingsw.model.ColorEnum;
-import it.polimi.ingsw.model.RoundTrace;
 import it.polimi.ingsw.remoteInterface.Pair;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.application.Platform;
 import javafx.geometry.Pos;
-import javafx.scene.layout.*;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.layout.GridPane;
 
 public class RoundsGUI extends GridPane {
     int turn=3;
@@ -41,21 +38,22 @@ public class RoundsGUI extends GridPane {
         p.add(roundTrace,0,0);
     }
     public void updateRoundTrace(Pair[] pair, int i){
-        Button indexround =(Button)round.getChildren().get(i);
-        indexround.setOnAction(event -> {
-            Button b = new Button(indexround.getText()+"\t");
-            b.setDisable(true);
-            b.setOpacity(255);
-            diceInRound.add(b, 0, 0);
-            for (int j=0;j<pair.length;j++)
-            {
-                b = new Button();
+        Platform.runLater(() -> {
+            Button indexround = (Button) round.getChildren().get(i);
+            indexround.setOnAction(event -> {
+                Button b = new Button(indexround.getText() + "\t");
                 b.setDisable(true);
-                b.setStyle("-fx-background-color: "+pair[j].getColor());
-                b.setText(""+ pair[j].getValue());
                 b.setOpacity(255);
-                diceInRound.add(b, j+1, 0);
-            }
+                diceInRound.add(b, 0, 0);
+                for (int j = 0; j < pair.length; j++) {
+                    b = new Button();
+                    b.setDisable(true);
+                    b.setStyle("-fx-background-color: " + pair[j].getColor());
+                    b.setText("" + pair[j].getValue());
+                    b.setOpacity(255);
+                    diceInRound.add(b, j + 1, 0);
+                }
+            });
         });
     }
 }
