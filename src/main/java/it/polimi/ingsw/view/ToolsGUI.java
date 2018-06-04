@@ -44,7 +44,7 @@ public class ToolsGUI {
             Button b3 = new Button(name[2]);
             b3.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
             b3.setOnAction(actionEvent -> {
-                game.toolPermission(6);
+                game.toolPermission(4);
             });
             t.add(b3, 0, 2);
         });
