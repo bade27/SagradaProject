@@ -93,7 +93,9 @@ public class SagradaGUI extends Application implements GUI {
         rounds = new RoundsGUI(pcenter, this);
         dadieraG =new DadieraGUI(pcenter, 5, this);
         gridG = new GridGUI(pcenter, this);
+        plaG=new PlayersGUI(pcenter,this);
         target = new TargetGUI(mainContent);
+
 
 
         //status message and end of turn button
@@ -109,7 +111,7 @@ public class SagradaGUI extends Application implements GUI {
         root.setCenter(mainContent);
         root.setBottom(bottom);
 
-        Scene scene=new Scene(root,800,600);
+        Scene scene=new Scene(root,800,400);
         primaryStage.setTitle("Sagrada");
         primaryStage.setScene(scene);
         primaryStage.show();

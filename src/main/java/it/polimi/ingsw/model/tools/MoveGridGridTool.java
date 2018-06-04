@@ -7,23 +7,23 @@ import it.polimi.ingsw.model.Dice;
 public class MoveGridGridTool extends Tools {
 
 
-    public MoveGridGridTool(int type, String name) {
+    public MoveGridGridTool(int id, String name) {
 
         this.price = 1;
-        this.type=type;
+        this.id =id;
         this.name=name;
     }
 
     @Override
     public void use() throws IllegalStepException, IllegalDiceException {
 
-        if(type == 2)
-            index = 1;
-        else if(type == 3)
-            index = 2;
+        if(id == 2)
+            level = 1;
+        else if(id == 3)
+            level = 2;
 
-        switch (type)
-        {   //case 2 e case 3 si chiamano la stessa funzione, che si comporta in modo diverso a seconda del type
+        switch (id)
+        {   //case 2 e case 3 si chiamano la stessa funzione, che si comporta in modo diverso a seconda del id
             case 2:
                 //...
             case 3:
@@ -50,7 +50,7 @@ public class MoveGridGridTool extends Tools {
 
         Dice d = window.getCell(pos_iniz1[0], pos_fin1[1]).getFrontDice();
         try {
-            window.moveDice(pos_iniz1,pos_fin1, index);
+            window.moveDice(pos_iniz1,pos_fin1, level);
         } catch (Exception ex) {
             throw new IllegalStepException();
         }
@@ -104,8 +104,8 @@ public class MoveGridGridTool extends Tools {
         return price;
     }
 
-    public int getType(){
-        return type;
+    public int getId(){
+        return id;
     }
 
 }

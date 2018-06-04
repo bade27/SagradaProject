@@ -3,10 +3,10 @@ package it.polimi.ingsw.model.tools;
 public class MoveDadieraTraceTool extends Tools {
 
 
-    public MoveDadieraTraceTool(int type,String name) {
+    public MoveDadieraTraceTool(int id,String name) {
 
         this.price = 1;
-        this.type=type;
+        this.id =id;
         this.name=name;
     }
 
@@ -43,7 +43,7 @@ public class MoveDadieraTraceTool extends Tools {
         return price;
     }
 
-    public int getType(){
-        return type;
+    public int getId(){
+        return id;
     }
 }

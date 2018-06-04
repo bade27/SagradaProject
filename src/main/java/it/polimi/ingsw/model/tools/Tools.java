@@ -11,7 +11,7 @@ import it.polimi.ingsw.remoteInterface.ToolMove;
 public abstract class Tools {
 
     protected int price;
-    protected int type;
+    protected int id;
     protected String name;
 
     protected RoundTrace rt;
@@ -26,7 +26,7 @@ public abstract class Tools {
     protected int [] pos_iniz2;
     protected int [] pos_fin2;
     protected String instruction;
-    protected int index;
+    protected int level;
 
     public Tools() { }
 
@@ -34,7 +34,7 @@ public abstract class Tools {
 
     abstract public int getPrice();
 
-    abstract public int getType();
+    abstract public int getId();
 
     //recupera tutti i valori memorizzati in toolmove. sono poi i singoli figli a controllare che
     //ci sia tutto ciò che serve

@@ -59,7 +59,7 @@ public class ServerModelAdapter
     public boolean toolRequest (int nrTool)
     {
         for (int i = 0; i < tools.length ; i++)
-            if (tools[i].getType() == nrTool)
+            if (tools[i].getId() == nrTool)
                 if (tools[i].getPrice() < marker) {
                     toolInUse = tools[i];
                     return true;

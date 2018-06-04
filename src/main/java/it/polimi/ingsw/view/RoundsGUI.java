@@ -18,10 +18,10 @@ public class RoundsGUI extends GridPane {
     GridPane roundTrace;
     public RoundsGUI(GridPane p, GUI game) {
 
-        Pair[] pair=new Pair[3];                            //creo i pair
-        for(int i=0;i<pair.length;i++){
-            pair[i]=new Pair(4, ColorEnum.BLUE);
-        }
+        Pair[] pair=new Pair[0];                            //creo i pair
+        /*for(int i=0;i<pair.length;i++){
+            pair[i]=new Pair(0, ColorEnum.WHITE);
+        }*/
         roundTrace=new GridPane();
         round = new GridPane();
         diceInRound=new GridPane();
@@ -43,7 +43,7 @@ public class RoundsGUI extends GridPane {
     public void updateRoundTrace(Pair[] pair, int i){
         Button indexround =(Button)round.getChildren().get(i);
         indexround.setOnAction(event -> {
-            Button b = new Button(indexround.getText());
+            Button b = new Button(indexround.getText()+"\t");
             b.setDisable(true);
             b.setOpacity(255);
             diceInRound.add(b, 0, 0);
