@@ -151,7 +151,7 @@ public class Window
             try {
                 addDice(pos_end[0],pos_end[1],dice,level);
             }catch(Exception ex) {
-                addDice(pos_in[0],pos_in[1],dice,0);
+                addDice(pos_in[0],pos_in[1],dice,-1);
                 throw new IllegalDiceException();
             }
         } else {

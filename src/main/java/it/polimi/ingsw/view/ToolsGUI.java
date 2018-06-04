@@ -55,7 +55,6 @@ public class ToolsGUI {
             }catch (Exception e){
                 e.getStackTrace();
             }
-
         });
     }
 

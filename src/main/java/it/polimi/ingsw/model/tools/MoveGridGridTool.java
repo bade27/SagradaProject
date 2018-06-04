@@ -71,6 +71,10 @@ public class MoveGridGridTool extends Tools {
      * @throws IllegalDiceException
      */
     public void moveTwoDieTool() throws IllegalStepException, IllegalDiceException {   //perche mi son fatto passare dado?
+
+        if(window == null || pos_iniz1 == null || pos_fin1 == null || pos_iniz2 == null || pos_fin2 == null)
+            throw new IllegalStepException();
+
         Dice d1 = window.getCell(pos_iniz1[0], pos_iniz1[1]).getFrontDice();
         Dice d2 = window.getCell(pos_iniz2[0], pos_iniz2[1]).getFrontDice();
         try {

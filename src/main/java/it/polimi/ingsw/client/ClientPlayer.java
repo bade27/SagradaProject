@@ -286,13 +286,19 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     }
 
     public synchronized void setToolMovePair(Pair p) {
-        this.tmove.setP(p);
+        //this.tmove.setP(p);
+        tmove.setPair(p);
     }
 
     public synchronized void setToolMoveIJ(int i, int j) {
-        if(this.tmove.getI_start() == null && this.tmove.getJ_start() == null)
+        /*if(this.tmove.getI_start() == null && this.tmove.getJ_start() == null)
             setToolMoveIJStart(i, j);
-        else setToolMoveIJEnd(i, j);
+        else setToolMoveIJEnd(i, j);*/
+
+        if(tmove.getFirst().size() < 2)
+            tmove.setFirst(new int[] {i, j});
+        else if(tmove.getSecond().size() < 2)
+            tmove.setSecond(new int[] {i, j});
     }
 
     //setta i valori della posizione iniziale
