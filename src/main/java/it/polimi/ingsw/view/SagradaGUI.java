@@ -114,6 +114,7 @@ public class SagradaGUI extends Application implements GUI {
         primaryStage.setScene(scene);
         primaryStage.show();
         primaryStage.setResizable(false);
+        primaryStage.setOnCloseRequest(e -> Platform.exit());
     }
 
 
