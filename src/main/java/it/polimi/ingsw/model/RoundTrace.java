@@ -1,14 +1,16 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.remoteInterface.Pair;
+
 import java.util.ArrayList;
 
 public class RoundTrace {
     //private ArrayList<Object> trace;
-    private ArrayList[] trace;             //vettore di arrayList
+    private ArrayList<Dice>[] trace;             //vettore di arrayList
 
     public RoundTrace(){
         //trace=new ArrayList<Object>(10);
-        trace = new ArrayList [10];
+        trace =  new ArrayList [10];
         for(int i=0;i<10;i++) {
             ArrayList<Dice> listdice = new ArrayList<Dice>();       //inizializzo la lista
             //trace.set(i,listdice);
@@ -50,5 +52,22 @@ public class RoundTrace {
      */
     public ArrayList<Dice> getListDice(int n){
         return trace[n-1];
+    }
+
+    /**
+     * Generation of this object in pair mode
+     * @return Pair mode object
+     */
+    public ArrayList<Pair> [] getPair ()
+    {
+        ArrayList<Pair> [] ret = new ArrayList[10];
+        for (int i = 0 ; i < trace.length ; i++)
+        {
+            ArrayList<Pair> list = new ArrayList<>();
+            for(int j = 0; j < trace[i].size(); j++)
+                list.add(new Pair(trace[i].get(j).getValue(), trace[i].get(j).getColor()));
+            ret[i] = list;
+        }
+        return ret;
     }
 }

@@ -346,17 +346,20 @@ public class ServerPlayer implements Runnable
 
     private void updateRoundTrace () throws ClientOutOfReachException
     {
-        RoundTrace tmp = adapter.getRoundTrace();
-        int totRound = tmp.getTrace().length;
-        ArrayList<Pair> list = new ArrayList<>();
-        for(int i = 0; i < totRound; i++) {
-            for(int k = 0; k < tmp.getListDice(i + 1).size(); k++) {
-                Dice iDice = tmp.getListDice(i + 1).get(i);
-                int value = iDice.getValue();
-                ColorEnum color = iDice.getColor();
-                list.add(new Pair(value, color));
+        String s;
+        try{
+            s = stopTask(() -> communicator.updateRoundTrace(adapter.getRoundTracePair()), INIT_TIMEOUT, executor);
+            if(s == null)
+            {
+                log.addLog(" Round Trace update timeout expired");
+                throw new ClientOutOfReachException();
             }
         }
+        catch (Exception e) {
+            log.addLog("" , e.getStackTrace());
+            throw new ClientOutOfReachException();
+        }
+
     }
 
     /**
@@ -422,7 +425,7 @@ public class ServerPlayer implements Runnable
         boolean exit = true;
         try{
             updateDadiera();
-            //updateRoundTrace();
+            updateRoundTrace();
             updateWindow();
             updateTokens();
         }catch (Exception e){

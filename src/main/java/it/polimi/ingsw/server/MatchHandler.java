@@ -71,7 +71,7 @@ public class MatchHandler implements Runnable
         initializeClients();
         System.out.println(">>>Connection Phase Ended");
 
-        //Initialization clients' cards
+        //Windows, tools and objectives initialization
         if (! (initializeWindowPlayers() && initializePublicObjectiveCards() && initializeTools()))
         {
             System.out.println(">>>Failed to initialize cards, server aborted");
@@ -82,12 +82,13 @@ public class MatchHandler implements Runnable
         waitInitialition();
         System.out.println(">>>Setup Phase ended");
 
-
+        //Game Phase
         startGame();
     }
 
+    //<editor-fold desc="Game Phase">
     /**
-     * Manage the match: checks status, wakes players, and manage match components
+     * Manage the match: checks status, wakes and updates players, and manages match components
      * */
     private void startGame ()
     {
@@ -105,10 +106,12 @@ public class MatchHandler implements Runnable
                 if (tok.isFatalError())
                     closeAllConnection();
 
+                //On end round situation
                 if (tok.isEndRound())
                 {
+                    //Increment total of turn
                     turnsPlayed++;
-                    //----------------------------
+                    //Update Round Trace
                     while(dices.getListaDadi().size() > 0) {
                         Dice tmp = null;
                         try {
@@ -117,13 +120,18 @@ public class MatchHandler implements Runnable
                             e.printStackTrace();
                         }
                         roundTrace.addDice(turnsPlayed, tmp);
+                        dices.deleteDice(tmp);
                     }
-                    //----------------------------
+
+                    //and..Mix dadiera
                     dices.mix(tok.getNumPlayers());
                     System.out.println(">>>Dadiera Mixed");
                     log.addLog("Dadiera Mixed");
                 }
+                //Update client's graphic situation
                 updateClient();
+
+                //Finish turn and notify all clients
                 tok.nextTurn();
                 tok.notifyAll();
 
@@ -140,8 +148,13 @@ public class MatchHandler implements Runnable
             }
         }
     }
+    //</editor-fold>
 
     //<editor-fold desc="Connection Phase">
+
+    /**
+     * Initialize all server's components and all game's componenents
+     */
     private void initializeServer ()
     {
         log = new LogFile("ServerLog");
@@ -162,9 +175,11 @@ public class MatchHandler implements Runnable
         System.out.println(">>>Server started");
         log.addLog(">>>Server started");
 
+        //Starts thread that accept client's connection
         InitializerConnection initializer = new InitializerConnection(this);
         initializer.start();
 
+        //When thread that accept client's connection has the right number of clients, all clients connected will be initialized
         try{
             synchronized (tok){
                 tok.wait();
@@ -176,18 +191,19 @@ public class MatchHandler implements Runnable
     }
 
 
-
     /**
-     * Initialize connection with server for each players
+     * Initialize connection with server for each players after the connection of all of them
      */
     private void initializeClients()
     {
         threadPlayers = new ArrayList<Thread>();
         try
         {
+            //Check connection status
             nConn = MAXGIOC - checkClientAlive();
             log.addLog("Number of client(s) connected:" + nConn);
             tok.setInitNumberOfPlayers(nConn);
+            //Starting of all ServerPlayer
             for (int i = 0; i <nConn ; i++)
             {
                 Thread t = new Thread(player.get(i));
@@ -221,8 +237,8 @@ public class MatchHandler implements Runnable
             }
 
         }
+        //Initialization of ServerPlayer for each player
         ServerModelAdapter adp = new ServerModelAdapter(dices, roundTrace);
-
         ServerPlayer pl = new ServerPlayer(tok,adp,possibleUsrs,log,cli);
         player.add(pl);
         nConn++;
@@ -306,7 +322,7 @@ public class MatchHandler implements Runnable
     }
     //</editor-fold>
 
-    //<editor-fold desc = "Window and objects initialization">
+    //<editor-fold desc = "Windows, tools and objectives initialization">
     /**
      *  Initialization board game for each players
      */

@@ -13,6 +13,8 @@ import it.polimi.ingsw.model.tools.ToolsFactory;
 import it.polimi.ingsw.remoteInterface.Pair;
 import it.polimi.ingsw.remoteInterface.ToolMove;
 
+import java.util.ArrayList;
+
 public class ServerModelAdapter
 {
     private static final int numPublicObj = 3;
@@ -170,8 +172,8 @@ public class ServerModelAdapter
         this.dadiera = dadiera;
     }
 
-    public RoundTrace getRoundTrace() {
-        return roundTrace;
+    public ArrayList<Pair>[] getRoundTracePair() {
+        return roundTrace.getPair();
     }
 
     public int getMarker() {
