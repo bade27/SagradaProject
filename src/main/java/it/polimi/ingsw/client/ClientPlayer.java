@@ -189,6 +189,12 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     }
 
     @Override
+    public String updateRoundTrace(ArrayList<Pair>[] dice) throws RemoteException {
+        graph.updateRoundTrace(dice);
+        return "ok";
+    }
+
+    @Override
     public void updateOpponents (String user, Pair[][] grids) {
         //graph.updateOpponents(grids, user);
         /*for(int k = 0; k < grids.length; k++){
@@ -337,12 +343,6 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public String updateRoundTrace(ArrayList<Pair>[] dice) throws RemoteException {
-        graph.updateRoundTrace(dice);
-        return "ok";
     }
 
 
