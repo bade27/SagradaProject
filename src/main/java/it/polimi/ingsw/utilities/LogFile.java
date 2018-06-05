@@ -8,17 +8,16 @@ import java.util.Date;
 
 public class LogFile
 {
-    private String name;
+    private static final String name = "ServerLog.log";
 
-    public LogFile (String n)
+    public static void createLogFile ()
     {
-        name = n + ".log";
         FileWriter f = null;
         try {
             f = new FileWriter(name);
         }
         catch (IOException ex){
-            System.out.println("Impossible to create to log file: " + name + ".log");
+            System.out.println("Impossible to create log file: " + name);
         }
         finally
         {
@@ -32,7 +31,7 @@ public class LogFile
     }
 
 
-    public synchronized void addLog (String s)
+    public static synchronized void addLog (String s)
     {
         FileWriter f = null;
         try {
@@ -56,7 +55,7 @@ public class LogFile
         }
     }
 
-    public synchronized void addLog (String s, StackTraceElement[] st)
+    public static synchronized void addLog (String s, StackTraceElement[] st)
     {
         FileWriter f = null;
         try {

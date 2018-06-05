@@ -119,7 +119,7 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
 
 
     @Override
-    public boolean askToolPermission(int nrTool) throws RemoteException {
+    public String askToolPermission(int nrTool) throws RemoteException {
         return adapter.toolRequest(nrTool);
     }
 

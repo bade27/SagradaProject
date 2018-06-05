@@ -31,7 +31,6 @@ public class ServerPlayer implements Runnable
     private TokenTurn token;
     private ServerModelAdapter adapter;
     private String user;
-    private LogFile log;
     private ExecutorService executor;
 
     //Setup Phase
@@ -61,19 +60,18 @@ public class ServerPlayer implements Runnable
     }
 
 
-    public ServerPlayer(TokenTurn tok, ServerModelAdapter adp, ArrayList ps,LogFile l, ClientRemoteInterface cli)
+    public ServerPlayer(TokenTurn tok, ServerModelAdapter adp, ArrayList ps, ClientRemoteInterface cli)
     {
         adapter = adp;
         token = tok;
         possibleUsers = ps;
         communicator = null;
-        log = l;
         executor = Executors.newFixedThreadPool(1);
         communicator = cli;
         try {
             connection_parameters_setup();
         } catch (ParserConfigurationException| IOException | SAXException e) {
-            log.addLog("Impossible to read settings parameters" , e.getStackTrace());
+            LogFile.addLog("Impossible to read settings parameters" , e.getStackTrace());
         }
     }
 
@@ -115,7 +113,7 @@ public class ServerPlayer implements Runnable
         }
         catch (Exception ex) {
             System.out.println(ex.getMessage());
-            log.addLog("Fatal error on thread " + user  , ex.getStackTrace());
+            LogFile.addLog("Fatal error on thread " + user  , ex.getStackTrace());
             token.notifyFatalError();
             Thread.currentThread().interrupt();
         }
@@ -131,7 +129,7 @@ public class ServerPlayer implements Runnable
                     while (!token.isMyTurn(user))
                         token.wait();
 
-                    log.addLog("Turn of:" + user);
+                    LogFile.addLog("Turn of:" + user);
                     System.out.println("\n>>>Turn of:" + user);
 
                     //Thread.sleep(2000); Turn Simulation
@@ -162,7 +160,7 @@ public class ServerPlayer implements Runnable
                 catch (Exception ex)
                 {
                     System.out.println(ex.getMessage());
-                    log.addLog("Fatal error on thread " + user  , ex.getStackTrace());
+                    LogFile.addLog("Fatal error on thread " + user  , ex.getStackTrace());
                     token.notifyFatalError();
                     Thread.currentThread().interrupt();
                 }
@@ -183,17 +181,17 @@ public class ServerPlayer implements Runnable
                 u = stopTask(() -> communicator.login(), INIT_TIMEOUT, executor);
                 if(u == null)
                 {
-                    log.addLog("Failed to add user");
+                    LogFile.addLog("Failed to add user");
                     throw new ClientOutOfReachException();
                 }
             } while (!possibleUsers.contains(u));
             possibleUsers.remove(u);
             user = u;
             adapter.setUser(u);
-            log.addLog("User: " + user + " Added");
+            LogFile.addLog("User: " + user + " Added");
         }
         catch (Exception e) {
-            log.addLog("" , e.getStackTrace());
+            LogFile.addLog("" , e.getStackTrace());
             throw new ClientOutOfReachException();
         }
     }
@@ -210,12 +208,12 @@ public class ServerPlayer implements Runnable
             s1 = stopTask(() -> communicator.chooseWindow(windowCard1, windowCard2), INIT_TIMEOUT, executor);//To change with ACTION when implement user choice
             if(s1 == null)
             {
-                log.addLog("(User:" + user + ") Failed to initialize Windows");
+                LogFile.addLog("(User:" + user + ") Failed to initialize Windows");
                 throw new ClientOutOfReachException();
             }
         }
         catch (Exception e) {
-            log.addLog("(User:" + user + ")" + e.getMessage() , e.getStackTrace());
+            LogFile.addLog("(User:" + user + ")" + e.getMessage() , e.getStackTrace());
             throw new ClientOutOfReachException();
         }
 
@@ -224,10 +222,10 @@ public class ServerPlayer implements Runnable
 
         try {
             adapter.initializeWindow(s1);
-            log.addLog("User: " + user + " Window initialized ");
+            LogFile.addLog("User: " + user + " Window initialized ");
         }
         catch (ModelException ex) {
-            log.addLog("Impossible to set Window from XML", ex.getStackTrace());
+            LogFile.addLog("Impossible to set Window from XML", ex.getStackTrace());
             throw new ModelException();
         }
     }
@@ -243,12 +241,12 @@ public class ServerPlayer implements Runnable
             performed = stopTask(() -> communicator.sendCards(publicObjCard,toolCard), INIT_TIMEOUT, executor);
             if(!performed)
             {
-                log.addLog("(User:" + user + ") Failed to initialize cards");
+                LogFile.addLog("(User:" + user + ") Failed to initialize cards");
                 throw new ClientOutOfReachException();
             }
         }
         catch (Exception e) {
-            log.addLog("(User:" + user + ")" + e.getMessage() , e.getStackTrace());
+            LogFile.addLog("(User:" + user + ")" + e.getMessage() , e.getStackTrace());
             throw new ClientOutOfReachException();
         }
 
@@ -256,10 +254,10 @@ public class ServerPlayer implements Runnable
             adapter.initializePublicObjectives(publicObjCard);
             adapter.initializeToolCards(toolCard);
             assert publicObjCard != null && toolCard != null;
-            log.addLog("User: " + user + " Tools and Objectives initialized ");
+            LogFile.addLog("User: " + user + " Tools and Objectives initialized ");
 
         }catch (ModelException e ){
-            log.addLog("", e.getStackTrace());
+            LogFile.addLog("", e.getStackTrace());
             throw new ModelException();
         }
 
@@ -277,12 +275,12 @@ public class ServerPlayer implements Runnable
             u = stopTask(() -> communicator.doTurn(), TURN_TIMEOUT, executor);
             if(u == null)
             {
-                log.addLog(" Move timeout expired");
+                LogFile.addLog(" Move timeout expired");
                 throw new ClientOutOfReachException();
             }
         }
         catch (Exception e) {
-            log.addLog("" , e.getStackTrace());
+            LogFile.addLog("" , e.getStackTrace());
             throw new ClientOutOfReachException();
         }
     }
@@ -297,12 +295,12 @@ public class ServerPlayer implements Runnable
             s = stopTask(() -> communicator.updateGraphic(adapter.getDadieraPair()), INIT_TIMEOUT, executor);
             if(s == null)
             {
-                log.addLog(" Dadiera update timeout expired");
+                LogFile.addLog(" Dadiera update timeout expired");
                 throw new ClientOutOfReachException();
             }
         }
         catch (Exception e) {
-            log.addLog("" , e.getStackTrace());
+            LogFile.addLog("" , e.getStackTrace());
             throw new ClientOutOfReachException();
         }
     }
@@ -317,12 +315,12 @@ public class ServerPlayer implements Runnable
             s = stopTask(() -> communicator.updateGraphic(adapter.getWindowPair()), INIT_TIMEOUT, executor);
             if(s == null)
             {
-                log.addLog(" Window update timeout expired");
+                LogFile.addLog(" Window update timeout expired");
                 throw new ClientOutOfReachException();
             }
         }
         catch (Exception e) {
-            log.addLog("" , e.getStackTrace());
+            LogFile.addLog("" , e.getStackTrace());
             throw new ClientOutOfReachException();
         }
     }
@@ -334,12 +332,12 @@ public class ServerPlayer implements Runnable
             s = stopTask(() -> communicator.updateTokens(adapter.getMarker()), INIT_TIMEOUT, executor);
             if(s == null)
             {
-                log.addLog(" Token update timeout expired");
+                LogFile.addLog(" Token update timeout expired");
                 throw new ClientOutOfReachException();
             }
         }
         catch (Exception e) {
-            log.addLog("" , e.getStackTrace());
+            LogFile.addLog("" , e.getStackTrace());
             throw new ClientOutOfReachException();
         }
     }
@@ -351,12 +349,12 @@ public class ServerPlayer implements Runnable
             s = stopTask(() -> communicator.updateRoundTrace(adapter.getRoundTracePair()), INIT_TIMEOUT, executor);
             if(s == null)
             {
-                log.addLog(" Round Trace update timeout expired");
+                LogFile.addLog(" Round Trace update timeout expired");
                 throw new ClientOutOfReachException();
             }
         }
         catch (Exception e) {
-            log.addLog("" , e.getStackTrace());
+            LogFile.addLog("" , e.getStackTrace());
             throw new ClientOutOfReachException();
         }
 
@@ -376,7 +374,7 @@ public class ServerPlayer implements Runnable
                 }
             }, INIT_TIMEOUT, executor);
         } catch (Exception e) {
-            log.addLog("" , e.getStackTrace());
+            LogFile.addLog("" , e.getStackTrace());
             throw new ClientOutOfReachException();
         }
     }
@@ -400,9 +398,9 @@ public class ServerPlayer implements Runnable
             boolean performed;
             performed = stopTask(() -> communicator.sendMessage(s), PING_TIMEOUT, executor);
             if (!performed)
-                log.addLog("Send message to client failed");
+                LogFile.addLog("Send message to client failed");
         }catch (Exception ex) {
-            log.addLog("Send message to client failed", ex.getStackTrace());
+            LogFile.addLog("Send message to client failed", ex.getStackTrace());
         }
     }
 
@@ -412,10 +410,10 @@ public class ServerPlayer implements Runnable
             boolean performed;
             performed = stopTask(() -> communicator.closeCommunication(s), PING_TIMEOUT, executor);
             if (!performed)
-                log.addLog("Impossible to communicate to client (" + user + ") cause closed connection");
+                LogFile.addLog("Impossible to communicate to client (" + user + ") cause closed connection");
         }catch (NullPointerException e) {
             //e.printStackTrace();
-            log.addLog("Impossible to communicate to client (" + user + ") cause closed connection");
+            LogFile.addLog("Impossible to communicate to client (" + user + ") cause closed connection");
         }
 
     }
@@ -429,7 +427,7 @@ public class ServerPlayer implements Runnable
             updateWindow();
             updateTokens();
         }catch (Exception e){
-            log.addLog("Impossible to update client");
+            LogFile.addLog("Impossible to update client");
             exit = false;
         }
         return exit;
@@ -495,7 +493,7 @@ public class ServerPlayer implements Runnable
             o = future.get(executionTime, TimeUnit.MILLISECONDS);
         } catch (TimeoutException te) {
             //System.out.println(te.getMessage());
-            log.addLog("Client too late to reply");
+            LogFile.addLog("Client too late to reply");
             //System.out.println("too late to reply");
         } catch (InterruptedException ie) {
             //System.out.println(ie.getMessage());

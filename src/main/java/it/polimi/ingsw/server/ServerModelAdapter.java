@@ -12,6 +12,7 @@ import it.polimi.ingsw.model.tools.Tools;
 import it.polimi.ingsw.model.tools.ToolsFactory;
 import it.polimi.ingsw.remoteInterface.Pair;
 import it.polimi.ingsw.remoteInterface.ToolMove;
+import it.polimi.ingsw.utilities.LogFile;
 
 import java.util.ArrayList;
 
@@ -45,7 +46,10 @@ public class ServerModelAdapter
     public String useTool(ToolMove mv)
     {
         if (toolInUse == null)
+        {
+            LogFile.addLog("User: " + user + "\t Tool not permission asked");
             return "Not using tool permission asked";
+        }
         mv.setDadiera(dadiera);
         mv.setW(board);
         toolInUse.setToolMove(mv);
@@ -53,28 +57,33 @@ public class ServerModelAdapter
 
         try {
             toolInUse.use();
-            //toolInUse = null;
         } catch (IllegalDiceException | IllegalStepException e) {
-            //return e.getMessage();
-            return "Invalid input";
+            LogFile.addLog("User: " + user + "\t Tool Action failed");
+            return "Tool Action failed";
         }
         marker = marker - current_price;
         return "Tool used correctly";
     }
 
-    public boolean toolRequest (int nrTool)
+    public String toolRequest (int nrTool)
     {
+        LogFile.addLog("User: " + user + "\t Tool request nr." + nrTool);
         if (toolInUse != null)
             if (!toolInUse.isToolFinished())
-                return false;
+            {
+                LogFile.addLog("User: " + user + "\t Tool request nr." + nrTool);
+                return "Tool permission rejected: Another Tool in use";
+            }
 
         for (int i = 0; i < tools.length ; i++)
             if (tools[i].getId() == nrTool)
                 if (tools[i].getPrice() <= marker) {
                     toolInUse = tools[i];
-                    return true;
+                    LogFile.addLog("User: " + user + "\t Tool permission accepted");
+                    return "Tool permission accepted";
                 }
-        return false;
+        LogFile.addLog("User: " + user + "\t Tool permission rejected: Not enough marker");
+        return "Tool permission rejected: Not enough marker";
     }
 
     /**
@@ -85,16 +94,22 @@ public class ServerModelAdapter
      */
     public void addDiceToBoard (int i, int j, Dice d) throws ModelException
     {
+        LogFile.addLog("User: " + user + "\t Placement Die move: row:" + i + " col:" + j + " " + d.toString());
         if (toolInUse != null)
             if (!toolInUse.canPlaceDie(d))
-                throw new ModelException("Impossible to place die, wrong die selected: ");
+            {
+                LogFile.addLog("User: " + user + "\t Impossible to place die, wrong die selected");
+                throw new ModelException("Impossible to place die, wrong die selected ");
+            }
 
         try {
             board.addDice(i,j,d,0);
+            LogFile.addLog("User: " + user + "\t Placement die correct ");
             if (toolInUse != null)
                 toolInUse.setToolFinished(true); //Always
         }
         catch (IllegalDiceException ex) {
+            LogFile.addLog("User: " + user + "\t Impossible to place die: " + ex.getMessage());
             throw new ModelException("Impossible to place die: " + ex.getMessage());
         }
         canMove = false;
@@ -142,10 +157,9 @@ public class ServerModelAdapter
     {
         try
         {
-            for (int i = 0 ; i < numTools ; i++) {
+            for (int i = 0 ; i < numTools ; i++)
                 tools[i] = ToolsFactory.getTools(names[i]);
-                System.out.println(names[i]);
-            }
+
         }catch (Exception ex){
             throw new ModelException("Impossible to create public objectives");
         }

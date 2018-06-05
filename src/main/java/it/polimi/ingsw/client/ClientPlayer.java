@@ -266,14 +266,20 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
     //<editor-fold desc="Tool communication">
     public boolean toolPermission(int toolID) {
-        boolean response = false;
+        String response;
         try {
             response = server.askToolPermission(toolID);
             System.out.println("tool response: " + response);
         } catch (RemoteException e) {
             e.printStackTrace();
+            return false;
         }
-        return response;
+        if (response.equals("Tool permission accepted")){
+            System.out.println("ok");
+            return true;
+        }
+
+        return false;
     }
 
     public synchronized void useTool() {

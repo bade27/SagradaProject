@@ -17,7 +17,6 @@ import java.util.ArrayList;
 
 public class ServerSocketHandler implements ClientRemoteInterface
 {
-    private LogFile log;
     private ServerModelAdapter adapter;
 
     private int PORT;
@@ -30,11 +29,10 @@ public class ServerSocketHandler implements ClientRemoteInterface
     private boolean isConnected;
 
 
-    public ServerSocketHandler(LogFile l, int port)
+    public ServerSocketHandler(int port)
     {
         PORT = port;
         isConnected = false;
-        log = l;
     }
 
     /**
@@ -76,9 +74,9 @@ public class ServerSocketHandler implements ClientRemoteInterface
             reply = r.equals("pong");
         } catch (SocketTimeoutException ste) {
             reply = false;
-            log.addLog("Ping failed ", ste.getStackTrace());
+            LogFile.addLog("Ping failed ", ste.getStackTrace());
         } catch (IOException e) {
-            log.addLog("Ping failed ", e.getStackTrace());
+            LogFile.addLog("Ping failed ", e.getStackTrace());
             return false;
         }
         return reply;
@@ -93,7 +91,7 @@ public class ServerSocketHandler implements ClientRemoteInterface
         serverSocket=null;
         try {
             serverSocket = new ServerSocket(PORT);
-            log.addLog("\nit.polimi.ingsw.server socket waiting for client on port " +  serverSocket.getLocalPort());
+            LogFile.addLog("\nit.polimi.ingsw.server socket waiting for client on port " +  serverSocket.getLocalPort());
 
             client = serverSocket.accept();
         }

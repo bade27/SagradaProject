@@ -181,8 +181,8 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
     }
 
     @Override
-    public boolean askToolPermission(int nrTool) throws RemoteException {
-        return true;
+    public String askToolPermission(int nrTool) throws RemoteException {
+        return null;
     }
 
     @Override
