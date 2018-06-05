@@ -43,31 +43,46 @@ public class ServerModelAdapter
         toolInUse = null;
     }
 
+    /**
+     * Use tool asked before in toolRequest
+     * @param mv all infos to perform tool requested
+     * @return Message to client about right perform of tool
+     */
     public String useTool(ToolMove mv)
     {
+        //Check if any tool permission was requested
         if (toolInUse == null)
         {
             LogFile.addLog("User: " + user + "\t Tool not permission asked");
             return "Not using tool permission asked";
         }
+        //Set tool move into tool in use
         mv.setDadiera(dadiera);
         mv.setW(board);
         toolInUse.setToolMove(mv);
         int current_price = toolInUse.getPrice();
 
+        //Using of tool
         try {
             toolInUse.use();
         } catch (IllegalDiceException | IllegalStepException e) {
             LogFile.addLog("User: " + user + "\t Tool Action failed");
             return "Tool Action failed";
         }
+        //If performed decrees client's own marker
         marker = marker - current_price;
         return "Tool used correctly";
     }
 
+    /**
+     * Ask if tool passed, with his id, is usable
+     * @param nrTool id tool request
+     * @return Message to client about right asking of tool
+     */
     public String toolRequest (int nrTool)
     {
         LogFile.addLog("User: " + user + "\t Tool request nr." + nrTool);
+        //Check if there is a tool already in use
         if (toolInUse != null)
             if (!toolInUse.isToolFinished())
             {
@@ -75,8 +90,10 @@ public class ServerModelAdapter
                 return "Tool permission rejected: Another Tool in use";
             }
 
+        //Check if tool is callable
         for (int i = 0; i < tools.length ; i++)
             if (tools[i].getId() == nrTool)
+                //Check if client has enough marker
                 if (tools[i].getPrice() <= marker) {
                     toolInUse = tools[i];
                     LogFile.addLog("User: " + user + "\t Tool permission accepted");
@@ -95,6 +112,7 @@ public class ServerModelAdapter
     public void addDiceToBoard (int i, int j, Dice d) throws ModelException
     {
         LogFile.addLog("User: " + user + "\t Placement Die move: row:" + i + " col:" + j + " " + d.toString());
+        //Check if there is a tool in use that force client to place a specific die
         if (toolInUse != null)
             if (!toolInUse.canPlaceDie(d))
             {
@@ -102,17 +120,19 @@ public class ServerModelAdapter
                 throw new ModelException("Impossible to place die, wrong die selected ");
             }
 
+        //Try to put die on board
         try {
             board.addDice(i,j,d,0);
             LogFile.addLog("User: " + user + "\t Placement die correct ");
             if (toolInUse != null)
-                toolInUse.setToolFinished(true); //Always
+                toolInUse.setToolFinished(true); //Always set tool in use on finish mode
         }
         catch (IllegalDiceException ex) {
             LogFile.addLog("User: " + user + "\t Impossible to place die: " + ex.getMessage());
             throw new ModelException("Impossible to place die: " + ex.getMessage());
         }
         canMove = false;
+        //After adding die, it will be delete from Dadiera
         dadiera.deleteDice(d);
     }
 

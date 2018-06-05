@@ -497,11 +497,13 @@ public class MatchHandler implements Runnable
     {
         for (int i = 0; i < player.size() ; i++)
         {
+            //Update user's window,dadiera,roundttrace and markers
             if(player.get(i).updateClient()) {
                 for (int j = 0; j < player.size(); j++) {
                     if (player.get(j).getUser() != player.get(i).getUser()) {
 
                         try {
+                            //Update others users with user's window,dadiera,roundttrace and markers
                             player.get(j).updateOpponents(player.get(i).getUser(), player.get(i).getGrid());
                         } catch (ClientOutOfReachException e) {
                             LogFile.addLog("Client " + player.get(j).getUser() + " temporarily unreachable");
@@ -569,6 +571,10 @@ public class MatchHandler implements Runnable
         return nDisc;
     }
 
+    /**
+     * Send to client a message about connection of other clients
+     * @param str Type of message to send
+     */
     private void clientConnectionUpdateMessage (String str)
     {
         for (int i = 0; i < player.size(); i++)
