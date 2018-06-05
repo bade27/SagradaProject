@@ -35,48 +35,77 @@ class SetValueToolTest {
     @Test()
     void addSub0() throws IllegalDiceException, IllegalStepException {
         svt=new SetValueTool(1,"Pinza Sgrossatrice");
-
+        int conti1=0;       //dadi uguali a quello estratto prima
+        int conti2=0;       //dadi con value +1 a quello estratto prima
+        int contf1=0;       //dadi uguali a quello estratto dopo
+        int contf2=0;       //dadi con value +1 a quello estratto dopo
         boolean found = false;
         d.mix(n);
         //estraggo dado a caso
-        Dice finalDice=d.getDice(new Random().nextInt(expectedDice));
+        Dice finalDice1=d.getDice(new Random().nextInt(expectedDice));
 
         //se il dado ha valore 6 controllo se nella dadiera ce ne sono altri con valore != 6
         //altrimenti mixo nuovamente i dadi della dadiera pescandone altri dal bag
-        if (finalDice.getValue()==6){
+        if (finalDice1.getValue()==6){
             while (found==false) {
                 d.mix(n);
                 for (int i = 0; i < expectedDice; i++) {
                     if (d.getDice(i).getValue() != 6) {
                         found = true;
-                        finalDice = d.getDice(i);
+                        finalDice1 = d.getDice(i);
                         break;
                     }
                 }
             }
         }
-            //valore originale
-            int oldval = finalDice.getValue();
+        //numero di dadi uguale a quello estratto prima dello scambio
+        for(int i=0;i<d.getListaDadi().size();i++)
+        {
+            if(d.getListaDadi().get(i).getValue()== finalDice1.getValue()&&
+                    d.getListaDadi().get(i).getColor()== finalDice1.getColor()){
+                conti1++;
+            }
+        }
+        for(int i=0;i<d.getListaDadi().size();i++)
+        {
+            if(d.getListaDadi().get(i).getValue()== finalDice1.getValue()+1&&
+                    d.getListaDadi().get(i).getColor()== finalDice1.getColor()){
+                conti2++;
+            }
+        }
             //colore originale
-            ColorEnum oldcol=finalDice.getColor();
+            ColorEnum oldcol=finalDice1.getColor();
             //prezzo prima aver usato il tool
             int price1=svt.getPrice();
-
-            svt.setD1(finalDice);
+            int num=finalDice1.getValue();
+            svt.setD1(finalDice1);
             svt.setDadiera(d);
             svt.setInstruction("inc");
-
 
             //chiamo la funzione
             svt.addSub();
 
-            //nuovo valore
-            int newval = finalDice.getValue();
+            Dice finalDice2=new Dice(num+1,oldcol);
+        for(int i=0;i<d.getListaDadi().size();i++)
+        {
+            if(d.getListaDadi().get(i).getValue()== finalDice2.getValue()-1&&
+                    d.getListaDadi().get(i).getColor()== finalDice2.getColor()){
+                contf1++;
+            }
+        }
+        for(int i=0;i<d.getListaDadi().size();i++)
+        {
+            if(d.getListaDadi().get(i).getValue()== finalDice2.getValue()&&
+                    d.getListaDadi().get(i).getColor()== finalDice2.getColor()){
+                contf2++;
+            }
+        }
             //nuovo colore
-            ColorEnum newcol=finalDice.getColor();
+            ColorEnum newcol=finalDice2.getColor();
             //prezzo dopo aver usato il tool
             int price2=svt.getPrice();
-            assertEquals(oldval+1, newval);
+            assertEquals(conti1,contf1+1);
+            assertEquals(conti2,contf2-1);
             assertEquals(price2,2);
             assertEquals(price1,1);
             assertEquals(oldcol,newcol);
@@ -112,46 +141,82 @@ class SetValueToolTest {
     }
 
 
-    @Test()
+    @RepeatedTest(100) //Test()
     void addSub1() throws IllegalDiceException, IllegalStepException {
         svt=new SetValueTool(1,"Pinza Sgrossatrice");
+        int conti1=0;       //dadi uguali a quello estratto prima
+        int conti2=0;       //dadi con value +1 a quello estratto prima
+        int contf1=0;       //dadi uguali a quello estratto dopo
+        int contf2=0;       //dadi con value +1 a quello estratto dopo
         boolean found = false;
         d.mix(n);
         //estraggo dado a caso
-        Dice finalDice=d.getDice(new Random().nextInt(expectedDice));
+        Dice finalDice1=d.getDice(new Random().nextInt(expectedDice));
 
-        //se il dado ha valore 1 controllo se nella dadiera ce ne sono altri con valore != 1
+        //se il dado ha valore 6 controllo se nella dadiera ce ne sono altri con valore != 6
         //altrimenti mixo nuovamente i dadi della dadiera pescandone altri dal bag
-        if (finalDice.getValue()==1){
+        if (finalDice1.getValue()==1){
             while (found==false) {
                 d.mix(n);
                 for (int i = 0; i < expectedDice; i++) {
                     if (d.getDice(i).getValue() != 1) {
                         found = true;
-                        finalDice = d.getDice(i);
+                        finalDice1 = d.getDice(i);
                         break;
                     }
                 }
             }
         }
-        //valore originale
-        int oldval = finalDice.getValue();
+        //numero di dadi uguale a quello estratto prima dello scambio
+        for(int i=0;i<d.getListaDadi().size();i++)
+        {
+            if(d.getListaDadi().get(i).getValue()== finalDice1.getValue()&&
+                    d.getListaDadi().get(i).getColor()== finalDice1.getColor()){
+                conti1++;
+            }
+        }
+        for(int i=0;i<d.getListaDadi().size();i++)
+        {
+            if(d.getListaDadi().get(i).getValue()== finalDice1.getValue()-1&&
+                    d.getListaDadi().get(i).getColor()== finalDice1.getColor()){
+                conti2++;
+            }
+        }
+
         //colore originale
-        ColorEnum oldcol=finalDice.getColor();
+        ColorEnum oldcol=finalDice1.getColor();
         //prezzo prima aver usato il tool
         int price1=svt.getPrice();
+        int num=finalDice1.getValue();
+        svt.setD1(finalDice1);
+        svt.setDadiera(d);
+        svt.setInstruction("dec");
 
         //chiamo la funzione
-        //svt.addSub(finalDice, d, 1);
+        svt.addSub();
 
-        //nuovo valore
-        int newval = finalDice.getValue();
+        Dice finalDice2=new Dice(num-1,oldcol);
+        for(int i=0;i<d.getListaDadi().size();i++)
+        {
+            if(d.getListaDadi().get(i).getValue()== finalDice2.getValue()+1&&
+                    d.getListaDadi().get(i).getColor()== finalDice2.getColor()){
+                contf1++;
+            }
+        }
+        for(int i=0;i<d.getListaDadi().size();i++)
+        {
+            if(d.getListaDadi().get(i).getValue()== finalDice2.getValue()&&
+                    d.getListaDadi().get(i).getColor()== finalDice2.getColor()){
+                contf2++;
+            }
+        }
+
         //nuovo colore
-        ColorEnum newcol=finalDice.getColor();
+        ColorEnum newcol=finalDice2.getColor();
         //prezzo dopo aver usato il tool
         int price2=svt.getPrice();
-
-        assertEquals(oldval - 1, newval);
+        assertEquals(conti1,contf1+1);
+        assertEquals(conti2,contf2-1);
         assertEquals(price2,2);
         assertEquals(price1,1);
         assertEquals(oldcol,newcol);
@@ -186,53 +251,98 @@ class SetValueToolTest {
         assertThrows(IllegalStepException.class, () -> svt.addSub());
     }
 
-    @Test()
+    @RepeatedTest(100) //Test()
     void turnDice() throws IllegalDiceException, IllegalStepException {
         svt=new SetValueTool(10,"Tampone Diamantato");
+        int conti1=0;       //dadi uguali a quello estratto prima
+        int conti2=0;       //dadi con value invertito a quello estratto prima
+        int contf1=0;       //dadi uguali a quello estratto dopo
+        int contf2=0;       //dadi con value invertito a quello estratto dopo
+
         d.mix(n);
         int i=new Random().nextInt(expectedDice);
 
-        Dice dice1=d.getDice(i);
-        int price1=svt.getPrice();
-        int oldval=dice1.getValue();
-        ColorEnum oldcol=dice1.getColor();
+        Dice finaldice1=d.getDice(i);
 
-        svt.setD1(dice1);
+        int price1=svt.getPrice();
+
+        for(int j=0;j<d.getListaDadi().size();j++)
+        {
+            if(d.getListaDadi().get(j).getValue()== finaldice1.getValue()&&
+                    d.getListaDadi().get(j).getColor()== finaldice1.getColor()){
+                conti1++;
+            }
+        }
+        for(int j=0;j<d.getListaDadi().size();j++)
+        {
+            if(d.getListaDadi().get(j).getValue()== 7-finaldice1.getValue()&&
+                    d.getListaDadi().get(j).getColor()== finaldice1.getColor()){
+                conti2++;
+            }
+        }
+        int oldval=finaldice1.getValue();
+        ColorEnum oldcol=finaldice1.getColor();
+
+        svt.setD1(finaldice1);
         svt.setDadiera(d);
 
-        System.out.println(dice1);
+        System.out.println(finaldice1);
         System.out.println(oldval);
         System.out.println(oldcol);
         System.out.println(d);
+        System.out.println(conti1);
+        System.out.println(conti2);
 
         //chiamo la funzione
         svt.turnDice();
 
-        int price2=svt.getPrice();
-        int newval=dice1.getValue();
-        ColorEnum newcol=dice1.getColor();
 
-        System.out.println(dice1);
+
+        Dice finaldice2=new Dice(7-oldval,oldcol);
+        for(int j=0;j<d.getListaDadi().size();j++)
+        {
+            if(d.getListaDadi().get(j).getValue()== 7-finaldice2.getValue()&&
+                    d.getListaDadi().get(j).getColor()== finaldice2.getColor()){
+                contf1++;
+            }
+        }
+        for(int j=0;j<d.getListaDadi().size();j++)
+        {
+            if(d.getListaDadi().get(j).getValue()== finaldice2.getValue()&&
+                    d.getListaDadi().get(j).getColor()== finaldice2.getColor()){
+                contf2++;
+            }
+        }
+        int price2=svt.getPrice();
+        int newval=finaldice2.getValue();
+        ColorEnum newcol=finaldice2.getColor();
+
+        System.out.println(finaldice2);
         System.out.println(newval);
         System.out.println(newcol);
         System.out.println(d);
+        System.out.println(contf1);
+        System.out.println(contf2);
 
-        assertEquals(7-oldval, newval);
+        assertEquals(conti1,contf1+1);
+        assertEquals(conti2,contf2-1);
         assertEquals(price2,2);
         assertEquals(price1,1);
         assertEquals(oldcol,newcol);
     }
 
-    @Test()
+    @RepeatedTest(100) //Test()
     void relaunchDice() throws IllegalDiceException, IllegalStepException {
         svt=new SetValueTool(6,"Pennello per Pasta Calda");
         d.mix(n);
-        int i=new Random().nextInt(expectedDice);
-        Dice dice=d.getDice(i);
+        int num=new Random().nextInt(expectedDice);
+        Dice dice=d.getDice(num);
 
         int price1=svt.getPrice();
         ColorEnum oldcol=dice.getColor();
 
+        System.out.println(dice.getValue());
+        System.out.println(d);
         svt.setD1(dice);
         svt.setDadiera(d);
         //chiamo la funzione
@@ -242,6 +352,8 @@ class SetValueToolTest {
         int newval=dice.getValue();
         ColorEnum newcol=dice.getColor();
 
+        System.out.println(dice.getValue());
+        System.out.println(d);
         assertNotNull(newval);
         assertEquals(price2,2);
         assertEquals(price1,1);
@@ -268,5 +380,5 @@ class SetValueToolTest {
         int price=svt.getPrice();
         assertNotNull(price);
     }
-    */
+*/
 }

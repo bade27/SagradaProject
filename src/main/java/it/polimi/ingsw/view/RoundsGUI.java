@@ -55,6 +55,7 @@ public class RoundsGUI extends GridPane {
                     b.setOpacity(255);
                     diceInRound.add(b, j + 1, 0);
                 }
+
             });
         });
     }
