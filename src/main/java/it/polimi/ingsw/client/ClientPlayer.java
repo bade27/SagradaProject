@@ -333,6 +333,12 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         }
     }
 
+    @Override
+    public String updateRoundTrace(ArrayList<Pair> dice, int n) throws RemoteException {
+        return null;
+    }
+
+
     //<editor-fold desc="Utilities">
     /**
      * @return if we are alive

@@ -3,6 +3,7 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.Dadiera;
 import it.polimi.ingsw.model.Dice;
+import it.polimi.ingsw.model.RoundTrace;
 import it.polimi.ingsw.model.Window;
 import it.polimi.ingsw.model.objectives.ObjectivesFactory;
 import it.polimi.ingsw.model.objectives.Private.PrivateObjective;
@@ -19,6 +20,7 @@ public class ServerModelAdapter
 
     private Window board;
     private Dadiera dadiera;
+    private RoundTrace roundTrace;
     private PrivateObjective myPrivateObject;
     private PublicObjective[] publicObjectives;
     private Tools[] tools;
@@ -28,10 +30,11 @@ public class ServerModelAdapter
 
     private Tools toolInUse;
 
-    public ServerModelAdapter (Dadiera d)
+    public ServerModelAdapter (Dadiera d, RoundTrace trace)
     {
         board = null;
         dadiera = d;
+        roundTrace = trace;
         publicObjectives = new PublicObjective[numPublicObj];
         tools = new Tools[numTools];
         toolInUse = null;
@@ -165,6 +168,10 @@ public class ServerModelAdapter
 
     public void setDadiera(Dadiera dadiera) {
         this.dadiera = dadiera;
+    }
+
+    public RoundTrace getRoundTrace() {
+        return roundTrace;
     }
 
     public int getMarker() {

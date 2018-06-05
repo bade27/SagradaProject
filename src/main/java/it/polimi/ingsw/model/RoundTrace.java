@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 public class RoundTrace {
     //private ArrayList<Object> trace;
-    private ArrayList<Dice> [] trace;             //vettore di arrayList
+    private ArrayList[] trace;             //vettore di arrayList
 
     public RoundTrace(){
         //trace=new ArrayList<Object>(10);
-        trace= new ArrayList [10];
+        trace = new ArrayList [10];
         for(int i=0;i<10;i++) {
             ArrayList<Dice> listdice = new ArrayList<Dice>();       //inizializzo la lista
             //trace.set(i,listdice);
@@ -37,6 +37,10 @@ public class RoundTrace {
                 break;
             }
         }
+    }
+
+    public ArrayList[] getTrace() {
+        return trace;
     }
 
     /**

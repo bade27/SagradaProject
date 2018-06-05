@@ -13,6 +13,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 public class ServerSocketHandler implements ClientRemoteInterface
 {
@@ -297,6 +298,11 @@ public class ServerSocketHandler implements ClientRemoteInterface
 
     @Override
     public String updateTokens(int n) throws ClientOutOfReachException, RemoteException {
+        return null;
+    }
+
+    @Override
+    public String updateRoundTrace(ArrayList<Pair> dice, int n) throws RemoteException {
         return null;
     }
 

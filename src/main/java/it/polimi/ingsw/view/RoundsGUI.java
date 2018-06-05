@@ -7,6 +7,8 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 
+import java.util.ArrayList;
+
 public class RoundsGUI extends GridPane {
     int turn=3;
     boolean enable=true;
@@ -15,7 +17,7 @@ public class RoundsGUI extends GridPane {
     GridPane roundTrace;
     public RoundsGUI(GridPane p, GUI game) {
 
-        Pair[] pair=new Pair[0];                            //creo i pair
+        ArrayList<Pair> pair = new ArrayList<>();                            //creo i pair
         /*for(int i=0;i<pair.length;i++){
             pair[i]=new Pair(0, ColorEnum.WHITE);
         }*/
@@ -37,7 +39,7 @@ public class RoundsGUI extends GridPane {
         round.setAlignment(Pos.TOP_CENTER);
         p.add(roundTrace,0,0);
     }
-    public void updateRoundTrace(Pair[] pair, int i){
+    public void updateRoundTrace(ArrayList<Pair> pair, int i){
         Platform.runLater(() -> {
             Button indexround = (Button) round.getChildren().get(i);
             indexround.setOnAction(event -> {
@@ -45,11 +47,11 @@ public class RoundsGUI extends GridPane {
                 b.setDisable(true);
                 b.setOpacity(255);
                 diceInRound.add(b, 0, 0);
-                for (int j = 0; j < pair.length; j++) {
+                for (int j = 0; j < pair.size(); j++) {
                     b = new Button();
                     b.setDisable(true);
-                    b.setStyle("-fx-background-color: " + pair[j].getColor());
-                    b.setText("" + pair[j].getValue());
+                    b.setStyle("-fx-background-color: " + pair.get(j).getColor());
+                    b.setText("" + pair.get(j).getValue());
                     b.setOpacity(255);
                     diceInRound.add(b, j + 1, 0);
                 }

@@ -1,8 +1,10 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
+import it.polimi.ingsw.exceptions.IllegalDiceException;
 import it.polimi.ingsw.exceptions.ParserXMLException;
 import it.polimi.ingsw.model.Dadiera;
+import it.polimi.ingsw.model.Dice;
 import it.polimi.ingsw.model.RoundTrace;
 import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
 import it.polimi.ingsw.utilities.FileLocator;
@@ -32,6 +34,8 @@ public class MatchHandler implements Runnable
     private int nConn;
     private TokenTurn tok;
     private Dadiera dices;
+    private RoundTrace roundTrace;
+    private int turnsPlayed;
 
     private final static int MAXGIOC = 2;//Da modificare a 4
 
@@ -90,6 +94,7 @@ public class MatchHandler implements Runnable
         log.addLog("Game Phase started");
         dices.mix(tok.getNumPlayers());
         log.addLog("Dadiera Mixed");
+        turnsPlayed = 0;
 
         boolean b = true;
 
@@ -102,6 +107,18 @@ public class MatchHandler implements Runnable
 
                 if (tok.isEndRound())
                 {
+                    turnsPlayed++;
+                    //----------------------------
+                    while(dices.getListaDadi().size() > 0) {
+                        Dice tmp = null;
+                        try {
+                            tmp = dices.getDice(0);
+                        } catch (IllegalDiceException e) {
+                            e.printStackTrace();
+                        }
+                        roundTrace.addDice(turnsPlayed, tmp);
+                    }
+                    //----------------------------
                     dices.mix(tok.getNumPlayers());
                     System.out.println(">>>Dadiera Mixed");
                     log.addLog("Dadiera Mixed");
@@ -132,6 +149,7 @@ public class MatchHandler implements Runnable
         player = new ArrayList<ServerPlayer>();
         tok = new TokenTurn();
         dices = new Dadiera();
+        roundTrace = new RoundTrace();
         progressive = 0;
         try {
             connection_parameters_setup();
@@ -203,7 +221,7 @@ public class MatchHandler implements Runnable
             }
 
         }
-        ServerModelAdapter adp = new ServerModelAdapter(dices);
+        ServerModelAdapter adp = new ServerModelAdapter(dices, roundTrace);
 
         ServerPlayer pl = new ServerPlayer(tok,adp,possibleUsrs,log,cli);
         player.add(pl);

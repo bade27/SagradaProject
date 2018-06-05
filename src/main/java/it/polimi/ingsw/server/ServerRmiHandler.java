@@ -7,6 +7,7 @@ import it.polimi.ingsw.remoteInterface.*;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 
 public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemoteInterface,ServerRemoteInterface
 {
@@ -68,8 +69,14 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
         return client.updateGraphic(grid);
     }
 
+    @Override
     public String updateTokens(int n) throws ClientOutOfReachException, RemoteException {
         return client.updateTokens(n);
+    }
+
+    @Override
+    public String updateRoundTrace(ArrayList<Pair> dice, int n) throws RemoteException {
+        return null;
     }
 
     @Override

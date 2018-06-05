@@ -2,6 +2,9 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.exceptions.ModelException;
+import it.polimi.ingsw.model.ColorEnum;
+import it.polimi.ingsw.model.Dice;
+import it.polimi.ingsw.model.RoundTrace;
 import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
 import it.polimi.ingsw.remoteInterface.Pair;
 import it.polimi.ingsw.utilities.LogFile;
@@ -13,8 +16,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.rmi.Naming;
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.concurrent.*;
 
@@ -343,6 +344,21 @@ public class ServerPlayer implements Runnable
         }
     }
 
+    private void updateRoundTrace () throws ClientOutOfReachException
+    {
+        RoundTrace tmp = adapter.getRoundTrace();
+        int totRound = tmp.getTrace().length;
+        ArrayList<Pair> list = new ArrayList<>();
+        for(int i = 0; i < totRound; i++) {
+            for(int k = 0; k < tmp.getListDice(i + 1).size(); k++) {
+                Dice iDice = tmp.getListDice(i + 1).get(i);
+                int value = iDice.getValue();
+                ColorEnum color = iDice.getColor();
+                list.add(new Pair(value, color));
+            }
+        }
+    }
+
     /**
      *  Update opponent's situation on client's side
      */
@@ -406,6 +422,7 @@ public class ServerPlayer implements Runnable
         boolean exit = true;
         try{
             updateDadiera();
+            //updateRoundTrace();
             updateWindow();
             updateTokens();
         }catch (Exception e){

@@ -4,6 +4,7 @@ import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 public interface ClientRemoteInterface extends Remote
 {
@@ -24,5 +25,6 @@ public interface ClientRemoteInterface extends Remote
     public String updateGraphic(Pair[][] grid) throws ClientOutOfReachException,RemoteException;
     public void updateOpponents(String user,Pair[][] grid) throws ClientOutOfReachException,RemoteException;
     public String updateTokens(int n) throws ClientOutOfReachException, RemoteException;
+    public String updateRoundTrace(ArrayList<Pair> dice, int n) throws RemoteException;
 
 }

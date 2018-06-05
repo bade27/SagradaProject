@@ -190,8 +190,5 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
         return null;
     }
 
-    @Override
-    public String updateTokens(int n) throws ClientOutOfReachException, RemoteException {
-        return null;
-    }
+
 }
