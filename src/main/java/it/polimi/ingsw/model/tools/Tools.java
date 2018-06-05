@@ -65,6 +65,8 @@ public abstract class Tools {
 
         pos_iniz2 = tm.getSecond().size() > 0 ? tm.getSecond().get(0) : null;
         pos_fin2 = tm.getSecond().size() == 2 ? tm.getSecond().get(1) : null;
+        pos_rt = 1;//To modify
+        rt = tm.getRoundTrace();
     }
 
 

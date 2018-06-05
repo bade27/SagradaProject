@@ -474,7 +474,7 @@ public class MatchHandler implements Runnable
                 tools[i]=cards[c];
             }
 
-            //tools[1] = "Taglierina circolare";
+            tools[1] = "Taglierina circolare";
             tools[2] = "Pennello per Pasta Salda";
             //For each players initialize tool cards already selected
             for (int i=0;i<nConn;i++)

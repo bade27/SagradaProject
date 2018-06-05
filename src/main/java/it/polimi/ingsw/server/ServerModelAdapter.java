@@ -59,6 +59,7 @@ public class ServerModelAdapter
         //Set tool move into tool in use
         mv.setDadiera(dadiera);
         mv.setW(board);
+        mv.setRoundTrace(roundTrace);
         toolInUse.setToolMove(mv);
         int current_price = toolInUse.getPrice();
 

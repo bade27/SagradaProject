@@ -1,6 +1,7 @@
 package it.polimi.ingsw.remoteInterface;
 
 import it.polimi.ingsw.model.Dadiera;
+import it.polimi.ingsw.model.RoundTrace;
 import it.polimi.ingsw.model.Window;
 
 import java.io.Serializable;
@@ -14,6 +15,7 @@ public class ToolMove implements Serializable {
     private Integer i_end, j_end;
     private Dadiera d;
     private Window w;
+    private RoundTrace roundTrace;
 
     private ArrayList<int[]> first = new ArrayList<>();
     private ArrayList<int[]> second = new ArrayList<>();
@@ -102,5 +104,14 @@ public class ToolMove implements Serializable {
 
     public void setW(Window w) {
         this.w = w;
+    }
+
+
+    public void setRoundTrace(RoundTrace roundTrace) {
+        this.roundTrace = roundTrace;
+    }
+
+    public RoundTrace getRoundTrace() {
+        return roundTrace;
     }
 }

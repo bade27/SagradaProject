@@ -67,7 +67,7 @@ public class RoundsGUI extends GridPane {
 
                     for (int j = 0; j < allpair[finalI].size(); j++) {
                         b = new Button();
-                        b.setDisable(true);
+                        //b.setDisable(true);
                         b.setStyle("-fx-background-color: " + allpair[finalI].get(j).getColor());
                         b.setText("" + allpair[finalI].get(j).getValue());
                         b.setOpacity(255);
