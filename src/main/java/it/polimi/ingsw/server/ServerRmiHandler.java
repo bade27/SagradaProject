@@ -68,6 +68,10 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
         return client.updateGraphic(grid);
     }
 
+    public String updateTokens(int n) throws ClientOutOfReachException, RemoteException {
+        return client.updateTokens(n);
+    }
+
     @Override
     public void updateOpponents(String user,Pair[][] grid) throws ClientOutOfReachException, RemoteException {
         client.updateOpponents(user,grid);

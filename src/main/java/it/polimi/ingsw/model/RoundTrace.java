@@ -1,13 +1,10 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.exceptions.IllegalDiceException;
-import it.polimi.ingsw.exceptions.IllegalStepException;
-
 import java.util.ArrayList;
 
 public class RoundTrace {
     //private ArrayList<Object> trace;
-    private ArrayList [] trace;             //vettore di arrayList
+    private ArrayList<Dice> [] trace;             //vettore di arrayList
 
     public RoundTrace(){
         //trace=new ArrayList<Object>(10);

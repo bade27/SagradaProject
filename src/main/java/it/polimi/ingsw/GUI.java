@@ -19,4 +19,5 @@ public interface GUI {
     public void makeToolMove();
     public void updateTools(String[] toolNames);
     public void updateOpponents(Pair[][] pair, String user);
+    public void updateTokens(int n);
 }

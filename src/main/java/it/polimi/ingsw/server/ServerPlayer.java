@@ -67,7 +67,7 @@ public class ServerPlayer implements Runnable
         possibleUsers = ps;
         communicator = null;
         log = l;
-        executor = Executors.newCachedThreadPool();
+        executor = Executors.newFixedThreadPool(1);
         communicator = cli;
         try {
             connection_parameters_setup();
@@ -326,6 +326,23 @@ public class ServerPlayer implements Runnable
         }
     }
 
+    private void updateTokens () throws ClientOutOfReachException
+    {
+        String s;
+        try{
+            s = stopTask(() -> communicator.updateTokens(adapter.getMarker()), INIT_TIMEOUT, executor);
+            if(s == null)
+            {
+                log.addLog(" Token update timeout expired");
+                throw new ClientOutOfReachException();
+            }
+        }
+        catch (Exception e) {
+            log.addLog("" , e.getStackTrace());
+            throw new ClientOutOfReachException();
+        }
+    }
+
     /**
      *  Update opponent's situation on client's side
      */
@@ -390,6 +407,7 @@ public class ServerPlayer implements Runnable
         try{
             updateDadiera();
             updateWindow();
+            updateTokens();
         }catch (Exception e){
             log.addLog("Impossible to update client");
             exit = false;

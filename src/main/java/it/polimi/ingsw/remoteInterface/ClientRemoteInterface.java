@@ -1,7 +1,6 @@
 package it.polimi.ingsw.remoteInterface;
 
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
-import it.polimi.ingsw.server.ServerModelAdapter;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -24,5 +23,6 @@ public interface ClientRemoteInterface extends Remote
     public String updateGraphic(Pair[] dadiera) throws ClientOutOfReachException,RemoteException;
     public String updateGraphic(Pair[][] grid) throws ClientOutOfReachException,RemoteException;
     public void updateOpponents(String user,Pair[][] grid) throws ClientOutOfReachException,RemoteException;
+    public String updateTokens(int n) throws ClientOutOfReachException, RemoteException;
 
 }

@@ -167,6 +167,10 @@ public class SagradaGUI extends Application implements GUI {
         plaG.updateGraphic(pair, user);
     }
 
+    public void updateTokens(int n) {
+        System.out.println("num of remaining tokens: " + n);
+    }
+
     /**
      * enables or disables the board
      * @param enableBoard
