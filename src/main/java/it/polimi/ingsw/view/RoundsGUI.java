@@ -17,11 +17,13 @@ public class RoundsGUI extends GridPane {
     ArrayList<Dice> [] trace;
     int turn=3;
     boolean enable=true;
+    GUI game;
     ArrayList<Pair> [] alldice;
     GridPane round;
     GridPane diceInRound;
     GridPane roundTrace;
     public RoundsGUI(GridPane p, GUI game) {
+        this.game=game;
         ArrayList<Pair> listpair = new ArrayList<>();
         listpair.add(new Pair(0,ColorEnum.WHITE));
         listpair.add(new Pair(0,ColorEnum.WHITE));
@@ -59,7 +61,7 @@ public class RoundsGUI extends GridPane {
                 indexround.setOnAction(event -> {
                     diceInRound=new GridPane();
                     Button b = new Button(indexround.getText() + "\t");
-                    b.setDisable(true);
+                    b.setDisable(false);
                     b.setOpacity(255);
                     diceInRound.add(b, 0, 0);
 
@@ -70,6 +72,14 @@ public class RoundsGUI extends GridPane {
                         b.setText("" + allpair[finalI].get(j).getValue());
                         b.setOpacity(255);
                         diceInRound.add(b, j + 1, 0);
+                        Button finalB = b;
+                        int finalJ = j;
+                        b.setOnAction(event1 -> {
+                            int value=allpair[finalI].get(finalJ).getValue();
+                            ColorEnum color =allpair[finalI].get(finalJ).getColor();
+                            game.modToolMovePair(new Pair(value,color));
+                        });
+
                     }
                     roundTrace.add(diceInRound,0,1);
                 });

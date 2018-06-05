@@ -305,6 +305,8 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     public synchronized void setToolMovePair(Pair p) {
         //this.tmove.setP(p);
         tmove.setPair(p);
+        System.out.println(p.getValue());
+        System.out.println(p.getColor());
     }
 
     public synchronized void setToolMoveIJ(int i, int j) {
