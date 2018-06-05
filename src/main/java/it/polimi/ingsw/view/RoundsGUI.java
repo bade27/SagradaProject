@@ -1,26 +1,36 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.GUI;
+import it.polimi.ingsw.model.ColorEnum;
+import it.polimi.ingsw.model.Dice;
 import it.polimi.ingsw.remoteInterface.Pair;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class RoundsGUI extends GridPane {
+
+    ArrayList<Dice> [] trace;
     int turn=3;
     boolean enable=true;
+    ArrayList<Pair> [] alldice;
     GridPane round;
     GridPane diceInRound;
     GridPane roundTrace;
     public RoundsGUI(GridPane p, GUI game) {
+        ArrayList<Pair> listpair = new ArrayList<>();
+        listpair.add(new Pair(0,ColorEnum.WHITE));
+        listpair.add(new Pair(0,ColorEnum.WHITE));
+        listpair.add(new Pair(0,ColorEnum.WHITE));
+        alldice=new ArrayList[10];
+        for(int i=0;i<alldice.length;i++) {
+            alldice[i]=listpair;
+        }
 
-        ArrayList<Pair> pair = new ArrayList<>();                            //creo i pair
-        /*for(int i=0;i<pair.length;i++){
-            pair[i]=new Pair(0, ColorEnum.WHITE);
-        }*/
         roundTrace=new GridPane();
         round = new GridPane();
         diceInRound=new GridPane();
@@ -30,8 +40,9 @@ public class RoundsGUI extends GridPane {
             indexround.setMaxSize(Double.MAX_VALUE,Double.MAX_VALUE);   //set dimensioni
             indexround.setText(""+(i+1));                               //nome bottone
             round.add(indexround, i, 0);                       //aggiungo bottone a rt
-            updateRoundTrace(pair,i);
         }
+        updateRoundTrace(alldice);
+
         roundTrace.setAlignment(Pos.TOP_CENTER);
         roundTrace.add(round,0,0);
         roundTrace.add(diceInRound,0,1);
@@ -39,24 +50,47 @@ public class RoundsGUI extends GridPane {
         round.setAlignment(Pos.TOP_CENTER);
         p.add(roundTrace,0,0);
     }
-    public void updateRoundTrace(ArrayList<Pair> pair, int i){
+    public void updateRoundTrace(ArrayList<Pair> [] allpair){
         Platform.runLater(() -> {
-            Button indexround = (Button) round.getChildren().get(i);
-            indexround.setOnAction(event -> {
+            for(int i=0;i<allpair.length;i++) {
+                alldice[i] = allpair[i];
+                Button indexround=(Button)round.getChildren().get(i);
+                int finalI = i;
+                indexround.setOnAction(event -> {
+                    diceInRound=new GridPane();
+                    Button b = new Button(indexround.getText() + "\t");
+                    b.setDisable(true);
+                    b.setOpacity(255);
+                    diceInRound.add(b, 0, 0);
+
+                    for (int j = 0; j < allpair[finalI].size(); j++) {
+                        b = new Button();
+                        b.setDisable(true);
+                        b.setStyle("-fx-background-color: " + allpair[finalI].get(j).getColor());
+                        b.setText("" + allpair[finalI].get(j).getValue());
+                        b.setOpacity(255);
+                        diceInRound.add(b, j + 1, 0);
+                    }
+                    roundTrace.add(diceInRound,0,1);
+                });
+            }
+
+            /*Button indexround = (Button) round.getChildren().get(i);
+
                 Button b = new Button(indexround.getText() + "\t");
                 b.setDisable(true);
                 b.setOpacity(255);
                 diceInRound.add(b, 0, 0);
-                for (int j = 0; j < pair.size(); j++) {
+                for (int j = 0; j < pair.length; j++) {
                     b = new Button();
                     b.setDisable(true);
-                    b.setStyle("-fx-background-color: " + pair.get(j).getColor());
-                    b.setText("" + pair.get(j).getValue());
+                    b.setStyle("-fx-background-color: " + pair[j].getColor());
+                    b.setText("" + pair[j].getValue());
                     b.setOpacity(255);
                     diceInRound.add(b, j + 1, 0);
                 }
-
-            });
+            });*/
         });
     }
+
 }
