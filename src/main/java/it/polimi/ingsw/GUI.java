@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.remoteInterface.Coordinates;
 import it.polimi.ingsw.remoteInterface.Pair;
 
 import java.util.ArrayList;
@@ -10,9 +11,9 @@ public interface GUI {
     public void setEnableBoard(boolean enableBoard);
     public void updateMessage(String msg);
     public void passTurn();
-    public void modMoveIJ(int i, int j);
+    //public void modMoveIJ(Coordinates coord);
     public void makeMove();
-    public void modMovePair(Pair pair);
+    //public void modMovePair(Pair pair);
     public void toolPermission(int i);
     public void setToolPhase(boolean toolPhase);
     public void modToolMovePair(Pair p);

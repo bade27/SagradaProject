@@ -97,16 +97,17 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
 
     /**
      * allows the client to make a move
-     * @param move the move sent by the client
-     * @return a message saying weather the move is valid or not
+     * @param coor position whre to place die
+     * @param p couple color and value of die to place
+     * @returna message saying weather the move is valid or not
      * @throws RemoteException if the server is unreachable
      */
     @Override
-    public String makeMove(Move move) throws RemoteException {
+    public String makeMove(Coordinates coor, Pair p) throws RemoteException {
         try {
             if (!adapter.CanMove())
                 return "You have already moved on this turn";
-            adapter.addDiceToBoard(move.getI(), move.getJ(), new Dice(move.getP().getValue(), move.getP().getColor()));
+            adapter.addDiceToBoard(coor.getI(), coor.getJ(), new Dice(p.getValue(), p.getColor()));
 
             match.updateClient();
 

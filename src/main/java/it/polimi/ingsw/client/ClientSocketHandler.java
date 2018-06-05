@@ -1,10 +1,7 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
-import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
-import it.polimi.ingsw.remoteInterface.Move;
-import it.polimi.ingsw.remoteInterface.ServerRemoteInterface;
-import it.polimi.ingsw.remoteInterface.ToolMove;
+import it.polimi.ingsw.remoteInterface.*;
 import it.polimi.ingsw.utilities.JSONFacilities;
 import org.json.JSONException;
 
@@ -165,15 +162,11 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
     {
     }
 
-    public void responseTurn (String s)
-    {
-
-    }
-
     @Override
-    public String makeMove(Move move) throws RemoteException {
-        return "";
+    public String makeMove(Coordinates coord, Pair pair) throws RemoteException {
+        return null;
     }
+
 
     @Override
     public String passTurn() throws RemoteException {

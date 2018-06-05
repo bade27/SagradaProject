@@ -1,7 +1,9 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.GUI;
+import it.polimi.ingsw.client.MoveAction;
 import it.polimi.ingsw.model.ColorEnum;
+import it.polimi.ingsw.remoteInterface.Coordinates;
 import it.polimi.ingsw.remoteInterface.Pair;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
@@ -54,7 +56,7 @@ public class GridGUI extends GridPane{
                             if(tool) {
                                 game.modToolMoveIJ(b.geti(), b.getj());
                             } else {
-                                game.modMoveIJ(b.geti(), b.getj());
+                                MoveAction.setCoord(new Coordinates(b.geti(),b.getj()));
                                 game.makeMove();
                             }
                         }

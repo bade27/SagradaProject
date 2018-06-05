@@ -3,6 +3,7 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.GUI;
 import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.exceptions.IllegalDiceException;
+import it.polimi.ingsw.remoteInterface.Coordinates;
 import it.polimi.ingsw.remoteInterface.Pair;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -110,7 +111,7 @@ public class SagradaGUI extends Application implements GUI {
         root.setCenter(mainContent);
         root.setBottom(bottom);
 
-        Scene scene=new Scene(root,800,400);
+        Scene scene=new Scene(root,800,600);
         primaryStage.setTitle("Sagrada");
         primaryStage.setScene(scene);
         primaryStage.show();
@@ -119,13 +120,13 @@ public class SagradaGUI extends Application implements GUI {
     }
 
 
-    public void modMovePair(Pair pair){
+    /*public void modMovePair(Pair pair){
         clientPlayer.setMovePair(pair);
     }
 
-    public void modMoveIJ(int i, int j){
-        clientPlayer.setMoveIJ(i,j);
-    }
+    public void modMoveIJ(Coordinates coord){
+        clientPlayer.setMoveCoordinates(coord);
+    }*/
 
 
     /**

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.GUI;
+import it.polimi.ingsw.client.MoveAction;
 import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.remoteInterface.Pair;
 import javafx.application.Platform;
@@ -75,7 +76,7 @@ public class DadieraGUI extends GridPane {
                         if (tool) {
                             game.modToolMovePair(new Pair(val, color));
                         } else {
-                            game.modMovePair(new Pair(val, color));
+                            MoveAction.setPair(new Pair(val, color));
                         }
                     }
                 });

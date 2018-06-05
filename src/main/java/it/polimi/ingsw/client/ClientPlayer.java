@@ -37,7 +37,6 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     private ServerRemoteInterface server;
 
     //buffer mossa in upload
-    private Move move;
     private ToolMove tmove;
     private boolean finishedMove = false;
     private int num_of_moves = 0;
@@ -217,7 +216,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     public String doTurn ()
     {
         num_of_moves = 0;
-        clearMove();
+        MoveAction.clearMove();
         clearTool();
         graph.updateMessage("My turn");
         graph.setEnableBoard(true);
@@ -228,7 +227,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
         if (num_of_moves == 0)
         {
-            if (move.getP() != null && move.getI() != null && move.getJ() != null)
+            if (MoveAction.canMove())
                 finishedMove = true;
             else
                 finishedMove = false;
@@ -236,14 +235,13 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             if (finishedMove)
             {
                 try {
-                    String msg = server.makeMove(move);
+                    String msg = MoveAction.perfromMove(server);
                     graph.updateMessage(msg);
-                    //graph.setEnableBoard(false);
                 } catch (RemoteException e) {
                     e.printStackTrace();
                     if (finishedMove) {
                         try {
-                            String msg = server.makeMove(move);
+                            String msg = MoveAction.perfromMove(server);
                             graph.updateMessage(msg);
                             graph.setEnableBoard(false);
                             num_of_moves++;
@@ -255,18 +253,6 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
             }
         }
-    }
-
-    public synchronized void clearMove () {
-        move = new Move();
-    }
-
-    public synchronized void setMovePair(Pair p) {
-        this.move.setP(p);
-    }
-
-    public synchronized void setMoveIJ(int i, int j) {
-        this.move.setIJ(i, j);
     }
     //</editor-fold>
 
@@ -298,7 +284,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         }
     }
 
-    public synchronized void clearTool() {
+    private synchronized void clearTool() {
         tmove = new ToolMove();
     }
 
