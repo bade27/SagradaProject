@@ -3,6 +3,7 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.exceptions.ParserXMLException;
 import it.polimi.ingsw.model.Dadiera;
+import it.polimi.ingsw.model.RoundTrace;
 import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
 import it.polimi.ingsw.utilities.FileLocator;
 import it.polimi.ingsw.utilities.LogFile;
@@ -422,7 +423,7 @@ public class MatchHandler implements Runnable
 
         ArrayList<Integer> toolNum = new ArrayList<>();
         do {
-            int i = new Random().nextInt(3);
+            int i = new Random().nextInt(4);
             if(!toolNum.contains(i))
                 toolNum.add(i);
         } while(toolNum.size() < 3);
@@ -437,7 +438,9 @@ public class MatchHandler implements Runnable
                 c = toolNum.get(i);
                 tools[i]=cards[c];
             }
-            tools[2]="Lathekin";
+
+            tools[1] = "Taglierina circolare";
+            tools[2] = "Pennello per Pasta Salda";
             //For each players initialize tool cards already selected
             for (int i=0;i<nConn;i++)
                 player.get(i).setToolCards(tools);

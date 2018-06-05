@@ -189,4 +189,9 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
     public String useTool(ToolMove move) throws RemoteException {
         return null;
     }
+
+    @Override
+    public String updateTokens(int n) throws ClientOutOfReachException, RemoteException {
+        return null;
+    }
 }

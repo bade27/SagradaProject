@@ -41,20 +41,19 @@ public class ServerModelAdapter
     {
         if (toolInUse == null)
             return "Not using tool permission asked";
-
         mv.setDadiera(dadiera);
         mv.setW(board);
-        marker = marker - toolInUse.getPrice();
         toolInUse.setToolMove(mv);
+        int current_price = toolInUse.getPrice();
 
         try {
             toolInUse.use();
-
             //toolInUse = null;
         } catch (IllegalDiceException | IllegalStepException e) {
             //return e.getMessage();
             return "Invalid input";
         }
+        marker = marker - current_price;
         return "Tool used correctly";
     }
 
@@ -66,7 +65,7 @@ public class ServerModelAdapter
 
         for (int i = 0; i < tools.length ; i++)
             if (tools[i].getId() == nrTool)
-                if (tools[i].getPrice() < marker) {
+                if (tools[i].getPrice() <= marker) {
                     toolInUse = tools[i];
                     return true;
                 }
@@ -166,6 +165,10 @@ public class ServerModelAdapter
 
     public void setDadiera(Dadiera dadiera) {
         this.dadiera = dadiera;
+    }
+
+    public int getMarker() {
+        return marker;
     }
 
     public boolean CanMove() {

@@ -183,6 +183,11 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         return "ok";
     }
 
+    public String updateTokens(int n) throws ClientOutOfReachException, RemoteException {
+        graph.updateTokens(n);
+        return "ok";
+    }
+
     @Override
     public void updateOpponents (String user, Pair[][] grids) {
         //graph.updateOpponents(grids, user);

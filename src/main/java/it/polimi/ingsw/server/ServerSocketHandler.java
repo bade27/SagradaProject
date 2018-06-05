@@ -295,6 +295,10 @@ public class ServerSocketHandler implements ClientRemoteInterface
 
     }
 
+    @Override
+    public String updateTokens(int n) throws ClientOutOfReachException, RemoteException {
+        return null;
+    }
 
     /*
     public void close() {
