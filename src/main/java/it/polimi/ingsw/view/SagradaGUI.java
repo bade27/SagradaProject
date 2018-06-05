@@ -15,8 +15,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.rmi.RemoteException;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 
 public class SagradaGUI extends Application implements GUI {
 
@@ -165,6 +164,14 @@ public class SagradaGUI extends Application implements GUI {
 
     public void updateOpponents(Pair[][] pair, String user) {
         plaG.updateGraphic(pair, user);
+    }
+
+    public void updateRoundTrace(ArrayList<Pair>[] trace) {
+        for(int i = 0; i < trace.length; i++) {
+            System.out.println(i + 1 + "\t");
+            for(int k = 0; k < trace[i].size(); k++)
+                System.out.println(trace[i].get(k) + "\t");
+        }
     }
 
     public void updateTokens(int n) {

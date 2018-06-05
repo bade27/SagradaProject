@@ -2,6 +2,8 @@ package it.polimi.ingsw;
 
 import it.polimi.ingsw.remoteInterface.Pair;
 
+import java.util.ArrayList;
+
 public interface GUI {
     public void updateDadiera (Pair[] dadiera);
     public void updateWindow (Pair[][] window);
@@ -20,4 +22,5 @@ public interface GUI {
     public void updateTools(String[] toolNames);
     public void updateOpponents(Pair[][] pair, String user);
     public void updateTokens(int n);
+    public void updateRoundTrace(ArrayList<Pair>[] trace);
 }
