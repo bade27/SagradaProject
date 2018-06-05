@@ -25,6 +25,6 @@ public interface ClientRemoteInterface extends Remote
     public String updateGraphic(Pair[][] grid) throws ClientOutOfReachException,RemoteException;
     public void updateOpponents(String user,Pair[][] grid) throws ClientOutOfReachException,RemoteException;
     public String updateTokens(int n) throws ClientOutOfReachException, RemoteException;
-    public String updateRoundTrace(ArrayList<Pair> dice, int n) throws RemoteException;
+    public String updateRoundTrace(ArrayList<Pair>[] dice) throws RemoteException;
 
 }
