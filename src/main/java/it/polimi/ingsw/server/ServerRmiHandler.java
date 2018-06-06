@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server;
 
+import it.polimi.ingsw.client.ToolAction;
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.exceptions.ModelException;
 import it.polimi.ingsw.model.Dice;
@@ -124,10 +125,59 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
         return adapter.toolRequest(nrTool);
     }
 
+
     @Override
-    public String useTool(ToolMove toolMove) throws RemoteException {
-        System.out.println(toolMove.toString());//temporaneo per il debug
-        String ret = adapter.useTool(toolMove);
+    public String useTool(Pair p,String instruction) throws RemoteException {
+        //Ovviamente per prova
+        ToolMove tm = new ToolMove();
+        tm.setInstruction(instruction);
+        tm.setPair(p);
+        //Ovviamente per prova
+
+        String ret = adapter.useTool(tm);
+        match.updateClient();
+        return ret;
+    }
+
+    @Override
+    public String useTool(Coordinates startCoord, Coordinates endCoord) throws RemoteException {
+        //Ovviamente per prova
+        ToolMove tm = new ToolMove();
+        tm.setFirst(new int[] {startCoord.getI(), startCoord.getJ()} );
+        tm.setFirst(new int[] {endCoord.getI(), endCoord.getJ()} );
+        //Ovviamente per prova
+
+        String ret = adapter.useTool(tm);
+        match.updateClient();
+        return ret;
+    }
+
+    @Override
+    public String useTool(Coordinates startCoord1, Coordinates endCoord1, Coordinates startCoord2, Coordinates endCoord2) throws RemoteException {
+        //Ovviamente per prova
+        ToolMove tm = new ToolMove();
+        tm.setFirst(new int[] {startCoord1.getI(), startCoord1.getJ()} );
+        tm.setFirst(new int[] {endCoord1.getI(), endCoord1.getJ()} );
+        //tm.setPair(p2);
+        tm.setSecond(new int[] {startCoord2.getI(), startCoord2.getJ()} );
+        tm.setSecond(new int[] {endCoord2.getI(), endCoord2.getJ()} );
+        //Ovviamente per prova
+
+        String ret = adapter.useTool(tm);
+        match.updateClient();
+        return ret;
+    }
+
+    @Override
+    public String useTool(Pair dadieraP, Pair traceP, int nrRound) throws RemoteException {
+        //Ovviamente per prova
+        ToolMove tm = new ToolMove();
+        //Utilizzo nrRound
+        tm.setPair(dadieraP);
+        tm.setPair(traceP);
+        //Ovviamente per prova
+
+        String ret = adapter.useTool(tm);
         match.updateClient();
         return ret;
     }

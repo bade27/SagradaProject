@@ -11,15 +11,12 @@ public interface GUI {
     public void setEnableBoard(boolean enableBoard);
     public void updateMessage(String msg);
     public void passTurn();
-    //public void modMoveIJ(Coordinates coord);
     public void makeMove();
-    //public void modMovePair(Pair pair);
+
     public void toolPermission(int i);
     public void setToolPhase(boolean toolPhase);
-    public void modToolMovePair(Pair p);
-    public void modToolMoveInstruction(String instruction);
-    public void modToolMoveIJ(int i, int j);
     public void makeToolMove();
+
     public void updateTools(String[] toolNames);
     public void updateOpponents(Pair[][] pair, String user);
     public void updateTokens(int n);

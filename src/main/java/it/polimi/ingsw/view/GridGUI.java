@@ -2,6 +2,7 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.GUI;
 import it.polimi.ingsw.client.MoveAction;
+import it.polimi.ingsw.client.ToolAction;
 import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.remoteInterface.Coordinates;
 import it.polimi.ingsw.remoteInterface.Pair;
@@ -45,7 +46,7 @@ public class GridGUI extends GridPane{
             //grid = new GridPane();
             for (int i = 0; i < 4; i++) {
                 for (int j = 0; j < 5; j++) {
-                    CellButton b = new CellButton(i, j);
+                    CellButton b = new CellButton(i, j,pair[i][j].getColor(),pair[i][j].getValue());
                     b.setPrefSize(100, 80);
                     b.setText("" + pair[i][j].getValue());
                     b.setStyle("-fx-background-color: " + pair[i][j].getColor());
@@ -54,9 +55,9 @@ public class GridGUI extends GridPane{
                     b.setOnAction(event -> {
                         if (enable) {
                             if(tool) {
-                                game.modToolMoveIJ(b.geti(), b.getj());
+                                ToolAction.setPosition(new Coordinates(b.i,b.j));
                             } else {
-                                MoveAction.setCoord(new Coordinates(b.geti(),b.getj()));
+                                MoveAction.setCoord(new Coordinates(b.i,b.j));
                                 game.makeMove();
                             }
                         }
@@ -84,15 +85,18 @@ public class GridGUI extends GridPane{
      */
     private class CellButton extends Button{
 
-        int i;
-        int j;
+        private int i;
+        private int j;
 
-        public CellButton(int i, int j){
+        private ColorEnum color;
+        private int value;
+
+        private CellButton(int i, int j,ColorEnum col , int val){
             this.i=i;
             this.j=j;
+            color = col;
+            value = val;
         }
-        public int geti(){return i;}
-        public int getj(){return j;}
     }
 
 

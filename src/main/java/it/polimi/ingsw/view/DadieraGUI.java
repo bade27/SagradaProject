@@ -2,6 +2,7 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.GUI;
 import it.polimi.ingsw.client.MoveAction;
+import it.polimi.ingsw.client.ToolAction;
 import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.remoteInterface.Pair;
 import javafx.application.Platform;
@@ -12,8 +13,6 @@ import javafx.scene.layout.GridPane;
 public class DadieraGUI extends GridPane {
 
     private GridPane pane;
-    private String colore_dado_tolto;
-    private String valore_dado_tolto;
     private GridPane grid;
     private GUI game;
     private boolean enable;
@@ -74,7 +73,8 @@ public class DadieraGUI extends GridPane {
                                 break;
                         }
                         if (tool) {
-                            game.modToolMovePair(new Pair(val, color));
+                            //game.modToolMovePair(new Pair(val, color));
+                            ToolAction.setDadieraPair(new Pair(val, color));
                         } else {
                             MoveAction.setPair(new Pair(val, color));
                         }
@@ -93,19 +93,4 @@ public class DadieraGUI extends GridPane {
         this.tool = tool;
     }
 
-    public String getColDadoTolto() {
-        return colore_dado_tolto;
-    }
-
-    public String getValDadoTolto() {
-        return valore_dado_tolto;
-    }
-
-    public void setColDadoTolto() {
-        colore_dado_tolto = null;
-    }
-
-    public void setValDadoTolto() {
-        valore_dado_tolto = null;
-    }
 }

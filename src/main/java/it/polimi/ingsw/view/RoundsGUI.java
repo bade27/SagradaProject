@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.GUI;
+import it.polimi.ingsw.client.ToolAction;
 import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.model.Dice;
 import it.polimi.ingsw.remoteInterface.Pair;
@@ -54,6 +55,7 @@ public class RoundsGUI extends GridPane {
     }
     public void updateRoundTrace(ArrayList<Pair> [] allpair){
         Platform.runLater(() -> {
+            diceInRound.getChildren().clear();
             for(int i=0;i<allpair.length;i++) {
                 alldice[i] = allpair[i];
                 Button indexround=(Button)round.getChildren().get(i);
@@ -77,7 +79,8 @@ public class RoundsGUI extends GridPane {
                         b.setOnAction(event1 -> {
                             int value=allpair[finalI].get(finalJ).getValue();
                             ColorEnum color =allpair[finalI].get(finalJ).getColor();
-                            game.modToolMovePair(new Pair(value,color));
+                            //game.modToolMovePair(new Pair(value,color));
+                            ToolAction.setTracePair(new Pair(value,color));
                         });
 
                     }

@@ -179,7 +179,22 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
     }
 
     @Override
-    public String useTool(ToolMove move) throws RemoteException {
+    public String useTool(Pair p, String ins) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public String useTool( Coordinates sartCoord, Coordinates endCoord) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public String useTool(Coordinates sartCoord1, Coordinates endCoord1, Coordinates sartCoord2, Coordinates endCoord2) throws RemoteException {
+        return null;
+    }
+
+    @Override
+    public String useTool(Pair dadiera, Pair trace, int nrRound) throws RemoteException {
         return null;
     }
 

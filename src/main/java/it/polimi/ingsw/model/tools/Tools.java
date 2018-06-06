@@ -50,7 +50,7 @@ public abstract class Tools {
     public void setToolMove (ToolMove tm) {
         //d1 = tm.getP() !=null ?new Dice(tm.getP().getValue(), tm.getP().getColor()) : null;
         d1 = tm.getPair().size() > 0 ? new Dice(tm.getPair().get(0).getValue(), tm.getPair().get(0).getColor()) : null;
-        d2 = tm.getPair().size() == 2 ? new Dice(tm.getPair().get(0).getValue(), tm.getPair().get(0).getColor()) : null;
+        d2 = tm.getPair().size() == 2 ? new Dice(tm.getPair().get(1).getValue(), tm.getPair().get(1).getColor()) : null;
         instruction = tm.getInstruction();
         dadiera = tm.getDadiera();
         window = tm.getW();

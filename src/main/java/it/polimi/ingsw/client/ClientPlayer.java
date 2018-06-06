@@ -217,7 +217,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     {
         num_of_moves = 0;
         MoveAction.clearMove();
-        clearTool();
+        ToolAction.clearTool();
         graph.updateMessage("My turn");
         graph.setEnableBoard(true);
         return "ok";
@@ -260,65 +260,23 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     public boolean toolPermission(int toolID) {
         String response;
         try {
-            response = server.askToolPermission(toolID);
+            response = ToolAction.askToolPermission(server,toolID);
             System.out.println("tool response: " + response);
         } catch (RemoteException e) {
             e.printStackTrace();
             return false;
         }
-        if (response.equals("Tool permission accepted")){
-            System.out.println("ok");
-            return true;
-        }
-
-        return false;
+        return response.equals("Tool permission accepted");
     }
 
     public synchronized void useTool() {
         try {
-            graph.updateMessage(server.useTool(tmove));
+            graph.updateMessage(ToolAction.performTool(server));
             graph.setToolPhase(false);
-            clearTool();
+            ToolAction.clearTool();
         } catch (RemoteException e) {
             e.printStackTrace();
         }
-    }
-
-    private synchronized void clearTool() {
-        tmove = new ToolMove();
-    }
-
-    public synchronized void setToolMovePair(Pair p) {
-        //this.tmove.setP(p);
-        tmove.setPair(p);
-        System.out.println(p.getValue());
-        System.out.println(p.getColor());
-    }
-
-    public synchronized void setToolMoveIJ(int i, int j) {
-        /*if(this.tmove.getI_start() == null && this.tmove.getJ_start() == null)
-            setToolMoveIJStart(i, j);
-        else setToolMoveIJEnd(i, j);*/
-
-        if(tmove.getFirst().size() < 2)
-            tmove.setFirst(new int[] {i, j});
-        else if(tmove.getSecond().size() < 2)
-            tmove.setSecond(new int[] {i, j});
-    }
-
-    //setta i valori della posizione iniziale
-    public synchronized void setToolMoveIJStart(int i, int j) {
-        this.tmove.setIJStart(i, j);
-    }
-
-    //setta i valori della posizione finale
-    public synchronized void setToolMoveIJEnd(int i, int j) {
-        this.tmove.setIJEnd(i, j);
-    }
-
-    //setta inc o dec del primo tool
-    public synchronized void setToolInstruction(String instruction) {
-        this.tmove.setInstruction(instruction);
     }
 
     //</editor-fold>

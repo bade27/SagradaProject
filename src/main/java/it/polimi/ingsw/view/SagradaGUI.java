@@ -2,6 +2,7 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.GUI;
 import it.polimi.ingsw.client.ClientPlayer;
+import it.polimi.ingsw.client.ToolAction;
 import it.polimi.ingsw.exceptions.IllegalDiceException;
 import it.polimi.ingsw.remoteInterface.Coordinates;
 import it.polimi.ingsw.remoteInterface.Pair;
@@ -157,8 +158,6 @@ public class SagradaGUI extends Application implements GUI {
         msgb.updateGraphic(msg);
     }
 
-
-
     public void updateTools(String[] toolNames) {
         tools.updateTools(toolNames);
     }
@@ -168,11 +167,6 @@ public class SagradaGUI extends Application implements GUI {
     }
 
     public void updateRoundTrace(ArrayList<Pair>[] trace) {
-        /*for(int i = 0; i < trace.length; i++) {
-            System.out.println(i + 1 + "\t");
-            for(int k = 0; k < trace[i].size(); k++)
-                System.out.println(trace[i].get(k) + "\t");
-        }*/
         rounds.updateRoundTrace(trace);
     }
 
@@ -215,18 +209,6 @@ public class SagradaGUI extends Application implements GUI {
         }
     }
 
-    public void modToolMovePair(Pair pair) {
-        clientPlayer.setToolMovePair(pair);
-    }
-
-    public void modToolMoveInstruction(String instruction) {
-        clientPlayer.setToolInstruction(instruction);
-    }
-
-    public void modToolMoveIJ(int i, int j) {
-        clientPlayer.setToolMoveIJ(i, j);
-    }
-
     public void makeToolMove() {
         clientPlayer.useTool();
     }
@@ -248,11 +230,10 @@ public class SagradaGUI extends Application implements GUI {
                 alert.getButtonTypes().setAll(buttonType1, buttonType2);
                 Optional<ButtonType> result = alert.showAndWait();
 
-                if (result.get() == buttonType1) {
-                    modToolMoveInstruction("inc");
-                } else {
-                    modToolMoveInstruction("dec");
-                }
+                if (result.get() == buttonType1)
+                    ToolAction.setInstruction("inc");
+                 else
+                     ToolAction.setInstruction("dec");
             });
         }
     }

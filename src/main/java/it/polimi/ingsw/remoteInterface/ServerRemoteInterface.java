@@ -11,6 +11,16 @@ public interface ServerRemoteInterface extends Remote
     public String makeMove(Coordinates coord, Pair pair) throws RemoteException;
 
     public String askToolPermission(int nrTool) throws RemoteException;
-    public String useTool(ToolMove move) throws RemoteException;
+
+    //Tool nr. 1-6-10
+    public String useTool (Pair p, String instruction) throws RemoteException;
+    //Tool nr. 2-3
+    public String useTool (Coordinates sartCoord,Coordinates endCoord) throws RemoteException;
+    //Tool nr.4
+    public String useTool (Coordinates sartCoord1,Coordinates endCoord1, Coordinates sartCoord2,Coordinates endCoord2) throws RemoteException;
+    //Tool nr.5
+    public String useTool (Pair dadiera,Pair trace,int nrRound) throws RemoteException;
+
+
     public String passTurn() throws RemoteException;
 }
