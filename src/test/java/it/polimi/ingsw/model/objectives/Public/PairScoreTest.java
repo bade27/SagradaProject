@@ -6,11 +6,9 @@ import it.polimi.ingsw.model.Dice;
 import it.polimi.ingsw.model.Placement;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class PairScoreTest {
 
@@ -47,7 +45,7 @@ class PairScoreTest {
             }
     }
 
-    @Test
+    /*@Test
     void calcScore() {
         int numCells = new Random().nextInt(rows * cols) + 1;
         int fh = numCells / 2;
@@ -84,7 +82,7 @@ class PairScoreTest {
         int min = fh < sh ? fh : sh;
         assertEquals(value * min, score.calcScore(value, grid));
 
-    }
+    }*/
 
     @Test
     void calcScoreZero() {

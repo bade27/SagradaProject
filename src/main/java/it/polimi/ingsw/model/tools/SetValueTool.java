@@ -21,81 +21,96 @@ public class SetValueTool extends Tools {
     @Override
     public void use() throws IllegalStepException {
         switch (id)
-        {case 1:
-            addSub();
-            break;
-         case 6:
-             relaunchDice();
+        {
+            case 1:
+                addSub();
                 break;
-          case 10:
-             turnDice();
+            case 6:
+                relaunchDice();
+                break;
+            case 10:
+                turnDice();
                 break;
             default:
                 break;
         }
     }
 
-    /**
-     * increments or decrements the value of the selected dice
-     * @throws IllegalStepException in case the move is invalid
-     */
-    protected void addSub() throws IllegalStepException {
-        if(instruction == null || d1 == null || dadiera == null)
-            throw new IllegalStepException();
-
-        int value = d1.getValue();
-        int toSum;
-
-        if(instruction.equals("inc")) {
-            toSum = 1;
-        } else {
-            toSum = -1;
-        }
-
+    private void setDiceValueDadera (int val , Dice d) throws IllegalStepException
+    {
         try {
-            dadiera.setDiceValue(value + toSum, d1);
+            dadiera.setDiceValue(val, d);
         } catch (IllegalDiceException ide) {
             throw new IllegalStepException();
         }
-
-        setPrice();
     }
 
     /**
-     * turn the die x
-     *
-     * @throws IllegalStepException
+     * Tool nr. 1 function
      */
-    protected void turnDice(/*Dice x, Dadiera s*/) throws IllegalStepException {
-        if(d1 == null || dadiera == null)
+    private void addSub() throws IllegalStepException
+    {
+        if(instruction == null || d1 == null || dadiera == null)
             throw new IllegalStepException();
-
         int value = d1.getValue();
-        try {
-            dadiera.setDiceValue(7 - value, d1);
-        } catch (IllegalDiceException ise) {
-            throw new IllegalStepException();
-        }
+
+        if(instruction.equals("inc"))
+            setDiceValueDadera(value + 1, d1);
+        else
+            setDiceValueDadera(value + -1, d1);
+
         setPrice();
     }
 
     /**
      * Tool nr. 6 function
      */
-    protected void relaunchDice(/*Dice x, Dadiera s*/) throws IllegalStepException {
+    private void relaunchDice() throws IllegalStepException
+    {
         if(d1 == null || dadiera == null)
             throw new IllegalStepException();
-        int v;
-        try {
-            v = new Random().nextInt(6) + 1;
-            dadiera.setDiceValue(v, d1);
-        } catch (IllegalDiceException ide) {
-            throw new IllegalStepException();
-        }
+        int v = new Random().nextInt(6) + 1;
+
+        setDiceValueDadera(v,d1);
+
         remember = new Dice(v,d1.getColor());
         finished = false;
         setPrice();
     }
+
+    /**
+     * Tool nr.10 function
+     */
+    private void turnDice(/*Dice x, Dadiera s*/) throws IllegalStepException
+    {
+        if(d1 == null || dadiera == null)
+            throw new IllegalStepException();
+
+        int value = 7 - d1.getValue();
+        setDiceValueDadera(value,d1);
+        setPrice();
+    }
+
+    /**
+     * Tool nr.7
+     */
+    private void relaunchAllDadiera () throws IllegalStepException
+    {
+        //Manca il controllo del 2° turno con token turn
+        if (dadiera == null)
+            throw new IllegalStepException();
+
+        for (int i = 0; i < dadiera.getListaDadi().size() ; i++)
+        {
+            int v = new Random().nextInt(6) + 1;
+            setDiceValueDadera(v,dadiera.getListaDadi().get(i));
+        }
+        setPrice();
+    }
+
+
+
+
 
     /**
      * if the price if one it change price=2
