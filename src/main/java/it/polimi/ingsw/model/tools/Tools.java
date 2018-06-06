@@ -157,10 +157,5 @@ public abstract class Tools {
 
     abstract public void use() throws IllegalStepException, IllegalDiceException;
 
-    public String getInstruction() { return instruction; }
-
-    public void setInstruction(String instruction) {
-        this.instruction=instruction;
-    }
 
 }

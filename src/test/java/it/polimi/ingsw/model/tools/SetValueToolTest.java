@@ -379,6 +379,5 @@ class SetValueToolTest {
         svt=new SetValueTool(6,"Pennello per Pasta Calda");
         int price=svt.getPrice();
         assertNotNull(price);
-    }
-*/
+    }*/
 }

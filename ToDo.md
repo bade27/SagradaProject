@@ -1,10 +1,22 @@
-﻿-[ ] caricamento tool da xml
--[ ] creazione ed estrazione tool da server e comunicazione al client
--[ ] modifica struttura mossa
--[ ] pulsante di fine turno
--[ ] gestione mossa con tool lato server
--[ ] dare al giocatore la possibilità di rifare la mossa se sbagliata
+﻿## Lista di tutto quello che manca
 
-se c'è tempo
-- [ ] gui con vetrate avversari
-- [ ] display delle carte
+-Obbligatorio (to 30)
+	- Gioco
+		- [ ] Implementazione Tool da 5 a 12
+		- [ ] Implementazione Obbiettivi 
+		- [ ] Gestione utenti con login e registrazione
+	- Grafica
+		- [ ] GUI base completa (Senza caricamento immagini)
+		- [ ] CLI molto base
+	- Rete
+		- [ ] Implementazione Socket
+		- [ ] Gestione disconnessioni
+		- [ ] Gestione riconnessioni
+		- [ ] Timeout lato client e lato server del turno
+	- F.A da scegliere
+	
+- Non obbligatorio (to 30L)
+	- F.A da scegliere
+	- GUI carina
+	
+	
