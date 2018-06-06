@@ -1,6 +1,9 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.exceptions.*;
+import it.polimi.ingsw.exceptions.IllegalDiceException;
+import it.polimi.ingsw.exceptions.IllegalStepException;
+import it.polimi.ingsw.exceptions.ModelException;
+import it.polimi.ingsw.exceptions.ParserXMLException;
 import it.polimi.ingsw.model.Dadiera;
 import it.polimi.ingsw.model.Dice;
 import it.polimi.ingsw.model.RoundTrace;
@@ -9,7 +12,6 @@ import it.polimi.ingsw.model.objectives.ObjectivesFactory;
 import it.polimi.ingsw.model.objectives.Private.PrivateObjective;
 import it.polimi.ingsw.model.objectives.Public.PublicObjective;
 import it.polimi.ingsw.model.tools.Tools;
-import it.polimi.ingsw.model.tools.ToolsFactory;
 import it.polimi.ingsw.remoteInterface.Pair;
 import it.polimi.ingsw.remoteInterface.ToolMove;
 import it.polimi.ingsw.utilities.LogFile;
@@ -172,18 +174,19 @@ public class ServerModelAdapter
 
     /**
      * Initialize tool cards with path passed
-     * @param names names of tools' pattern
+     * @param toolCards names of tools' pattern
      */
-    public void initializeToolCards(String[] names) throws ModelException
+    public void initializeToolCards(Tools[] toolCards) throws ModelException
     {
-        try
+        tools = toolCards;
+        /*try
         {
             for (int i = 0 ; i < numTools ; i++)
                 tools[i] = ToolsFactory.getTools(names[i]);
 
         }catch (Exception ex){
             throw new ModelException("Impossible to create public objectives");
-        }
+        }*/
     }
 
     public void setUser (String s)

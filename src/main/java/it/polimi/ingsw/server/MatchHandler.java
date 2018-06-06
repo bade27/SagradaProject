@@ -6,6 +6,8 @@ import it.polimi.ingsw.exceptions.ParserXMLException;
 import it.polimi.ingsw.model.Dadiera;
 import it.polimi.ingsw.model.Dice;
 import it.polimi.ingsw.model.RoundTrace;
+import it.polimi.ingsw.model.tools.Tools;
+import it.polimi.ingsw.model.tools.ToolsFactory;
 import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
 import it.polimi.ingsw.utilities.FileLocator;
 import it.polimi.ingsw.utilities.LogFile;
@@ -443,13 +445,13 @@ public class MatchHandler implements Runnable
     private boolean initializeTools ()
     {
         int c;
-        ArrayList<String> cardsTmp;
-        String[] cards;
+        ArrayList<String> toolNamesTmp;
+        String[] toolNames;
 
         //Take all xml names of tool cards
         try{
-            cardsTmp = ParserXML.readToolsNames(FileLocator.getToolsListPath());
-            cards = cardsTmp.toArray(new String[cardsTmp.size()]);
+            toolNamesTmp = ParserXML.readToolsNames(FileLocator.getToolsListPath());
+            toolNames = toolNamesTmp.toArray(new String[toolNamesTmp.size()]);
         }
         catch (ParserXMLException ex){
             LogFile.addLog("Impossible to read XML tools",ex.getStackTrace());
@@ -458,25 +460,20 @@ public class MatchHandler implements Runnable
 
         ArrayList<Integer> toolNum = new ArrayList<>();
         do {
-            int i = new Random().nextInt(4);
+            int i = new Random().nextInt(6);
             if(!toolNum.contains(i))
                 toolNum.add(i);
         } while(toolNum.size() < 3);
 
         try
         {
-            String [] tools = new String[3];
-            //Select randomly 3 tool cards from list
+            Tools[] tools = new Tools[3];
+            //Select and create randomly 3 tool cards from list of tools
             for (int i = 0; i < 3; i++)
             {
-                //c = new Random().nextInt(3); //per il momento estraggo solo i primi 3
                 c = toolNum.get(i);
-                tools[i]=cards[c];
+                tools[i] = ToolsFactory.getTools(toolNames[c]);
             }
-
-            tools[0] = "Pennello per Eglomise";
-            tools[1] = "Lathekin";
-            tools[2] = "Taglierina circolare";
 
             //For each players initialize tool cards already selected
             for (int i=0;i<nConn;i++)

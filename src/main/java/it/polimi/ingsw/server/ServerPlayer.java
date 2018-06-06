@@ -2,9 +2,7 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.exceptions.ModelException;
-import it.polimi.ingsw.model.ColorEnum;
-import it.polimi.ingsw.model.Dice;
-import it.polimi.ingsw.model.RoundTrace;
+import it.polimi.ingsw.model.tools.Tools;
 import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
 import it.polimi.ingsw.remoteInterface.Pair;
 import it.polimi.ingsw.utilities.LogFile;
@@ -17,6 +15,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.concurrent.*;
 
 public class ServerPlayer implements Runnable
@@ -40,8 +39,10 @@ public class ServerPlayer implements Runnable
     //passed parameters
     private String[] windowCard1,windowCard2;
     private String[] publicObjCard;
-    private String[] toolCard;
     private String privateObjCard;
+
+    //actual cards
+    private Tools[] toolCards;
 
 
     /**
@@ -238,7 +239,8 @@ public class ServerPlayer implements Runnable
     {
         try {
             boolean performed;
-            performed = stopTask(() -> communicator.sendCards(publicObjCard,toolCard), INIT_TIMEOUT, executor);
+            String[] toolnames = Arrays.stream(toolCards).map(t -> t.getName()).toArray(String[]::new);
+            performed = stopTask(() -> communicator.sendCards(publicObjCard,toolnames), INIT_TIMEOUT, executor);
             if(!performed)
             {
                 LogFile.addLog("(User:" + user + ") Failed to initialize cards");
@@ -252,8 +254,7 @@ public class ServerPlayer implements Runnable
 
         try {
             adapter.initializePublicObjectives(publicObjCard);
-            adapter.initializeToolCards(toolCard);
-            assert publicObjCard != null && toolCard != null;
+            adapter.initializeToolCards(toolCards);
             LogFile.addLog("User: " + user + " Tools and Objectives initialized ");
 
         }catch (ModelException e ){
@@ -477,11 +478,11 @@ public class ServerPlayer implements Runnable
 
     /**
      * receives from the match the player's tool cards for the current match
-     * @param c array of the tool cards of the current match
+     * @param tools array of the tool cards of the current match
      */
-    public void setToolCards (String [] c)
+    public void setToolCards (Tools[] tools)
     {
-        toolCard = c;
+        toolCards = tools;
     }
     //</editor-fold>
 

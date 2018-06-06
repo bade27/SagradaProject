@@ -163,4 +163,8 @@ public abstract class Tools {
         this.instruction=instruction;
     }
 
+    //do not delete, this is needed
+    public String getName() {
+        return name;
+    }
 }
