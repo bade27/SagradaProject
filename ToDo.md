@@ -6,10 +6,10 @@
 			- [X] Tool 1
 			- [X] Tool 2
 			- [X] Tool 3
-			- [ ] Tool 4
+			- [X] Tool 4
 			- [ ] Tool 5
-			- [ ] Tool 6
-			- [ ] Tool 7
+			- [X] Tool 6
+			- [X] Tool 7
 			- [ ] Tool 8
 			- [ ] Tool 9
 			- [ ] Tool 10
