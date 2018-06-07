@@ -11,8 +11,10 @@ public class Wrapper<T> {
     }
 
     public void myFunction() {
-        if(Tools.map.containsKey(param.getClass()))
-            Tools.map.get(param.getClass()).function(param);
+        if(param != null) {
+            if (Tools.map.containsKey(param.getClass()))
+                Tools.map.get(param.getClass()).function(param);
+        }
     }
 
 }

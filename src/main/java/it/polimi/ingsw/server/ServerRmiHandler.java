@@ -153,7 +153,7 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
 
     @Override
     public String useTool(Coordinates startCoord1, Coordinates endCoord1, Coordinates startCoord2, Coordinates endCoord2) throws RemoteException {
-        //Ovviamente per prova
+        /*//Ovviamente per prova
         ToolMove tm = new ToolMove();
         tm.setFirst(new Integer[] {startCoord1.getI(), startCoord1.getJ()} );
         tm.setFirst(new Integer[] {endCoord1.getI(), endCoord1.getJ()} );
@@ -164,12 +164,13 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
 
         String ret = adapter.useTool(tm);
         match.updateClient();
-        return ret;
+        return ret;*/
+        return null;
     }
 
     @Override
     public String useTool(Pair dadieraP, Pair traceP, int nrRound) throws RemoteException {
-        //Ovviamente per prova
+        /*//Ovviamente per prova
         ToolMove tm = new ToolMove();
         //Utilizzo nrRound
         tm.setPair(dadieraP);
@@ -178,7 +179,8 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
 
         String ret = adapter.useTool(tm);
         match.updateClient();
-        return ret;
+        return ret;*/
+        return null;
     }
 
     /**

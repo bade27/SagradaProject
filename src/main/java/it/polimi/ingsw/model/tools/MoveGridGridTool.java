@@ -3,15 +3,18 @@ package it.polimi.ingsw.model.tools;
 import it.polimi.ingsw.exceptions.IllegalDiceException;
 import it.polimi.ingsw.exceptions.IllegalStepException;
 import it.polimi.ingsw.model.Dice;
+import it.polimi.ingsw.model.Window;
 
 //Tool nr. 2-3-4
 
 
 public class MoveGridGridTool extends Tools {
 
+    private int level;
+    private Window window;
 
     public MoveGridGridTool(int id, String name) {
-
+        this.level = 0;
         this.price = 1;
         this.id =id;
         this.name=name;
@@ -19,6 +22,8 @@ public class MoveGridGridTool extends Tools {
 
     @Override
     public void use() throws IllegalStepException, IllegalDiceException {
+
+        window = adapter.getBoard();
 
         if(id == 2)
             level = 1;
@@ -51,7 +56,7 @@ public class MoveGridGridTool extends Tools {
 
 
     public void moveOneDieTool(/*Window w, int[] pos_in, int[] pos_end, int level*/) throws IllegalStepException {
-        if(window == null || pos_iniz1 == null || pos_fin1 == null)
+        if(pos_iniz1 == null || pos_fin1 == null)
             throw new IllegalStepException();
 
         Dice d = window.getCell(pos_iniz1.getI(), pos_iniz1.getJ()).getFrontDice();
@@ -75,7 +80,7 @@ public class MoveGridGridTool extends Tools {
      */
     public void moveTwoDieTool() throws IllegalStepException, IllegalDiceException {   //perche mi son fatto passare dado?
 
-        if(window == null || pos_iniz1 == null || pos_fin1 == null || pos_iniz2 == null || pos_fin2 == null)
+        if(pos_iniz1 == null || pos_fin1 == null || pos_iniz2 == null || pos_fin2 == null)
             throw new IllegalStepException();
 
         Dice d1 = window.getCell(pos_iniz1.getI(), pos_iniz1.getJ()).getFrontDice();
