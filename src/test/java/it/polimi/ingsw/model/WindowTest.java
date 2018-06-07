@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.exceptions.IllegalDiceException;
 import it.polimi.ingsw.exceptions.ParserXMLException;
+import it.polimi.ingsw.remoteInterface.Coordinates;
 import org.junit.jupiter.api.Test;
 import org.opentest4j.TestAbortedException;
 
@@ -286,7 +287,7 @@ class WindowTest
         Dice di1=w.getCell(i1,j1).getFrontDice();
         Dice di2=w.getCell(i2,j2).getFrontDice();
 
-        w.moveDice(pos_in,pos_fin,-1);
+        w.moveDice(new Coordinates(pos_in[0],pos_in[1]),new Coordinates(pos_fin[0],pos_fin[1]),-1);
 
         Dice df1=w.getCell(i1,j1).getFrontDice();
         Dice df2=w.getCell(i2,j2).getFrontDice();

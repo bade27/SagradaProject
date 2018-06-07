@@ -124,20 +124,6 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
         return adapter.toolRequest(nrTool);
     }
 
-
-    /*@Override
-    public String useTool(Pair p, String instruction) throws RemoteException {
-        //Ovviamente per prova
-        ToolMove tm = new ToolMove();
-        tm.setInstruction(instruction);
-        tm.setPair(p);
-        //Ovviamente per prova
-
-        String ret = adapter.useTool(tm);
-        match.updateClient();
-        return ret;
-    }*/
-
     /**
      * function to use the first tool
      * @param p pair of value and color
@@ -152,31 +138,15 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
         return ret;
     }
 
-    /*@Override
-    public String useTool(Coordinates startCoord, Coordinates endCoord) throws RemoteException {
-        //Ovviamente per prova
-        ToolMove tm = new ToolMove();
-        tm.setFirst(new Integer[] {startCoord.getI(), startCoord.getJ()} );
-        tm.setFirst(new Integer[] {endCoord.getI(), endCoord.getJ()} );
-        //Ovviamente per prova
-
-        String ret = adapter.useTool(tm);
-        match.updateClient();
-        return ret;
-    }*/
-
     /**
      * function to use the second and third tool
      * @param startCoord
      * @param endCoord
      * @return
-     * @throws RemoteException
      */
     @Override
     public String useTool(Coordinates startCoord, Coordinates endCoord) throws RemoteException {
-        Integer[] start = {startCoord.getI(), startCoord.getJ()};
-        Integer[] end = {endCoord.getI(), endCoord.getJ()};
-        String ret = adapter.useTool(new Wrapper(start), new Wrapper(end));
+        String ret = adapter.useTool(new Wrapper(startCoord), new Wrapper(endCoord));
         match.updateClient();
         return ret;
     }

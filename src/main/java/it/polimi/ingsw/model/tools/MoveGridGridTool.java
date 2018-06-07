@@ -35,6 +35,9 @@ public class MoveGridGridTool extends Tools {
             case 4:
                 moveTwoDieTool();
                 break;
+            /*case 12:
+                moveTwoDieRestriction();
+                break;*/
             default:
                 break;
 
@@ -51,15 +54,15 @@ public class MoveGridGridTool extends Tools {
         if(window == null || pos_iniz1 == null || pos_fin1 == null)
             throw new IllegalStepException();
 
-        Dice d = window.getCell(pos_iniz1[0], pos_fin1[1]).getFrontDice();
+        Dice d = window.getCell(pos_iniz1.getI(), pos_iniz1.getJ()).getFrontDice();
         try {
             window.moveDice(pos_iniz1,pos_fin1, level);
         } catch (Exception ex) {
             throw new IllegalStepException();
         }
 
-        if (window.getCell(pos_iniz1[0], pos_iniz1[1]).getFrontDice() == null &&
-                window.getCell(pos_fin1[0], pos_fin1[1]).getFrontDice() == d &&
+        if (window.getCell(pos_iniz1.getI(), pos_iniz1.getJ()).getFrontDice() == null &&
+                window.getCell(pos_fin1.getI(), pos_fin1.getJ()).getFrontDice() == d &&
                 d != null)
             setPrice();
     }
@@ -75,15 +78,15 @@ public class MoveGridGridTool extends Tools {
         if(window == null || pos_iniz1 == null || pos_fin1 == null || pos_iniz2 == null || pos_fin2 == null)
             throw new IllegalStepException();
 
-        Dice d1 = window.getCell(pos_iniz1[0], pos_iniz1[1]).getFrontDice();
-        Dice d2 = window.getCell(pos_iniz2[0], pos_iniz2[1]).getFrontDice();
+        Dice d1 = window.getCell(pos_iniz1.getI(), pos_iniz1.getJ()).getFrontDice();
+        Dice d2 = window.getCell(pos_iniz2.getI(), pos_iniz2.getJ()).getFrontDice();
         try {
             window.moveDice(pos_iniz1, pos_fin1, 0);
         } catch (Exception ex) {
             throw new IllegalStepException();
         }
-        if (window.getCell(pos_iniz1[0], pos_iniz1[1]).getFrontDice() == null &&
-                window.getCell(pos_fin1[0], pos_fin1[1]).getFrontDice() == d1 &&
+        if (window.getCell(pos_iniz1.getI(), pos_iniz1.getJ()).getFrontDice() == null &&
+                window.getCell(pos_fin1.getI(), pos_fin1.getJ()).getFrontDice() == d1 &&
                 d1 != null) {
             try {
                 window.moveDice(pos_iniz2, pos_fin2, 0);
@@ -91,12 +94,27 @@ public class MoveGridGridTool extends Tools {
                 window.moveDice(pos_fin1, pos_iniz1, 1);
                 throw new IllegalStepException();
             }
-            if (window.getCell(pos_iniz2[0], pos_iniz2[1]).getFrontDice() == null &&
-                    window.getCell(pos_fin2[0], pos_fin2[1]).getFrontDice() == d2 &&
+            if (window.getCell(pos_iniz2.getI(), pos_iniz2.getJ()).getFrontDice() == null &&
+                    window.getCell(pos_fin2.getI(), pos_fin2.getJ()).getFrontDice() == d2 &&
                     d2 != null)
                 setPrice();
         }
     }
+
+    //tool 12
+    /*public void moveTwoDieRestriction () throws IllegalStepException
+    {
+        if(window == null || pos_iniz1 == null || pos_fin1 == null || pos_iniz2 == null || pos_fin2 == null || d1 == null)
+            throw new IllegalStepException();
+
+        Dice dOne = window.getCell(pos_iniz1.getI(), pos_iniz1.getJ()).getFrontDice();
+        Dice dTwo = window.getCell(pos_iniz2.getI(), pos_iniz2.getJ()).getFrontDice();
+
+        if (d1.getColor() == dOne.getColor() && d1.getColor() == dTwo.getColor())
+        {
+            //to be continued..
+        }
+    }*/
 
     void setPrice(){
         if(price==1)

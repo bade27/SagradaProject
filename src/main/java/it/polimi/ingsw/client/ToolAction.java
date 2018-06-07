@@ -52,6 +52,7 @@ public class ToolAction
                     return comm.useTool(fstDieStartPosition,fstDiePlacePosition,sndDieStartPosition,sndDiePlacePosition);
                 if (idTool == 5)
                     return comm.useTool(dadieraDie,traceDie,1);//Uno fisso momentaneo
+
             }catch (Exception e){//Poi da togliere una volta tolto toolMove
                 return "Invalid Input";
             }
@@ -62,7 +63,6 @@ public class ToolAction
 
 
     //3)use tool unico per tool 2-3-4? ci stuh
-    //4)non funziona il use tool subito dopo l'ask --> aggiungere try catch su toolmove?
     //5)tool 5 non funzionante
     public static void setPosition (Coordinates coord)
     {

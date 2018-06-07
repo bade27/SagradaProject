@@ -30,7 +30,7 @@
 	<tool5 num="5">
 		<name>Taglierina circolare</name>
 		<effect>Dopo aver scelto un dado, scambia quel dado con un dado sul Tracciato dei Round</effect>
-		<class>MoveDadieraTrace</class>
+		<class>MoveDadiera</class>
 	</tool5>
 
 	<tool6 num="6">
@@ -42,7 +42,7 @@
 	<tool7 num="7">
 		<name>Martelletto</name>
 		<effect>Tira nuovamente tutti i dadi della Riserva [Questa carta può essere usata solo durante il tuo secondo turno, prima di scegliera il seconda dado]</effect>
-		<class>ToolAborto</class>
+		<class>SetDiceValue</class>
 	</tool7>
 
 	<tool8 num="8">
@@ -54,7 +54,7 @@
 	<tool9 num="9">
 		<name>Riga in Sughero</name>
 		<effect>Dopo aver scelto un dado, piazzalo in una casella che non sia adiacente a un altro dado [Devi rispettare tutte le restrizioni di piazzamento]</effect>
-		<class>MoveDadieraGrid</class>
+		<class>MoveDadiera</class>
 	</tool9>
 
 	<tool10 num="10">
@@ -66,7 +66,7 @@
 	<tool11 num="11">
 		<name>Diluente per Pasta Salda</name>
 		<effect>Dopo aver scelto un dado, riponilo nel Sacchetto, poi pescane uno dal Saccheto [Scegli il valore del nuovo dado e piazzalo, rispettando tutte le restrizioni di piazzamento]</effect>
-		<class>MoveDadieraBagGrid</class>
+		<class>MoveDadiera</class>
 	</tool11>
 
 	<tool12 num="12">

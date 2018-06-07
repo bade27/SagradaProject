@@ -1,8 +1,20 @@
 ﻿## Lista di tutto quello che manca
 
--Obbligatorio (to 30)
+- Obbligatorio (to 30)
 	- Gioco
-		- [ ] Implementazione Tool da 5 a 12
+		- [ ] Implementazione Tool
+			- [X] Tool 1
+			- [X] Tool 2
+			- [X] Tool 3
+			- [ ] Tool 4
+			- [ ] Tool 5
+			- [ ] Tool 6
+			- [ ] Tool 7
+			- [ ] Tool 8
+			- [ ] Tool 9
+			- [ ] Tool 10
+			- [ ] Tool 11
+			- [ ] Tool 12
 		- [ ] Implementazione Obbiettivi 
 		- [ ] Gestione utenti con login e registrazione
 	- Grafica

@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.exceptions.IllegalDiceException;
 import it.polimi.ingsw.exceptions.ParserXMLException;
+import it.polimi.ingsw.remoteInterface.Coordinates;
 import it.polimi.ingsw.remoteInterface.Pair;
 import it.polimi.ingsw.utilities.ParserXML;
 
@@ -143,15 +144,15 @@ public class Window
      * @param level level of movement
      * @throws IllegalDiceException
      */
-    public void moveDice(Integer[] pos_in, Integer[]pos_end, int level) throws IllegalDiceException {
-        Cell c1=board[pos_in[0]][pos_in[1]];
+    public void moveDice(Coordinates pos_in, Coordinates pos_end, int level) throws IllegalDiceException {
+        Cell c1=board[pos_in.getI()][pos_in.getJ()];
         Dice dice=c1.getFrontDice();
         if(dice!=null) {
-            emptyCell(pos_in[0], pos_in[1]);
+            emptyCell(pos_in.getI(), pos_in.getJ());
             try {
-                addDice(pos_end[0],pos_end[1],dice,level);
+                addDice(pos_end.getI(),pos_end.getJ(),dice,level);
             }catch(Exception ex) {
-                addDice(pos_in[0],pos_in[1],dice,-1);
+                addDice(pos_in.getI(),pos_in.getJ(),dice,-1);
                 throw new IllegalDiceException();
             }
         } else {

@@ -37,7 +37,7 @@ public class MatchHandler implements Runnable
     private RoundTrace roundTrace;
     private int turnsPlayed;
 
-    private final static int MAXGIOC = 1;//Da modificare a 4
+    private final static int MAXGIOC = 2;//Da modificare a 4
 
     //connection parameters
     private static final String settings = "resources/server_settings.xml";
@@ -477,7 +477,7 @@ public class MatchHandler implements Runnable
 
             tools[0] = ToolsFactory.getTools(toolNames[0]);
             tools[1] = ToolsFactory.getTools(toolNames[1]);
-            tools[2] = ToolsFactory.getTools(toolNames[2]);
+            tools[2] = ToolsFactory.getTools(toolNames[5]);
 
             //For each players initialize tool cards already selected
             for (int i=0;i<nConn;i++)
