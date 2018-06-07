@@ -2,7 +2,6 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.exceptions.IllegalDiceException;
 import it.polimi.ingsw.exceptions.ParserXMLException;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.opentest4j.TestAbortedException;
 
@@ -272,7 +271,7 @@ class WindowTest
             i1 = new Random().nextInt(4);
             j1 = new Random().nextInt(5);
         }
-        int [] pos_in={i1,j1};
+        Integer [] pos_in={i1,j1};
         w.addDice(i1,j1,d,-1);
 
         int i2=new Random().nextInt(4);
@@ -282,7 +281,7 @@ class WindowTest
             i2 = new Random().nextInt(4);
             j2 = new Random().nextInt(5);
         }
-        int [] pos_fin={i2,j2};
+        Integer [] pos_fin={i2,j2};
 
         Dice di1=w.getCell(i1,j1).getFrontDice();
         Dice di2=w.getCell(i2,j2).getFrontDice();

@@ -143,7 +143,7 @@ public class Window
      * @param level level of movement
      * @throws IllegalDiceException
      */
-    public void moveDice(int[] pos_in, int[]pos_end, int level) throws IllegalDiceException {
+    public void moveDice(Integer[] pos_in, Integer[]pos_end, int level) throws IllegalDiceException {
         Cell c1=board[pos_in[0]][pos_in[1]];
         Dice dice=c1.getFrontDice();
         if(dice!=null) {

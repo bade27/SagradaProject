@@ -77,6 +77,38 @@ public class ServerModelAdapter
         return "Tool used correctly";
     }
 
+
+    public String useTool(Wrapper... w) {
+
+
+        //Check if any tool permission was requested
+        if (toolInUse == null)
+        {
+            LogFile.addLog("User: " + user + "\t Tool not permission asked");
+            return "Not using tool permission asked";
+        }
+        //Set tool move into tool in use
+        for(Wrapper wrapper : w)
+            wrapper.myFunction();
+        toolInUse.setDadiera(dadiera);
+        toolInUse.setWindow(board);
+        toolInUse.setRt(roundTrace);
+        int current_price = toolInUse.getPrice();
+
+        //Using of tool
+        try {
+            toolInUse.use();
+        } catch (IllegalDiceException | IllegalStepException e) {
+            LogFile.addLog("User: " + user + "\t Tool Action failed");
+            return "Tool Action failed";
+        }
+        //If performed decrees client's own marker
+        marker = marker - current_price;
+        Tools.setAllToNull();
+        return "Tool used correctly";
+
+    }
+
     /**
      * Ask if tool passed, with his id, is usable
      * @param nrTool id tool request

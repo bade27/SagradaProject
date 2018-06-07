@@ -17,8 +17,8 @@ public class ToolMove implements Serializable {
     private Window w;
     private RoundTrace roundTrace;
 
-    private ArrayList<int[]> first = new ArrayList<>();
-    private ArrayList<int[]> second = new ArrayList<>();
+    private ArrayList<Integer[]> first = new ArrayList<>();
+    private ArrayList<Integer[]> second = new ArrayList<>();
     private ArrayList<Pair> pair = new ArrayList<>();
 
     public ArrayList<Pair> getPair() {
@@ -29,19 +29,19 @@ public class ToolMove implements Serializable {
         this.pair.add(pair);
     }
 
-    public ArrayList<int[]> getFirst() {
+    public ArrayList<Integer[]> getFirst() {
         return first;
     }
 
-    public void setFirst(int[] pos) {
+    public void setFirst(Integer[] pos) {
         this.first.add(pos);
     }
 
-    public ArrayList<int[]> getSecond() {
+    public ArrayList<Integer[]> getSecond() {
         return second;
     }
 
-    public void setSecond(int[] pos) {
+    public void setSecond(Integer[] pos) {
         this.second.add(pos);
     }
 

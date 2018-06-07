@@ -3,19 +3,19 @@ package it.polimi.ingsw.remoteInterface;
 import java.io.Serializable;
 
 public class Coordinates  implements Serializable {
-    private int i;
-    private int j;
+    private Integer i;
+    private Integer j;
 
-    public Coordinates(int x, int y) {
+    public Coordinates(Integer x, Integer y) {
         this.i = x;
         this.j = y;
     }
 
-    public int getI() {
+    public Integer getI() {
         return i;
     }
 
-    public int getJ() {
+    public Integer getJ() {
         return j;
     }
 
