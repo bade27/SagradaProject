@@ -102,7 +102,7 @@ public class MoveGridGridTool extends Tools {
     }
 
     //tool 12
-    /*public void moveTwoDieRestriction () throws IllegalStepException
+    public void moveTwoDieRestriction () throws IllegalStepException,IllegalDiceException
     {
         if(window == null || pos_iniz1 == null || pos_fin1 == null || pos_iniz2 == null || pos_fin2 == null || d1 == null)
             throw new IllegalStepException();
@@ -111,10 +111,10 @@ public class MoveGridGridTool extends Tools {
         Dice dTwo = window.getCell(pos_iniz2.getI(), pos_iniz2.getJ()).getFrontDice();
 
         if (d1.getColor() == dOne.getColor() && d1.getColor() == dTwo.getColor())
-        {
-            //to be continued..
-        }
-    }*/
+            moveTwoDieTool();
+        else
+            throw new IllegalStepException();
+    }
 
     void setPrice(){
         if(price==1)

@@ -51,6 +51,7 @@ public class MoveDadieraTraceTool extends Tools {
 
     }
 
+    //Manca il setCanMove(false)
     /*public void setDieNoRestriction () throws IllegalStepException
     {
         if(window == null || pos_fin1 == null || d1 == null)
