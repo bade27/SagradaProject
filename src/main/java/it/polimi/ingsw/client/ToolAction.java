@@ -44,7 +44,7 @@ public class ToolAction
         else {
             try
             {
-                if (idTool == 1 || idTool == 6 /*|| idTool == 10*/)
+                if (idTool == 1 || idTool == 6 || idTool == 7/*|| idTool == 10*/)
                     return comm.useTool(dadieraDie,instruction);
                 if (idTool == 2 || idTool == 3)
                     return comm.useTool(fstDieStartPosition, fstDiePlacePosition);

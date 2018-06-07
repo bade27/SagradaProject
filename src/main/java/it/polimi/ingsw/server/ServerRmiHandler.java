@@ -125,60 +125,51 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
     }
 
     /**
-     * function to use the first tool
+     * Overload about tool function
      * @param p pair of value and color
      * @param instruction increment (inc) or decrement (dec) the die
-     * @return
-     * @throws RemoteException
+     * @return result of tool
      */
     @Override
-    public String useTool(Pair p, String instruction) throws RemoteException {
-        String ret = adapter.useTool(new Wrapper(new Dice(p.getValue(), p.getColor())), new Wrapper(instruction));
+    public String useTool(Pair p, String instruction) throws RemoteException
+    {
+        String ret = adapter.useTool(new Wrapper(p), new Wrapper(instruction));
         match.updateClient();
         return ret;
     }
 
     /**
-     * function to use the second and third tool
-     * @param startCoord
-     * @param endCoord
-     * @return
+     * Overload about tool function
+     * @param startCoord start coordinates
+     * @param endCoord end coordinates
+     * @return result of tool
      */
     @Override
-    public String useTool(Coordinates startCoord, Coordinates endCoord) throws RemoteException {
+    public String useTool(Coordinates startCoord, Coordinates endCoord) throws RemoteException
+    {
         String ret = adapter.useTool(new Wrapper(startCoord), new Wrapper(endCoord));
         match.updateClient();
         return ret;
     }
 
+    /**
+     * Overload about tool function
+     * @param startCoord1 start coordinates one
+     * @param endCoord1 end coordinates one
+     * ......
+     * @return result of tool
+     */
     @Override
-    public String useTool(Coordinates startCoord1, Coordinates endCoord1, Coordinates startCoord2, Coordinates endCoord2) throws RemoteException {
-        //Ovviamente per prova
-        ToolMove tm = new ToolMove();
-        tm.setFirst(new Integer[] {startCoord1.getI(), startCoord1.getJ()} );
-        tm.setFirst(new Integer[] {endCoord1.getI(), endCoord1.getJ()} );
-        //tm.setPair(p2);
-        tm.setSecond(new Integer[] {startCoord2.getI(), startCoord2.getJ()} );
-        tm.setSecond(new Integer[] {endCoord2.getI(), endCoord2.getJ()} );
-        //Ovviamente per prova
-
-        String ret = adapter.useTool(tm);
+    public String useTool(Coordinates startCoord1, Coordinates endCoord1, Coordinates startCoord2, Coordinates endCoord2) throws RemoteException
+    {
+        String ret = adapter.useTool(new Wrapper(startCoord1),new Wrapper(endCoord1) , new Wrapper(startCoord2) , new Wrapper(endCoord2));
         match.updateClient();
         return ret;
     }
 
     @Override
     public String useTool(Pair dadieraP, Pair traceP, int nrRound) throws RemoteException {
-        //Ovviamente per prova
-        ToolMove tm = new ToolMove();
-        //Utilizzo nrRound
-        tm.setPair(dadieraP);
-        tm.setPair(traceP);
-        //Ovviamente per prova
-
-        String ret = adapter.useTool(tm);
-        match.updateClient();
-        return ret;
+        return null;
     }
 
     /**

@@ -13,7 +13,6 @@ import it.polimi.ingsw.model.objectives.Private.PrivateObjective;
 import it.polimi.ingsw.model.objectives.Public.PublicObjective;
 import it.polimi.ingsw.model.tools.Tools;
 import it.polimi.ingsw.remoteInterface.Pair;
-import it.polimi.ingsw.remoteInterface.ToolMove;
 import it.polimi.ingsw.utilities.LogFile;
 
 import java.util.ArrayList;
@@ -29,13 +28,14 @@ public class ServerModelAdapter
     private PrivateObjective myPrivateObject;
     private PublicObjective[] publicObjectives;
     private Tools[] tools;
+    private TokenTurn token;
     private String user;
+
     private boolean canMove;
     private int marker;
-
     private Tools toolInUse;
 
-    public ServerModelAdapter (Dadiera d, RoundTrace trace)
+    public ServerModelAdapter (Dadiera d, RoundTrace trace, TokenTurn tok)
     {
         board = null;
         dadiera = d;
@@ -43,44 +43,12 @@ public class ServerModelAdapter
         publicObjectives = new PublicObjective[numPublicObj];
         tools = new Tools[numTools];
         toolInUse = null;
+        token = tok;
     }
 
-    /**
-     * Use tool asked before in toolRequest
-     * @param mv all infos to perform tool requested
-     * @return Message to client about right perform of tool
-     */
-    public String useTool(ToolMove mv)
+
+    public String useTool(Wrapper... w)
     {
-        //Check if any tool permission was requested
-        if (toolInUse == null)
-        {
-            LogFile.addLog("User: " + user + "\t Tool not permission asked");
-            return "Not using tool permission asked";
-        }
-        //Set tool move into tool in use
-        mv.setDadiera(dadiera);
-        mv.setW(board);
-        mv.setRoundTrace(roundTrace);
-        toolInUse.setToolMove(mv);
-        int current_price = toolInUse.getPrice();
-
-        //Using of tool
-        try {
-            toolInUse.use();
-        } catch (IllegalDiceException | IllegalStepException e) {
-            LogFile.addLog("User: " + user + "\t Tool Action failed");
-            return "Tool Action failed";
-        }
-        //If performed decrees client's own marker
-        marker = marker - current_price;
-        return "Tool used correctly";
-    }
-
-
-    public String useTool(Wrapper... w) {
-
-
         //Check if any tool permission was requested
         if (toolInUse == null)
         {
@@ -90,21 +58,18 @@ public class ServerModelAdapter
         //Set tool move into tool in use
         for(Wrapper wrapper : w)
             wrapper.myFunction();
-        toolInUse.setDadiera(dadiera);
-        toolInUse.setWindow(board);
-        toolInUse.setRt(roundTrace);
+        new Wrapper(this).myFunction();
         int current_price = toolInUse.getPrice();
 
         //Using of tool
         try {
             toolInUse.use();
         } catch (IllegalDiceException | IllegalStepException e) {
-            LogFile.addLog("User: " + user + "\t Tool Action failed");
-            return "Tool Action failed";
+            LogFile.addLog("User: " + user + "\t Tool Action failed: " + e.getMessage());
+            return "Tool Action failed: " + e.getMessage();
         }
         //If performed decrees client's own marker
         marker = marker - current_price;
-        Tools.setAllToNull();
         return "Tool used correctly";
 
     }
@@ -132,6 +97,7 @@ public class ServerModelAdapter
                 if (tools[i].getPrice() <= marker) {
                     toolInUse = tools[i];
                     LogFile.addLog("User: " + user + "\t Tool permission accepted");
+                    Tools.setAllToNull();
                     return "Tool permission accepted";
                 }
         LogFile.addLog("User: " + user + "\t Tool permission rejected: Not enough marker");
@@ -254,10 +220,32 @@ public class ServerModelAdapter
         return canMove;
     }
 
-    public void setCanMove() {
-        this.canMove = true;
-        toolInUse = null;
+    public void setCanMove(boolean set) {
+        this.canMove =set;
+        if(canMove)
+            toolInUse = null;
     }
+
+    public Dadiera getDadiera() {
+        return dadiera;
+    }
+
+    public Window getBoard() {
+        return board;
+    }
+
+    public RoundTrace getRoundTrace() {
+        return roundTrace;
+    }
+
+    public TokenTurn getToken() {
+        return token;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
     //</editor-fold>
 
 }

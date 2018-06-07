@@ -37,7 +37,6 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     private ServerRemoteInterface server;
 
     //buffer mossa in upload
-    private ToolMove tmove;
     private boolean finishedMove = false;
     private int num_of_moves = 0;
 

@@ -4,13 +4,17 @@ package it.polimi.ingsw.model.tools;
 
 import it.polimi.ingsw.exceptions.IllegalDiceException;
 import it.polimi.ingsw.exceptions.IllegalStepException;
+import it.polimi.ingsw.model.Dadiera;
 import it.polimi.ingsw.model.Dice;
+import it.polimi.ingsw.server.TokenTurn;
 
 import java.util.Random;
 
 public class SetValueTool extends Tools {
 
     private Dice remember;
+    private Dadiera dadiera;
+    private TokenTurn token;
 
     public SetValueTool(int id, String name) {  //qua avrò oltre a id un array con dentro i dati
         this.price = 1;                  // necessari a usare i metodi
@@ -20,6 +24,7 @@ public class SetValueTool extends Tools {
 
     @Override
     public void use() throws IllegalStepException {
+        dadiera = adapter.getDadiera();
         switch (id)
         {
             case 1:
@@ -27,6 +32,9 @@ public class SetValueTool extends Tools {
                 break;
             case 6:
                 relaunchDice();
+                break;
+            case 7:
+                relaunchAllDadiera();
                 break;
             case 10:
                 turnDice();
@@ -50,7 +58,7 @@ public class SetValueTool extends Tools {
      */
     private void addSub() throws IllegalStepException
     {
-        if(instruction == null || d1 == null || dadiera == null)
+        if(instruction == null || d1 == null)
             throw new IllegalStepException();
         int value = d1.getValue();
 
@@ -67,7 +75,7 @@ public class SetValueTool extends Tools {
      */
     private void relaunchDice() throws IllegalStepException
     {
-        if(d1 == null || dadiera == null)
+        if(d1 == null)
             throw new IllegalStepException();
         int v = new Random().nextInt(6) + 1;
 
@@ -83,7 +91,7 @@ public class SetValueTool extends Tools {
      */
     private void turnDice(/*Dice x, Dadiera s*/) throws IllegalStepException
     {
-        if(d1 == null || dadiera == null)
+        if(d1 == null)
             throw new IllegalStepException();
 
         int value = 7 - d1.getValue();
@@ -96,9 +104,10 @@ public class SetValueTool extends Tools {
      */
     private void relaunchAllDadiera () throws IllegalStepException
     {
-        //Manca il controllo del 2° turno con token turn
-        if (dadiera == null)
-            throw new IllegalStepException();
+        token = adapter.getToken();
+        String user = adapter.getUser();
+        if (!token.isMySecondRound(user))
+            throw new IllegalStepException("Can't use tool in your first round");
 
         for (int i = 0; i < dadiera.getListaDadi().size() ; i++)
         {

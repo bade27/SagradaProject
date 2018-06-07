@@ -238,7 +238,7 @@ public class MatchHandler implements Runnable
 
         }
         //Initialization of ServerPlayer for each player
-        ServerModelAdapter adp = new ServerModelAdapter(dices, roundTrace);
+        ServerModelAdapter adp = new ServerModelAdapter(dices, roundTrace,tok);
         ServerPlayer pl = new ServerPlayer(tok,adp,possibleUsrs,cli);
         player.add(pl);
         nConn++;
@@ -475,9 +475,9 @@ public class MatchHandler implements Runnable
                 tools[i] = ToolsFactory.getTools(toolNames[c]);
             }
 
-            tools[0] = ToolsFactory.getTools(toolNames[0]);
-            tools[1] = ToolsFactory.getTools(toolNames[1]);
-            tools[2] = ToolsFactory.getTools(toolNames[5]);
+            tools[0] = ToolsFactory.getTools(toolNames[3]);
+            tools[1] = ToolsFactory.getTools(toolNames[5]);
+            tools[2] = ToolsFactory.getTools(toolNames[6]);
 
             //For each players initialize tool cards already selected
             for (int i=0;i<nConn;i++)

@@ -3,10 +3,16 @@ package it.polimi.ingsw.model.tools;
 //Tool nr.5 - 9 - 11
 
 import it.polimi.ingsw.exceptions.IllegalStepException;
+import it.polimi.ingsw.model.Dadiera;
 import it.polimi.ingsw.model.Dice;
+import it.polimi.ingsw.model.RoundTrace;
+import it.polimi.ingsw.model.Window;
 
 public class MoveDadieraTraceTool extends Tools {
 
+    private Dadiera dadiera;
+    private RoundTrace roundTrace;
+    private Window window;
 
     public MoveDadieraTraceTool(int id,String name) {
 
@@ -18,14 +24,15 @@ public class MoveDadieraTraceTool extends Tools {
     @Override
     public void use() throws IllegalStepException
     {
+        dadiera = adapter.getDadiera();
         switch (id)
         {   //case 2 e case 3 si chiamano la stessa funzione, che si comporta in modo diverso a seconda del id
             case 5:
                 exchangeDice();
                 break;
-            /*case 9:
+            case 9:
                 setDieNoRestriction();
-                break;*/
+                break;
             default:
                 break;
 
@@ -38,11 +45,12 @@ public class MoveDadieraTraceTool extends Tools {
      */
     public void exchangeDice() throws IllegalStepException
     {
+        roundTrace = adapter.getRoundTrace();
         try
         {
             dadiera.deleteDice(d1);
-            rt.addDice(pos_rt,d1);
-            rt.deleteDice(pos_rt,d2);
+            roundTrace.addDice(pos_rt,d1);
+            roundTrace.deleteDice(pos_rt,d2);
             dadiera.addDice(d2);
             setPrice();
         }catch (Exception e){
@@ -51,20 +59,23 @@ public class MoveDadieraTraceTool extends Tools {
 
     }
 
-    //Manca il setCanMove(false)
-    /*public void setDieNoRestriction () throws IllegalStepException
+    /**
+     * tool nr. 9
+     */
+    public void setDieNoRestriction () throws IllegalStepException
     {
-        if(window == null || pos_fin1 == null || d1 == null)
+        window = adapter.getBoard();
+        if(pos_fin1 == null || d1 == null)
             throw new IllegalStepException();
 
         try{
-            window.addDice(pos_fin1[0],pos_fin1[1],d1,3);
+            window.addDice(pos_fin1.getI(),pos_fin1.getJ(),d1,3);
             dadiera.deleteDice(d1);
-            //adapter.setCanMove(false)
+            adapter.setCanMove(false);
         }catch (Exception e){
             throw new IllegalStepException();
         }
-    }*/
+    }
 
 
 

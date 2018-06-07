@@ -35,7 +35,7 @@ public class ToolsFactory
                             return new SetValueTool((i+1),name);
                         case "MoveGridGrid":
                             return new MoveGridGridTool((i+1),name);
-                        case "MoveDadieraTrace":
+                        case "MoveDadiera":
                             return new MoveDadieraTraceTool((i+1),name);
                         //...
                         default:

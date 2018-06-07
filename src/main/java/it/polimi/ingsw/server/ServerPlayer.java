@@ -137,7 +137,7 @@ public class ServerPlayer implements Runnable
 
 
                     try {
-                        adapter.setCanMove();
+                        adapter.setCanMove(true);
                         clientTurn();
                     }catch (ClientOutOfReachException e){
                         //Notify token that client is dead
