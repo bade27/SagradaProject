@@ -14,6 +14,7 @@ import it.polimi.ingsw.model.objectives.Public.PublicObjective;
 import it.polimi.ingsw.model.tools.Tools;
 import it.polimi.ingsw.remoteInterface.Pair;
 import it.polimi.ingsw.utilities.LogFile;
+import it.polimi.ingsw.utilities.Wrapper;
 
 import java.util.ArrayList;
 

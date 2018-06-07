@@ -4,6 +4,7 @@ import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.exceptions.ModelException;
 import it.polimi.ingsw.model.Dice;
 import it.polimi.ingsw.remoteInterface.*;
+import it.polimi.ingsw.utilities.Wrapper;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;

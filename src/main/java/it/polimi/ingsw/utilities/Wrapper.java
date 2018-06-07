@@ -1,4 +1,4 @@
-package it.polimi.ingsw.server;
+package it.polimi.ingsw.utilities;
 
 import it.polimi.ingsw.model.tools.Tools;
 
