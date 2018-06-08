@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
 
-	<numberOfCards>7</numberOfCards>
+	<numberOfCards>8</numberOfCards>
 
 	<tool1 num="1">
 		<name>Pinza Sgrossatrice</name>
@@ -48,7 +48,7 @@
 	<tool8 num="8">
 		<name>Tenaglia a Rotelle</name>
 		<effect>Dopo il tuo primo turno scegli immediatamente un altro dado [Salta il tuo secondo turno in questo round]</effect>
-		<class>SecondoToolAborto</class>
+		<class>ChangeRound</class>
 	</tool8>
 
 	<tool9 num="9">

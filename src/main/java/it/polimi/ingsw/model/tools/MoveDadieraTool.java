@@ -8,13 +8,11 @@ import it.polimi.ingsw.model.Dice;
 import it.polimi.ingsw.model.RoundTrace;
 import it.polimi.ingsw.model.Window;
 
-public class MoveDadieraTraceTool extends Tools {
+public class MoveDadieraTool extends Tools {
 
     private Dadiera dadiera;
-    private RoundTrace roundTrace;
-    private Window window;
 
-    public MoveDadieraTraceTool(int id,String name) {
+    public MoveDadieraTool(int id, String name) {
 
         this.price = 1;
         this.id =id;
@@ -45,7 +43,7 @@ public class MoveDadieraTraceTool extends Tools {
      */
     public void exchangeDice() throws IllegalStepException
     {
-        roundTrace = adapter.getRoundTrace();
+        RoundTrace roundTrace = adapter.getRoundTrace();
         try
         {
             dadiera.deleteDice(d1);
@@ -64,7 +62,7 @@ public class MoveDadieraTraceTool extends Tools {
      */
     public void setDieNoRestriction () throws IllegalStepException
     {
-        window = adapter.getBoard();
+        Window window = adapter.getBoard();
         if(pos_fin1 == null || d1 == null)
             throw new IllegalStepException();
 

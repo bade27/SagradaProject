@@ -475,7 +475,7 @@ public class MatchHandler implements Runnable
                 tools[i] = ToolsFactory.getTools(toolNames[c]);
             }
 
-            tools[0] = ToolsFactory.getTools(toolNames[3]);
+            tools[0] = ToolsFactory.getTools(toolNames[7]);
             tools[1] = ToolsFactory.getTools(toolNames[5]);
             tools[2] = ToolsFactory.getTools(toolNames[6]);
 

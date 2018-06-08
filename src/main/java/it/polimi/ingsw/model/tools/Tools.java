@@ -57,7 +57,7 @@ public abstract class Tools {
                 }
                 else{
                     Pair p = (Pair) o;
-                    if (p!=null)
+                    if (p != null)
                         d2 = new Dice(p.getValue(),p.getColor());
                 }
             }

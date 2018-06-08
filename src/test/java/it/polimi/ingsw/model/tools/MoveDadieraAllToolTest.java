@@ -21,7 +21,7 @@ class MoveDadieraAllToolTest {
         private Dadiera d;
         private int n;
         private int expectedDice;
-        private MoveDadieraTraceTool mdtt;
+        private MoveDadieraTool mdtt;
         private RoundTrace rt;
 
         @BeforeEach
@@ -34,7 +34,7 @@ class MoveDadieraAllToolTest {
 
         @RepeatedTest(1000) //Test()
         void exchangeDice() throws IllegalDiceException {
-            mdtt = new MoveDadieraTraceTool(5,"Taglierina circolare");
+            mdtt = new MoveDadieraTool(5,"Taglierina circolare");
             d.mix(n);
             Dice dice_tr;
 
