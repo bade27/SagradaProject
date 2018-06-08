@@ -29,7 +29,7 @@ class DiceBagTest {
     }
 
     @org.junit.jupiter.api.Test
-    void getRemainingDice() {
+    void getRemainingDice() throws NotEnoughDiceException{
         int pick = 10;
         diceBag.pickDices(pick);
         assertEquals(N_OF_DICE - pick, diceBag.getRemainingDice());
@@ -41,7 +41,7 @@ class DiceBagTest {
     }
 
     @org.junit.jupiter.api.Test
-    void noIllegalValues() {
+    void noIllegalValues() throws  NotEnoughDiceException{
         int pick = N_OF_DICE;
         ArrayList<Dice> list = diceBag.pickDices(pick);
         assertTrue(list.stream()

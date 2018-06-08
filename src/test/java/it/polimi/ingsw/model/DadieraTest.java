@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.exceptions.IllegalDiceException;
+import it.polimi.ingsw.exceptions.NotEnoughDiceException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
@@ -26,14 +27,14 @@ class DadieraTest {
     }
 
     @Test
-    void mix() {
+    void mix() throws NotEnoughDiceException {
         d.mix(n);
         assertNotNull(d.getListaDadi());
         assertEquals(expectedDice, d.getListaDadi().size());
     }
 
     @Test()
-    void deleteDice() {
+    void deleteDice() throws NotEnoughDiceException {
         d.mix(n);
         int which_Die = new Random().nextInt(expectedDice);
         ArrayList<Dice> playableDice = d.getListaDadi();
@@ -66,7 +67,7 @@ class DadieraTest {
     }
 
     @Test()
-    void addDice(){
+    void addDice() throws NotEnoughDiceException{
         d.mix(n);
         ArrayList<Dice> playableDice = d.getListaDadi();
 
@@ -128,7 +129,7 @@ class DadieraTest {
     }
 
     @Test()
-    void setDiceValueException() throws IllegalDiceException{
+    void setDiceValueException() throws NotEnoughDiceException{
         d.mix(n);
         ArrayList<Dice> playableDice = d.getListaDadi();
         int which_Die = new Random().nextInt(expectedDice);
@@ -145,7 +146,7 @@ class DadieraTest {
     }
 
     @Test
-    void setDiceValue() throws IllegalDiceException{
+    void setDiceValue() throws IllegalDiceException,NotEnoughDiceException{
         d.mix(n);
         ArrayList<Dice> playableDice = d.getListaDadi();
         int which_Die = new Random().nextInt(expectedDice);
@@ -169,7 +170,7 @@ class DadieraTest {
     }
 
     @Test
-    void getDiceNoException() throws IllegalDiceException {
+    void getDiceNoException() throws IllegalDiceException,NotEnoughDiceException {
         d.mix(n);
         int which_Die = new Random().nextInt(expectedDice);
         assertNotNull(d.getDice(which_Die));
@@ -183,7 +184,7 @@ class DadieraTest {
     }
 
     @Test
-    void toStringNnEmptyTest() {
+    void toStringNnEmptyTest() throws NotEnoughDiceException {
         d.mix(n);
         assertNotNull(d.toString());
         assertNotEquals("Dadiera vuota!", d.toString());
