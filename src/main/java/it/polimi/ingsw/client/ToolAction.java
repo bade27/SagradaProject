@@ -44,7 +44,7 @@ public class ToolAction
         else {
             try
             {
-                if (idTool == 1 || idTool == 6 || idTool == 7/*|| idTool == 10*/)
+                if (idTool == 1 || idTool == 6 || idTool == 7|| idTool == 10)
                     return comm.useTool(dadieraDie,instruction);
                 if (idTool == 2 || idTool == 3)
                     return comm.useTool(fstDieStartPosition, fstDiePlacePosition);
@@ -54,6 +54,8 @@ public class ToolAction
                     return comm.useTool(dadieraDie,traceDie,1);//Uno fisso momentaneo
                 if (idTool == 8)
                     return comm.useTool();
+                if (idTool == 9)
+                    return comm.useTool(dadieraDie,fstDieStartPosition);
 
             }catch (Exception e){//Poi da togliere una volta tolto toolMove
                 return "Invalid Input";
