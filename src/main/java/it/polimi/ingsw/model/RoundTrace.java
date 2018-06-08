@@ -34,7 +34,7 @@ public class RoundTrace {
      */
     public void deleteDice(int n,Dice d){
         for(int i=0;i<trace[n-1].size();i++){
-            if (d.equals(trace[n-1].get(i))){
+            if (d.isEqual(trace[n-1].get(i))){
                 trace[n-1].remove(i);
                 break;
             }

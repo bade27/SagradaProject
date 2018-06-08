@@ -170,7 +170,9 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
 
     @Override
     public String useTool(Pair dadieraP, Pair traceP, int nrRound) throws RemoteException {
-        return null;
+        String ret = adapter.useTool(new Wrapper(dadieraP),new Wrapper(traceP),new Wrapper(nrRound));
+        match.updateClient();
+        return ret;
     }
 
     @Override
