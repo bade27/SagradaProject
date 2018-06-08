@@ -112,7 +112,7 @@ public class SagradaGUI extends Application implements GUI {
         root.setCenter(mainContent);
         root.setBottom(bottom);
 
-        Scene scene=new Scene(root,800,600);
+        Scene scene=new Scene(root,800,500);
         primaryStage.setTitle("Sagrada");
         primaryStage.setScene(scene);
         primaryStage.show();

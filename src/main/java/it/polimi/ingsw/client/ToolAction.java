@@ -20,6 +20,8 @@ public class ToolAction
 
     private static String instruction;
 
+    private static int tracePosition;
+
     public static void clearTool ()
     {
         idTool = -1;
@@ -84,6 +86,8 @@ public class ToolAction
     public static void setInstruction(String instruction) {
         ToolAction.instruction = instruction;
     }
+
+    public static void setTracePosition(int tracePosition){ ToolAction.tracePosition=tracePosition; }
 
     public static void setDadieraPair(Pair dadieraDie) {
         ToolAction.dadieraDie = dadieraDie;
