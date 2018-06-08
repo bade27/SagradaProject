@@ -32,7 +32,7 @@ public class TokenTurn
     private boolean fatalError;
     private boolean justDeleting;
 
-    
+    private final Integer synchronator = 5;
 
     public TokenTurn ()
     {
@@ -349,6 +349,10 @@ public class TokenTurn
         }
         r = r + "Turn: " + currentTurn + " End Round:" + endRound + "\n" ;
         return r;
+    }
+
+    public Integer getSynchronator() {
+        return synchronator;
     }
     //</editor-fold>
 

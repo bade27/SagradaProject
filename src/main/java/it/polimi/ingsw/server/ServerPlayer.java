@@ -81,10 +81,10 @@ public class ServerPlayer implements Runnable
         //////SETUP PHASE//////
         try
         {
-            synchronized (token) {
+            synchronized (token.getSynchronator()) {
                 //Wait until matchHandler signal start setup
                 while (!token.getOnSetup())
-                    token.wait();
+                    token.getSynchronator().wait();
             }
 
             //Initialization of client
@@ -99,8 +99,8 @@ public class ServerPlayer implements Runnable
                 token.deletePlayer(user);
                 closeConnection("Timeout Expired");
                 token.endSetup();
-                synchronized (token) {
-                    token.notifyAll();
+                synchronized (token.getSynchronator()) {
+                    token.getSynchronator().notifyAll();
                 }
                 //If client fail initialization, he will not return on game
                 return;
@@ -108,8 +108,8 @@ public class ServerPlayer implements Runnable
 
             //End Setup phase comunication
             token.endSetup();
-            synchronized (token) {
-                token.notifyAll();
+            synchronized (token.getSynchronator()) {
+                token.getSynchronator().notifyAll();
             }
         }
         catch (Exception ex) {
@@ -122,13 +122,13 @@ public class ServerPlayer implements Runnable
         //////GAME PHASE//////
         while (true)//Da cambiare con la condizione di fine partita
         {
-            synchronized (token)
+            synchronized (token.getSynchronator())
             {
                 try
                 {
                     //Wait his turn
                     while (!token.isMyTurn(user))
-                        token.wait();
+                        token.getSynchronator().wait();
 
                     LogFile.addLog("Turn of:" + user);
                     System.out.println("\n>>>Turn of:" + user);
@@ -144,8 +144,8 @@ public class ServerPlayer implements Runnable
                         token.deletePlayer(user);
                         token.nextTurn();
                         closeConnection("Timeout Expired");
-                        synchronized (token) {
-                            token.notifyAll();
+                        synchronized (token.getSynchronator()) {
+                            token.getSynchronator().notifyAll();
                         }
                     }
 
@@ -155,8 +155,8 @@ public class ServerPlayer implements Runnable
                         adapter.wait();
                     }
 
-                    token.notifyAll();
-                    token.wait();
+                    token.getSynchronator().notifyAll();
+                    token.getSynchronator().wait();
                 }
                 catch (Exception ex)
                 {

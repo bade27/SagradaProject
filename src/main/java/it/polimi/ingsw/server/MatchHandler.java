@@ -32,7 +32,7 @@ public class MatchHandler implements Runnable
     private ArrayList possibleUsrs;
 
     private int nConn;
-    private TokenTurn tok;
+    private TokenTurn token;
     private Dadiera dices;
     private RoundTrace roundTrace;
     private int turnsPlayed;
@@ -93,7 +93,7 @@ public class MatchHandler implements Runnable
     private void startGame ()
     {
         LogFile.addLog("Game Phase started");
-        dices.mix(tok.getNumPlayers());
+        dices.mix(token.getNumPlayers());
         LogFile.addLog("Dadiera Mixed");
         turnsPlayed = 0;
 
@@ -101,13 +101,13 @@ public class MatchHandler implements Runnable
 
         while (b)
         {
-            synchronized (tok)
+            synchronized (token.getSynchronator())
             {
-                if (tok.isFatalError())
+                if (token.isFatalError())
                     closeAllConnection();
 
                 //On end round situation
-                if (tok.isEndRound())
+                if (token.isEndRound())
                 {
                     //Increment total of turn
                     turnsPlayed++;
@@ -124,7 +124,7 @@ public class MatchHandler implements Runnable
                     }
 
                     //and..Mix dadiera
-                    dices.mix(tok.getNumPlayers());
+                    dices.mix(token.getNumPlayers());
                     System.out.println(">>>Dadiera Mixed");
                     LogFile.addLog("Dadiera Mixed");
                 }
@@ -132,11 +132,11 @@ public class MatchHandler implements Runnable
                 updateClient();
 
                 //Finish turn and notify all clients
-                tok.nextTurn();
-                tok.notifyAll();
+                token.nextTurn();
+                token.getSynchronator().notifyAll();
 
                 try {
-                    tok.wait();
+                    token.getSynchronator().wait();
                 }
                 catch (InterruptedException ex)
                 {
@@ -160,7 +160,7 @@ public class MatchHandler implements Runnable
         LogFile.createLogFile();
         possibleUsrs = initializePossibleUsers();
         player = new ArrayList<ServerPlayer>();
-        tok = new TokenTurn();
+        token = new TokenTurn();
         dices = new Dadiera();
         roundTrace = new RoundTrace();
         progressive = 0;
@@ -181,8 +181,8 @@ public class MatchHandler implements Runnable
 
         //When thread that accept client's connection has the right number of clients, all clients connected will be initialized
         try{
-            synchronized (tok){
-                tok.wait();
+            synchronized (token.getSynchronator()){
+                token.getSynchronator().wait();
             }
         }catch (Exception e){
             LogFile.addLog("Fatal Error: Impossible to put in wait Server");
@@ -202,7 +202,7 @@ public class MatchHandler implements Runnable
             //Check connection status
             nConn = MAXGIOC - checkClientAlive();
             LogFile.addLog("Number of client(s) connected:" + nConn);
-            tok.setInitNumberOfPlayers(nConn);
+            token.setInitNumberOfPlayers(nConn);
             //Starting of all ServerPlayer
             for (int i = 0; i <nConn ; i++)
             {
@@ -238,8 +238,8 @@ public class MatchHandler implements Runnable
 
         }
         //Initialization of ServerPlayer for each player
-        ServerModelAdapter adp = new ServerModelAdapter(dices, roundTrace,tok);
-        ServerPlayer pl = new ServerPlayer(tok,adp,possibleUsrs,cli);
+        ServerModelAdapter adp = new ServerModelAdapter(dices, roundTrace, token);
+        ServerPlayer pl = new ServerPlayer(token,adp,possibleUsrs,cli);
         player.add(pl);
         nConn++;
         int n = checkClientAlive();
@@ -251,8 +251,8 @@ public class MatchHandler implements Runnable
             //If max number of connection is reached starts game
             if (nConn == MAXGIOC)
             {
-                synchronized (tok){
-                    tok.notifyAll();
+                synchronized (token.getSynchronator()){
+                    token.getSynchronator().notifyAll();
                 }
             }
         }catch ( Exception e){
@@ -297,19 +297,19 @@ public class MatchHandler implements Runnable
     private synchronized void waitInitialition ()
     {
         //Signal to start setup phase
-        tok.startSetup();
+        token.startSetup();
 
-        synchronized (tok)
+        synchronized (token.getSynchronator())
         {
             try
             {
                 LogFile.addLog("Setup Phase started");
                 //Wake Up all ServerPlayers to start setup phase
-                tok.notifyAll();
+                token.getSynchronator().notifyAll();
 
                 //Wait until end setup phase
-                while (tok.getOnSetup())
-                    tok.wait();
+                while (token.getOnSetup())
+                    token.getSynchronator().wait();
                 LogFile.addLog("Setup Phase ended");
 
             }
