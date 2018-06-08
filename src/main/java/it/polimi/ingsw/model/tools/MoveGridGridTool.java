@@ -77,8 +77,16 @@ public class MoveGridGridTool extends Tools {
         if(pos_iniz1 == null || pos_fin1 == null)
             throw new IllegalStepException();
 
+<<<<<<< HEAD
         moveFirstDieWindow(level);
 
+=======
+        try {
+            window.moveDice(pos_iniz1,pos_fin1, level);
+        } catch (Exception ex) {
+            throw new IllegalStepException();
+        }
+>>>>>>> 1a0feda60df014afb5b26eaa4083a43b59dbc680
         setPrice();
     }
 
@@ -93,9 +101,24 @@ public class MoveGridGridTool extends Tools {
         if(pos_iniz1 == null || pos_fin1 == null || pos_iniz2 == null || pos_fin2 == null)
             throw new IllegalStepException();
 
+<<<<<<< HEAD
         moveFirstDieWindow(0);
         moveSecondDieWindow(0);
 
+=======
+        try {
+            window.moveDice(pos_iniz1, pos_fin1, 0);
+        } catch (Exception ex) {
+            throw new IllegalStepException();
+        }
+        try {
+            window.moveDice(pos_iniz2, pos_fin2, 0);
+        } catch (Exception ex) {
+            window.moveDice(pos_fin1, pos_iniz1, -1);
+            throw new IllegalStepException();
+        }
+        setPrice();
+>>>>>>> 1a0feda60df014afb5b26eaa4083a43b59dbc680
     }
 
     //tool 12

@@ -117,6 +117,22 @@ public class SetValueTool extends Tools {
         setPrice();
     }
 
+    private void DadieraToDiceBag() throws IllegalStepException {
+        /*if(d1 == null)
+            throw new IllegalStepException();
+
+        try {
+            dadiera.deleteDice(d1);
+            Dice d = dadiera.getBag().pickADie();
+            dadiera.getBag().putADie(d1);
+            dadiera.addDice(d);
+        } catch (NotEnoughDiceException nede) {
+            throw new IllegalStepException();
+        }
+        finished = false;
+        setPrice();*/
+
+    }
 
 
 

@@ -36,6 +36,7 @@ public class ServerModelAdapter
     private int marker;
     private Tools toolInUse;
 
+
     public ServerModelAdapter (Dadiera d, RoundTrace trace, TokenTurn tok)
     {
         board = null;
@@ -47,16 +48,20 @@ public class ServerModelAdapter
         token = tok;
     }
 
-
+    /**
+     * executes the effect of the requested tool
+     * @param w array of possible parameters
+     * @return weather the execution of the tool has been successful or not
+     */
     public String useTool(Wrapper... w)
     {
-        //Check if any tool permission was requested
+        //Checks if any tool permission was requested
         if (toolInUse == null)
         {
             LogFile.addLog("User: " + user + "\t Tool not permission asked");
             return "Not using tool permission asked";
         }
-        //Set tool move into tool in use
+        //sets all the necessary parameters inside the tool in use
         for(Wrapper wrapper : w)
             wrapper.myFunction();
         new Wrapper(this).myFunction();

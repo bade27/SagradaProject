@@ -2,6 +2,7 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.exceptions.IllegalDiceException;
+import it.polimi.ingsw.exceptions.NotEnoughDiceException;
 import it.polimi.ingsw.exceptions.ParserXMLException;
 import it.polimi.ingsw.model.Dadiera;
 import it.polimi.ingsw.model.Dice;
@@ -93,8 +94,15 @@ public class MatchHandler implements Runnable
     private void startGame ()
     {
         LogFile.addLog("Game Phase started");
-        dices.mix(token.getNumPlayers());
-        LogFile.addLog("Dadiera Mixed");
+        try {
+            dices.mix(token.getNumPlayers());
+            System.out.println(">>>Dadiera Mixed");
+            LogFile.addLog("Dadiera Mixed");
+        } catch (NotEnoughDiceException e) {
+            System.out.println("no more dice. the game ends");
+            LogFile.addLog("no more dice. the game ends");
+            return;
+        }
         turnsPlayed = 0;
 
         boolean b = true;
@@ -124,9 +132,15 @@ public class MatchHandler implements Runnable
                     }
 
                     //and..Mix dadiera
-                    dices.mix(token.getNumPlayers());
-                    System.out.println(">>>Dadiera Mixed");
-                    LogFile.addLog("Dadiera Mixed");
+                    try {
+                        dices.mix(token.getNumPlayers());
+                        System.out.println(">>>Dadiera Mixed");
+                        LogFile.addLog("Dadiera Mixed");
+                    } catch (NotEnoughDiceException e) {
+                        System.out.println("no more dice. the game ends");
+                        LogFile.addLog("no more dice. the game ends");
+                        return;
+                    }
                 }
                 //Update client's graphic situation
                 updateClient();
