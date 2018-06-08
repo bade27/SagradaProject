@@ -59,17 +59,12 @@ public class MoveGridGridTool extends Tools {
         if(pos_iniz1 == null || pos_fin1 == null)
             throw new IllegalStepException();
 
-        Dice d = window.getCell(pos_iniz1.getI(), pos_iniz1.getJ()).getFrontDice();
         try {
             window.moveDice(pos_iniz1,pos_fin1, level);
         } catch (Exception ex) {
             throw new IllegalStepException();
         }
-
-        if (window.getCell(pos_iniz1.getI(), pos_iniz1.getJ()).getFrontDice() == null &&
-                window.getCell(pos_fin1.getI(), pos_fin1.getJ()).getFrontDice() == d &&
-                d != null)
-            setPrice();
+        setPrice();
     }
 
     /**
@@ -83,33 +78,24 @@ public class MoveGridGridTool extends Tools {
         if(pos_iniz1 == null || pos_fin1 == null || pos_iniz2 == null || pos_fin2 == null)
             throw new IllegalStepException();
 
-        Dice d1 = window.getCell(pos_iniz1.getI(), pos_iniz1.getJ()).getFrontDice();
-        Dice d2 = window.getCell(pos_iniz2.getI(), pos_iniz2.getJ()).getFrontDice();
         try {
             window.moveDice(pos_iniz1, pos_fin1, 0);
         } catch (Exception ex) {
             throw new IllegalStepException();
         }
-        if (window.getCell(pos_iniz1.getI(), pos_iniz1.getJ()).getFrontDice() == null &&
-                window.getCell(pos_fin1.getI(), pos_fin1.getJ()).getFrontDice() == d1 &&
-                d1 != null) {
-            try {
-                window.moveDice(pos_iniz2, pos_fin2, 0);
-            } catch (Exception ex) {
-                window.moveDice(pos_fin1, pos_iniz1, 1);
-                throw new IllegalStepException();
-            }
-            if (window.getCell(pos_iniz2.getI(), pos_iniz2.getJ()).getFrontDice() == null &&
-                    window.getCell(pos_fin2.getI(), pos_fin2.getJ()).getFrontDice() == d2 &&
-                    d2 != null)
-                setPrice();
+        try {
+            window.moveDice(pos_iniz2, pos_fin2, 0);
+        } catch (Exception ex) {
+            window.moveDice(pos_fin1, pos_iniz1, -1);
+            throw new IllegalStepException();
         }
+        setPrice();
     }
 
     //tool 12
     public void moveTwoDieRestriction () throws IllegalStepException,IllegalDiceException
     {
-        if(window == null || pos_iniz1 == null || pos_fin1 == null || pos_iniz2 == null || pos_fin2 == null || d1 == null)
+        if(pos_iniz1 == null || pos_fin1 == null || pos_iniz2 == null || pos_fin2 == null || d1 == null)
             throw new IllegalStepException();
 
         Dice dOne = window.getCell(pos_iniz1.getI(), pos_iniz1.getJ()).getFrontDice();

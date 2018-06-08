@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.exceptions.IllegalDiceException;
+import it.polimi.ingsw.exceptions.NotEnoughDiceException;
 import it.polimi.ingsw.remoteInterface.Pair;
 
 import java.util.ArrayList;
@@ -22,8 +23,7 @@ public class Dadiera
     /**
      * Generate a new set of dice randomly with dim of numGioc
      */
-    public synchronized void mix (int numGioc)
-    {
+    public synchronized void mix (int numGioc) throws NotEnoughDiceException {
         listaDadi = bag.pickDices(numGioc*2 + 1);
         assert listaDadi != null;
     }
@@ -82,6 +82,10 @@ public class Dadiera
             throw new IllegalDiceException("Dice not init");
         }
 
+    }
+
+    public DiceBag getBag() {
+        return bag;
     }
 
     public synchronized Pair[] toPairArray ()

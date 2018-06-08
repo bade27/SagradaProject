@@ -91,7 +91,7 @@ public class DiceBag {
     }
 
     /**
-     *  check if sum of dice per color is equals to sum of dice inside dicebag
+     *  checks if sum of dice per color is equals to sum of dice inside dicebag
      */
     private void checkNumDice() {
         assert numberOfDicePerColor(Color.red) + numberOfDicePerColor(Color.green)
@@ -115,11 +115,11 @@ public class DiceBag {
 
     /**
      *
-     * @param n
+     * @param n number of dice to extract
      * @return list of dice extract from dicebag
      * (dice extract will be removed form dicebag)
      */
-    public ArrayList<Dice> pickDices(int n) {
+    public ArrayList<Dice> pickDices(int n) throws NotEnoughDiceException {
         if(n > dice.size())
             throw new NotEnoughDiceException("non sono rimasti abbastanza dadi");
         ArrayList<Dice> choosenDice = new ArrayList<>();
@@ -130,6 +130,19 @@ public class DiceBag {
         }
         //checkNumDice();
         return choosenDice;
+    }
+
+    public Dice pickADie() throws NotEnoughDiceException {
+        if(dice.size() == 0)
+            throw new NotEnoughDiceException("non sono rimasti abbastanza dadi");
+        Dice d = dice.get(0);
+        dice.remove(0);
+        return d;
+    }
+
+    public void putADie(Dice newDie) {
+        int index = new Random().nextInt(dice.size());
+        dice.add(index, newDie);
     }
 
     /**
