@@ -89,7 +89,7 @@ public class SetValueTool extends Tools {
     /**
      * Tool nr.10 function
      */
-    private void turnDice(/*Dice x, Dadiera s*/) throws IllegalStepException
+    private void turnDice() throws IllegalStepException
     {
         if(d1 == null)
             throw new IllegalStepException();

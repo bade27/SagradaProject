@@ -475,9 +475,9 @@ public class MatchHandler implements Runnable
                 tools[i] = ToolsFactory.getTools(toolNames[c]);
             }
 
-            tools[0] = ToolsFactory.getTools(toolNames[7]);
-            tools[1] = ToolsFactory.getTools(toolNames[8]);
-            tools[2] = ToolsFactory.getTools(toolNames[9]);
+            tools[0] = ToolsFactory.getTools(toolNames[1]);
+            tools[1] = ToolsFactory.getTools(toolNames[3]);
+            tools[2] = ToolsFactory.getTools(toolNames[11]);
 
             //For each players initialize tool cards already selected
             for (int i=0;i<nConn;i++)
