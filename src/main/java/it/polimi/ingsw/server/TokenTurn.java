@@ -75,7 +75,7 @@ public class TokenTurn
     }
 
     /**
-     * es.
+     * Increment turn
      * numPlayer = 4 , current turn = 0
      * current turn = 1 - 2 - 3 - 4 - 4 - 3 - 2 - 1 - 1 - 2 -......
       */
@@ -94,7 +94,7 @@ public class TokenTurn
     }
 
     /**
-     * Increment turn when tool8 is not active
+     * Increment in normal condition
      */
     private void normalTurn ()
     {
@@ -123,7 +123,7 @@ public class TokenTurn
     }
 
     /**
-     * Increment turn when tooli is active
+     * Increment turn when tool is active
      */
     private void toolTurn ()
     {
@@ -206,6 +206,11 @@ public class TokenTurn
         delPlayer(name,players);
     }
 
+    /**
+     * Delete player from list of active players and adjust the correct sequence of turn
+     * @param name
+     * @param t
+     */
     private void delPlayer (String name,ArrayList<Player> t)
     {
         int inc,turnDel;
@@ -277,8 +282,8 @@ public class TokenTurn
 
     /**
      *  Used for changing turn sequence after tool number 8
-     * @param s
-     * @return
+     * @param s user who required to use tool
+     * @return if user can use tool 8
      */
     public synchronized boolean useToolNumber8 (String s)
     {

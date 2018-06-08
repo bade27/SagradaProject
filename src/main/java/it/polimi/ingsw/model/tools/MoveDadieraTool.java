@@ -41,7 +41,7 @@ public class MoveDadieraTool extends Tools {
     /**
      * Tool nr. 5
      */
-    public void exchangeDice() throws IllegalStepException
+    private void exchangeDice() throws IllegalStepException
     {
         RoundTrace roundTrace = adapter.getRoundTrace();
         try
@@ -60,14 +60,14 @@ public class MoveDadieraTool extends Tools {
     /**
      * tool nr. 9
      */
-    public void setDieNoRestriction () throws IllegalStepException
+    private void setDieNoRestriction () throws IllegalStepException
     {
         Window window = adapter.getBoard();
-        if(pos_fin1 == null || d1 == null)
+        if(pos_iniz1 == null || d1 == null)
             throw new IllegalStepException();
 
         try{
-            window.addDice(pos_fin1.getI(),pos_fin1.getJ(),d1,3);
+            window.addDice(pos_iniz1.getI(),pos_iniz1.getJ(),d1,3);
             dadiera.deleteDice(d1);
             adapter.setCanMove(false);
         }catch (Exception e){
