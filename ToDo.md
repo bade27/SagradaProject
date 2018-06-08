@@ -10,11 +10,11 @@
 			- [ ] Tool 5
 			- [X] Tool 6
 			- [X] Tool 7
-			- [ ] Tool 8
-			- [ ] Tool 9
-			- [ ] Tool 10
+			- [X] Tool 8
+			- [X] Tool 9
+			- [X] Tool 10
 			- [ ] Tool 11
-			- [ ] Tool 12
+			- [X] Tool 12
 		- [ ] Implementazione Obbiettivi 
 		- [ ] Gestione utenti con login e registrazione
 	- Grafica
