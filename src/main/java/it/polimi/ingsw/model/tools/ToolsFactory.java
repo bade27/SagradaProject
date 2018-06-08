@@ -36,8 +36,9 @@ public class ToolsFactory
                         case "MoveGridGrid":
                             return new MoveGridGridTool((i+1),name);
                         case "MoveDadiera":
-                            return new MoveDadieraTraceTool((i+1),name);
-                        //...
+                            return new MoveDadieraTool((i+1),name);
+                        case "ChangeRound":
+                            return new ChangeRoundTool((i+1),name);
                         default:
                     }
                 }

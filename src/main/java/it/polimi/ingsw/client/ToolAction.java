@@ -52,6 +52,8 @@ public class ToolAction
                     return comm.useTool(fstDieStartPosition,fstDiePlacePosition,sndDieStartPosition,sndDiePlacePosition);
                 if (idTool == 5)
                     return comm.useTool(dadieraDie,traceDie,1);//Uno fisso momentaneo
+                if (idTool == 8)
+                    return comm.useTool();
 
             }catch (Exception e){//Poi da togliere una volta tolto toolMove
                 return "Invalid Input";

@@ -173,6 +173,13 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
         return null;
     }
 
+    @Override
+    public String useTool() throws RemoteException {
+        String ret = adapter.useTool();
+        match.updateClient();
+        return ret;
+    }
+
     /**
      * if the client doesn't want to make a move, he can pass the turn using this method
      * @return a string saying the turn is passed

@@ -198,5 +198,10 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
         return null;
     }
 
+    @Override
+    public String useTool() throws RemoteException {
+        return null;
+    }
+
 
 }

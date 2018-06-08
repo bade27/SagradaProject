@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public class TokenTurn
 {
+    //List of effective players
     private ArrayList<Player> players;
 
     //Tools using
@@ -30,6 +31,8 @@ public class TokenTurn
     //ControlMatch
     private boolean fatalError;
     private boolean justDeleting;
+
+    
 
     public TokenTurn ()
     {
