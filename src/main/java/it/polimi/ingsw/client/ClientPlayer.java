@@ -270,8 +270,10 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
     public synchronized void useTool() {
         try {
-            graph.updateMessage(ToolAction.performTool(server));
-            graph.setToolPhase(false);
+            String msg = ToolAction.performTool(server);
+            graph.updateMessage(msg);
+            if(!msg.equals("11"))
+                graph.setToolPhase(false);
             ToolAction.clearTool();
         } catch (RemoteException e) {
             e.printStackTrace();

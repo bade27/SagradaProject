@@ -61,6 +61,7 @@ public class ServerModelAdapter
             LogFile.addLog("User: " + user + "\t Tool not permission asked");
             return "Not using tool permission asked";
         }
+
         //sets all the necessary parameters inside the tool in use
         for(Wrapper wrapper : w)
             wrapper.myFunction();

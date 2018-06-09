@@ -4,6 +4,7 @@ package it.polimi.ingsw.model.tools;
 
 import it.polimi.ingsw.exceptions.IllegalDiceException;
 import it.polimi.ingsw.exceptions.IllegalStepException;
+import it.polimi.ingsw.exceptions.NotEnoughDiceException;
 import it.polimi.ingsw.model.Dadiera;
 import it.polimi.ingsw.model.Dice;
 import it.polimi.ingsw.server.TokenTurn;
@@ -38,6 +39,9 @@ public class SetValueTool extends Tools {
                 break;
             case 10:
                 turnDice();
+                break;
+            case 11:
+                dadieraToDiceBag();
                 break;
             default:
                 break;
@@ -117,20 +121,27 @@ public class SetValueTool extends Tools {
         setPrice();
     }
 
-    private void DadieraToDiceBag() throws IllegalStepException {
-        /*if(d1 == null)
+    private void dadieraToDiceBag() throws IllegalStepException {
+        if (d1 == null)
             throw new IllegalStepException();
 
-        try {
-            dadiera.deleteDice(d1);
-            Dice d = dadiera.getBag().pickADie();
-            dadiera.getBag().putADie(d1);
-            dadiera.addDice(d);
-        } catch (NotEnoughDiceException nede) {
-            throw new IllegalStepException();
+        if(finished) {
+
+            try {
+                dadiera.deleteDice(d1);
+                Dice d = dadiera.getBag().pickADie();
+                dadiera.getBag().putADie(d1);
+                dadiera.addDice(d);
+            } catch (NotEnoughDiceException nede) {
+                throw new IllegalStepException();
+            }
+            finished = false;
+        } else {
+            dadiera.addDice(d1);
+            remember = new Dice(d1.getValue(), d1.getColor());
+            finished = false;
+            setPrice();
         }
-        finished = false;
-        setPrice();*/
 
     }
 

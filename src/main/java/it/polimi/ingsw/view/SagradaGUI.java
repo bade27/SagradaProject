@@ -4,7 +4,6 @@ import it.polimi.ingsw.GUI;
 import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.client.ToolAction;
 import it.polimi.ingsw.exceptions.IllegalDiceException;
-import it.polimi.ingsw.remoteInterface.Coordinates;
 import it.polimi.ingsw.remoteInterface.Pair;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -12,12 +11,18 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.rmi.RemoteException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class SagradaGUI extends Application implements GUI {
 
@@ -155,6 +160,10 @@ public class SagradaGUI extends Application implements GUI {
      * @param msg
      */
     public void updateMessage(String msg) {
+        if(msg.equals("11")) {
+            popUPMessage(11);
+            msg = "Tool in use";
+        }
         msgb.updateGraphic(msg);
     }
 
@@ -205,7 +214,7 @@ public class SagradaGUI extends Application implements GUI {
         if(toolPhase) {
             setToolPhase(true);
             msgb.updateGraphic("Using a tool");
-            PopUPMessage(i);
+            popUPMessage(i);
         }
     }
 
@@ -218,23 +227,36 @@ public class SagradaGUI extends Application implements GUI {
         clientPlayer.pass();
     }
 
-    public void PopUPMessage(int toolID) {
-        if(toolID == 1) {
-            Platform.runLater(() -> {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setContentText("Come desideri cambiare il valore del dado?");
+    public void popUPMessage(int toolID) {
+        switch (toolID) {
+            case 1:
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setContentText("Come desideri cambiare il valore del dado?");
 
-                ButtonType buttonType1 = new ButtonType("Incrementa");
-                ButtonType buttonType2 = new ButtonType("Decrementa");
+                    ButtonType buttonType1 = new ButtonType("Incrementa");
+                    ButtonType buttonType2 = new ButtonType("Decrementa");
 
-                alert.getButtonTypes().setAll(buttonType1, buttonType2);
-                Optional<ButtonType> result = alert.showAndWait();
+                    alert.getButtonTypes().setAll(buttonType1, buttonType2);
+                    Optional<ButtonType> result = alert.showAndWait();
 
-                if (result.get() == buttonType1)
-                    ToolAction.setInstruction("inc");
-                 else
-                     ToolAction.setInstruction("dec");
-            });
+                    if (result.get() == buttonType1)
+                        ToolAction.setInstruction("inc");
+                     else
+                         ToolAction.setInstruction("dec");
+                 });
+                break;
+            case 11:
+                Platform.runLater(() -> {
+                    List<Integer> choices = new ArrayList<>();
+                    choices.addAll(IntStream.range(1, 7).mapToObj(n -> (Integer)n).collect(Collectors.toList()));
+                    ChoiceDialog<Integer> dialog = new ChoiceDialog<>(1, choices);
+                    dialog.setTitle("Selezione valore");
+                    dialog.setHeaderText("Seleziona il numero del dado!");
+                    Optional<Integer> result = dialog.showAndWait();
+                    result.isPresent();
+                });
+                break;
         }
     }
 
