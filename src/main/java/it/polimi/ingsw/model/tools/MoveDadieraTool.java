@@ -44,6 +44,8 @@ public class MoveDadieraTool extends Tools {
     private void exchangeDice() throws IllegalStepException
     {
         RoundTrace roundTrace = adapter.getRoundTrace();
+        if (d1 == null || d2 == null || pos_rt < 0 || pos_rt > 10 )
+            throw new IllegalStepException("Riprova selezionando tutti i parametri del tool");
         try
         {
             dadiera.deleteDice(d1);

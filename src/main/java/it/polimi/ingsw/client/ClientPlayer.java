@@ -33,7 +33,6 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     private int typeOfCOnnection; //1 rmi , 0 Socket
 
     private GUI graph;
-    //private ClientModelAdapter adp;
     private ServerRemoteInterface server;
 
     //buffer mossa in upload
@@ -268,14 +267,11 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         return response.equals("Tool permission accepted");
     }
 
-    public synchronized void useTool() {
-        try {
-            graph.updateMessage(ToolAction.performTool(server));
-            graph.setToolPhase(false);
-            ToolAction.clearTool();
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
+    public synchronized void useTool()
+    {
+        graph.updateMessage(ToolAction.performTool(server));
+        graph.setToolPhase(false);
+        ToolAction.clearTool();
     }
 
     //</editor-fold>

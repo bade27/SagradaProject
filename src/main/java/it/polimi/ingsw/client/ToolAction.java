@@ -39,7 +39,7 @@ public class ToolAction
         return comm.askToolPermission(idTool);
     }
 
-    public static String performTool (ServerRemoteInterface comm) throws RemoteException
+    public static String performTool (ServerRemoteInterface comm)
     {
         if (idTool == -1)
             return "Tool not selected";
@@ -50,16 +50,16 @@ public class ToolAction
                     return comm.useTool(dadieraDie,instruction);
                 if (idTool == 2 || idTool == 3)
                     return comm.useTool(fstDieStartPosition, fstDiePlacePosition);
-                if (idTool == 4 || idTool == 12)//DA CAMBIARE dadieraDie in trace die
-                    return comm.useTool(dadieraDie ,fstDieStartPosition,fstDiePlacePosition,sndDieStartPosition,sndDiePlacePosition);
+                if (idTool == 4 || idTool == 12)
+                    return comm.useTool(traceDie ,fstDieStartPosition,fstDiePlacePosition,sndDieStartPosition,sndDiePlacePosition);
                 if (idTool == 5)
-                    return comm.useTool(dadieraDie,traceDie,1);//Uno fisso momentaneo
+                    return comm.useTool(dadieraDie,traceDie,tracePosition);
                 if (idTool == 8)
                     return comm.useTool();
                 if (idTool == 9)
                     return comm.useTool(dadieraDie,fstDieStartPosition);
 
-            }catch (Exception e){//Poi da togliere una volta tolto toolMove
+            }catch (Exception e){
                 return "Invalid Input";
             }
 
