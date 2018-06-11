@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.tools;
 
-//Tool nr. 1-6-10
+//Tool nr. 1-6-10-11
 
 import it.polimi.ingsw.exceptions.IllegalDiceException;
 import it.polimi.ingsw.exceptions.IllegalStepException;
@@ -16,6 +16,9 @@ public class SetValueTool extends Tools {
     private Dice remember;
     private Dadiera dadiera;
     private TokenTurn token;
+
+    //temporaryDie stores a die to be removed from dadiera - prevents misuse of the tool
+    private Dice temporaryDie;
 
     public SetValueTool(int id, String name) {  //qua avrò oltre a id un array con dentro i dati
         this.price = 1;                  // necessari a usare i metodi
@@ -60,6 +63,7 @@ public class SetValueTool extends Tools {
 
     /**
      * Tool nr. 1 function
+     * @throws IllegalStepException if the action does not end well
      */
     private void addSub() throws IllegalStepException
     {
@@ -93,6 +97,7 @@ public class SetValueTool extends Tools {
 
     /**
      * Tool nr.10 function
+     * @throws IllegalStepException if the action does not end well
      */
     private void turnDice() throws IllegalStepException
     {
@@ -106,6 +111,7 @@ public class SetValueTool extends Tools {
 
     /**
      * Tool nr.7
+     * @throws IllegalStepException if the action does not end well
      */
     private void relaunchAllDadiera () throws IllegalStepException
     {
@@ -122,13 +128,23 @@ public class SetValueTool extends Tools {
         setPrice();
     }
 
+    /**
+     * Tool nr. 11
+     * @throws IllegalStepException if the action does not end well
+     */
     private void dadieraToDiceBag() throws IllegalStepException {
-        if (d1 == null)
+        if (d1 == null) {
+            if(temporaryDie != null)
+                dadiera.addDice(temporaryDie);
+            remember = null;
             throw new IllegalStepException();
+        }
+
 
         if(completeDice) {
 
             try {
+                temporaryDie = d1.cloneDice();
                 dadiera.deleteDice(d1);
                 Dice d = dadiera.getBag().pickADie();
                 dadiera.getBag().putADie(d1);

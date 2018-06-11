@@ -182,6 +182,10 @@ public class SagradaGUI extends Application implements GUI {
         gridG.setEnable(enableBoard);
     }
 
+    /**
+     * changes the behaviour of the GUI's components in order to perform a tool move
+     * @param toolPhase
+     */
     public void setToolPhase(boolean toolPhase) {
         this.toolPhase = toolPhase;
         dadieraG.setTool(toolPhase);
@@ -196,6 +200,10 @@ public class SagradaGUI extends Application implements GUI {
         clientPlayer.myMove();
     }
 
+    /**
+     * asks to the server if the tool can be used
+     * @param i
+     */
     public void toolPermission(int i) {
         toolPhase = clientPlayer.toolPermission(i);
         if(toolPhase) {
@@ -206,49 +214,61 @@ public class SagradaGUI extends Application implements GUI {
         }
     }
 
+    /**
+     * handles to the client class the command to perform a move
+     */
     public void makeToolMove() {
         clientPlayer.useTool();
     }
 
+    /**
+     * handles to the client class the command to end the turn
+     */
     @Override
     public void passTurn() {
         clientPlayer.pass();
     }
 
+    /**
+     * retrieve necessary information for tools 1 and 11
+     * @param toolID
+     * @param str
+     */
     public void popUPMessage(int toolID, String str) {
         switch (toolID) {
             case 1:
                 Platform.runLater(() -> {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setHeaderText("Cambia il valore");
                     alert.setContentText("Come desideri cambiare il valore del dado?");
 
                     ButtonType buttonType1 = new ButtonType("Incrementa");
                     ButtonType buttonType2 = new ButtonType("Decrementa");
 
-                    alert.getButtonTypes().setAll(buttonType1, buttonType2);
+                    alert.getButtonTypes().setAll(buttonType1, buttonType2, ButtonType.CLOSE);
                     Optional<ButtonType> result = alert.showAndWait();
 
                     if (result.get() == buttonType1)
                         ToolAction.setInstruction("inc");
-                     else
-                         ToolAction.setInstruction("dec");
-                 });
+                    else if (result.get() == buttonType2)
+                        ToolAction.setInstruction("dec");
+                });
                 break;
             case 11:
-                dadieraG.setEnable(false);
-                gridG.setEnable(false);
                 Platform.runLater(() -> {
+                    dadieraG.setEnable(false);
+                    gridG.setEnable(false);
                     List<Integer> choices = new ArrayList<>();
-                    choices.addAll(IntStream.range(1, 7).mapToObj(n -> (Integer)n).collect(Collectors.toList()));
+                    choices.addAll(IntStream.range(1, 7).mapToObj(n -> (Integer) n).collect(Collectors.toList()));
                     ChoiceDialog<Integer> dialog = new ChoiceDialog<>(1, choices);
                     dialog.setTitle("Selezione valore");
                     dialog.setHeaderText("Seleziona il numero del dado!");
                     dialog.setContentText("Il tuo dado è " + str);
                     Optional<Integer> result = dialog.showAndWait();
-                    result.ifPresent(r -> {
-                        ToolAction.setDadieraPair(new Pair(r));
-                        makeToolMove();
-                    });
+                    if(result.isPresent())
+                        ToolAction.setDadieraPair(new Pair(result.get()));
+                    else ToolAction.setDadieraPair(null);
+                    makeToolMove();
                     dadieraG.setEnable(true);
                     gridG.setEnable(true);
                 });
@@ -256,6 +276,10 @@ public class SagradaGUI extends Application implements GUI {
         }
     }
 
+    /**
+     * translates color names to italian
+     * @return the map with the translation
+     */
     private Map<String, String> tranlsateColors() {
         Map<String, String> map = new HashMap<>();
         map.put("red", "rosso");

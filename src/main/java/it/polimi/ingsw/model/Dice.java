@@ -1,10 +1,8 @@
 package it.polimi.ingsw.model;
-import java.awt.*;
-
 public class Dice
 {
     //Il colore di default è null e il valore di default è 0
-    private int value;
+    private Integer value;
     //private Color color;
     private ColorEnum color;
 
@@ -20,7 +18,7 @@ public class Dice
         color = c;
     }
 
-    public int getValue ()
+    public Integer getValue ()
     {
         return value;
     }

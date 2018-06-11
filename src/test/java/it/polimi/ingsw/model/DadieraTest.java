@@ -3,10 +3,8 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.exceptions.IllegalDiceException;
 import it.polimi.ingsw.exceptions.NotEnoughDiceException;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.function.BiFunction;
@@ -152,7 +150,7 @@ class DadieraTest {
         int which_Die = new Random().nextInt(expectedDice);
 
         //creo valore del dado casualmente
-        int n=new Random().nextInt(6)+1;
+        Integer n=new Random().nextInt(6)+1;
 
         //estrazione di un dado da dadiera
         Dice dice = playableDice.get(which_Die);

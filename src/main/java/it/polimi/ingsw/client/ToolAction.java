@@ -71,8 +71,6 @@ public class ToolAction
     }
 
 
-    //3)use tool unico per tool 2-3-4? ci stuh
-    //5)tool 5 non funzionante
     public static void setPosition (Coordinates coord)
     {
         if (fstDieStartPosition == null)
@@ -93,7 +91,9 @@ public class ToolAction
     public static void setTracePosition(int tracePosition){ ToolAction.tracePosition=tracePosition; }
 
     public static void setDadieraPair(Pair dadieraDie) {
-        if(ToolAction.dadieraDie != null && ToolAction.dadieraDie.getValue() == null && ToolAction.dadieraDie.getColor() != null) {
+
+        //the first branch guarantees the correct functionality of tool 11
+        if(ToolAction.dadieraDie != null && dadieraDie != null && ToolAction.dadieraDie.getValue() == null && ToolAction.dadieraDie.getColor() != null) {
             ToolAction.dadieraDie.setValue(dadieraDie.getValue());
         } else ToolAction.dadieraDie = dadieraDie;
     }

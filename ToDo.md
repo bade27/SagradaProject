@@ -13,7 +13,7 @@
 			- [X] Tool 8
 			- [X] Tool 9
 			- [X] Tool 10
-			- [ ] Tool 11
+			- [X] Tool 11
 			- [X] Tool 12
 		- [ ] Implementazione Obbiettivi 
 		- [ ] Gestione utenti con login e registrazione

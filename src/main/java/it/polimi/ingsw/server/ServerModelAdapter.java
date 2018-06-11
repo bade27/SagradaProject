@@ -77,6 +77,7 @@ public class ServerModelAdapter
             return "Tool Action failed: " + e.getMessage();
         }
         //If performed decrees client's own marker
+        //first branch guarantees tool 11's right use
         if(toolInUse.getId() == 11 && !toolInUse.isDiceComplete()) {
             replyToClient = toolInUse.getColor();
         } else {
