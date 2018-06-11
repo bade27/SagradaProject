@@ -17,7 +17,7 @@ public interface ServerRemoteInterface extends Remote
     //Tool nr. 2-3
     public String useTool (Coordinates sartCoord,Coordinates endCoord) throws RemoteException;
     //Tool nr.4
-    public String useTool (Coordinates sartCoord1,Coordinates endCoord1, Coordinates sartCoord2,Coordinates endCoord2) throws RemoteException;
+    public String useTool (Pair p ,Coordinates sartCoord1,Coordinates endCoord1, Coordinates sartCoord2,Coordinates endCoord2) throws RemoteException;
     //Tool nr.5
     public String useTool (Pair dadiera,Pair trace,int nrRound) throws RemoteException;
     //Tool nr.8

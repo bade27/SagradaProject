@@ -161,16 +161,18 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
      * @return result of tool
      */
     @Override
-    public String useTool(Coordinates startCoord1, Coordinates endCoord1, Coordinates startCoord2, Coordinates endCoord2) throws RemoteException
+    public String useTool(Pair p ,Coordinates startCoord1, Coordinates endCoord1, Coordinates startCoord2, Coordinates endCoord2) throws RemoteException
     {
-        String ret = adapter.useTool(new Wrapper(startCoord1),new Wrapper(endCoord1) , new Wrapper(startCoord2) , new Wrapper(endCoord2));
+        String ret = adapter.useTool(new Wrapper(p),new Wrapper(startCoord1),new Wrapper(endCoord1) , new Wrapper(startCoord2) , new Wrapper(endCoord2));
         match.updateClient();
         return ret;
     }
 
     @Override
     public String useTool(Pair dadieraP, Pair traceP, int nrRound) throws RemoteException {
-        return null;
+        String ret = adapter.useTool(new Wrapper(dadieraP),new Wrapper(traceP),new Wrapper(nrRound));
+        match.updateClient();
+        return ret;
     }
 
     @Override

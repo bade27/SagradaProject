@@ -35,15 +35,16 @@ public class RoundsGUI extends GridPane {
         }
 
         roundTrace=new GridPane();
-        round = new GridPane();
-        diceInRound=new GridPane();
 
+        round = new GridPane();
         for (int i = 0; i < 10; i++) {                                  //creo i round
             Button indexround = new Button();                           //creo bottone
             indexround.setMaxSize(Double.MAX_VALUE,Double.MAX_VALUE);   //set dimensioni
             indexround.setText(""+(i+1));                               //nome bottone
             round.add(indexround, i, 0);                       //aggiungo bottone a rt
         }
+
+        diceInRound=new GridPane();
         updateRoundTrace(alldice);
 
         roundTrace.setAlignment(Pos.TOP_CENTER);
@@ -61,6 +62,7 @@ public class RoundsGUI extends GridPane {
                 Button indexround=(Button)round.getChildren().get(i);
                 int finalI = i;
                 indexround.setOnAction(event -> {
+                    diceInRound.getChildren().clear();
                     diceInRound=new GridPane();
                     Button b = new Button(indexround.getText() + "\t");
                     b.setDisable(false);
@@ -81,8 +83,8 @@ public class RoundsGUI extends GridPane {
                             ColorEnum color =allpair[finalI].get(finalJ).getColor();
                             //game.modToolMovePair(new Pair(value,color));
                             ToolAction.setTracePair(new Pair(value,color));
+                            ToolAction.setTracePosition(finalI+1);
                         });
-
                     }
                     roundTrace.add(diceInRound,0,1);
                 });

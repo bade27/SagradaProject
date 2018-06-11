@@ -32,21 +32,24 @@ public class MatchHandler implements Runnable
     private ArrayList<Thread> threadPlayers;
     private ArrayList possibleUsrs;
 
-    private int nConn;
+
     private TokenTurn token;
     private Dadiera dices;
     private RoundTrace roundTrace;
+
     private int turnsPlayed;
 
-    private final static int MAXGIOC = 2;//Da modificare a 4
+    private final static int TURNS = 10;
+    private final static int MAXGIOC = 1;//Da modificare a 4
 
     //connection parameters
     private static final String settings = "resources/server_settings.xml";
     private static int RMI_REGISTRY_PORT;
     private static String HOSTNAME;
     private static int SOCKET_PORT;
-    private int progressive;
 
+    private int progressive;
+    private int nConn;
     /**
      * sets up connection parameters
      */
@@ -94,15 +97,13 @@ public class MatchHandler implements Runnable
     private void startGame ()
     {
         LogFile.addLog("Game Phase started");
-        try {
-            dices.mix(token.getNumPlayers());
-            System.out.println(">>>Dadiera Mixed");
-            LogFile.addLog("Dadiera Mixed");
-        } catch (NotEnoughDiceException e) {
-            System.out.println("no more dice. the game ends");
-            LogFile.addLog("no more dice. the game ends");
+        try{
+            mixDadiera();
+        }catch (Exception e){
+            endGame();
             return;
         }
+
         turnsPlayed = 0;
 
         boolean b = true;
@@ -117,6 +118,12 @@ public class MatchHandler implements Runnable
                 //On end round situation
                 if (token.isEndRound())
                 {
+                    //Check if turns played are enough
+                    if (turnsPlayed == TURNS)
+                    {
+                        endGame();
+                        return;
+                    }
                     //Increment total of turn
                     turnsPlayed++;
                     //Update Round Trace
@@ -132,13 +139,10 @@ public class MatchHandler implements Runnable
                     }
 
                     //and..Mix dadiera
-                    try {
-                        dices.mix(token.getNumPlayers());
-                        System.out.println(">>>Dadiera Mixed");
-                        LogFile.addLog("Dadiera Mixed");
-                    } catch (NotEnoughDiceException e) {
-                        System.out.println("no more dice. the game ends");
-                        LogFile.addLog("no more dice. the game ends");
+                    try{
+                        mixDadiera();
+                    }catch (Exception e){
+                        endGame();
                         return;
                     }
                 }
@@ -154,13 +158,35 @@ public class MatchHandler implements Runnable
                 }
                 catch (InterruptedException ex)
                 {
-                    System.out.println(ex.getMessage());
+                    LogFile.addLog("Interrupted exception occurred", ex.getStackTrace());
                     ex.printStackTrace();
                     Thread.currentThread().interrupt();
                     closeAllConnection();
                 }
             }
         }
+    }
+
+    /**
+     *  Pick up new dice from dice bag
+     */
+    private void mixDadiera () throws IllegalDiceException
+    {
+        try {
+            dices.mix(token.getNumPlayers());
+            System.out.println(">>>Dadiera Mixed");
+            LogFile.addLog("Dadiera Mixed");
+        } catch (NotEnoughDiceException e) {
+            LogFile.addLog("No more dice into dice bag");
+            throw new IllegalDiceException();
+        }
+    }
+
+    private void endGame ()
+    {
+        System.out.println(">>>The game is ended");
+        LogFile.addLog("The game is ended, count of players' point");
+
     }
     //</editor-fold>
 
@@ -489,9 +515,9 @@ public class MatchHandler implements Runnable
                 tools[i] = ToolsFactory.getTools(toolNames[c]);
             }
 
-            tools[0] = ToolsFactory.getTools(toolNames[7]);
-            tools[1] = ToolsFactory.getTools(toolNames[8]);
-            tools[2] = ToolsFactory.getTools(toolNames[9]);
+            tools[0] = ToolsFactory.getTools(toolNames[0]);
+            tools[1] = ToolsFactory.getTools(toolNames[5]);
+            tools[2] = ToolsFactory.getTools(toolNames[10]);
 
             //For each players initialize tool cards already selected
             for (int i=0;i<nConn;i++)

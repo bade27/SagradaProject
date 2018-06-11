@@ -55,6 +55,7 @@ public class ServerModelAdapter
      */
     public String useTool(Wrapper... w)
     {
+        String replyToClient = "";
         //Checks if any tool permission was requested
         if (toolInUse == null)
         {
@@ -76,8 +77,14 @@ public class ServerModelAdapter
             return "Tool Action failed: " + e.getMessage();
         }
         //If performed decrees client's own marker
-        marker = marker - current_price;
-        return "Tool used correctly";
+        if(toolInUse.getId() == 11 && !toolInUse.isDiceComplete()) {
+            replyToClient = toolInUse.getColor();
+        } else {
+            marker = marker - current_price;
+            replyToClient = "Tool used correctly";
+        }
+        Tools.setAllToNull();
+        return replyToClient;
 
     }
 

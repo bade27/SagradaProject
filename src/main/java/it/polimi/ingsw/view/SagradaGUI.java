@@ -17,10 +17,7 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.rmi.RemoteException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -41,7 +38,6 @@ public class SagradaGUI extends Application implements GUI {
     private ClientPlayer clientPlayer;
     private boolean enableBoard;
     private boolean toolPhase;
-
 
     public SagradaGUI() {
         enableBoard = false;
@@ -117,23 +113,13 @@ public class SagradaGUI extends Application implements GUI {
         root.setCenter(mainContent);
         root.setBottom(bottom);
 
-        Scene scene=new Scene(root,800,600);
+        Scene scene=new Scene(root,800,500);
         primaryStage.setTitle("Sagrada");
         primaryStage.setScene(scene);
         primaryStage.show();
         primaryStage.setResizable(false);
         primaryStage.setOnCloseRequest(e -> Platform.exit());
     }
-
-
-    /*public void modMovePair(Pair pair){
-        clientPlayer.setMovePair(pair);
-    }
-
-    public void modMoveIJ(Coordinates coord){
-        clientPlayer.setMoveCoordinates(coord);
-    }*/
-
 
     /**
      * updates the dice displayed on dadiera
@@ -160,8 +146,10 @@ public class SagradaGUI extends Application implements GUI {
      * @param msg
      */
     public void updateMessage(String msg) {
-        if(msg.equals("11")) {
-            popUPMessage(11);
+        if("redyellowgreenbluepurple".contains(msg)) {
+            Map<String, String> colorTranslation = tranlsateColors();
+            String col = colorTranslation.get(msg);
+            popUPMessage(11, col);
             msg = "Tool in use";
         }
         msgb.updateGraphic(msg);
@@ -208,13 +196,13 @@ public class SagradaGUI extends Application implements GUI {
         clientPlayer.myMove();
     }
 
-
     public void toolPermission(int i) {
         toolPhase = clientPlayer.toolPermission(i);
         if(toolPhase) {
             setToolPhase(true);
             msgb.updateGraphic("Using a tool");
-            popUPMessage(i);
+            if(i == 1)
+                popUPMessage(i, "");
         }
     }
 
@@ -227,7 +215,7 @@ public class SagradaGUI extends Application implements GUI {
         clientPlayer.pass();
     }
 
-    public void popUPMessage(int toolID) {
+    public void popUPMessage(int toolID, String str) {
         switch (toolID) {
             case 1:
                 Platform.runLater(() -> {
@@ -247,17 +235,35 @@ public class SagradaGUI extends Application implements GUI {
                  });
                 break;
             case 11:
+                dadieraG.setEnable(false);
+                gridG.setEnable(false);
                 Platform.runLater(() -> {
                     List<Integer> choices = new ArrayList<>();
                     choices.addAll(IntStream.range(1, 7).mapToObj(n -> (Integer)n).collect(Collectors.toList()));
                     ChoiceDialog<Integer> dialog = new ChoiceDialog<>(1, choices);
                     dialog.setTitle("Selezione valore");
                     dialog.setHeaderText("Seleziona il numero del dado!");
+                    dialog.setContentText("Il tuo dado è " + str);
                     Optional<Integer> result = dialog.showAndWait();
-                    result.isPresent();
+                    result.ifPresent(r -> {
+                        ToolAction.setDadieraPair(new Pair(r));
+                        makeToolMove();
+                    });
+                    dadieraG.setEnable(true);
+                    gridG.setEnable(true);
                 });
                 break;
         }
+    }
+
+    private Map<String, String> tranlsateColors() {
+        Map<String, String> map = new HashMap<>();
+        map.put("red", "rosso");
+        map.put("green", "verde");
+        map.put("yellow", "giallo");
+        map.put("blue", "blu");
+        map.put("purple", "viola");
+        return map;
     }
 
     public static void main(String[] args) {

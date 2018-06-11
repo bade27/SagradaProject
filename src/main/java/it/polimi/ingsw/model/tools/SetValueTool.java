@@ -21,6 +21,7 @@ public class SetValueTool extends Tools {
         this.price = 1;                  // necessari a usare i metodi
         this.id = id;
         this.name=name;
+        completeDice = true;
     }
 
     @Override
@@ -93,7 +94,7 @@ public class SetValueTool extends Tools {
     /**
      * Tool nr.10 function
      */
-    private void turnDice(/*Dice x, Dadiera s*/) throws IllegalStepException
+    private void turnDice() throws IllegalStepException
     {
         if(d1 == null)
             throw new IllegalStepException();
@@ -125,20 +126,21 @@ public class SetValueTool extends Tools {
         if (d1 == null)
             throw new IllegalStepException();
 
-        if(finished) {
+        if(completeDice) {
 
             try {
                 dadiera.deleteDice(d1);
                 Dice d = dadiera.getBag().pickADie();
                 dadiera.getBag().putADie(d1);
-                dadiera.addDice(d);
+                color = d.getColor().toString().toLowerCase();
             } catch (NotEnoughDiceException nede) {
                 throw new IllegalStepException();
             }
-            finished = false;
+            completeDice = false;
         } else {
             dadiera.addDice(d1);
             remember = new Dice(d1.getValue(), d1.getColor());
+            completeDice = true;
             finished = false;
             setPrice();
         }
@@ -170,7 +172,7 @@ public class SetValueTool extends Tools {
 
     @Override
     public boolean canPlaceDie(Dice d) {
-        if (id == 6)
+        if (id == 6 || id == 11)
         {
             if (remember == null)
                 return false;

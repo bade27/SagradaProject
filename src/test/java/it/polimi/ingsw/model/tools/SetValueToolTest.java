@@ -5,7 +5,6 @@ import it.polimi.ingsw.exceptions.IllegalStepException;
 import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.model.Dadiera;
 import it.polimi.ingsw.model.Dice;
-import it.polimi.ingsw.remoteInterface.ToolMove;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;

@@ -2,7 +2,10 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.GUI;
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
-import it.polimi.ingsw.remoteInterface.*;
+import it.polimi.ingsw.model.ColorEnum;
+import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
+import it.polimi.ingsw.remoteInterface.Pair;
+import it.polimi.ingsw.remoteInterface.ServerRemoteInterface;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -14,11 +17,9 @@ import java.io.IOException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInterface
 {
@@ -33,7 +34,6 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     private int typeOfCOnnection; //1 rmi , 0 Socket
 
     private GUI graph;
-    //private ClientModelAdapter adp;
     private ServerRemoteInterface server;
 
     //buffer mossa in upload
@@ -269,14 +269,17 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     }
 
     public synchronized void useTool() {
-        try {
-            String msg = ToolAction.performTool(server);
-            graph.updateMessage(msg);
-            if(!msg.equals("11"))
-                graph.setToolPhase(false);
+        String msg = ToolAction.performTool(server);
+        graph.updateMessage(msg);
+        if (!"redyellowgreenbluepurple".contains(msg)) {
+            graph.setToolPhase(false);
             ToolAction.clearTool();
-        } catch (RemoteException e) {
-            e.printStackTrace();
+        } else {
+            ColorEnum[] color = Stream.of(ColorEnum.values()).toArray(ColorEnum[]::new);
+            for(ColorEnum c : color) {
+                if(c.toString().toLowerCase().equals(msg.toLowerCase()))
+                    ToolAction.setDadieraPair(new Pair(c));
+            }
         }
     }
 

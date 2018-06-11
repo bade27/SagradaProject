@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <root>
 
-	<numberOfCards>10</numberOfCards>
+	<numberOfCards>12</numberOfCards>
 
 	<tool1 num="1">
 		<name>Pinza Sgrossatrice</name>
@@ -66,7 +66,7 @@
 	<tool11 num="11">
 		<name>Diluente per Pasta Salda</name>
 		<effect>Dopo aver scelto un dado, riponilo nel Sacchetto, poi pescane uno dal Saccheto [Scegli il valore del nuovo dado e piazzalo, rispettando tutte le restrizioni di piazzamento]</effect>
-		<class>MoveDadiera</class>
+		<class>SetDiceValue</class>
 	</tool11>
 
 	<tool12 num="12">

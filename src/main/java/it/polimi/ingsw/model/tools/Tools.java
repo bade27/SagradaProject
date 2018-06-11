@@ -16,6 +16,7 @@ public abstract class Tools {
     protected int id;
     protected boolean finished;
     protected String name;
+    protected boolean completeDice; //needed for tool 11
 
     protected static ServerModelAdapter adapter;
 
@@ -27,6 +28,7 @@ public abstract class Tools {
     protected static Coordinates pos_iniz2;
     protected static Coordinates pos_fin2;
     protected static String instruction;
+    protected static String color; //needed for tool 11
 
 
 
@@ -114,10 +116,19 @@ public abstract class Tools {
     //others
     public boolean isToolFinished (){ return finished; }
 
+    public boolean isDiceComplete() {
+        return completeDice;
+    }
+
     public void setToolFinished (boolean f){ finished=f; }
 
     public String getName() {
         return name;
+    }
+
+    //needed for tool 11
+    public static String getColor() {
+        return color;
     }
 
     public static void setAllToNull() {
