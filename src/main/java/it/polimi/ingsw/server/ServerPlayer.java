@@ -7,6 +7,7 @@ import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
 import it.polimi.ingsw.remoteInterface.Pair;
 import it.polimi.ingsw.utilities.FileLocator;
 import it.polimi.ingsw.utilities.LogFile;
+import it.polimi.ingsw.utilities.UsersEntry;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -33,8 +34,7 @@ public class ServerPlayer implements Runnable
     private ExecutorService executor;
 
     //Setup Phase
-    private ServerSocketHandler socketCon;
-    private ArrayList<String> possibleUsers;
+    private UsersEntry possibleUsers;
 
     //passed parameters
     private String[] windowCard1,windowCard2;
@@ -45,23 +45,7 @@ public class ServerPlayer implements Runnable
     private Tools[] toolCards;
 
 
-    /**
-     * sets up connection parameters
-     */
-    private static void connection_parameters_setup() throws ParserConfigurationException, IOException, SAXException {
-        File file = new File(FileLocator.getServerSettingsPath());
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document document = documentBuilder.parse(file);
-
-        //SOCKET_PORT = Integer.parseInt(document.getElementsByTagName("portNumber").item(0).getTextContent());
-        PING_TIMEOUT = Integer.parseInt(document.getElementsByTagName("ping").item(0).getTextContent());
-        INIT_TIMEOUT = Integer.parseInt(document.getElementsByTagName("init").item(0).getTextContent());
-        TURN_TIMEOUT = Integer.parseInt(document.getElementsByTagName("turn").item(0).getTextContent());
-    }
-
-
-    public ServerPlayer(TokenTurn tok, ServerModelAdapter adp, ArrayList ps, ClientRemoteInterface cli)
+    public ServerPlayer(TokenTurn tok, ServerModelAdapter adp, UsersEntry ps, ClientRemoteInterface cli)
     {
         adapter = adp;
         token = tok;
@@ -133,9 +117,6 @@ public class ServerPlayer implements Runnable
                     LogFile.addLog("Turn of:" + user);
                     System.out.println("\n>>>Turn of:" + user);
 
-                    //Thread.sleep(2000); Turn Simulation
-
-
                     try {
                         adapter.setCanMove(true);
                         clientTurn();
@@ -148,7 +129,6 @@ public class ServerPlayer implements Runnable
                             token.getSynchronator().notifyAll();
                         }
                     }
-
 
                     //End turn comunication
                     synchronized (adapter){
@@ -185,8 +165,7 @@ public class ServerPlayer implements Runnable
                     LogFile.addLog("Failed to add user");
                     throw new ClientOutOfReachException();
                 }
-            } while (!possibleUsers.contains(u));
-            possibleUsers.remove(u);
+            } while (!possibleUsers.loginCheck(u));
             user = u;
             adapter.setUser(u);
             LogFile.addLog("User: " + user + " Added");
@@ -442,6 +421,21 @@ public class ServerPlayer implements Runnable
     public String getUser ()
     {
         return user;
+    }
+
+    /**
+     * sets up connection parameters
+     */
+    private static void connection_parameters_setup() throws ParserConfigurationException, IOException, SAXException {
+        File file = new File(FileLocator.getServerSettingsPath());
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document document = documentBuilder.parse(file);
+
+        //SOCKET_PORT = Integer.parseInt(document.getElementsByTagName("portNumber").item(0).getTextContent());
+        PING_TIMEOUT = Integer.parseInt(document.getElementsByTagName("ping").item(0).getTextContent());
+        INIT_TIMEOUT = Integer.parseInt(document.getElementsByTagName("init").item(0).getTextContent());
+        TURN_TIMEOUT = Integer.parseInt(document.getElementsByTagName("turn").item(0).getTextContent());
     }
 
     //</editor-fold>

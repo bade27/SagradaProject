@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class UsersEntry
 {
-    ArrayList<Users> userList = new ArrayList<>();
+    private ArrayList<Users> userList = new ArrayList<>();
 
     public UsersEntry () throws ParserXMLException
     {
@@ -14,7 +14,7 @@ public class UsersEntry
             userList.add(new Users(nameList.get(i)));
     }
 
-    public boolean loginCheck (String user) throws ParserXMLException
+    public synchronized boolean loginCheck (String user) throws ParserXMLException
     {
         for (int i = 0; i < userList.size() ; i++)
         {
@@ -28,7 +28,8 @@ public class UsersEntry
         }
         Users u = new Users(user);
         u.addPlayerToDB();
-        userList.add(new Users(user));
+        u.setInGame();
+        userList.add(u);
         return true;
     }
 
@@ -47,7 +48,7 @@ public class UsersEntry
         }
 
         private void setInGame() {
-            this.inGame = false;
+            this.inGame = true;
         }
 
         private String getUsername() {
