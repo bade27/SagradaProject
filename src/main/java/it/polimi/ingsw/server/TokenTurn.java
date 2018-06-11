@@ -32,10 +32,15 @@ public class TokenTurn
     private boolean fatalError;
     private boolean justDeleting;
 
+    //Object to synchronize
     private final Integer synchronator = 5;
+
+    //End game
+    private boolean endGame;
 
     public TokenTurn ()
     {
+        endGame = false;
         currentTurn = 0;
         clockwise = true;
         onSetup = false;
@@ -358,6 +363,14 @@ public class TokenTurn
 
     public Integer getSynchronator() {
         return synchronator;
+    }
+
+    public synchronized boolean isEndGame() {
+        return endGame;
+    }
+
+    public void setEndGame() {
+        this.endGame = true;
     }
     //</editor-fold>
 

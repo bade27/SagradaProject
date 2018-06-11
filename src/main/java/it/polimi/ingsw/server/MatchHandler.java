@@ -37,8 +37,6 @@ public class MatchHandler implements Runnable
     private RoundTrace roundTrace;
     private UsersEntry userList;
 
-    private int turnsPlayed;
-
     private final static int TURNS = 10;
     private final static int MAXGIOC = 2;//Da modificare a 4
 
@@ -87,6 +85,7 @@ public class MatchHandler implements Runnable
      * */
     private void startGame ()
     {
+        int turnsPlayed;
         LogFile.addLog("Game Phase started");
         try{
             mixDadiera();
@@ -115,10 +114,13 @@ public class MatchHandler implements Runnable
                         endGame();
                         return;
                     }
+
                     //Increment total of turn
                     turnsPlayed++;
+
                     //Update Round Trace
-                    while(dices.getListaDadi().size() > 0) {
+                    while(dices.getListaDadi().size() > 0)
+                    {
                         Dice tmp = null;
                         try {
                             tmp = dices.getDice(0);
@@ -177,7 +179,9 @@ public class MatchHandler implements Runnable
     {
         System.out.println(">>>The game is ended");
         LogFile.addLog("The game is ended, count of players' point");
-
+        //Conteggio dei punti da parte degli obbiettivi
+        token.setEndGame();
+        token.getSynchronator().notifyAll();
     }
     //</editor-fold>
 

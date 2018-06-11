@@ -44,7 +44,6 @@ public class ServerPlayer implements Runnable
     //actual cards
     private Tools[] toolCards;
 
-
     public ServerPlayer(TokenTurn tok, ServerModelAdapter adp, UsersEntry ps, ClientRemoteInterface cli)
     {
         adapter = adp;
@@ -110,6 +109,11 @@ public class ServerPlayer implements Runnable
             {
                 try
                 {
+                    if (token.isEndGame())
+                    {
+                        //Invia ai client il risultato
+                    }
+
                     //Wait his turn
                     while (!token.isMyTurn(user))
                         token.getSynchronator().wait();
