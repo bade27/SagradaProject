@@ -5,6 +5,7 @@ import it.polimi.ingsw.exceptions.ModelException;
 import it.polimi.ingsw.model.tools.Tools;
 import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
 import it.polimi.ingsw.remoteInterface.Pair;
+import it.polimi.ingsw.utilities.FileLocator;
 import it.polimi.ingsw.utilities.LogFile;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -21,7 +22,6 @@ import java.util.concurrent.*;
 public class ServerPlayer implements Runnable
 {
     //connection parameters
-    private static final String settings = "resources/server_settings.xml";
     private static int PING_TIMEOUT; //10 sec
     private static int INIT_TIMEOUT;
     private static int TURN_TIMEOUT; //5 min
@@ -49,7 +49,7 @@ public class ServerPlayer implements Runnable
      * sets up connection parameters
      */
     private static void connection_parameters_setup() throws ParserConfigurationException, IOException, SAXException {
-        File file = new File(settings);
+        File file = new File(FileLocator.getServerSettingsPath());
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document document = documentBuilder.parse(file);

@@ -3,6 +3,7 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.GUI;
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.remoteInterface.*;
+import it.polimi.ingsw.utilities.FileLocator;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -22,8 +23,6 @@ import java.util.concurrent.TimeUnit;
 
 public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInterface
 {
-    private static final String settings = "resources/client_settings.xml";
-
     //connection parameters
     private static int RMI_REGISTRY_PORT;
     private static int RMI_STUB_PORT;
@@ -42,7 +41,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
     //<editor-fold desc="Initialization Phase">
     private static void connection_parameters_setup() throws ParserConfigurationException, IOException, SAXException {
-        File file = new File(settings);
+        File file = new File(FileLocator.getClientSettingsPath());
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document document = documentBuilder.parse(file);

@@ -13,6 +13,7 @@ import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
 import it.polimi.ingsw.utilities.FileLocator;
 import it.polimi.ingsw.utilities.LogFile;
 import it.polimi.ingsw.utilities.ParserXML;
+import it.polimi.ingsw.utilities.UsersEntry;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -43,7 +44,6 @@ public class MatchHandler implements Runnable
     private final static int MAXGIOC = 2;//Da modificare a 4
 
     //connection parameters
-    private static final String settings = "resources/server_settings.xml";
     private static int RMI_REGISTRY_PORT;
     private static String HOSTNAME;
     private static int SOCKET_PORT;
@@ -54,7 +54,7 @@ public class MatchHandler implements Runnable
      * sets up connection parameters
      */
     private static void connection_parameters_setup() throws ParserConfigurationException, IOException, SAXException {
-        File file = new File(settings);
+        File file = new File(FileLocator.getServerSettingsPath());
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document document = documentBuilder.parse(file);
@@ -70,6 +70,15 @@ public class MatchHandler implements Runnable
 
     public synchronized void run ()
     {
+        /*try {
+            UsersEntry u = new UsersEntry();
+            u.loginCheck("KIMOSABE");
+            u.loginCheck("KIMOSABEBUU");
+        }catch (Exception e){
+            e.printStackTrace();
+        }*/
+
+
         //Connection Phase
         initializeServer();
         initializeClients();
