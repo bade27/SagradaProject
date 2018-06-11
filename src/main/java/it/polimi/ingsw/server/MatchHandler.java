@@ -13,6 +13,7 @@ import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
 import it.polimi.ingsw.utilities.FileLocator;
 import it.polimi.ingsw.utilities.LogFile;
 import it.polimi.ingsw.utilities.ParserXML;
+import it.polimi.ingsw.utilities.UsersEntry;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -30,54 +31,42 @@ public class MatchHandler implements Runnable
 {
     private ArrayList<ServerPlayer> player;
     private ArrayList<Thread> threadPlayers;
-    private ArrayList possibleUsrs;
-
 
     private TokenTurn token;
     private Dadiera dices;
     private RoundTrace roundTrace;
-
-    private int turnsPlayed;
+    private UsersEntry userList;
 
     private final static int TURNS = 10;
     private final static int MAXGIOC = 1;//Da modificare a 4
 
     //connection parameters
-    private static final String settings = "resources/server_settings.xml";
     private static int RMI_REGISTRY_PORT;
     private static String HOSTNAME;
     private static int SOCKET_PORT;
 
     private int progressive;
     private int nConn;
-    /**
-     * sets up connection parameters
-     */
-    private static void connection_parameters_setup() throws ParserConfigurationException, IOException, SAXException {
-        File file = new File(settings);
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document document = documentBuilder.parse(file);
-
-        //rmi setup
-        RMI_REGISTRY_PORT = Integer.parseInt(document.getElementsByTagName("registryPort").item(0).getTextContent());
-        HOSTNAME = document.getElementsByTagName("hostName").item(0).getTextContent();
-
-        //socket setup
-        SOCKET_PORT = Integer.parseInt(document.getElementsByTagName("portNumber").item(0).getTextContent());
-    }
 
 
     public synchronized void run ()
     {
         //Connection Phase
-        initializeServer();
+        if (!initializeServer())
+        {
+            LogFile.addLog(">>>Failed to initialize server, server aborted");
+            System.out.println(">>>Failed to initialize server, server aborted");
+            return;
+        }
+
+
         initializeClients();
         System.out.println(">>>Connection Phase Ended");
 
         //Windows, tools and objectives initialization
         if (! (initializeWindowPlayers() && initializePublicObjectiveCards() && initializeTools()))
         {
+            LogFile.addLog(">>>Failed to initialize cards, server aborted");
             System.out.println(">>>Failed to initialize cards, server aborted");
             return;
         }
@@ -96,6 +85,7 @@ public class MatchHandler implements Runnable
      * */
     private void startGame ()
     {
+        int turnsPlayed;
         LogFile.addLog("Game Phase started");
         try{
             mixDadiera();
@@ -124,10 +114,13 @@ public class MatchHandler implements Runnable
                         endGame();
                         return;
                     }
+
                     //Increment total of turn
                     turnsPlayed++;
+
                     //Update Round Trace
-                    while(dices.getListaDadi().size() > 0) {
+                    while(dices.getListaDadi().size() > 0)
+                    {
                         Dice tmp = null;
                         try {
                             tmp = dices.getDice(0);
@@ -186,7 +179,9 @@ public class MatchHandler implements Runnable
     {
         System.out.println(">>>The game is ended");
         LogFile.addLog("The game is ended, count of players' point");
-
+        //Conteggio dei punti da parte degli obbiettivi
+        token.setEndGame();
+        token.getSynchronator().notifyAll();
     }
     //</editor-fold>
 
@@ -195,19 +190,22 @@ public class MatchHandler implements Runnable
     /**
      * Initialize all server's components and all game's componenents
      */
-    private void initializeServer ()
+    private boolean initializeServer ()
     {
         LogFile.createLogFile();
-        possibleUsrs = initializePossibleUsers();
         player = new ArrayList<ServerPlayer>();
         token = new TokenTurn();
         dices = new Dadiera();
         roundTrace = new RoundTrace();
         progressive = 0;
+        if (!initializeUsers())
+            return false;
+
         try {
             connection_parameters_setup();
         } catch (ParserConfigurationException| IOException | SAXException e) {
             LogFile.addLog("Impossible to read settings parameters" , e.getStackTrace());
+            return false;
         }
         nConn = 0;
 
@@ -227,7 +225,9 @@ public class MatchHandler implements Runnable
         }catch (Exception e){
             LogFile.addLog("Fatal Error: Impossible to put in wait Server");
             Thread.currentThread().interrupt();
+            return false;
         }
+        return true;
     }
 
 
@@ -279,7 +279,7 @@ public class MatchHandler implements Runnable
         }
         //Initialization of ServerPlayer for each player
         ServerModelAdapter adp = new ServerModelAdapter(dices, roundTrace, token);
-        ServerPlayer pl = new ServerPlayer(token,adp,possibleUsrs,cli);
+        ServerPlayer pl = new ServerPlayer(token,adp,userList,cli);
         player.add(pl);
         nConn++;
         int n = checkClientAlive();
@@ -363,6 +363,24 @@ public class MatchHandler implements Runnable
     //</editor-fold>
 
     //<editor-fold desc = "Windows, tools and objectives initialization">
+
+    /**
+     * Initialize from file users's credential
+     * @return true if goes well, false otherwise
+     */
+    private boolean initializeUsers ()
+    {
+        try
+        {
+            userList = new UsersEntry();
+            return true;
+        }catch (Exception e){
+            LogFile.addLog(e.getMessage(),e.getStackTrace());
+            return false;
+        }
+    }
+
+
     /**
      *  Initialization board game for each players
      */
@@ -555,17 +573,20 @@ public class MatchHandler implements Runnable
 
     }
     /**
-     * To modify in reading from XML or DB possible users
-     * @return
+     * sets up connection parameters
      */
-    private ArrayList initializePossibleUsers ()
-    {
-        ArrayList<String> arr = new ArrayList();
-        arr.add("A");
-        arr.add("B");
-        arr.add("C");
-        arr.add("D");
-        return arr;
+    private static void connection_parameters_setup() throws ParserConfigurationException, IOException, SAXException {
+        File file = new File(FileLocator.getServerSettingsPath());
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document document = documentBuilder.parse(file);
+
+        //rmi setup
+        RMI_REGISTRY_PORT = Integer.parseInt(document.getElementsByTagName("registryPort").item(0).getTextContent());
+        HOSTNAME = document.getElementsByTagName("hostName").item(0).getTextContent();
+
+        //socket setup
+        SOCKET_PORT = Integer.parseInt(document.getElementsByTagName("portNumber").item(0).getTextContent());
     }
 
 

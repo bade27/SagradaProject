@@ -7,7 +7,7 @@
 			- [X] Tool 2
 			- [X] Tool 3
 			- [X] Tool 4
-			- [ ] Tool 5
+			- [X] Tool 5
 			- [X] Tool 6
 			- [X] Tool 7
 			- [X] Tool 8

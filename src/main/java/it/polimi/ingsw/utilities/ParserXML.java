@@ -4,11 +4,15 @@ import it.polimi.ingsw.exceptions.ParserXMLException;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.model.Placement;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
+import org.w3c.dom.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.OutputKeys;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.util.ArrayList;
 
@@ -196,4 +200,63 @@ public class ParserXML
     }
 
     //</editor-fold>
+
+    //<editor-fold desc="User XML">
+    /**
+     * Read from xml all user names and return a list with those
+     * @param path XML file location
+     * @return list of usernames
+     */
+    public static ArrayList<String> readUserNames (String path) throws ParserXMLException
+    {
+        try
+        {
+            ArrayList<String> userList = new ArrayList<>();
+            File file = new File(path);
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document document = documentBuilder.parse(file);
+            for (int i = 0 ; i < document.getElementsByTagName("username").getLength() ; i++)
+            {
+                String s = document.getElementsByTagName("username").item(i).getTextContent();
+                userList.add(s);
+            }
+            return userList;
+        }
+        catch (Exception ex){
+            throw new ParserXMLException("Impossible to read file: " + path);
+        }
+    }
+
+    /**
+     * Write to user name passed
+     * @param path XML file location
+     */
+    public static void addUserNames (String path,String name) throws ParserXMLException
+    {
+        try {
+            File inputFile = new File(path);
+            DocumentBuilderFactory factory=DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            // creating input stream
+            Document doc = builder.parse(inputFile );
+            Element root =doc.getDocumentElement();
+            Node childnode=doc.createElement("username");
+            root.appendChild(childnode);
+            childnode.setTextContent(name);
+
+            // writing xml file
+            Transformer tf = TransformerFactory.newInstance().newTransformer();
+            tf.setOutputProperty(OutputKeys.ENCODING, "UTF-8");
+            tf.setOutputProperty(OutputKeys.INDENT, "yes");
+            File outputFile = new File(path);
+            tf.transform(new DOMSource(doc), new StreamResult(outputFile));
+
+
+        } catch (Exception e) {
+            throw new ParserXMLException("Impossible to read file: " + path);
+        }
+    }
+    //</editor-fold>
+
 }
