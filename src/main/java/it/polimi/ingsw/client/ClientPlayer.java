@@ -2,7 +2,11 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.GUI;
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
-import it.polimi.ingsw.remoteInterface.*;
+import it.polimi.ingsw.model.ColorEnum;
+import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
+import it.polimi.ingsw.remoteInterface.Pair;
+import it.polimi.ingsw.remoteInterface.ServerRemoteInterface;
+import it.polimi.ingsw.utilities.FileLocator;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -14,16 +18,12 @@ import java.io.IOException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInterface
 {
-    private static final String settings = "resources/client_settings.xml";
-
     //connection parameters
     private static int RMI_REGISTRY_PORT;
     private static int RMI_STUB_PORT;
@@ -42,7 +42,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
     //<editor-fold desc="Initialization Phase">
     private static void connection_parameters_setup() throws ParserConfigurationException, IOException, SAXException {
-        File file = new File(settings);
+        File file = new File(FileLocator.getClientSettingsPath());
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document document = documentBuilder.parse(file);
@@ -268,11 +268,19 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         return response.equals("Tool permission accepted");
     }
 
-    public synchronized void useTool()
-    {
-        graph.updateMessage(ToolAction.performTool(server));
-        graph.setToolPhase(false);
-        ToolAction.clearTool();
+    public synchronized void useTool() {
+        String msg = ToolAction.performTool(server);
+        graph.updateMessage(msg);
+        if (!"redyellowgreenbluepurple".contains(msg)) {
+            graph.setToolPhase(false);
+            ToolAction.clearTool();
+        } else {
+            ColorEnum[] color = Stream.of(ColorEnum.values()).toArray(ColorEnum[]::new);
+            for(ColorEnum c : color) {
+                if(c.toString().toLowerCase().equals(msg.toLowerCase()))
+                    ToolAction.setDadieraPair(new Pair(c));
+            }
+        }
     }
 
     //</editor-fold>

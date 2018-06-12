@@ -4,7 +4,6 @@ import it.polimi.ingsw.GUI;
 import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.client.ToolAction;
 import it.polimi.ingsw.exceptions.IllegalDiceException;
-import it.polimi.ingsw.remoteInterface.Coordinates;
 import it.polimi.ingsw.remoteInterface.Pair;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -12,12 +11,15 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
 import java.rmi.RemoteException;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class SagradaGUI extends Application implements GUI {
 
@@ -36,7 +38,6 @@ public class SagradaGUI extends Application implements GUI {
     private ClientPlayer clientPlayer;
     private boolean enableBoard;
     private boolean toolPhase;
-
 
     public SagradaGUI() {
         enableBoard = false;
@@ -120,16 +121,6 @@ public class SagradaGUI extends Application implements GUI {
         primaryStage.setOnCloseRequest(e -> Platform.exit());
     }
 
-
-    /*public void modMovePair(Pair pair){
-        clientPlayer.setMovePair(pair);
-    }
-
-    public void modMoveIJ(Coordinates coord){
-        clientPlayer.setMoveCoordinates(coord);
-    }*/
-
-
     /**
      * updates the dice displayed on dadiera
      * @param p
@@ -155,6 +146,12 @@ public class SagradaGUI extends Application implements GUI {
      * @param msg
      */
     public void updateMessage(String msg) {
+        if("redyellowgreenbluepurple".contains(msg)) {
+            Map<String, String> colorTranslation = tranlsateColors();
+            String col = colorTranslation.get(msg);
+            popUPMessage(11, col);
+            msg = "Tool in use";
+        }
         msgb.updateGraphic(msg);
     }
 
@@ -185,6 +182,10 @@ public class SagradaGUI extends Application implements GUI {
         gridG.setEnable(enableBoard);
     }
 
+    /**
+     * changes the behaviour of the GUI's components in order to perform a tool move
+     * @param toolPhase
+     */
     public void setToolPhase(boolean toolPhase) {
         this.toolPhase = toolPhase;
         dadieraG.setTool(toolPhase);
@@ -199,43 +200,94 @@ public class SagradaGUI extends Application implements GUI {
         clientPlayer.myMove();
     }
 
-
+    /**
+     * asks to the server if the tool can be used
+     * @param i
+     */
     public void toolPermission(int i) {
         toolPhase = clientPlayer.toolPermission(i);
         if(toolPhase) {
             setToolPhase(true);
             msgb.updateGraphic("Using a tool");
-            PopUPMessage(i);
+            if(i == 1)
+                popUPMessage(i, "");
         }
     }
 
+    /**
+     * handles to the client class the command to perform a move
+     */
     public void makeToolMove() {
         clientPlayer.useTool();
     }
 
+    /**
+     * handles to the client class the command to end the turn
+     */
     @Override
     public void passTurn() {
         clientPlayer.pass();
     }
 
-    public void PopUPMessage(int toolID) {
-        if(toolID == 1) {
-            Platform.runLater(() -> {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setContentText("Come desideri cambiare il valore del dado?");
+    /**
+     * retrieve necessary information for tools 1 and 11
+     * @param toolID
+     * @param str
+     */
+    public void popUPMessage(int toolID, String str) {
+        switch (toolID) {
+            case 1:
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setHeaderText("Cambia il valore");
+                    alert.setContentText("Come desideri cambiare il valore del dado?");
 
-                ButtonType buttonType1 = new ButtonType("Incrementa");
-                ButtonType buttonType2 = new ButtonType("Decrementa");
+                    ButtonType buttonType1 = new ButtonType("Incrementa");
+                    ButtonType buttonType2 = new ButtonType("Decrementa");
 
-                alert.getButtonTypes().setAll(buttonType1, buttonType2);
-                Optional<ButtonType> result = alert.showAndWait();
+                    alert.getButtonTypes().setAll(buttonType1, buttonType2, ButtonType.CLOSE);
+                    Optional<ButtonType> result = alert.showAndWait();
 
-                if (result.get() == buttonType1)
-                    ToolAction.setInstruction("inc");
-                 else
-                     ToolAction.setInstruction("dec");
-            });
+                    if (result.get() == buttonType1)
+                        ToolAction.setInstruction("inc");
+                    else if (result.get() == buttonType2)
+                        ToolAction.setInstruction("dec");
+                });
+                break;
+            case 11:
+                Platform.runLater(() -> {
+                    dadieraG.setEnable(false);
+                    gridG.setEnable(false);
+                    List<Integer> choices = new ArrayList<>();
+                    choices.addAll(IntStream.range(1, 7).mapToObj(n -> (Integer) n).collect(Collectors.toList()));
+                    ChoiceDialog<Integer> dialog = new ChoiceDialog<>(1, choices);
+                    dialog.setTitle("Selezione valore");
+                    dialog.setHeaderText("Seleziona il numero del dado!");
+                    dialog.setContentText("Il tuo dado è " + str);
+                    Optional<Integer> result = dialog.showAndWait();
+                    if(result.isPresent())
+                        ToolAction.setDadieraPair(new Pair(result.get()));
+                    else ToolAction.setDadieraPair(null);
+                    makeToolMove();
+                    dadieraG.setEnable(true);
+                    gridG.setEnable(true);
+                });
+                break;
         }
+    }
+
+    /**
+     * translates color names to italian
+     * @return the map with the translation
+     */
+    private Map<String, String> tranlsateColors() {
+        Map<String, String> map = new HashMap<>();
+        map.put("red", "rosso");
+        map.put("green", "verde");
+        map.put("yellow", "giallo");
+        map.put("blue", "blu");
+        map.put("purple", "viola");
+        return map;
     }
 
     public static void main(String[] args) {

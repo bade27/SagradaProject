@@ -6,20 +6,35 @@ import java.io.Serializable;
 
 public class Pair implements Serializable {
 
-    private int value;
+    private Integer value;
     private ColorEnum color;
 
-    public Pair(int value, ColorEnum color) {
+    public Pair(Integer value) {
+        this.value = value;
+    }
+
+    public Pair(ColorEnum color) {
+        this.color = color;
+    }
+    public Pair(Integer value, ColorEnum color) {
         this.value = value;
         this.color = color;
     }
 
-    public int getValue() {
+    public Integer getValue() {
         return value;
     }
 
     public ColorEnum getColor() {
         return color;
+    }
+
+    public void setValue(Integer value) {
+        this.value = value;
+    }
+
+    public void setColor(ColorEnum color) {
+        this.color = color;
     }
 
     @Override

@@ -12,6 +12,7 @@ public class ToolAction
 
     private static Pair dadieraDie;
     private static Pair traceDie;
+    private static Pair genericDie;
 
     private static Coordinates fstDieStartPosition;
     private static Coordinates fstDiePlacePosition;
@@ -58,6 +59,8 @@ public class ToolAction
                     return comm.useTool();
                 if (idTool == 9)
                     return comm.useTool(dadieraDie,fstDieStartPosition);
+                if(idTool == 11)
+                    return comm.useTool(dadieraDie, instruction);
 
             }catch (Exception e){
                 return "Invalid Input";
@@ -68,8 +71,6 @@ public class ToolAction
     }
 
 
-    //3)use tool unico per tool 2-3-4? ci stuh
-    //5)tool 5 non funzionante
     public static void setPosition (Coordinates coord)
     {
         if (fstDieStartPosition == null)
@@ -90,10 +91,15 @@ public class ToolAction
     public static void setTracePosition(int tracePosition){ ToolAction.tracePosition=tracePosition; }
 
     public static void setDadieraPair(Pair dadieraDie) {
-        ToolAction.dadieraDie = dadieraDie;
+
+        //the first branch guarantees the correct functionality of tool 11
+        if(ToolAction.dadieraDie != null && dadieraDie != null && ToolAction.dadieraDie.getValue() == null && ToolAction.dadieraDie.getColor() != null) {
+            ToolAction.dadieraDie.setValue(dadieraDie.getValue());
+        } else ToolAction.dadieraDie = dadieraDie;
     }
 
     public static void setTracePair(Pair traceDie) {
         ToolAction.traceDie = traceDie;
     }
+
 }

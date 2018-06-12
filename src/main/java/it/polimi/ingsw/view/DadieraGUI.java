@@ -73,7 +73,6 @@ public class DadieraGUI extends GridPane {
                                 break;
                         }
                         if (tool) {
-                            //game.modToolMovePair(new Pair(val, color));
                             ToolAction.setDadieraPair(new Pair(val, color));
                         } else {
                             MoveAction.setPair(new Pair(val, color));

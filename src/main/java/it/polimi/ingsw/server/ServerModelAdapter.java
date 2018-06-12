@@ -55,12 +55,14 @@ public class ServerModelAdapter
      */
     public String useTool(Wrapper... w)
     {
+        String replyToClient = "";
         //Checks if any tool permission was requested
         if (toolInUse == null)
         {
             LogFile.addLog("User: " + user + "\t Tool not permission asked");
             return "Not using tool permission asked";
         }
+
         //sets all the necessary parameters inside the tool in use
         for(Wrapper wrapper : w)
             wrapper.myFunction();
@@ -75,8 +77,15 @@ public class ServerModelAdapter
             return "Tool Action failed: " + e.getMessage();
         }
         //If performed decrees client's own marker
-        marker = marker - current_price;
-        return "Tool used correctly";
+        //first branch guarantees tool 11's right use
+        if(toolInUse.getId() == 11 && !toolInUse.isDiceComplete()) {
+            replyToClient = toolInUse.getColor();
+        } else {
+            marker = marker - current_price;
+            replyToClient = "Tool used correctly";
+        }
+        Tools.setAllToNull();
+        return replyToClient;
 
     }
 

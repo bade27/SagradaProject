@@ -1,9 +1,10 @@
 package it.polimi.ingsw.model.tools;
 
-//Tool nr. 1-6-10
+//Tool nr. 1-6-10-11
 
 import it.polimi.ingsw.exceptions.IllegalDiceException;
 import it.polimi.ingsw.exceptions.IllegalStepException;
+import it.polimi.ingsw.exceptions.NotEnoughDiceException;
 import it.polimi.ingsw.model.Dadiera;
 import it.polimi.ingsw.model.Dice;
 import it.polimi.ingsw.server.TokenTurn;
@@ -16,10 +17,14 @@ public class SetValueTool extends Tools {
     private Dadiera dadiera;
     private TokenTurn token;
 
+    //temporaryDie stores a die to be removed from dadiera - prevents misuse of the tool
+    private Dice temporaryDie;
+
     public SetValueTool(int id, String name) {  //qua avrò oltre a id un array con dentro i dati
         this.price = 1;                  // necessari a usare i metodi
         this.id = id;
         this.name=name;
+        completeDice = true;
     }
 
     @Override
@@ -39,6 +44,9 @@ public class SetValueTool extends Tools {
             case 10:
                 turnDice();
                 break;
+            case 11:
+                dadieraToDiceBag();
+                break;
             default:
                 break;
         }
@@ -55,6 +63,7 @@ public class SetValueTool extends Tools {
 
     /**
      * Tool nr. 1 function
+     * @throws IllegalStepException if the action does not end well
      */
     private void addSub() throws IllegalStepException
     {
@@ -88,6 +97,7 @@ public class SetValueTool extends Tools {
 
     /**
      * Tool nr.10 function
+     * @throws IllegalStepException if the action does not end well
      */
     private void turnDice() throws IllegalStepException
     {
@@ -101,6 +111,7 @@ public class SetValueTool extends Tools {
 
     /**
      * Tool nr.7
+     * @throws IllegalStepException if the action does not end well
      */
     private void relaunchAllDadiera () throws IllegalStepException
     {
@@ -117,20 +128,38 @@ public class SetValueTool extends Tools {
         setPrice();
     }
 
-    private void DadieraToDiceBag() throws IllegalStepException {
-        /*if(d1 == null)
-            throw new IllegalStepException();
-
-        try {
-            dadiera.deleteDice(d1);
-            Dice d = dadiera.getBag().pickADie();
-            dadiera.getBag().putADie(d1);
-            dadiera.addDice(d);
-        } catch (NotEnoughDiceException nede) {
+    /**
+     * Tool nr. 11
+     * @throws IllegalStepException if the action does not end well
+     */
+    private void dadieraToDiceBag() throws IllegalStepException {
+        if (d1 == null) {
+            if(temporaryDie != null)
+                dadiera.addDice(temporaryDie);
+            remember = null;
             throw new IllegalStepException();
         }
-        finished = false;
-        setPrice();*/
+
+
+        if(completeDice) {
+
+            try {
+                temporaryDie = d1.cloneDice();
+                dadiera.deleteDice(d1);
+                Dice d = dadiera.getBag().pickADie();
+                dadiera.getBag().putADie(d1);
+                color = d.getColor().toString().toLowerCase();
+            } catch (NotEnoughDiceException nede) {
+                throw new IllegalStepException();
+            }
+            completeDice = false;
+        } else {
+            dadiera.addDice(d1);
+            remember = new Dice(d1.getValue(), d1.getColor());
+            completeDice = true;
+            finished = false;
+            setPrice();
+        }
 
     }
 
@@ -159,7 +188,7 @@ public class SetValueTool extends Tools {
 
     @Override
     public boolean canPlaceDie(Dice d) {
-        if (id == 6)
+        if (id == 6 || id == 11)
         {
             if (remember == null)
                 return false;
