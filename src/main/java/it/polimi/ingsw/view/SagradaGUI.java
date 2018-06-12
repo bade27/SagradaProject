@@ -51,12 +51,17 @@ public class SagradaGUI extends Application implements GUI {
         try {
             //1:RMI     0:Socket
             Scanner cli = new Scanner(System.in);
-            String s;
+            String serverIP;
+            do {
+                System.out.println("Insert server address");
+                serverIP = cli.nextLine();
+            } while (!isIPAddressValid(serverIP));
+            String typeOfConnection;
             System.out.println("Select connection mode: 0=Socket ; 1=RMI");
             do{
-                s = cli.nextLine();
-            }while (!s.equals("1") && !s.equals("0"));
-            clientPlayer = new ClientPlayer(Integer.parseInt(s),this);
+                typeOfConnection = cli.nextLine();
+            }while (!typeOfConnection.equals("1") && !typeOfConnection.equals("0"));
+            clientPlayer = new ClientPlayer(Integer.parseInt(typeOfConnection),this, serverIP);
         }
         catch (RemoteException e){
             Thread.currentThread().interrupt();
@@ -288,6 +293,37 @@ public class SagradaGUI extends Application implements GUI {
         map.put("blue", "blu");
         map.put("purple", "viola");
         return map;
+    }
+
+    /**
+     * checks if the ip address given by the user is valid.
+     * if the user doesn't insert an address, a default one is loaded from the setting file
+     * @param ip server address
+     * @return weather the address is valid or not
+     */
+    private boolean isIPAddressValid(String ip) {
+        if(ip.isEmpty())
+            return true;
+
+        try{
+            String[] parts = ip.split("\\.");
+
+            if(parts.length != 4)
+                return false;
+
+            for (String s : parts) {
+                int i = Integer.parseInt(s);
+                if(i < 0 || i > 255)
+                    return false;
+            }
+
+            if(ip.endsWith("."))
+                return false;
+
+            return true;
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
     }
 
     public static void main(String[] args) {

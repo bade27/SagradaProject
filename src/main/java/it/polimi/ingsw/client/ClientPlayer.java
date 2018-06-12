@@ -47,7 +47,8 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document document = documentBuilder.parse(file);
 
-        HOSTNAME = document.getElementsByTagName("hostName").item(0).getTextContent();
+        if(HOSTNAME == null)
+            HOSTNAME = document.getElementsByTagName("hostName").item(0).getTextContent();
 
         //rmi setup
         RMI_REGISTRY_PORT = Integer.parseInt(document.getElementsByTagName("registryPort").item(0).getTextContent());
@@ -58,8 +59,10 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     }
 
 
-    public ClientPlayer (int t,GUI g) throws RemoteException
+    public ClientPlayer (int t,GUI g, String serverIP) throws RemoteException
     {
+        if(!serverIP.isEmpty())
+            HOSTNAME = serverIP;
         typeOfCOnnection = t;
         this.graph = g;
         //adp = new ClientModelAdapter(graph);
@@ -68,6 +71,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             //since the parameters are static, the initialization is performed once
             if(!initialized) {
                 connection_parameters_setup();
+                System.out.println(HOSTNAME);
                 initialized = true;
             }
 
@@ -95,10 +99,12 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             return;
         }
         catch (RemoteException e){
+            //e.printStackTrace();
             System.out.println("Impossible to connect to Host with RMI");
             return;
         }
         catch (Exception e){
+            //e.printStackTrace();
             System.out.println("Impossible to connect to Host");
             return;
         }
