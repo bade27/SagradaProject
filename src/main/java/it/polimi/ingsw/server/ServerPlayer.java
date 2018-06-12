@@ -111,7 +111,8 @@ public class ServerPlayer implements Runnable
                 {
                     if (token.isEndGame())
                     {
-                        //Invia ai client il risultato
+                        LogFile.addLog("(User:" + user + ")" + " End communication with client and close connection");
+                        return;
                     }
 
                     //Wait his turn
@@ -248,6 +249,27 @@ public class ServerPlayer implements Runnable
 
     }
     //</editor-fold>
+
+
+    //<editor-fold desc="End Game Phase">
+    public void endGameCommunication (String [] users, int [] points)
+    {
+        try {
+            communicator.sendResults(users,points);
+        }
+        catch (Exception e) {
+            LogFile.addLog("(User:" + user + ")" + " Impossible to communicate to user results of match");
+        }
+    }
+
+
+    public int getPoints ()
+    {
+        return adapter.calculatePoints();
+    }
+    //</editor-fold>
+
+
 
     //<editor-fold desc="Update Client's information">
     /**

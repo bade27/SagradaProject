@@ -36,11 +36,11 @@ public class PrivateObjective {
     }
 
     /**
-     *
-     * @param vetrata
-     * @return *il punteggio totalizzato dal giocatore (=numero dei dadi del color obbiettivo posizionati)*
+     * Calculates and returns points about window passed
+     * @param vetrata window passed
+     * @return total points of board (=numero dei dadi del color obbiettivo posizionati)*
      */
-    public int calcolaPunteggio(Window vetrata) {
+    public int getScore (Window vetrata) {
         Cell[][] grid = vetrata.getGrid();
         ColorEnum current_color = null;
         int total = 0;

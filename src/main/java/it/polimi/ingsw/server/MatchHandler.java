@@ -25,7 +25,9 @@ import java.io.IOException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
+import java.util.Vector;
 
 public class MatchHandler implements Runnable
 {
@@ -37,7 +39,7 @@ public class MatchHandler implements Runnable
     private RoundTrace roundTrace;
     private UsersEntry userList;
 
-    private final static int TURNS = 10;
+    private final static int TURNS = 2;
     private final static int MAXGIOC = 2;//Da modificare a 4
 
     //connection parameters
@@ -102,14 +104,22 @@ public class MatchHandler implements Runnable
         {
             synchronized (token.getSynchronator())
             {
+                //If a fatal error happens close all connection and return
                 if (token.isFatalError())
                     closeAllConnection();
+
+                //If number of players remaining are not enough the game will stop
+                if (token.getNumPlayers() <= 1)
+                {
+                    endGame();
+                    return;
+                }
 
                 //On end round situation
                 if (token.isEndRound())
                 {
-                    //Check if turns played are enough
-                    if (turnsPlayed == TURNS)
+                    //Check if turns played are enough and close Match Handling
+                    if (turnsPlayed == TURNS - 1)
                     {
                         endGame();
                         return;
@@ -179,12 +189,24 @@ public class MatchHandler implements Runnable
     {
         System.out.println(">>>The game is ended");
         LogFile.addLog("The game is ended, count of players' point");
+
         //Conteggio dei punti da parte degli obbiettivi
+        String[] userList = new String[MAXGIOC];
+        int[] pointsList = new int[MAXGIOC];
 
+        for (int i = 0 ; i < player.size() ; i++)
+        {
+            userList[i] = player.get(i).getUser();
+            pointsList[i] = player.get(i).getPoints();
+        }
 
+        for (int i = 0 ; i < player.size() ; i++)
+            player.get(i).endGameCommunication(userList,pointsList);
 
         token.setEndGame();
         token.getSynchronator().notifyAll();
+
+        LogFile.addLog("The game is ended, MatchHandler closing");
     }
     //</editor-fold>
 

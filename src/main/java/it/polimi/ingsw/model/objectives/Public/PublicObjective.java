@@ -28,18 +28,6 @@ public class PublicObjective {
         return punteggio.calcScore(valore, grid);
     }
 
-    /**
-     *
-     * i getter seguenti restituiscono i campi privati della classe (punteggio escluso)
-     */
-    public String getNome() {
-        return nome;
-    }
-
-    public String getDescrizione() {
-        return descrizione;
-    }
-
     public int getValore() {
         //punteggio diagonale non ha un valore predefinito, ma varia da partita a partita
         return punteggio.getClass().getSimpleName().equals("DiagonalScore") ?

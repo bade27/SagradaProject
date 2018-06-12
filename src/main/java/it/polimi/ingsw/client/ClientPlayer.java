@@ -10,6 +10,7 @@ import it.polimi.ingsw.utilities.FileLocator;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
+import javax.swing.plaf.synth.SynthEditorPaneUI;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -199,6 +200,13 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     public String updateRoundTrace(ArrayList<Pair>[] dice) throws RemoteException {
         graph.updateRoundTrace(dice);
         return "ok";
+    }
+
+    @Override
+    public void sendResults(String [] user, int [] point) throws RemoteException {
+        System.out.println("End game results:");
+        for (int i = 0 ; i < user.length ; i++)
+            System.out.println("Utente: " + user[i] + "\t Punti totalizzati: " + point[i]);
     }
 
     @Override

@@ -153,6 +153,8 @@ public class ServerModelAdapter
     }
 
 
+
+
     //<editor-fold desc="Setup Phase">
     /**
      * Initialize window with path passed
@@ -219,6 +221,21 @@ public class ServerModelAdapter
     public void setUser (String s)
     {
         user = s;
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="End Game Phase">
+    /**
+     * Calculate total points of player and return that
+     * @return total points made by player on matth
+     */
+    public int calculatePoints ()
+    {
+        int publicPoints=0,privatePoints=0;
+        for (int i = 0; i < publicObjectives.length ; i++)
+            publicPoints = publicPoints + publicObjectives[i].getScore(board);
+        privatePoints = myPrivateObject.getScore(board);
+        return privatePoints + publicPoints;
     }
     //</editor-fold>
 
