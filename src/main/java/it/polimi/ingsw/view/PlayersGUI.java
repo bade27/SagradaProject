@@ -13,28 +13,30 @@ import javafx.scene.control.*;
 
 public class PlayersGUI extends GridPane {
 
-    private GridPane root;
     private GUI game;
     private GridPane giocatori;
 
     String[] name;
 
     public PlayersGUI(GridPane root /*,String[]name*/, GUI game) {
-        name = new String[]{"giocatore 1", "giocatore 2", "giocatore 3"};
-        giocatori = new GridPane();
-        giocatori.setHgap(20);
-        this.root = root;
+
+
         this.game = game;
-        Pair[][] pair = new Pair[5][4];                                             //matrice di pair
-        for (int j = 0; j < 4; j++) {
-            for (int k = 0; k < 5; k++) {
-                pair[k][j] = new Pair(0, ColorEnum.WHITE);
+        name = new String[]{"A", "B"};
+        giocatori = new GridPane();
+        giocatori.setOpacity(255);
+        giocatori.setHgap(20);
+
+        Pair[][] pair = new Pair[4][5];                                             //matrice di pair
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 5; j++) {
+                pair[i][j] = new Pair(0, ColorEnum.WHITE);
             }
         }
-        for (int i = 0; i < name.length; i++) {
-            updateGraphic(pair, name[i]);
-        }
 
+        for (int k = 0; k < name.length; k++) {
+            updateGraphic(pair, name[k]);
+        }
         giocatori.setAlignment(Pos.CENTER);                                             //setto allineamenti vari
         root.add(giocatori, 0, 3);                                   //aggiungo i giocatori alla root
 
@@ -55,16 +57,20 @@ public class PlayersGUI extends GridPane {
     public void updateGraphic(Pair[][] pair, String n) {
 
         Platform.runLater(() -> {
+
             GridPane singolo_giocatore = new GridPane();
+            singolo_giocatore.setOpacity(255);
             //creazione e aggiunta Label con nome
             singolo_giocatore.add(new Label(n), 0, 0);
-            //creazione griglia dato Pair[][]
-            GridPane griglia = new GridPane();                                          //creo una griglia
-            griglia.setDisable(true);                                                   //disabilito il bottone
-            for (int j = 0; j < 4; j++) {                                               //creo un GridPane con dentro i Pair
-                for (int i = 0; i < 5; i++) {
+            //creazione e aggiunta griglia dato Pair[][]
+            GridPane griglia = new GridPane();
+            griglia.setOpacity(255);
+            griglia.setDisable(true);
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 5; j++) {
                     Button cell = new Button();
-                    griglia.add(cell, i, j);
+                    cell.setOpacity(255);
+                    griglia.add(cell,j,i);
                     cell.setText("" + pair[i][j].getValue());
                     cell.setStyle("-fx-background-color: " + pair[i][j].getColor());
                     griglia.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
@@ -72,10 +78,12 @@ public class PlayersGUI extends GridPane {
             }
             griglia.setAlignment(Pos.CENTER);
             singolo_giocatore.add(griglia, 0, 1);
+
+            //capisco in che posizione è il giocatore e se esiste sostituisco
             int pos = -1;
-            for (int i = 0; i < name.length; i++) {
-                if (name[i] == n) {
-                    pos = i;
+            for (int k = 0; k < name.length; k++) {
+                if (name[k].equals(n)) {
+                    pos = k;
                     break;
                 }
             }
