@@ -3,6 +3,7 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.exceptions.IllegalDiceException;
 import it.polimi.ingsw.exceptions.NotEnoughDiceException;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -27,15 +28,15 @@ class DadieraTest {
     @Test
     void mix() throws NotEnoughDiceException {
         d.mix(n);
-        assertNotNull(d.getListaDadi());
-        assertEquals(expectedDice, d.getListaDadi().size());
+        assertNotNull(d.getDiceList());
+        assertEquals(expectedDice, d.getDiceList().size());
     }
 
     @Test()
     void deleteDice() throws NotEnoughDiceException {
         d.mix(n);
         int which_Die = new Random().nextInt(expectedDice);
-        ArrayList<Dice> playableDice = d.getListaDadi();
+        ArrayList<Dice> playableDice = d.getDiceList();
 
         //lunghezza di partenza
         int oldLen = playableDice.size();
@@ -67,7 +68,7 @@ class DadieraTest {
     @Test()
     void addDice() throws NotEnoughDiceException{
         d.mix(n);
-        ArrayList<Dice> playableDice = d.getListaDadi();
+        ArrayList<Dice> playableDice = d.getDiceList();
 
         //lunghezza dadiera iniziale
         int oldLen = playableDice.size();
@@ -118,7 +119,7 @@ class DadieraTest {
         int newEquals = numDice.apply(playableDice, dice);
 
         //nuova lunghezza dadiera
-        int newLen=d.getListaDadi().size();
+        int newLen=d.getDiceList().size();
 
         assertEquals(oldLen,newLen-1);
         assertEquals(oldEquals,newEquals-1);
@@ -129,7 +130,7 @@ class DadieraTest {
     @Test()
     void setDiceValueException() throws NotEnoughDiceException{
         d.mix(n);
-        ArrayList<Dice> playableDice = d.getListaDadi();
+        ArrayList<Dice> playableDice = d.getDiceList();
         int which_Die = new Random().nextInt(expectedDice);
 
         Random n=new Random();
@@ -143,10 +144,10 @@ class DadieraTest {
         assertThrows(IllegalDiceException.class, () -> d.setDiceValue(b,dice));
     }
 
-    @Test
+    @RepeatedTest(100)
     void setDiceValue() throws IllegalDiceException,NotEnoughDiceException{
         d.mix(n);
-        ArrayList<Dice> playableDice = d.getListaDadi();
+        ArrayList<Dice> playableDice = d.getDiceList();
         int which_Die = new Random().nextInt(expectedDice);
 
         //creo valore del dado casualmente
@@ -156,8 +157,10 @@ class DadieraTest {
         Dice dice = playableDice.get(which_Die);
         d.setDiceValue(n,dice);
 
-        assertEquals(dice.getValue(),n);
-        assertEquals(dice.getValue(),playableDice.get(which_Die).getValue());
+        //assertEquals(dice.getValue(),n);
+        //assertEquals(dice.getValue(),playableDice.get(which_Die).getValue());
+
+        assertEquals(d.getDiceList().get(which_Die).getValue(), n);
 
     }
 
@@ -172,7 +175,7 @@ class DadieraTest {
         d.mix(n);
         int which_Die = new Random().nextInt(expectedDice);
         assertNotNull(d.getDice(which_Die));
-        assertEquals(d.getListaDadi().get(which_Die), d.getDice(which_Die));
+        assertEquals(d.getDiceList().get(which_Die), d.getDice(which_Die));
     }
 
     @Test

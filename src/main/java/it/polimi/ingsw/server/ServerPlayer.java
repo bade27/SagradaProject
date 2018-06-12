@@ -111,7 +111,8 @@ public class ServerPlayer implements Runnable
                 {
                     if (token.isEndGame())
                     {
-                        //Invia ai client il risultato
+                        LogFile.addLog("(User:" + user + ")" + " End communication with client and close connection");
+                        return;
                     }
 
                     //Wait his turn
@@ -132,6 +133,7 @@ public class ServerPlayer implements Runnable
                         synchronized (token.getSynchronator()) {
                             token.getSynchronator().notifyAll();
                         }
+                        return;
                     }
 
                     //End turn comunication
@@ -223,7 +225,7 @@ public class ServerPlayer implements Runnable
         try {
             boolean performed;
             String[] toolnames = Arrays.stream(toolCards).map(t -> t.getName()).toArray(String[]::new);
-            performed = stopTask(() -> communicator.sendCards(publicObjCard,toolnames), INIT_TIMEOUT, executor);
+            performed = stopTask(() -> communicator.sendCards(publicObjCard,toolnames,new String[] {privateObjCard}), INIT_TIMEOUT, executor);
             if(!performed)
             {
                 LogFile.addLog("(User:" + user + ") Failed to initialize cards");
@@ -236,6 +238,7 @@ public class ServerPlayer implements Runnable
         }
 
         try {
+            adapter.initializePrivateObjectives(privateObjCard);
             adapter.initializePublicObjectives(publicObjCard);
             adapter.initializeToolCards(toolCards);
             LogFile.addLog("User: " + user + " Tools and Objectives initialized ");
@@ -247,6 +250,26 @@ public class ServerPlayer implements Runnable
 
     }
     //</editor-fold>
+
+
+    //<editor-fold desc="End Game Phase">
+    public void endGameCommunication (String [] users, int [] points)
+    {
+        try {
+            communicator.sendResults(users,points);
+        }
+        catch (Exception e) {
+            LogFile.addLog("(User:" + user + ")" + " Impossible to communicate to user results of match");
+        }
+    }
+
+
+    public int getPoints ()
+    {
+        return adapter.calculatePoints();
+    }
+    //</editor-fold>
+
 
     //<editor-fold desc="Update Client's information">
     /**
@@ -396,7 +419,6 @@ public class ServerPlayer implements Runnable
             if (!performed)
                 LogFile.addLog("Impossible to communicate to client (" + user + ") cause closed connection");
         }catch (NullPointerException e) {
-            //e.printStackTrace();
             LogFile.addLog("Impossible to communicate to client (" + user + ") cause closed connection");
         }
 

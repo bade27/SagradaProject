@@ -3,7 +3,6 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.GUI;
 import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.client.ToolAction;
-import it.polimi.ingsw.exceptions.IllegalDiceException;
 import it.polimi.ingsw.remoteInterface.Pair;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -66,10 +65,13 @@ public class SagradaGUI extends Application implements GUI {
         catch (RemoteException e){
             Thread.currentThread().interrupt();
         }
+
+
     }
 
     @Override
-    public void start(Stage primaryStage) throws IllegalDiceException {
+    public void start(Stage primaryStage) {
+
         //root
         BorderPane root = new BorderPane();
 
@@ -92,6 +94,7 @@ public class SagradaGUI extends Application implements GUI {
 
         mainContent.setAlignment(Pos.CENTER);
         pcenter.setAlignment(Pos.CENTER);
+
 
 
 
@@ -123,7 +126,10 @@ public class SagradaGUI extends Application implements GUI {
         primaryStage.setScene(scene);
         primaryStage.show();
         primaryStage.setResizable(false);
-        primaryStage.setOnCloseRequest(e -> Platform.exit());
+        primaryStage.setOnCloseRequest(e -> {
+            Platform.exit();
+            System.exit(0);
+        });
     }
 
     /**

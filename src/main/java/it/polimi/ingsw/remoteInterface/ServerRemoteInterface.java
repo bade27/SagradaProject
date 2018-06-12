@@ -5,14 +5,15 @@ import java.rmi.RemoteException;
 
 public interface ServerRemoteInterface extends Remote
 {
+    //Connection Phase
     public void setClient (ClientRemoteInterface client) throws RemoteException;
 
-    //game
+    //Game Phase
     public String makeMove(Coordinates coord, Pair pair) throws RemoteException;
-
     public String askToolPermission(int nrTool) throws RemoteException;
+    public String passTurn() throws RemoteException;
 
-    //Tool nr. 1-6-7-10
+    //Tool nr. 1-6-7-10-11
     public String useTool (Pair p, String instruction) throws RemoteException;
     //Tool nr. 2-3
     public String useTool (Coordinates sartCoord,Coordinates endCoord) throws RemoteException;
@@ -24,6 +25,4 @@ public interface ServerRemoteInterface extends Remote
     public String useTool () throws RemoteException;
     //Tool nr.9
     public String useTool (Pair p , Coordinates endCoord) throws RemoteException;
-
-    public String passTurn() throws RemoteException;
 }

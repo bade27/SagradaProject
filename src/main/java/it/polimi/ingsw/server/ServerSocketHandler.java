@@ -304,6 +304,11 @@ public class ServerSocketHandler implements ClientRemoteInterface
         return null;
     }
 
+    @Override
+    public void sendResults(String[] user , int[] point) throws RemoteException {
+
+    }
+
     /*@Override
     public String updateRoundTrace(ArrayList<ArrayList<Pair>> dice) throws RemoteException {
         return null;

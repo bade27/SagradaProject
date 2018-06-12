@@ -44,5 +44,6 @@ public class PublicObjective {
         //score diagonale non ha un value predefinito, ma varia da partita a partita
         return score.getClass().getSimpleName().equals("DiagonalScore") ?
                 0 : value;
+
     }
 }

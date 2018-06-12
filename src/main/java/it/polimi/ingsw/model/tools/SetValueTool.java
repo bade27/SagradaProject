@@ -120,10 +120,10 @@ public class SetValueTool extends Tools {
         if (!token.isMySecondRound(user))
             throw new IllegalStepException("Can't use tool in your first round");
 
-        for (int i = 0; i < dadiera.getListaDadi().size() ; i++)
+        for (int i = 0; i < dadiera.getDiceList().size() ; i++)
         {
             int v = new Random().nextInt(6) + 1;
-            setDiceValueDadera(v,dadiera.getListaDadi().get(i));
+            setDiceValueDadera(v,dadiera.getDiceList().get(i));
         }
         setPrice();
     }

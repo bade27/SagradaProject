@@ -138,7 +138,7 @@ class MoveDadieraAllToolTest {
             //vedo se i dadi=d2 sono aumentati in dadiera e diminuiti in trace
 
             //numero dadi in dadiera prima del metodo
-            int totdiceindad1=d.getListaDadi().size();
+            int totdiceindad1=d.getDiceList().size();
     //        System.out.println("dadi in dadiera: "+totdiceindad1);
 
             //numero dadi in tracciato prima del metodo
@@ -146,11 +146,11 @@ class MoveDadieraAllToolTest {
     //        System.out.println("dadi in tracciato: "+totdiceintrac1);
 
             //numero dei dadi uguali a dice1 in dadiera prima
-            int olddice1indadiera = numDice.apply(d.getListaDadi(), dice1);
+            int olddice1indadiera = numDice.apply(d.getDiceList(), dice1);
     //        System.out.println("dadi in dadiera uguali al dado estratto da dadiera: "+olddice1indadiera);
 
             //numero dei dadi uguali a dice2 in dadiera prima
-            int olddice2indadiera = numDice.apply(d.getListaDadi(), dice2);
+            int olddice2indadiera = numDice.apply(d.getDiceList(), dice2);
     //        System.out.println("dadi in dadiera uguali al dado estratto da trace: "+olddice2indadiera);
 
             //numero dei dadi uguali a dice1 in roundtrace prima
@@ -176,7 +176,7 @@ class MoveDadieraAllToolTest {
 
 
             //numero dadi in dadiera dopo il metodo
-            int totdiceindad2=d.getListaDadi().size();
+            int totdiceindad2=d.getDiceList().size();
     //        System.out.println("dadi in dadiera: "+totdiceindad2);
 
             //numero dadi in tracciato dopo il metodo
@@ -184,11 +184,11 @@ class MoveDadieraAllToolTest {
     //        System.out.println("dadi in tracciato: "+totdiceintrac2);
 
             //numero dei dadi uguali a dice1 in dadiera dopo
-            int newdice1indadiera = numDice.apply(d.getListaDadi(), dice1);
+            int newdice1indadiera = numDice.apply(d.getDiceList(), dice1);
     //        System.out.println("dadi in dadiera uguali al dado estratto: "+newdice1indadiera);
 
             //numero dei dadi uguali a dice2 in dadiera dopo
-            int newdice2indadiera = numDice.apply(d.getListaDadi(), dice2);
+            int newdice2indadiera = numDice.apply(d.getDiceList(), dice2);
     //        System.out.println("dadi in dadiera uguali al dado del trace: "+newdice2indadiera);
 
             //numero dei dadi uguali a dice1 in roundtrace dopo

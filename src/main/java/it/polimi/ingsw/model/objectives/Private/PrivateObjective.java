@@ -1,48 +1,37 @@
 package it.polimi.ingsw.model.objectives.Private;
 
+import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.model.Window;
-import it.polimi.ingsw.model.Cell;
 
-import java.awt.*;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 public class PrivateObjective {
 
     private String name;
     private String description;
-    private Color color;
+    private ColorEnum color;
 
     public PrivateObjective(String name, String color, String description) {
+
         this.name = name;
         this.description = description;
-        switch (color) {
-            case "rosso":
-                this.color = Color.RED;
-                break;
-            case "verde":
-                this.color = Color.GREEN;
-                break;
-            case "giallo":
-                this.color = Color.YELLOW;
-                break;
-            case "viola":
-                this.color = Color.MAGENTA;
-                break;
-            case "blu":
-                this.color = Color.BLUE;
-                break;
-        }
+        Optional<ColorEnum> result = Stream.of(ColorEnum.values())
+                .filter(e -> e.toString().toLowerCase().equals(color))
+                .findAny();
+        result.ifPresent(c -> this.color = c);
 
     }
 
     /**
-     *
-     * @param vetrata
-     * @return *il punteggio totalizzato dal giocatore (=numero dei dadi del color obbiettivo posizionati)*
+     * Calculates and returns points about window passed
+     * @param window window passed
+     * @return total points of board (=numero dei dadi del color obbiettivo posizionati)*
      */
-    public int calcolaPunteggio(Window vetrata) {
-        Cell[][] grid = vetrata.getGrid();
-        ColorEnum current_color = null;
+    public int getScore (Window window) {
+        Cell[][] grid = window.getGrid();
+        ColorEnum current_color;
         int total = 0;
         for(int i = 0; i < grid.length; i++)
             for(int j = 0; j < grid[0].length; j++) {
@@ -50,7 +39,7 @@ public class PrivateObjective {
                 if(current_cell.getFrontDice() != null) {
                     current_color = current_cell.getFrontDice().getColor();
                     if (current_color.equals(color))
-                        total++;
+                        total += current_cell.getFrontDice().getValue();
                 }
             }
         return total;
@@ -62,5 +51,9 @@ public class PrivateObjective {
 
     public String getDescription() {
         return description;
+    }
+
+    public ColorEnum getColor() {
+        return color;
     }
 }

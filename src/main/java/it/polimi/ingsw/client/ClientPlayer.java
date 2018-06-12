@@ -18,7 +18,10 @@ import java.io.IOException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
@@ -160,9 +163,13 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             if (i == 0) {
                 System.out.println("Obbiettivi Pubblici: ");
             }
-            else {
+            else if (i == 1) {
                 System.out.println("Strumenti: ");
                 graph.updateTools(s[i]);
+            }
+            else if (i == 20)
+            {
+                System.out.println("Obbiettivi Privati: ");
             }
             for (int j = 0; j< s[i].length ; j++)
                 System.out.println(s[i][j]);
@@ -198,22 +205,15 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     }
 
     @Override
+    public void sendResults(String [] user, int [] point) throws RemoteException {
+        System.out.println("End game results:");
+        for (int i = 0 ; i < user.length ; i++)
+            System.out.println("Utente: " + user[i] + "\t Punti totalizzati: " + point[i]);
+    }
+
+    @Override
     public void updateOpponents (String user, Pair[][] grids) {
         graph.updateOpponents(grids, user);
-        /*for (int k = 0; k < grids.length; k++) {
-
-            graph.updateOpponents(grids, user);
-            for (int k = 0; k < grids.length; k++) {
-                System.out.println("opponent " + (k + 1));
-                Pair[][] p = grids[k];
-                System.out.println("Opponent: " + user);
-                for (int i = 0; i < grids.length; i++) {
-                    for (int j = 0; j < grids[i].length; j++)
-                        System.out.print(grids[i][j].toString() + "\t|\t");
-                    System.out.println();
-                }
-            }
-        }*/
     }
     //</editor-fold>
 
