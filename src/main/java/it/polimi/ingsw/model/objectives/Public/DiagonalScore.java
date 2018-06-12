@@ -7,22 +7,14 @@ import java.util.*;
 
 public class DiagonalScore extends Score {
 
-    public DiagonalScore() {
-    }
-
-    public DiagonalScore(String pattern, String tag) {
-        this.pattern = pattern;
-        this.tag = tag;
-    }
-
     /**
      *
      * @param valore
      * @param grid
-     * @return **il score totalizzato dal giocatore
+     * @return the total score for this objective
      */
     public int calcScore(int valore, Cell[][] grid) {
-        //0 red, 1 green, 2 blue, 3 yellow, 4 magenta
+
         Map<Integer, ColorEnum> colors = new HashMap<>();
         colors.put(0, ColorEnum.RED);
         colors.put(1, ColorEnum.GREEN);
@@ -34,26 +26,22 @@ public class DiagonalScore extends Score {
 
         for(int i = 0; i < colors.size(); i++) {
 
-            //lista che contiene le liste di celle (adiacenti in diagonale)
-            // che contengono dadi dello stesso colore
-            ArrayList<ArrayList<Coppia>> root = new ArrayList<>();
+            //this list contains the lists of adjacent cells (diagonally)
+            ArrayList<ArrayList<Tuple>> root = new ArrayList<>();
             ColorEnum current_color = colors.get(i);
 
-            //compilo root
+            //create root
             for(int h = 0; h < grid.length; h++) {
                 for (int k = 0; k < grid[0].length; k++) {
                     Cell current_cell = grid[h][k];
                     if (current_cell.getFrontDice() != null) {
                         if(current_cell.getFrontDice().getColor() == current_color)
-                            compileRoot(root, new Coppia(k, h));
+                            compileRoot(root, new Tuple(k, h));
                     }
                 }
             }
 
-            //calcolo la sequenza più lunga per quella root
-            //per ogni colore viene considerata solo la sequenza più lunga di
-            // colori uguali adiacenti in diagonale
-            points += longestSequence(root);
+            points += sumOfDiagonals(root);
 
         }
         return points;
@@ -64,15 +52,15 @@ public class DiagonalScore extends Score {
      *
      * @param lp
      * @param p
-     * @return *true se la cella è raggiungibile da quella attuale tramite
-     * spostamento in diagonale (nelle quattro direzioni possibili)
+     * @return true if the cell is reachable from the current one
+     * (only diagonal steps are valid)
      */
-    private boolean isReachable(ArrayList<Coppia> lp, Coppia p) {
+    private boolean isReachable(ArrayList<Tuple> lp, Tuple p) {
         boolean reachable = false;
         int c = p.getX();
         int r = p.getY();
         for(int i = 0; i < lp.size() && !reachable; i++) {
-            Coppia current = lp.get(i);
+            Tuple current = lp.get(i);
             int x = current.getX(), y = current.getY();
             if( (y + 1) == r) {
                 if( x == 0)
@@ -88,10 +76,10 @@ public class DiagonalScore extends Score {
     /**
      *
      * @param root
-     * @return *la lunghezza della più lunga sequenza di celle diagonali adiacenti
-     * con dadi dello stesso colore*
+     * @return the total number of diagonal cells
      */
-    private int longestSequence(ArrayList<ArrayList<Coppia>> root) {
+    private int sumOfDiagonals(ArrayList<ArrayList<Tuple>> root) {
+        ArrayList<ArrayList<Tuple>> foo = new ArrayList<>();
         int len = 0;
         if(root.size() != 0) {
             if (root.size() == 1)
@@ -99,7 +87,7 @@ public class DiagonalScore extends Score {
             else {
                 for (int k = 0; k < root.size() - 1; k++) {
                     for (int h = k + 1; h < root.size(); h++) {
-                        ArrayList<Coppia> l1 = root.get(k), l2 = root.get(h);
+                        ArrayList<Tuple> l1 = root.get(k), l2 = root.get(h);
                         if (shareElement(l1, l2)) {
                             root.set(k, merge(l1, l2));
                             root.set(h, merge(l1, l2));
@@ -108,17 +96,39 @@ public class DiagonalScore extends Score {
 
                 }
 
-                Optional<Integer> l = root.stream()
-                        .map(list -> list.size())
-                        .max(Comparator.comparing(i -> i));
-                len = l.isPresent() ? l.get() : 0;
+                root.forEach(l -> {if(!isContained(l, foo)) foo.add(l);});
+
+                len = foo.stream()
+                        .mapToInt(list -> list.size())
+                        .filter(x -> x != 1)
+                        .sum();
             }
         }
         return len;
     }
 
 
-    private boolean shareElement(ArrayList<Coppia> l1, ArrayList<Coppia> l2) {
+    /**
+     *
+     * @param el
+     * @param list
+     * @return weather the list el is contained inside list
+     */
+    private boolean isContained(ArrayList<Tuple> el, ArrayList<ArrayList<Tuple>> list) {
+        for(int i = 0; i < list.size(); i++)
+            for(int j = 0; j < el.size(); j++)
+                if(list.get(i).contains(el.get(j)))
+                    return true;
+        return false;
+    }
+
+    /**
+     *
+     * @param l1
+     * @param l2
+     * @return weather the two lists share an element or not
+     */
+    private boolean shareElement(ArrayList<Tuple> l1, ArrayList<Tuple> l2) {
         for(int i = 0; i < l1.size(); i++)
             for(int j = 0; j < l2.size(); j++)
                 if(l1.get(i).isEqual(l2.get(j))) {
@@ -132,12 +142,12 @@ public class DiagonalScore extends Score {
      *
      * @param l1
      * @param l2
-     * @return *il merge di due liste che hanno almeno un elemento in comune*
+     * @return merges lists with common element(s)
      */
-    private ArrayList<Coppia> merge(ArrayList<Coppia> l1, ArrayList<Coppia> l2) {
-        Set<Coppia> fooSet = new LinkedHashSet<>(l1);
+    private ArrayList<Tuple> merge(ArrayList<Tuple> l1, ArrayList<Tuple> l2) {
+        Set<Tuple> fooSet = new LinkedHashSet<>(l1);
         fooSet.addAll(l2);
-        ArrayList<Coppia> finalFoo = new ArrayList<>(fooSet);
+        ArrayList<Tuple> finalFoo = new ArrayList<>(fooSet);
         return finalFoo;
     }
 
@@ -145,9 +155,9 @@ public class DiagonalScore extends Score {
      *
      * @param root
      * @param p
-     * inizializza il parametro root
+     * initializes root
      */
-    private void compileRoot(ArrayList<ArrayList<Coppia>> root, Coppia p) {
+    private void compileRoot(ArrayList<ArrayList<Tuple>> root, Tuple p) {
         boolean add = true;
         for(int k =  0; k < root.size(); k++) {
             if(!root.get(k).contains(p))
@@ -157,19 +167,16 @@ public class DiagonalScore extends Score {
                 }
         }
         if(add) {
-            ArrayList<Coppia> new_list = new ArrayList<>();
+            ArrayList<Tuple> new_list = new ArrayList<>();
             new_list.add(p);
             root.add(new_list);
         }
     }
 
 
-    /**
-     * memorizza informazioni relative alle celle della griglia
-     */
-    private class Coppia {
+    private class Tuple {
         int x, y;
-        Coppia(int x, int y) {
+        Tuple(int x, int y) {
             this.x = x;
             this.y = y;
         }
@@ -182,8 +189,16 @@ public class DiagonalScore extends Score {
             return y;
         }
 
-        public boolean isEqual(Coppia p) {
-            return this.x == p.getX() && this.y == p.getY();
+        public boolean isEqual(Tuple t) {
+            return this.x == t.getX() && this.y == t.getY();
+        }
+
+        @Override
+        public String toString() {
+            return "Tuple{" +
+                    "x=" + x +
+                    ", y=" + y +
+                    '}';
         }
     }
 }
