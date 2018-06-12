@@ -3,14 +3,15 @@ package it.polimi.ingsw.model.objectives.Public;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.ColorEnum;
 
-import java.awt.*;
 import java.util.*;
 
-public class DiagonalScore implements ScoreInterface {
+public class DiagonalScore extends Score {
 
-    private String tag;
+    public DiagonalScore() {
+    }
 
-    public DiagonalScore(String tag) {
+    public DiagonalScore(String pattern, String tag) {
+        this.pattern = pattern;
         this.tag = tag;
     }
 
@@ -18,7 +19,7 @@ public class DiagonalScore implements ScoreInterface {
      *
      * @param valore
      * @param grid
-     * @return **il punteggio totalizzato dal giocatore
+     * @return **il score totalizzato dal giocatore
      */
     public int calcScore(int valore, Cell[][] grid) {
         //0 red, 1 green, 2 blue, 3 yellow, 4 magenta

@@ -5,44 +5,44 @@ import it.polimi.ingsw.model.Window;
 
 public class PublicObjective {
 
-    private String nome;
-    private String descrizione;
-    private int valore;
-    ScoreInterface punteggio;
+    private String name;
+    private String description;
+    private int value;
+    Score score;
 
-    public PublicObjective(String nome, String descrizione,
-                           int valore, ScoreInterface punteggio) {
-        this.nome = nome;
-        this.descrizione = descrizione;
-        this.valore = valore;
-        this.punteggio = punteggio;
+    public PublicObjective(String name, String description,
+                           int value, Score score) {
+        this.name = name;
+        this.description = description;
+        this.value = value;
+        this.score = score;
     }
 
     /**
      *
      * @param vetrata
-     *@return *restituisce il punteggio (relativo all'obbiettivo) che il giocatore ha totalizzato*
+     *@return *restituisce il score (relativo all'obbiettivo) che il giocatore ha totalizzato*
      */
     public int getScore(Window vetrata) {
         Cell[][] grid = vetrata.getGrid();
-        return punteggio.calcScore(valore, grid);
+        return score.calcScore(value, grid);
     }
 
     /**
      *
-     * i getter seguenti restituiscono i campi privati della classe (punteggio escluso)
+     * i getter seguenti restituiscono i campi privati della classe (score escluso)
      */
-    public String getNome() {
-        return nome;
+    public String getName() {
+        return name;
     }
 
-    public String getDescrizione() {
-        return descrizione;
+    public String getDescription() {
+        return description;
     }
 
-    public int getValore() {
-        //punteggio diagonale non ha un valore predefinito, ma varia da partita a partita
-        return punteggio.getClass().getSimpleName().equals("DiagonalScore") ?
-                0 : valore;
+    public int getValue() {
+        //score diagonale non ha un value predefinito, ma varia da partita a partita
+        return score.getClass().getSimpleName().equals("DiagonalScore") ?
+                0 : value;
     }
 }

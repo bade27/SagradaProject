@@ -7,9 +7,10 @@ import it.polimi.ingsw.model.Dice;
 import java.util.Arrays;
 import java.util.OptionalInt;
 
-public class VarietyScore implements ScoreInterface {
+public class VarietyScore extends Score {
 
-    private String tag;
+    public VarietyScore() {
+    }
 
     public VarietyScore(String tag) {
         this.tag = tag;
@@ -19,7 +20,7 @@ public class VarietyScore implements ScoreInterface {
      *
      * @param valore
      * @param grid
-     * @return *il punteggio totalizzato dal giocatore*
+     * @return *il score totalizzato dal giocatore*
      */
     public int calcScore(int valore, Cell[][] grid) {
         int[] frequency = tag.equals("color") ? new int[5]
