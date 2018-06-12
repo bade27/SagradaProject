@@ -223,7 +223,7 @@ public class ServerPlayer implements Runnable
         try {
             boolean performed;
             String[] toolnames = Arrays.stream(toolCards).map(t -> t.getName()).toArray(String[]::new);
-            performed = stopTask(() -> communicator.sendCards(publicObjCard,toolnames), INIT_TIMEOUT, executor);
+            performed = stopTask(() -> communicator.sendCards(publicObjCard,toolnames,new String[] {privateObjCard}), INIT_TIMEOUT, executor);
             if(!performed)
             {
                 LogFile.addLog("(User:" + user + ") Failed to initialize cards");
@@ -236,6 +236,7 @@ public class ServerPlayer implements Runnable
         }
 
         try {
+            adapter.initializePrivateObjectives(privateObjCard);
             adapter.initializePublicObjectives(publicObjCard);
             adapter.initializeToolCards(toolCards);
             LogFile.addLog("User: " + user + " Tools and Objectives initialized ");

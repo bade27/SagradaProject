@@ -38,7 +38,7 @@ public class MatchHandler implements Runnable
     private UsersEntry userList;
 
     private final static int TURNS = 10;
-    private final static int MAXGIOC = 1;//Da modificare a 4
+    private final static int MAXGIOC = 2;//Da modificare a 4
 
     //connection parameters
     private static int RMI_REGISTRY_PORT;
@@ -64,7 +64,7 @@ public class MatchHandler implements Runnable
         System.out.println(">>>Connection Phase Ended");
 
         //Windows, tools and objectives initialization
-        if (! (initializeWindowPlayers() && initializePublicObjectiveCards() && initializeTools()))
+        if (! (initializeWindowPlayers() && initializePublicObjectiveCards() && initalizePrivateObjectiveCards() && initializeTools()))
         {
             LogFile.addLog(">>>Failed to initialize cards, server aborted");
             System.out.println(">>>Failed to initialize cards, server aborted");
@@ -180,6 +180,9 @@ public class MatchHandler implements Runnable
         System.out.println(">>>The game is ended");
         LogFile.addLog("The game is ended, count of players' point");
         //Conteggio dei punti da parte degli obbiettivi
+
+
+
         token.setEndGame();
         token.getSynchronator().notifyAll();
     }

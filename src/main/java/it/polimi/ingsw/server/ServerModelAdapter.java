@@ -186,6 +186,20 @@ public class ServerModelAdapter
     }
 
     /**
+     * Initialize privte objectives with path passed
+     * @param path path of objectives' pattern
+     */
+    public void initializePrivateObjectives(String path) throws ModelException
+    {
+        try
+        {
+            myPrivateObject = ObjectivesFactory.getPrivateObjective(path);
+        }catch (Exception ex){
+            throw new ModelException("Impossible to create private objectives");
+        }
+    }
+
+    /**
      * Initialize tool cards with path passed
      * @param toolCards names of tools' pattern
      */

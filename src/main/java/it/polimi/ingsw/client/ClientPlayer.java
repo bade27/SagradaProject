@@ -160,9 +160,13 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             if (i == 0) {
                 System.out.println("Obbiettivi Pubblici: ");
             }
-            else {
+            else if (i == 1) {
                 System.out.println("Strumenti: ");
                 graph.updateTools(s[i]);
+            }
+            else if (i == 20)
+            {
+                System.out.println("Obbiettivi Privati: ");
             }
             for (int j = 0; j< s[i].length ; j++)
                 System.out.println(s[i][j]);
