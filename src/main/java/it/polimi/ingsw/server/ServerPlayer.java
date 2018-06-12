@@ -133,6 +133,7 @@ public class ServerPlayer implements Runnable
                         synchronized (token.getSynchronator()) {
                             token.getSynchronator().notifyAll();
                         }
+                        return;
                     }
 
                     //End turn comunication
@@ -268,7 +269,6 @@ public class ServerPlayer implements Runnable
         return adapter.calculatePoints();
     }
     //</editor-fold>
-
 
 
     //<editor-fold desc="Update Client's information">
@@ -419,7 +419,6 @@ public class ServerPlayer implements Runnable
             if (!performed)
                 LogFile.addLog("Impossible to communicate to client (" + user + ") cause closed connection");
         }catch (NullPointerException e) {
-            //e.printStackTrace();
             LogFile.addLog("Impossible to communicate to client (" + user + ") cause closed connection");
         }
 

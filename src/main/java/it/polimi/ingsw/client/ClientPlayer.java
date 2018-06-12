@@ -212,20 +212,6 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     @Override
     public void updateOpponents (String user, Pair[][] grids) {
         graph.updateOpponents(grids, user);
-        /*for (int k = 0; k < grids.length; k++) {
-
-            graph.updateOpponents(grids, user);
-            for (int k = 0; k < grids.length; k++) {
-                System.out.println("opponent " + (k + 1));
-                Pair[][] p = grids[k];
-                System.out.println("Opponent: " + user);
-                for (int i = 0; i < grids.length; i++) {
-                    for (int j = 0; j < grids[i].length; j++)
-                        System.out.print(grids[i][j].toString() + "\t|\t");
-                    System.out.println();
-                }
-            }
-        }*/
     }
     //</editor-fold>
 
