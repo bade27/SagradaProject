@@ -214,5 +214,20 @@ public class Window
     public int getDifficult() {
         return difficult;
     }
+
+
+    /**
+     * Count and return number of blank cell for count of points
+     * @return number of blank cells
+     */
+    public int getNumberBlankCell ()
+    {
+        int cont = 0;
+        for (int i = 0 ; i < rows ; i++)
+            for (int j = 0; j < cols; j++)
+                if (board[i][j].getFrontDice() ==  null)
+                    cont++;
+        return cont;
+    }
     //</editor-fold>
 }

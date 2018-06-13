@@ -52,7 +52,7 @@ class WindowTest
     {
         //Check first die position
         IllegalDiceException e1 = assertThrows(IllegalDiceException.class, () -> { w.addDice(2, 3, new Dice(3, ColorEnum.RED), 0); });
-        assertEquals(e1.getMessage(), "First die not placed on edge");
+        assertEquals(e1.getMessage(), "Dado non posizionato sul bordo");
         try {
             w.addDice(0, 3, new Dice(3, ColorEnum.RED), 0);
         }
@@ -66,9 +66,9 @@ class WindowTest
     {
         //Check position index
         IllegalDiceException e1 = assertThrows(IllegalDiceException.class, () -> { w.addDice(4, 4, new Dice(3, ColorEnum.RED), 0); });
-        assertEquals(e1.getMessage(), "Position out of bound");
+        assertEquals(e1.getMessage(), "Dado posizionato fuori dai bordi");
         IllegalDiceException e2 = assertThrows(IllegalDiceException.class, () -> { w.addDice(3, 5, new Dice(3, ColorEnum.RED), 0); });
-        assertEquals(e2.getMessage(), "Position out of bound");
+        assertEquals(e2.getMessage(), "Dado posizionato fuori dai bordi");
     }
 
     /*
@@ -84,19 +84,19 @@ class WindowTest
         //System.out.println(w.toString());
         //Check overlapped die
         IllegalDiceException e1 = assertThrows(IllegalDiceException.class, () -> { w.addDice(0, 3, new Dice(2, ColorEnum.GREEN), 0); });
-        assertEquals(e1.getMessage(), "Die placed on another one");
+        assertEquals(e1.getMessage(), "Dado posizionato su una cella occupata");
 
         //Check positioning
         IllegalDiceException e2 = assertThrows(IllegalDiceException.class, () -> { w.addDice(0, 4, new Dice(3, ColorEnum.GREEN), 0); });
-        assertEquals(e2.getMessage(), "Die not placed near a compatible one");
+        assertEquals(e2.getMessage(), "Dado non posizionato vicino ad uno compatibile");
 
         //Check positioning
         IllegalDiceException e3 = assertThrows(IllegalDiceException.class, () -> { w.addDice(0, 4, new Dice(4, ColorEnum.RED), 0); });
-        assertEquals(e3.getMessage(), "Die not placed near a compatible one");
+        assertEquals(e3.getMessage(), "Dado non posizionato vicino ad uno compatibile");
 
         //Check Placement compatible
         IllegalDiceException e4 = assertThrows(IllegalDiceException.class, () -> { w.addDice(0, 4, new Dice(4, ColorEnum.GREEN), 0); });
-        assertEquals(e4.getMessage(), "Die not placed on compatible cell");
+        assertEquals(e4.getMessage(), "Dado posizionato su una cella inompatibile");
     }
 
     @Test
@@ -120,10 +120,10 @@ class WindowTest
 
         //Vertical/Horizontal positioning not accepted
         IllegalDiceException e1 = assertThrows(IllegalDiceException.class, () -> { w.addDice(1, 3, new Dice(5, ColorEnum.GREEN), 0); });
-        assertEquals(e1.getMessage(), "Die not placed near a compatible one");
+        assertEquals(e1.getMessage(), "Dado non posizionato vicino ad uno compatibile");
 
         IllegalDiceException e2 = assertThrows(IllegalDiceException.class, () -> { w.addDice(1, 3, new Dice(2, ColorEnum.RED), 0); });
-        assertEquals(e2.getMessage(), "Die not placed near a compatible one");
+        assertEquals(e2.getMessage(), "Dado non posizionato vicino ad uno compatibile");
 
         try {
             //Vertical/Horizontal positioning accepted
@@ -181,15 +181,15 @@ class WindowTest
 
         //ColorEnum Restriction (3,3):
         IllegalDiceException e3 = assertThrows(IllegalDiceException.class, () -> { w.addDice(3, 3, new Dice(2, ColorEnum.BLUE), 0); });
-        assertEquals(e3.getMessage(), "Die not placed near a compatible one");
+        assertEquals(e3.getMessage(), "Dado non posizionato vicino ad uno compatibile");
         IllegalDiceException e4 = assertThrows(IllegalDiceException.class, () -> { w.addDice(3, 3, new Dice(2, ColorEnum.PURPLE), 0); });
-        assertEquals(e4.getMessage(), "Die not placed on compatible cell");
+        assertEquals(e4.getMessage(), "Dado posizionato su una cella inompatibile");
 
         //Number Restriction (3,0):
         IllegalDiceException e5 = assertThrows(IllegalDiceException.class, () -> { w.addDice(3, 0, new Dice(2, ColorEnum.BLUE), 0); });
-        assertEquals(e5.getMessage(), "Die not placed near a compatible one");
+        assertEquals(e5.getMessage(), "Dado non posizionato vicino ad uno compatibile");
         IllegalDiceException e6 = assertThrows(IllegalDiceException.class, () -> { w.addDice(3, 0, new Dice(5, ColorEnum.RED), 0); });
-        assertEquals(e6.getMessage(), "Die not placed on compatible cell");
+        assertEquals(e6.getMessage(), "Dado posizionato su una cella inompatibile");
     }
 
     @Test
@@ -327,11 +327,11 @@ class WindowTest
         //System.out.println(w.toString());
         //Control id 2 rejected
         IllegalDiceException e1 = assertThrows(IllegalDiceException.class, () -> { w.addDice(2, 4, new Dice(5, ColorEnum.RED), 2); });
-        assertEquals(e1.getMessage(), "Die not placed on compatible cell");
+        assertEquals(e1.getMessage(), "Dado posizionato su una cella inompatibile");
         IllegalDiceException e3 = assertThrows(IllegalDiceException.class, () -> { w.addDice(1, 3, new Dice(5, ColorEnum.RED), 2); });
-        assertEquals(e3.getMessage(), "Die not placed near a compatible one");
+        assertEquals(e3.getMessage(), "Dado non posizionato vicino ad uno compatibile");
         IllegalDiceException e2 = assertThrows(IllegalDiceException.class, () -> { w.addDice(2, 0, new Dice(5, ColorEnum.RED), 2); });
-        assertEquals(e2.getMessage(), "Die not placed near a compatible one");
+        assertEquals(e2.getMessage(), "Dado non posizionato vicino ad uno compatibile");
 
         //Control id 1 (Control to placement Value)
         try {
@@ -349,14 +349,16 @@ class WindowTest
         catch (IllegalDiceException e){
             throw new Error(e.getMessage(),e);
         }
+
+        assertEquals(w.getNumberBlankCell(),14);
         //System.out.println(w.toString());
         //Control id 1 rejected
         IllegalDiceException e4 = assertThrows(IllegalDiceException.class, () -> { w.addDice(1, 2, new Dice(3, ColorEnum.RED), 1); });
-        assertEquals(e4.getMessage(), "Die not placed on compatible cell");
+        assertEquals(e4.getMessage(), "Dado posizionato su una cella inompatibile");
         IllegalDiceException e5 = assertThrows(IllegalDiceException.class, () -> { w.addDice(0, 2, new Dice(5, ColorEnum.RED), 1); });
-        assertEquals(e5.getMessage(), "Die not placed near a compatible one");
+        assertEquals(e5.getMessage(), "Dado non posizionato vicino ad uno compatibile");
         IllegalDiceException e6 = assertThrows(IllegalDiceException.class, () -> { w.addDice(2, 0, new Dice(3, ColorEnum.RED), 1); });
-        assertEquals(e6.getMessage(), "Die not placed near a compatible one");
+        assertEquals(e6.getMessage(), "Dado non posizionato vicino ad uno compatibile");
 
         //Control id 3 (Control to no near die)
         try {
@@ -377,10 +379,10 @@ class WindowTest
         //System.out.println(w.toString());
         //Control id 3 rejected
         IllegalDiceException e7 = assertThrows(IllegalDiceException.class, () -> { w.addDice(0, 0, new Dice(3, ColorEnum.RED), 3); });
-        assertEquals(e7.getMessage(), "Die not placed on compatible cell");
+        assertEquals(e7.getMessage(), "Dado posizionato su una cella inompatibile");
         IllegalDiceException e8 = assertThrows(IllegalDiceException.class, () -> { w.addDice(2, 1, new Dice(5, ColorEnum.GREEN), 3); });
-        assertEquals(e8.getMessage(), "Die not placed near a compatible one");
+        assertEquals(e8.getMessage(), "Dado non posizionato vicino ad uno compatibile");
         IllegalDiceException e9 = assertThrows(IllegalDiceException.class, () -> { w.addDice(3, 2, new Dice(3, ColorEnum.RED), 3); });
-        assertEquals(e9.getMessage(), "Die not placed near a compatible one");
+        assertEquals(e9.getMessage(), "Dado non posizionato vicino ad uno compatibile");
     }
 }
