@@ -43,4 +43,12 @@ public class PairScore extends Score {
         OptionalInt min = Arrays.stream(frequency).min();
         return min.getAsInt() * valore;
     }
+
+    @Override
+    public void setTag(String tag) {
+        couple = new int[2];
+        String[] result = tag.split("\\s");
+        couple[0] = Integer.parseInt(result[0]);
+        couple[1] = Integer.parseInt(result[1]);
+    }
 }
