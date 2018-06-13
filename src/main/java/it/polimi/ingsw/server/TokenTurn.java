@@ -38,7 +38,7 @@ public class TokenTurn
     //End game
     private boolean endGame;
 
-    public TokenTurn ()
+    public TokenTurn()
     {
         endGame = false;
         currentTurn = 0;
@@ -54,25 +54,27 @@ public class TokenTurn
 
     /**
      * Request if player s has turn
+     *
      * @param s username of player
      * @return true if turn, false otherwise
      */
-    public synchronized boolean isMyTurn (String s)
+    public synchronized boolean isMyTurn(String s)
     {
+        if (justDeleting)
+            return false;
         if (toolInUsing)
         {
-            for (int i = 0; i < tempPlayers.size() ; i++)
+            for (int i = 0; i < tempPlayers.size(); i++)
             {
                 if (tempPlayers.get(i).getName().equals(s))
-                    return  (tempPlayers.get(i).getIdTurn() == currentTurn);
+                    return (tempPlayers.get(i).getIdTurn() == currentTurn);
             }
-        }
-        else
+        } else
         {
-            for (int i = 0; i < players.size() ; i++)
+            for (int i = 0; i < players.size(); i++)
             {
                 if (players.get(i).getName().equals(s))
-                    return  (players.get(i).getIdTurn() == currentTurn);
+                    return (players.get(i).getIdTurn() == currentTurn);
             }
 
         }
@@ -83,8 +85,8 @@ public class TokenTurn
      * Increment turn
      * numPlayer = 4 , current turn = 0
      * current turn = 1 - 2 - 3 - 4 - 4 - 3 - 2 - 1 - 1 - 2 -......
-      */
-    public synchronized void nextTurn ()
+     */
+    public synchronized void nextTurn()
     {
         if (!justDeleting)
         {
@@ -92,8 +94,7 @@ public class TokenTurn
                 normalTurn();
             else
                 toolTurn();
-        }
-        else
+        } else
             justDeleting = false;
 
     }
@@ -101,25 +102,23 @@ public class TokenTurn
     /**
      * Increment in normal condition
      */
-    private void normalTurn ()
+    private void normalTurn()
     {
         endRound = false;
         if (clockwise)
         {
             if (currentTurn < players.size())
-                    currentTurn ++;
+                currentTurn++;
             else
                 clockwise = false;
-        }
-        else
+        } else
         {
             if (currentTurn > 1)
             {
-                currentTurn --;
+                currentTurn--;
                 if (currentTurn == 1)
                     endRound = true;
-            }
-            else
+            } else
             {
                 clockwise = true;
                 leftShiftIdTurn();
@@ -130,29 +129,27 @@ public class TokenTurn
     /**
      * Increment turn when tool is active
      */
-    private void toolTurn ()
+    private void toolTurn()
     {
         endRound = false;
         if (clockwise)
         {
-            if (currentTurn < tempPlayers.size() )
-                currentTurn ++;
+            if (currentTurn < tempPlayers.size())
+                currentTurn++;
             else
             {
                 clockwise = false;
                 if (tempPlayers.size() == 2)
                     endRound = true;
             }
-        }
-        else
+        } else
         {
             if (currentTurn > 2)
             {
-                currentTurn --;
+                currentTurn--;
                 if (currentTurn == 2)
                     endRound = true;
-            }
-            else
+            } else
             {
                 clockwise = true;
                 toolInUsing = false;
@@ -164,9 +161,8 @@ public class TokenTurn
         {
             secondTurnTool = true;
             firstTurnTool = false;
-            currentTurn --;
-        }
-        else if (secondTurnTool)
+            currentTurn--;
+        } else if (secondTurnTool)
         {
             secondTurnTool();
             secondTurnTool = false;
@@ -176,9 +172,9 @@ public class TokenTurn
     /**
      * Left shift idTurn of players
      */
-    private void leftShiftIdTurn ()
+    private void leftShiftIdTurn()
     {
-        for (int i = 0; i < players.size() ; i++)
+        for (int i = 0; i < players.size(); i++)
         {
             int t = players.get(i).getIdTurn();
             t--;
@@ -190,78 +186,107 @@ public class TokenTurn
 
 
     //<editor-fold desc="Initialization/Deleting Players">
+
     /**
      * Add a new player
+     *
      * @param name username of new added player
      */
-    public synchronized void addPlayer (String name)
+    public synchronized void addPlayer(String name)
     {
-        players.add(new Player(name,players.size() + 1));
+        players.add(new Player(name, players.size() + 1));
     }
 
     /**
      * IMPORTANT!!!!  IT MUST BE CALLED WHEN IS THE TURN OF LEAVED PLAYER
      * Delete a player and change idPlayer of the others
+     *
      * @param name username of deleted player
      */
-    public synchronized void deletePlayer (String name)
+    public synchronized void deletePlayer(String name)
     {
         if (toolInUsing)
-            delPlayer(name,tempPlayers);
-        delPlayer(name,players);
+            delPlayer(name, tempPlayers);
+        delPlayer(name, players);
     }
 
     /**
      * Delete player from list of active players and adjust the correct sequence of turn
+     *
      * @param name
-     * @param t
+     * @param players
      */
-    private void delPlayer (String name,ArrayList<Player> t)
+    private void delPlayer(String name, ArrayList<Player> players)
     {
-        int inc,turnDel;
-        for (int i = 0; i < t.size() ; i++)
-            if (t.get(i).getName().equals(name))
+        int inc, turnDel;
+        for (int i = 0; i < players.size(); i++)
+        {
+            if (players.get(i).getName().equals(name))
             {
-                if (currentTurn == t.size())
+                //if (clockwise)
+                //{
+
+                if (!clockwise)
+                    currentTurn--;
+
+                if (currentTurn == players.size())
                 {
                     currentTurn--;
                     clockwise = false;
                 }
                 if (currentTurn == 1)
-                    clockwise = true;
-                turnDel = t.get(i).getIdTurn();
-                t.remove(i);
-                inc=0;
-                for (int j = 0; j < t.size() ; j++)
                 {
-                    if (t.get(j).getIdTurn() > turnDel)
+                    endRound = true;
+                    //clockwise = true;
+                }
+                turnDel = players.get(i).getIdTurn();
+                players.remove(i);
+                inc = 0;
+                for (int j = 0; j < players.size(); j++)
+                {
+                    if (players.get(j).getIdTurn() > turnDel)
                     {
-                        t.get(j).setIdTurn(turnDel + inc);
+                        players.get(j).setIdTurn(turnDel + inc);
                         inc++;
                     }
                 }
                 justDeleting = true;
                 return;
+                //}
+                /*else
+                {
+                    currentTurn--;
+                    if (currentTurn == 0)
+                        clockwise = true;
+
+                    turnDel = players.get(i).getIdTurn();
+                    players.remove(i);
+
+                }*/
+
             }
+        }
+
     }
     //</editor-fold>
 
     //<editor-fold desc="Tools function">
+
     /**
      * Request if player is in his second round
+     *
      * @param s username of player
      * @return true if turn, false otherwise
      */
-    public boolean isMySecondRound (String s)
+    public boolean isMySecondRound(String s)
     {
-        for (int i = 0; i < players.size() ; i++)
+        for (int i = 0; i < players.size(); i++)
         {
             if (!toolInUsing)
             {
                 if (players.get(i).getName().equals(s))
                     return (players.get(i).getIdTurn() == currentTurn && !clockwise);
-            }
-            else
+            } else
             {
                 if (tempPlayers.get(i).getName().equals(s))
                     return (tempPlayers.get(i).getIdTurn() == currentTurn && !clockwise);
@@ -274,9 +299,9 @@ public class TokenTurn
     /**
      * Function that must be called when the second turn on tool is run
      */
-    private void secondTurnTool ()
+    private void secondTurnTool()
     {
-        for (int i = 0; i < tempPlayers.size() ; i++)
+        for (int i = 0; i < tempPlayers.size(); i++)
         {
             if (tempPlayers.get(i).getIdTurn() == turnOfTool)
                 tempPlayers.get(i).setIdTurn(0);
@@ -286,11 +311,12 @@ public class TokenTurn
     }
 
     /**
-     *  Used for changing turn sequence after tool number 8
+     * Used for changing turn sequence after tool number 8
+     *
      * @param s user who required to use tool
      * @return if user can use tool 8
      */
-    public synchronized boolean useToolNumber8 (String s)
+    public synchronized boolean useToolNumber8(String s)
     {
         if (!clockwise || !isMyTurn(s) || currentTurn == players.size())
             return false;
@@ -299,21 +325,19 @@ public class TokenTurn
             tempPlayers.clear();
 
 
-            for (int i = 0 ; i < players.size() ; i++)
+            for (int i = 0; i < players.size(); i++)
             {
                 if (players.get(i).getIdTurn() >= currentTurn)
                 {
-                    Player a = new Player( players.get(i).getName(),players.get(i).getIdTurn());
+                    Player a = new Player(players.get(i).getName(), players.get(i).getIdTurn());
                     tempPlayers.add(a);
-                }
-                else
+                } else
                 {
-                    Player a = new Player( players.get(i).getName(),players.get(i).getIdTurn() - currentTurn);
+                    Player a = new Player(players.get(i).getName(), players.get(i).getIdTurn() - currentTurn);
                     tempPlayers.add(a);
                 }
             }
-        }
-        else
+        } else
             return false;
 
         turnOfTool = currentTurn;
@@ -327,54 +351,58 @@ public class TokenTurn
 
     //<editor-fold desc="Utilities">
 
-    public int getNumPlayers ()
+    public int getNumPlayers()
     {
         return players.size();
     }
 
-    public boolean isEndRound ()
+    public boolean isEndRound()
     {
         return endRound;
     }
 
-    public String toString ()
+    public String toString()
     {
         String r = "";
-        for (int i = 0; i < players.size() ; i++)
+        for (int i = 0; i < players.size(); i++)
         {
             r = r + "Player: " + players.get(i).getName() + " IdTurn: " + players.get(i).getIdTurn();
             r = r + "\n";
         }
-        r = r + "Turn: " + currentTurn + " End Round:" + endRound + "\n" ;
+        r = r + "Turn: " + currentTurn + " End Round:" + endRound + "\n";
         return r;
     }
 
-    public String toStringTemp ()
+    public String toStringTemp()
     {
         String r = "";
-        for (int i = 0; i < tempPlayers.size() ; i++)
+        for (int i = 0; i < tempPlayers.size(); i++)
         {
             r = r + "TempPlayer: " + tempPlayers.get(i).getName() + " TempIdTurn: " + tempPlayers.get(i).getIdTurn();
             r = r + "\n";
         }
-        r = r + "Turn: " + currentTurn + " End Round:" + endRound + "\n" ;
+        r = r + "Turn: " + currentTurn + " End Round:" + endRound + "\n";
         return r;
     }
 
-    public Integer getSynchronator() {
+    public Integer getSynchronator()
+    {
         return synchronator;
     }
 
-    public synchronized boolean isEndGame() {
+    public synchronized boolean isEndGame()
+    {
         return endGame;
     }
 
-    public void setEndGame() {
+    public void setEndGame()
+    {
         this.endGame = true;
     }
     //</editor-fold>
 
     //<editor-fold desc="Class Player">
+
     /**
      * Class that associates username to player turn
      */
@@ -383,21 +411,24 @@ public class TokenTurn
         String name;
         int turn;
 
-        Player (String n, int t)
+        Player(String n, int t)
         {
             name = n;
             turn = t;
         }
 
-        void setIdTurn (int t) {
+        void setIdTurn(int t)
+        {
             turn = t;
         }
 
-        public String getName() {
+        public String getName()
+        {
             return name;
         }
 
-        public int getIdTurn() {
+        public int getIdTurn()
+        {
             return turn;
         }
 
@@ -405,20 +436,23 @@ public class TokenTurn
     //</editor-fold>
 
     //<editor-fold desc="Fatal Error">
-    public synchronized boolean isFatalError() {
+    public synchronized boolean isFatalError()
+    {
         return fatalError;
     }
 
-    public synchronized void notifyFatalError() {
+    public synchronized void notifyFatalError()
+    {
         this.fatalError = true;
     }
     //</editor-fold>
 
     //<editor-fold desc="Setup Phase">
+
     /**
      * Starts initialization phase
      */
-    public synchronized void startSetup ()
+    public synchronized void startSetup()
     {
         onSetup = true;
         playerEndSetup = 0;
@@ -427,9 +461,9 @@ public class TokenTurn
     /**
      * Increase number of client who finished setup
      */
-    public synchronized void endSetup ()
+    public synchronized void endSetup()
     {
-        playerEndSetup ++ ;
+        playerEndSetup++;
         if (playerEndSetup == initNumberOfPlayers)
             onSetup = false;
     }
@@ -437,12 +471,12 @@ public class TokenTurn
     /**
      * @return if setup phase is running
      */
-    public synchronized boolean getOnSetup ()
+    public synchronized boolean getOnSetup()
     {
         return onSetup;
     }
 
-    public void setInitNumberOfPlayers (int i)
+    public void setInitNumberOfPlayers(int i)
     {
         initNumberOfPlayers = i;
     }

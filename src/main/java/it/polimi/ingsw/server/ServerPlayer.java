@@ -35,6 +35,7 @@ public class ServerPlayer implements Runnable
 
     //Setup Phase
     private UsersEntry possibleUsers;
+    private boolean inGame;
 
     //passed parameters
     private String[] windowCard1,windowCard2;
@@ -52,6 +53,7 @@ public class ServerPlayer implements Runnable
         communicator = null;
         executor = Executors.newFixedThreadPool(1);
         communicator = cli;
+        inGame = true;
         try {
             connection_parameters_setup();
         } catch (ParserConfigurationException| IOException | SAXException e) {
@@ -103,21 +105,22 @@ public class ServerPlayer implements Runnable
         }
 
         //////GAME PHASE//////
-        while (true)//Da cambiare con la condizione di fine partita
+        while (inGame)//Da cambiare con la condizione di fine partita
         {
             synchronized (token.getSynchronator())
             {
                 try
                 {
-                    if (token.isEndGame())
-                    {
-                        LogFile.addLog("(User:" + user + ")" + " End communication with client and close connection");
-                        return;
-                    }
-
                     //Wait his turn
                     while (!token.isMyTurn(user))
                         token.getSynchronator().wait();
+
+                    if (token.isEndGame())
+                    {
+                        LogFile.addLog("(User:" + user + ")" + " End communication with client and close connection");
+                        token.getSynchronator().notifyAll();
+                        return;
+                    }
 
                     LogFile.addLog("Turn of:" + user);
                     System.out.println("\n>>>Turn of:" + user);
@@ -128,12 +131,9 @@ public class ServerPlayer implements Runnable
                     }catch (ClientOutOfReachException e){
                         //Notify token that client is dead
                         token.deletePlayer(user);
-                        token.nextTurn();
-                        closeConnection("Timeout Expired");
-                        synchronized (token.getSynchronator()) {
-                            token.getSynchronator().notifyAll();
-                        }
-                        return;
+                        inGame = false;
+                        token.getSynchronator().notifyAll();
+                        break;
                     }
 
                     //End turn comunication
@@ -281,13 +281,10 @@ public class ServerPlayer implements Runnable
         try{
             u = stopTask(() -> communicator.doTurn(), TURN_TIMEOUT, executor);
             if(u == null)
-            {
-                LogFile.addLog(" Move timeout expired");
                 throw new ClientOutOfReachException();
-            }
         }
         catch (Exception e) {
-            LogFile.addLog("" , e.getStackTrace());
+            LogFile.addLog("(" + user + ") Move timeout expired");
             throw new ClientOutOfReachException();
         }
     }
@@ -299,15 +296,12 @@ public class ServerPlayer implements Runnable
     {
         String s;
         try{
-            s = stopTask(() -> communicator.updateGraphic(adapter.getDadieraPair()), INIT_TIMEOUT, executor);
+            s = stopTask(() -> communicator.updateGraphic(adapter.getDadieraPair()), PING_TIMEOUT, executor);
             if(s == null)
-            {
-                LogFile.addLog(" Dadiera update timeout expired");
                 throw new ClientOutOfReachException();
-            }
         }
         catch (Exception e) {
-            LogFile.addLog("" , e.getStackTrace());
+            LogFile.addLog("(" + user + ") Dadiera update timeout expired");
             throw new ClientOutOfReachException();
         }
     }
@@ -319,15 +313,12 @@ public class ServerPlayer implements Runnable
     {
         String s;
         try{
-            s = stopTask(() -> communicator.updateGraphic(adapter.getWindowPair()), INIT_TIMEOUT, executor);
+            s = stopTask(() -> communicator.updateGraphic(adapter.getWindowPair()), PING_TIMEOUT, executor);
             if(s == null)
-            {
-                LogFile.addLog(" Window update timeout expired");
                 throw new ClientOutOfReachException();
-            }
         }
         catch (Exception e) {
-            LogFile.addLog("" , e.getStackTrace());
+            LogFile.addLog("(" + user + ")Window update timeout expired");
             throw new ClientOutOfReachException();
         }
     }
@@ -336,15 +327,12 @@ public class ServerPlayer implements Runnable
     {
         String s;
         try{
-            s = stopTask(() -> communicator.updateTokens(adapter.getMarker()), INIT_TIMEOUT, executor);
+            s = stopTask(() -> communicator.updateTokens(adapter.getMarker()), PING_TIMEOUT, executor);
             if(s == null)
-            {
-                LogFile.addLog(" Token update timeout expired");
                 throw new ClientOutOfReachException();
-            }
         }
         catch (Exception e) {
-            LogFile.addLog("" , e.getStackTrace());
+            LogFile.addLog("(" + user + ") Token update timeout expired");
             throw new ClientOutOfReachException();
         }
     }
@@ -353,15 +341,12 @@ public class ServerPlayer implements Runnable
     {
         String s;
         try{
-            s = stopTask(() -> communicator.updateRoundTrace(adapter.getRoundTracePair()), INIT_TIMEOUT, executor);
+            s = stopTask(() -> communicator.updateRoundTrace(adapter.getRoundTracePair()), PING_TIMEOUT, executor);
             if(s == null)
-            {
-                LogFile.addLog(" Round Trace update timeout expired");
                 throw new ClientOutOfReachException();
-            }
         }
         catch (Exception e) {
-            LogFile.addLog("" , e.getStackTrace());
+            LogFile.addLog("(" + user + ") Round Trace update timeout expired");
             throw new ClientOutOfReachException();
         }
 
@@ -379,7 +364,7 @@ public class ServerPlayer implements Runnable
                     communicator.updateOpponents(user,grids);
                     return null;
                 }
-            }, INIT_TIMEOUT, executor);
+            }, PING_TIMEOUT, executor);
         } catch (Exception e) {
             LogFile.addLog("" , e.getStackTrace());
             throw new ClientOutOfReachException();
@@ -405,7 +390,7 @@ public class ServerPlayer implements Runnable
             boolean performed;
             performed = stopTask(() -> communicator.sendMessage(s), PING_TIMEOUT, executor);
             if (!performed)
-                LogFile.addLog("Send message to client failed");
+                LogFile.addLog("(" + user + ")end message to client failed");
         }catch (Exception ex) {
             LogFile.addLog("Send message to client failed", ex.getStackTrace());
         }
@@ -433,7 +418,7 @@ public class ServerPlayer implements Runnable
             updateWindow();
             updateTokens();
         }catch (Exception e){
-            LogFile.addLog("Impossible to update client");
+            LogFile.addLog("(" + user + ") Impossible to communicate to client");
             exit = false;
         }
         return exit;
@@ -514,7 +499,7 @@ public class ServerPlayer implements Runnable
             o = future.get(executionTime, TimeUnit.MILLISECONDS);
         } catch (TimeoutException te) {
             //System.out.println(te.getMessage());
-            LogFile.addLog("Client too late to reply");
+            //LogFile.addLog("Client too late to reply");
             //System.out.println("too late to reply");
         } catch (InterruptedException ie) {
             //System.out.println(ie.getMessage());
@@ -525,6 +510,10 @@ public class ServerPlayer implements Runnable
             future.cancel(true);
         }
         return (T)o;
+    }
+
+    public boolean isInGame() {
+        return inGame;
     }
     //</editor-fold>
 
