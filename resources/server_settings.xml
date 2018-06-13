@@ -3,7 +3,7 @@
 <server>
     <socket>
         <portNumber>6000</portNumber>
-        <ping>1000</ping>
+        <ping>500</ping>
         <init>60000</init>
         <turn>1000</turn>
     </socket>
