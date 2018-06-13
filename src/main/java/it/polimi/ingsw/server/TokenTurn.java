@@ -223,22 +223,23 @@ public class TokenTurn
         {
             if (players.get(i).getName().equals(name))
             {
-                //if (clockwise)
-                //{
-
                 if (!clockwise)
-                    currentTurn--;
+                {
+                    if (currentTurn == 1)
+                        clockwise = true;
+                    else
+                        currentTurn--;
+                }
 
                 if (currentTurn == players.size())
                 {
                     currentTurn--;
                     clockwise = false;
                 }
+
                 if (currentTurn == 1)
-                {
                     endRound = true;
-                    //clockwise = true;
-                }
+
                 turnDel = players.get(i).getIdTurn();
                 players.remove(i);
                 inc = 0;
@@ -252,18 +253,6 @@ public class TokenTurn
                 }
                 justDeleting = true;
                 return;
-                //}
-                /*else
-                {
-                    currentTurn--;
-                    if (currentTurn == 0)
-                        clockwise = true;
-
-                    turnDel = players.get(i).getIdTurn();
-                    players.remove(i);
-
-                }*/
-
             }
         }
 

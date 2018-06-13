@@ -306,7 +306,7 @@ public class MatchHandler implements Runnable
         player.add(pl);
         nConn++;
         int n = checkClientAlive();
-        clientConnectionUpdateMessage("connected");
+        clientConnectionUpdateMessage("connessi");
         nConn = nConn-n;
 
         try
@@ -664,7 +664,7 @@ public class MatchHandler implements Runnable
     private void clientConnectionUpdateMessage (String str)
     {
         for (int i = 0; i < player.size(); i++)
-            player.get(i).sendMessage("Number of client " + str + ": "+ player.size());
+            player.get(i).sendMessage("Numero di client " + str + ": "+ player.size());
     }
     //</editor-fold>
 
