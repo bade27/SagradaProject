@@ -5,18 +5,31 @@ import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.client.ToolAction;
 import it.polimi.ingsw.remoteInterface.Pair;
 import javafx.application.Application;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.awt.*;
 import java.rmi.RemoteException;
 import java.util.*;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -26,6 +39,7 @@ public class SagradaGUI extends Application implements GUI {
     private DadieraGUI dadieraG;
     private GridGUI gridG;
     private PlayersGUI plaG;
+    private TokenGUI tokenG;
     private ToolsGUI tools;
     private RoundsGUI rounds;
     private TargetGUI target;
@@ -65,12 +79,97 @@ public class SagradaGUI extends Application implements GUI {
         catch (RemoteException e){
             Thread.currentThread().interrupt();
         }
-
-
     }
 
+
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage loginStage){
+
+        boolean log;
+        //clientConnectionHandler =new ClientSocketHandler();
+        VBox root=new VBox();
+        GridPane login=new GridPane();
+        root.getChildren().add(login);
+        //fascia del titolo
+        Label l=new Label("LOGIN");
+        l.setFont(Font.font("verdana",  FontWeight.BOLD, FontPosture.REGULAR,30));
+        //fascia dove inserirò il nome
+        GridPane name=new GridPane();
+
+        //fascia dove inseriro l'ip
+        GridPane ip=new GridPane();
+
+        //RMI-Socket
+
+
+        //fascia dove inserirò il bottone invio
+        Button st=new Button("INVIO");
+        root.getChildren().add(st);
+        st.setAlignment(Pos.TOP_RIGHT);
+
+        //inserimento degli elementi nella scena
+        login.add(l,0,0);
+        login.add(name,0,1);
+        login.add(ip,0,2);
+
+        final TextField textname= new TextField();
+        name.add(textname,0,0);
+        Text txnome=new Text("Nome");
+        txnome.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
+        name.add(txnome,1,0);
+
+        final TextField textip= new TextField();
+        ip.add(textip,0,0);
+        Text txip=new Text("Indirizzo ip Server");
+        txip.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
+        ip.add(txip,1,0);
+
+        ObservableList<String> type = FXCollections.observableArrayList("RMI", "Socket");
+        ComboBox connection=new ComboBox(type);
+        connection.setPromptText("Scegliere tipo di connessione...");
+        login.add(connection,0,3);
+
+        login.setVgap(10);
+        name.setHgap(5);
+        ip.setHgap(5);
+        log=false;
+
+        Text t=new Text();
+        t.setDisable(false);
+        t.setFill(Color.INDIANRED);
+        root.getChildren().add(t);
+
+        st.setOnAction(new EventHandler<ActionEvent>() {
+
+            public void handle(ActionEvent event) {
+                String n=textname.getText();
+                String p=textip.getText();
+                System.out.println(connection.getValue());
+                if(!(n.contentEquals("")) && !(p.contentEquals("")) && (connection.getValue()!=null) && log==false) {
+                    /*String[] buffer = {n,p};
+                    boolean b= clientConnectionHandler.setBuffer(buffer);
+                    if(b==true)
+                        log=true;*/
+                    game(loginStage);
+                    System.out.println(n);
+                    System.out.println(p);
+                }else{
+                    t.setText("valori in input non validi!");
+                }
+            }
+        });
+
+        login.setAlignment(Pos.CENTER);
+        root.setAlignment(Pos.CENTER);
+        root.setSpacing(30);
+        Scene scene=new Scene(root,500,500);
+        loginStage.setTitle("Sagrada");
+        loginStage.setScene(scene);
+        loginStage.show();
+        loginStage.setResizable(false);
+    }
+
+    public void game(Stage primaryStage) {
 
         //root
         BorderPane root = new BorderPane();
@@ -95,18 +194,14 @@ public class SagradaGUI extends Application implements GUI {
         mainContent.setAlignment(Pos.CENTER);
         pcenter.setAlignment(Pos.CENTER);
 
-
-
-
         //placing the different gui components
         tools = new ToolsGUI(mainContent, this);
         rounds = new RoundsGUI(pcenter, this);
         dadieraG =new DadieraGUI(pcenter, 5, this);
         gridG = new GridGUI(pcenter, this);
         plaG=new PlayersGUI(pcenter,this);
+        tokenG=new TokenGUI(pcenter,this);
         target = new TargetGUI(mainContent);
-
-
 
         //status message and end of turn button
         BorderPane bottom = new BorderPane();
