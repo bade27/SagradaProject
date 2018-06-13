@@ -39,8 +39,8 @@ public class MatchHandler implements Runnable
     private RoundTrace roundTrace;
     private UsersEntry userList;
 
-    private final static int TURNS = 2;
-    private final static int MAXGIOC = 2;//Da modificare a 4
+    private final static int TURNS = 3;
+    private final static int MAXGIOC = 3;//Da modificare a 4
 
     //connection parameters
     private static int RMI_REGISTRY_PORT;
@@ -577,20 +577,23 @@ public class MatchHandler implements Runnable
      */
     public void updateClient ()
     {
-        for (int i = 0; i < player.size() ; i++)
+        for (int i = 0; i < player.size(); i++)
         {
             //Update user's window,dadiera,roundttrace and markers
-            if(player.get(i).updateClient()) {
-                for (int j = 0; j < player.size(); j++) {
-                    if (player.get(j).getUser() != player.get(i).getUser()) {
+            if (player.get(i).isInGame())
+            {
+                if (player.get(i).updateClient()) {
+                    for (int j = 0; j < player.size(); j++) {
+                        if (!player.get(j).getUser().equals(player.get(i).getUser())) {
 
-                        try {
-                            //Update others users with user's window,dadiera,roundttrace and markers
-                            player.get(j).updateOpponents(player.get(i).getUser(), player.get(i).getGrid());
-                        } catch (ClientOutOfReachException e) {
-                            LogFile.addLog("Client " + player.get(j).getUser() + " temporarily unreachable");
+                            try {
+                                //Update others users with user's window,dadiera,roundttrace and markers
+                                player.get(j).updateOpponents(player.get(i).getUser(), player.get(i).getGrid());
+                            } catch (ClientOutOfReachException e) {
+                                LogFile.addLog("Client " + player.get(j).getUser() + " temporarily unreachable");
+                            }
+
                         }
-
                     }
                 }
             }
