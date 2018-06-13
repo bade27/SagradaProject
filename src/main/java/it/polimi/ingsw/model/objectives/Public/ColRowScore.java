@@ -6,12 +6,13 @@ import it.polimi.ingsw.model.Dice;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ColRowScore implements ScoreInterface {
+public class ColRowScore extends Score {
 
-    String tag;
-    String pattern;
     int maxi;
     int maxj;
+
+    public ColRowScore() {
+    }
 
     public ColRowScore(String pattern, String tag) {
         this.pattern = pattern;
@@ -22,7 +23,7 @@ public class ColRowScore implements ScoreInterface {
      *
      * @param value
      * @param grid
-     * @return *il punteggio totalizzato dal giocatore*
+     * @return *il score totalizzato dal giocatore*
      */
     public int calcScore(int value, Cell[][] grid) {
         int valid_cols = 0;
@@ -73,5 +74,7 @@ public class ColRowScore implements ScoreInterface {
         return tag.equals("shade") ? String.valueOf(d.getValue())
                 : d.getColor() != null ? d.getColor().toString() : "missing";
     }
+
+
 
 }

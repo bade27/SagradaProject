@@ -5,7 +5,7 @@
 
 	<tool1 num="1">
 		<name>Pinza Sgrossatrice</name>
-		<effect>Dopo aver scelto un dado, aumenta o diminuisci il valore del dado scelto di 1 [Non puoi cambiare un 6 in1 o un 1 in 6]</effect>
+		<effect>Dopo aver scelto un dado, aumenta o diminuisci il value del dado scelto di 1 [Non puoi cambiare un 6 in1 o un 1 in 6]</effect>
 		<class>SetDiceValue</class>
 	</tool1>
 
@@ -17,7 +17,7 @@
 
 	<tool3 num="3">
 		<name>Alesatore per lamina di rame</name>
-		<effect>Muovi un qualsiasi dado nella tua griglia ignorando le restrizioni di valore [Devi rispettare tutte le altre restrizioni di piazzamento]</effect>
+		<effect>Muovi un qualsiasi dado nella tua griglia ignorando le restrizioni di value [Devi rispettare tutte le altre restrizioni di piazzamento]</effect>
 		<class>MoveGridGrid</class>
 	</tool3>
 
@@ -65,7 +65,7 @@
 
 	<tool11 num="11">
 		<name>Diluente per Pasta Salda</name>
-		<effect>Dopo aver scelto un dado, riponilo nel Sacchetto, poi pescane uno dal Saccheto [Scegli il valore del nuovo dado e piazzalo, rispettando tutte le restrizioni di piazzamento]</effect>
+		<effect>Dopo aver scelto un dado, riponilo nel Sacchetto, poi pescane uno dal Saccheto [Scegli il value del nuovo dado e piazzalo, rispettando tutte le restrizioni di piazzamento]</effect>
 		<class>SetDiceValue</class>
 	</tool11>
 

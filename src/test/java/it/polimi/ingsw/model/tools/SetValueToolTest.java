@@ -58,17 +58,17 @@ class SetValueToolTest {
             }
         }
         //numero di dadi uguale a quello estratto prima dello scambio
-        for(int i=0;i<d.getListaDadi().size();i++)
+        for(int i=0;i<d.getDiceList().size();i++)
         {
-            if(d.getListaDadi().get(i).getValue()== finalDice1.getValue()&&
-                    d.getListaDadi().get(i).getColor()== finalDice1.getColor()){
+            if(d.getDiceList().get(i).getValue()== finalDice1.getValue()&&
+                    d.getDiceList().get(i).getColor()== finalDice1.getColor()){
                 conti1++;
             }
         }
-        for(int i=0;i<d.getListaDadi().size();i++)
+        for(int i=0;i<d.getDiceList().size();i++)
         {
-            if(d.getListaDadi().get(i).getValue()== finalDice1.getValue()+1&&
-                    d.getListaDadi().get(i).getColor()== finalDice1.getColor()){
+            if(d.getDiceList().get(i).getValue()== finalDice1.getValue()+1&&
+                    d.getDiceList().get(i).getColor()== finalDice1.getColor()){
                 conti2++;
             }
         }
@@ -85,17 +85,17 @@ class SetValueToolTest {
             svt.addSub();
 
             Dice finalDice2=new Dice(num+1,oldcol);
-        for(int i=0;i<d.getListaDadi().size();i++)
+        for(int i=0;i<d.getDiceList().size();i++)
         {
-            if(d.getListaDadi().get(i).getValue()== finalDice2.getValue()-1&&
-                    d.getListaDadi().get(i).getColor()== finalDice2.getColor()){
+            if(d.getDiceList().get(i).getValue()== finalDice2.getValue()-1&&
+                    d.getDiceList().get(i).getColor()== finalDice2.getColor()){
                 contf1++;
             }
         }
-        for(int i=0;i<d.getListaDadi().size();i++)
+        for(int i=0;i<d.getDiceList().size();i++)
         {
-            if(d.getListaDadi().get(i).getValue()== finalDice2.getValue()&&
-                    d.getListaDadi().get(i).getColor()== finalDice2.getColor()){
+            if(d.getDiceList().get(i).getValue()== finalDice2.getValue()&&
+                    d.getDiceList().get(i).getColor()== finalDice2.getColor()){
                 contf2++;
             }
         }
@@ -167,17 +167,17 @@ class SetValueToolTest {
             }
         }
         //numero di dadi uguale a quello estratto prima dello scambio
-        for(int i=0;i<d.getListaDadi().size();i++)
+        for(int i=0;i<d.getDiceList().size();i++)
         {
-            if(d.getListaDadi().get(i).getValue()== finalDice1.getValue()&&
-                    d.getListaDadi().get(i).getColor()== finalDice1.getColor()){
+            if(d.getDiceList().get(i).getValue()== finalDice1.getValue()&&
+                    d.getDiceList().get(i).getColor()== finalDice1.getColor()){
                 conti1++;
             }
         }
-        for(int i=0;i<d.getListaDadi().size();i++)
+        for(int i=0;i<d.getDiceList().size();i++)
         {
-            if(d.getListaDadi().get(i).getValue()== finalDice1.getValue()-1&&
-                    d.getListaDadi().get(i).getColor()== finalDice1.getColor()){
+            if(d.getDiceList().get(i).getValue()== finalDice1.getValue()-1&&
+                    d.getDiceList().get(i).getColor()== finalDice1.getColor()){
                 conti2++;
             }
         }
@@ -195,17 +195,17 @@ class SetValueToolTest {
         svt.addSub();
 
         Dice finalDice2=new Dice(num-1,oldcol);
-        for(int i=0;i<d.getListaDadi().size();i++)
+        for(int i=0;i<d.getDiceList().size();i++)
         {
-            if(d.getListaDadi().get(i).getValue()== finalDice2.getValue()+1&&
-                    d.getListaDadi().get(i).getColor()== finalDice2.getColor()){
+            if(d.getDiceList().get(i).getValue()== finalDice2.getValue()+1&&
+                    d.getDiceList().get(i).getColor()== finalDice2.getColor()){
                 contf1++;
             }
         }
-        for(int i=0;i<d.getListaDadi().size();i++)
+        for(int i=0;i<d.getDiceList().size();i++)
         {
-            if(d.getListaDadi().get(i).getValue()== finalDice2.getValue()&&
-                    d.getListaDadi().get(i).getColor()== finalDice2.getColor()){
+            if(d.getDiceList().get(i).getValue()== finalDice2.getValue()&&
+                    d.getDiceList().get(i).getColor()== finalDice2.getColor()){
                 contf2++;
             }
         }
@@ -265,17 +265,17 @@ class SetValueToolTest {
 
         int price1=svt.getPrice();
 
-        for(int j=0;j<d.getListaDadi().size();j++)
+        for(int j=0;j<d.getDiceList().size();j++)
         {
-            if(d.getListaDadi().get(j).getValue()== finaldice1.getValue()&&
-                    d.getListaDadi().get(j).getColor()== finaldice1.getColor()){
+            if(d.getDiceList().get(j).getValue()== finaldice1.getValue()&&
+                    d.getDiceList().get(j).getColor()== finaldice1.getColor()){
                 conti1++;
             }
         }
-        for(int j=0;j<d.getListaDadi().size();j++)
+        for(int j=0;j<d.getDiceList().size();j++)
         {
-            if(d.getListaDadi().get(j).getValue()== 7-finaldice1.getValue()&&
-                    d.getListaDadi().get(j).getColor()== finaldice1.getColor()){
+            if(d.getDiceList().get(j).getValue()== 7-finaldice1.getValue()&&
+                    d.getDiceList().get(j).getColor()== finaldice1.getColor()){
                 conti2++;
             }
         }
@@ -298,17 +298,17 @@ class SetValueToolTest {
 
 
         Dice finaldice2=new Dice(7-oldval,oldcol);
-        for(int j=0;j<d.getListaDadi().size();j++)
+        for(int j=0;j<d.getDiceList().size();j++)
         {
-            if(d.getListaDadi().get(j).getValue()== 7-finaldice2.getValue()&&
-                    d.getListaDadi().get(j).getColor()== finaldice2.getColor()){
+            if(d.getDiceList().get(j).getValue()== 7-finaldice2.getValue()&&
+                    d.getDiceList().get(j).getColor()== finaldice2.getColor()){
                 contf1++;
             }
         }
-        for(int j=0;j<d.getListaDadi().size();j++)
+        for(int j=0;j<d.getDiceList().size();j++)
         {
-            if(d.getListaDadi().get(j).getValue()== finaldice2.getValue()&&
-                    d.getListaDadi().get(j).getColor()== finaldice2.getColor()){
+            if(d.getDiceList().get(j).getValue()== finaldice2.getValue()&&
+                    d.getDiceList().get(j).getColor()== finaldice2.getColor()){
                 contf2++;
             }
         }

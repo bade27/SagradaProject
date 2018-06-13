@@ -66,14 +66,14 @@ public class MoveDadieraTool extends Tools {
     {
         Window window = adapter.getBoard();
         if(pos_iniz1 == null || d1 == null)
-            throw new IllegalStepException();
+            throw new IllegalStepException("Riprova selezionando tutti i parametri del tool");
 
         try{
             window.addDice(pos_iniz1.getI(),pos_iniz1.getJ(),d1,3);
             dadiera.deleteDice(d1);
             adapter.setCanMove(false);
         }catch (Exception e){
-            throw new IllegalStepException();
+            throw new IllegalStepException("Impossibile eseguire il tool coi parametri selezionati");
         }
     }
 

@@ -10,7 +10,6 @@ import it.polimi.ingsw.utilities.FileLocator;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import javax.swing.plaf.synth.SynthEditorPaneUI;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -19,7 +18,10 @@ import java.io.IOException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
@@ -269,7 +271,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             e.printStackTrace();
             return false;
         }
-        return response.equals("Tool permission accepted");
+        return response.equals("Richiesta utilizzo tool accolta");
     }
 
     public synchronized void useTool() {

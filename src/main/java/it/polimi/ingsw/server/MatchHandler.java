@@ -25,9 +25,7 @@ import java.io.IOException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Random;
-import java.util.Vector;
 
 public class MatchHandler implements Runnable
 {
@@ -39,7 +37,7 @@ public class MatchHandler implements Runnable
     private RoundTrace roundTrace;
     private UsersEntry userList;
 
-    private final static int TURNS = 2;
+    private final static int TURNS = 3;
     private final static int MAXGIOC = 2;//Da modificare a 4
 
     //connection parameters
@@ -129,7 +127,7 @@ public class MatchHandler implements Runnable
                     turnsPlayed++;
 
                     //Update Round Trace
-                    while(dices.getListaDadi().size() > 0)
+                    while(dices.getDiceList().size() > 0)
                     {
                         Dice tmp = null;
                         try {
@@ -308,7 +306,7 @@ public class MatchHandler implements Runnable
         player.add(pl);
         nConn++;
         int n = checkClientAlive();
-        clientConnectionUpdateMessage("connected");
+        clientConnectionUpdateMessage("connessi");
         nConn = nConn-n;
 
         try
@@ -577,20 +575,23 @@ public class MatchHandler implements Runnable
      */
     public void updateClient ()
     {
-        for (int i = 0; i < player.size() ; i++)
+        for (int i = 0; i < player.size(); i++)
         {
             //Update user's window,dadiera,roundttrace and markers
-            if(player.get(i).updateClient()) {
-                for (int j = 0; j < player.size(); j++) {
-                    if (player.get(j).getUser() != player.get(i).getUser()) {
+            if (player.get(i).isInGame())
+            {
+                if (player.get(i).updateClient()) {
+                    for (int j = 0; j < player.size(); j++) {
+                        if (!player.get(j).getUser().equals(player.get(i).getUser())) {
 
-                        try {
-                            //Update others users with user's window,dadiera,roundttrace and markers
-                            player.get(j).updateOpponents(player.get(i).getUser(), player.get(i).getGrid());
-                        } catch (ClientOutOfReachException e) {
-                            LogFile.addLog("Client " + player.get(j).getUser() + " temporarily unreachable");
+                            try {
+                                //Update others users with user's window,dadiera,roundttrace and markers
+                                player.get(j).updateOpponents(player.get(i).getUser(), player.get(i).getGrid());
+                            } catch (ClientOutOfReachException e) {
+                                LogFile.addLog("Client " + player.get(j).getUser() + " temporarily unreachable");
+                            }
+
                         }
-
                     }
                 }
             }
@@ -663,7 +664,7 @@ public class MatchHandler implements Runnable
     private void clientConnectionUpdateMessage (String str)
     {
         for (int i = 0; i < player.size(); i++)
-            player.get(i).sendMessage("Number of client " + str + ": "+ player.size());
+            player.get(i).sendMessage("Numero di client " + str + ": "+ player.size());
     }
     //</editor-fold>
 

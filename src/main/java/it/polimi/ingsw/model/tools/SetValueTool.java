@@ -57,7 +57,7 @@ public class SetValueTool extends Tools {
         try {
             dadiera.setDiceValue(val, d);
         } catch (IllegalDiceException ide) {
-            throw new IllegalStepException();
+            throw new IllegalStepException("Impossibile eseguire il tool coi parametri selezionati");
         }
     }
 
@@ -68,7 +68,7 @@ public class SetValueTool extends Tools {
     private void addSub() throws IllegalStepException
     {
         if(instruction == null || d1 == null)
-            throw new IllegalStepException();
+            throw new IllegalStepException("Riprova selezionando tutti i parametri del tool");
         int value = d1.getValue();
 
         if(instruction.equals("inc"))
@@ -85,7 +85,7 @@ public class SetValueTool extends Tools {
     private void relaunchDice() throws IllegalStepException
     {
         if(d1 == null)
-            throw new IllegalStepException();
+            throw new IllegalStepException("Riprova selezionando tutti i parametri del tool");
         int v = new Random().nextInt(6) + 1;
 
         setDiceValueDadera(v,d1);
@@ -102,7 +102,7 @@ public class SetValueTool extends Tools {
     private void turnDice() throws IllegalStepException
     {
         if(d1 == null)
-            throw new IllegalStepException();
+            throw new IllegalStepException("Riprova selezionando tutti i parametri del tool");
 
         int value = 7 - d1.getValue();
         setDiceValueDadera(value,d1);
@@ -118,12 +118,12 @@ public class SetValueTool extends Tools {
         token = adapter.getToken();
         String user = adapter.getUser();
         if (!token.isMySecondRound(user))
-            throw new IllegalStepException("Can't use tool in your first round");
+            throw new IllegalStepException("tool utilizzabile durante il secondo giro del turno");
 
-        for (int i = 0; i < dadiera.getListaDadi().size() ; i++)
+        for (int i = 0; i < dadiera.getDiceList().size() ; i++)
         {
             int v = new Random().nextInt(6) + 1;
-            setDiceValueDadera(v,dadiera.getListaDadi().get(i));
+            setDiceValueDadera(v,dadiera.getDiceList().get(i));
         }
         setPrice();
     }
@@ -137,7 +137,7 @@ public class SetValueTool extends Tools {
             if(temporaryDie != null)
                 dadiera.addDice(temporaryDie);
             remember = null;
-            throw new IllegalStepException();
+            throw new IllegalStepException("Impossibile eseguire il tool coi parametri selezionati");
         }
 
 
@@ -150,7 +150,7 @@ public class SetValueTool extends Tools {
                 dadiera.getBag().putADie(d1);
                 color = d.getColor().toString().toLowerCase();
             } catch (NotEnoughDiceException nede) {
-                throw new IllegalStepException();
+                throw new IllegalStepException("Impossibile eseguire il tool coi parametri selezionati");
             }
             completeDice = false;
         } else {

@@ -40,7 +40,7 @@ public class Window
     public void addDice (int i , int j , Dice d, int level) throws IllegalDiceException
     {
         if (checkPositionBorder(i,j))
-            throw new IllegalDiceException("Position out of bound");
+            throw new IllegalDiceException("Dado posizionato fuori dai bordi");
 
         //Check if no controls are expected
         if (level == -1)
@@ -55,18 +55,18 @@ public class Window
             if ((i == 0 || i == rows - 1 || j == 0 || j == cols - 1))
             {
                 if (!setDie(i,j,d,level))
-                    throw new IllegalDiceException("Die not placed on compatible cell");
+                    throw new IllegalDiceException("Dado posizionato su una cella inompatibile");
                 else
                     firstTurn = false;
             }
             else
-                throw new IllegalDiceException("First die not placed on edge");
+                throw new IllegalDiceException("Dado non posizionato sul bordo");
         }
         else
         {
             //Control if die position is occupied
             if (board[i][j].getFrontDice() != null)
-                throw new IllegalDiceException("Die placed on another one");
+                throw new IllegalDiceException("Dado posizionato su una cella occupata");
 
             boolean near=false; //true if there is die near my position
             boolean noSimilar = true; //true if there are not dice similar on cardinal position
@@ -88,16 +88,16 @@ public class Window
 
             if (noSimilar && level == 3) {
                 if (!setDie(i, j, d, 0))
-                    throw new IllegalDiceException("Die not placed on compatible cell");
+                    throw new IllegalDiceException("Dado posizionato su una cella inompatibile");
             }
 
             else if (near && noSimilar) {
                     if (!setDie(i, j, d, level))
-                        throw new IllegalDiceException("Die not placed on compatible cell");
+                        throw new IllegalDiceException("Dado posizionato su una cella inompatibile");
             }
 
             else
-                throw new IllegalDiceException("Die not placed near a compatible one");
+                throw new IllegalDiceException("Dado non posizionato vicino ad uno compatibile");
         }
     }
 
@@ -213,6 +213,21 @@ public class Window
 
     public int getDifficult() {
         return difficult;
+    }
+
+
+    /**
+     * Count and return number of blank cell for count of points
+     * @return number of blank cells
+     */
+    public int getNumberBlankCell ()
+    {
+        int cont = 0;
+        for (int i = 0 ; i < rows ; i++)
+            for (int j = 0; j < cols; j++)
+                if (board[i][j].getFrontDice() ==  null)
+                    cont++;
+        return cont;
     }
     //</editor-fold>
 }

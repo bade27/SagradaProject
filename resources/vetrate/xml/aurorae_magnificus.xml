@@ -7,8 +7,8 @@
 	<difficulty>5</difficulty>
 
 	<!--
-			quando non ci sono restrizioni sul numero, il suo valore è zero
-			quando non ci sono restrizioni sul color, il suo valore è dc (don't care)
+			quando non ci sono restrizioni sul numero, il suo value è zero
+			quando non ci sono restrizioni sul color, il suo value è dc (don't care)
 
 			per ora il campo img_source lo lascio vuoto, quando avremo le immagini lo completeremo
 	-->

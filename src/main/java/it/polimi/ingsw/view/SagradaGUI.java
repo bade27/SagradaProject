@@ -85,7 +85,7 @@ public class SagradaGUI extends Application implements GUI {
     @Override
     public void start(Stage loginStage){
 
-        boolean log;
+        /*boolean log;
         //clientConnectionHandler =new ClientSocketHandler();
         VBox root=new VBox();
         GridPane login=new GridPane();
@@ -145,10 +145,10 @@ public class SagradaGUI extends Application implements GUI {
                 String n=textname.getText();
                 String p=textip.getText();
                 if(!(n.contentEquals("")) && !(p.contentEquals("")) && (connection.getValue()!=null) && log==false) {
-                    /*String[] buffer = {n,p};
-                    boolean b= clientConnectionHandler.setBuffer(buffer);
-                    if(b==true)
-                        log=true;*/
+                    //String[] buffer = {n,p};
+                    //boolean b= clientConnectionHandler.setBuffer(buffer);
+                    //if(b==true)
+                        //log=true;
                     game(loginStage);
                     System.out.println(n);
                     System.out.println(p);
@@ -165,7 +165,8 @@ public class SagradaGUI extends Application implements GUI {
         loginStage.setTitle("Sagrada");
         loginStage.setScene(scene);
         loginStage.show();
-        loginStage.setResizable(false);
+        loginStage.setResizable(false);*/
+        game(loginStage);
     }
 
     public void game(Stage primaryStage) {

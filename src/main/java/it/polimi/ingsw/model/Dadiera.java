@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class Dadiera
 {
-    private ArrayList<Dice> listaDadi;
+    private ArrayList<Dice> diceList;
     private DiceBag bag;
 
     /**
@@ -17,15 +17,15 @@ public class Dadiera
     public Dadiera ()
     {
         bag = new DiceBag();
-        listaDadi = null;
+        diceList = null;
     }
 
     /**
      * Generate a new set of dice randomly with dim of numGioc
      */
     public synchronized void mix (int numGioc) throws NotEnoughDiceException {
-        listaDadi = bag.pickDices(numGioc*2 + 1);
-        assert listaDadi != null;
+        diceList = bag.pickDices(numGioc*2 + 1);
+        assert diceList != null;
     }
 
     /**
@@ -34,10 +34,10 @@ public class Dadiera
      */
     public synchronized void deleteDice (Dice d)
     {
-        for (int i=0;i < listaDadi.size();i++)
-            if (listaDadi.get(i).isEqual(d))
+        for (int i = 0; i < diceList.size(); i++)
+            if (diceList.get(i).isEqual(d))
             {
-                listaDadi.remove(i);
+                diceList.remove(i);
                 return;
             }
     }
@@ -47,7 +47,7 @@ public class Dadiera
      * @param x index of the dice that i must add
      */
     public synchronized void addDice (Dice x){
-        listaDadi.add(x);
+        diceList.add(x);
     }
 
 
@@ -59,9 +59,9 @@ public class Dadiera
      */
     public synchronized void setDiceValue(int n, Dice d) throws IllegalDiceException {
         if(n>0&&n<7) {
-            for (int i = 0; i < listaDadi.size(); i++)
-                if (d.isEqual(listaDadi.get(i))) {
-                    listaDadi.get(i).setValue(n);
+            for (int i = 0; i < diceList.size(); i++)
+                if (d.isEqual(diceList.get(i))) {
+                    diceList.get(i).setValue(n);
                     break;
                 }
         }else throw new IllegalDiceException();
@@ -76,7 +76,7 @@ public class Dadiera
     public synchronized Dice getDice (int i) throws IllegalDiceException
     {
         try {
-            return listaDadi.get(i);
+            return diceList.get(i);
         }
         catch (Exception ex) {
             throw new IllegalDiceException("Dice not init");
@@ -90,9 +90,9 @@ public class Dadiera
 
     public synchronized Pair[] toPairArray ()
     {
-        Pair[] arr = new Pair[listaDadi.size()];
-        for (int i = 0; i < listaDadi.size() ; i++)
-            arr[i] = new Pair(listaDadi.get(i).getValue(),listaDadi.get(i).getColor());
+        Pair[] arr = new Pair[diceList.size()];
+        for (int i = 0; i < diceList.size() ; i++)
+            arr[i] = new Pair(diceList.get(i).getValue(), diceList.get(i).getColor());
         return arr;
     }
 
@@ -100,7 +100,7 @@ public class Dadiera
      * return entire list of dice
      * @return
      */
-    public synchronized ArrayList<Dice> getListaDadi() { return listaDadi; }
+    public synchronized ArrayList<Dice> getDiceList() { return diceList; }
 
     /**
      *
@@ -109,11 +109,11 @@ public class Dadiera
     @Override
     public String toString() {
         String str =  "Dadiera vuota!";
-        if(listaDadi != null) {
+        if(diceList != null) {
             str = "Dadiera{";
-            for (int i = 0; i < listaDadi.size(); i++) {
-                str += listaDadi.get(i).toString();
-                if (i != (listaDadi.size() - 1))
+            for (int i = 0; i < diceList.size(); i++) {
+                str += diceList.get(i).toString();
+                if (i != (diceList.size() - 1))
                     str += ", ";
             }
             str += '}';
