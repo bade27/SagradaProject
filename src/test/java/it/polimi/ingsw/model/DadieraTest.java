@@ -148,7 +148,6 @@ class DadieraTest {
         d.mix(n);
         ArrayList<Dice> playableDice = d.getDiceList();
 
-        playableDice.forEach(System.out::println);
         System.out.println();
 
         int which_Die = new Random().nextInt(expectedDice);
@@ -164,14 +163,11 @@ class DadieraTest {
             n = new Random().nextInt(6)+1;
         } while(n == oldDice.getValue());
 
-        System.out.println(dice + "\n");
 
         long numBeforeSet = playableDice.stream().filter(d -> d.isEqual(oldDice)).count();
         d.setDiceValue(n, dice);
 
         long numAfterSet = playableDice.stream().filter(d -> d.isEqual(oldDice)).count();
-        System.out.println(numBeforeSet + " " + numAfterSet);
-        System.out.println();
 
         assertEquals(numAfterSet, numBeforeSet - 1);
 
