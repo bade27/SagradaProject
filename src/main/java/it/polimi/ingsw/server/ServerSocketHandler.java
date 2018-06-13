@@ -35,87 +35,77 @@ public class ServerSocketHandler implements ClientRemoteInterface
         isConnected = false;
     }
 
+    //<editor-fold desc="Connection Phase">
+
     /**
-     *sets up connection and in and out buffers
+     * sets up connection and in and out buffers
+     *
      * @throws ClientOutOfReachException if client not reachable
      */
-    public void createConnection () throws ClientOutOfReachException
+    public void createConnection() throws ClientOutOfReachException
     {
-        try {
+        try
+        {
             init_connection();
             inSocket = new BufferedReader(new InputStreamReader(client.getInputStream()));
             outSocket = new PrintWriter(new BufferedWriter(
                     new OutputStreamWriter(client.getOutputStream())), true);
             isConnected = true;
-        }
-        catch (IOException|NullPointerException e)
+        } catch (IOException | NullPointerException e)
         {
-            try {
+            try
+            {
                 serverSocket.close();
                 client.close();
-            } catch(Exception ex) {
+            } catch (Exception ex)
+            {
                 //ex.printStackTrace();
             }
         }
     }
 
     /**
-     * ping function to see if the client is reachable
-     * @return weather the client is reachable or not
-     */
-    public boolean ping()
-    {
-        //ping-pong communication
-        boolean reply = false;
-        try {
-            outSocket.write("ping\n");
-            outSocket.flush();
-            String r = inSocket.readLine();
-            reply = r.equals("pong");
-        } catch (SocketTimeoutException ste) {
-            reply = false;
-            LogFile.addLog("Ping failed ", ste.getStackTrace());
-        } catch (IOException e) {
-            LogFile.addLog("Ping failed ", e.getStackTrace());
-            return false;
-        }
-        return reply;
-    }
-
-    /**
      * sets up the connection with the player
+     *
      * @throws ClientOutOfReachException if client could not connect to the server
      */
     private void init_connection() throws ClientOutOfReachException
     {
-        serverSocket=null;
-        try {
+        serverSocket = null;
+        try
+        {
             serverSocket = new ServerSocket(PORT);
-            LogFile.addLog("\nit.polimi.ingsw.server socket waiting for client on port " +  serverSocket.getLocalPort());
+            LogFile.addLog("\nit.polimi.ingsw.server socket waiting for client on port " + serverSocket.getLocalPort());
 
             client = serverSocket.accept();
-        }
-        catch(Exception e)
+        } catch (Exception e)
         {
             //e.printStackTrace();
-            try {
+            try
+            {
                 if (serverSocket != null)
                     serverSocket.close();
-            } catch(IOException  npe) {}
+            } catch (IOException npe) {}
             //throw new ClientOutOfReachException("Impossible to accept client connection");
-        }
-        finally {
-            try {
+        } finally
+        {
+            try
+            {
                 if (serverSocket != null)
                     serverSocket.close();
-            } catch (IOException npe) {
+            } catch (IOException npe)
+            {
                 npe.printStackTrace();
             }
         }
     }
+    //</editor-fold>
+
+    //<editor-fold desc="Setup Phase">
 
     /**
      * login function
+     *
      * @return weather the client has successfully logged or not
      * @throws ClientOutOfReachException if client has disconnected
      */
@@ -124,147 +114,170 @@ public class ServerSocketHandler implements ClientRemoteInterface
         String user = "";
 
         boolean reachable = ping();
-        if(reachable) {
+        if (reachable)
+        {
             outSocket.write("login\n");
             outSocket.flush();
             outSocket.write("Inserisci username\n");
             outSocket.flush();
-            try {
+            try
+            {
                 user = inSocket.readLine();
                 isAlive = true;
-            } catch (IOException e) {
+            } catch (IOException e)
+            {
                 isAlive = false;
             }
-        } else isAlive = false;
+        } else
+            isAlive = false;
 
-        if(!isAlive)
-            throw new ClientOutOfReachException("client is out of reach");
+        if (!isAlive)
+            throw new ClientOutOfReachException();
         return user;
 
     }
 
     /**
      * let the player decide which window to use
+     *
      * @param s1 firs pair of windows
      * @param s2 second pair of windows
      * @return the window chosen by the player
      * @throws ClientOutOfReachException
      */
-    public String chooseWindow(String[] s1, String[] s2)  throws ClientOutOfReachException
+    public String chooseWindow(String[] s1, String[] s2) throws ClientOutOfReachException
     {
         String response = "";
 
-        try {
+        try
+        {
             JSONArray jsonArray = JSONFacilities.encodeStringArrays(s1, s2);
             boolean reachable = ping();
-            if (reachable) {
+            if (reachable)
+            {
                 outSocket.write("windowinit\n");
                 outSocket.flush();
                 StringBuilder windows = new StringBuilder(jsonArray.toString());
                 windows.append("\n");
                 outSocket.write(windows.toString());
                 outSocket.flush();
-                try {
+                try
+                {
                     response = inSocket.readLine();
                     isAlive = true;
-                } catch (SocketTimeoutException ste) {
+                } catch (IOException ste)
+                {
                     isAlive = false;
-                } catch (IOException e) {
-                    e.printStackTrace();
                 }
-            } else isAlive = false;
+            } else
+                isAlive = false;
 
             if (!isAlive)
-                throw new ClientOutOfReachException("client is out of reach");
+                throw new ClientOutOfReachException();
             outSocket.write("ok\n");
             outSocket.flush();
-        } catch (JSONException je) {
-            throw new ClientOutOfReachException("JSON can't encrypt client message");
+        } catch (JSONException je)
+        {
+            LogFile.addLog("JSON can't encrypt client message", je.getStackTrace());
+            throw new ClientOutOfReachException();
         }
 
         return response;
 
     }
 
-
-    public boolean isConnected() {
-        return isConnected;
-    }
-
-    /*
-    public boolean sendPrivateObjective(String privObj) {
-        //mi aspetto un ok come risposta
-        try {
-            outSocket.println("privobj"); //dico al client che azione voglio eseguire
-            outSocket.println(privObj);
-            if(inSocket.readLine().equals("ok"))
-                return true;//mi aspetto il nome della vetrata scelta
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }*/
-
-
     /**
      * sends the cards (public objectives and tools) to the player
+     *
      * @param s array of strings representing the list of public objectives and tools in the current game
      * @throws ClientOutOfReachException if the client is disconnected
      */
-    public boolean sendCards(String[]... s) throws ClientOutOfReachException {
+    public boolean sendCards(String[]... s) throws ClientOutOfReachException
+    {
         String response = "";
 
-        try {
-            //System.out.println(s.length);
+        try
+        {
             boolean reachable = ping();
-            if (reachable) {
-                String[] msgs = {"pub_objs\n", "tools\n"};
-                //System.out.println(s.length);
-                for(int i = 0; i < s.length; i++) {
-                    JSONArray jsonArray = JSONFacilities.encodeStringArrays(s[i]);
-                    outSocket.write(msgs[i]);
-                    outSocket.flush();
-                    StringBuilder cards = new StringBuilder();
-                    cards.append(jsonArray.toString());
-                    cards.append("\n");
-                    outSocket.write(cards.toString());
-                    outSocket.flush();
-                    try {
-                        response = inSocket.readLine();
-                        isAlive = true;
-                    } catch (SocketTimeoutException ste) {
-                        isAlive = false;
-                        break;
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+            if (reachable)
+            {
+                String msgs = "cards\n";
+                JSONArray jsonArray = JSONFacilities.encodeStringArrays(s[0], s[1], s[2]);
+                outSocket.write(msgs);
+                outSocket.flush();
+                StringBuilder cards = new StringBuilder();
+                cards.append(jsonArray.toString());
+                cards.append("\n");
+                outSocket.write(cards.toString());
+                outSocket.flush();
+                try
+                {
+                    response = inSocket.readLine();
+                    isAlive = true;
+                } catch (IOException ste)
+                {
+                    isAlive = false;
                 }
-            } else isAlive = false;
+            } else
+                isAlive = false;
 
             if (!isAlive)
-                throw new ClientOutOfReachException("client is out of reach");
-        } catch (JSONException je) {
-            throw new ClientOutOfReachException("JSON can't encrypt client message");
+                throw new ClientOutOfReachException();
+        } catch (JSONException je)
+        {
+            LogFile.addLog("JSON can't encrypt client message", je.getStackTrace());
+            throw new ClientOutOfReachException();
         }
         return isAlive;
     }
+    //</editor-fold>
 
-    public boolean sendMessage (String s) throws ClientOutOfReachException {
+    //<editor-fold desc="Utilitites">
+
+    /**
+     * ping function to see if the client is reachable
+     *
+     * @return weather the client is reachable or not
+     */
+    public boolean ping()
+    {
+        //ping-pong communication
+        boolean reply = false;
+        try
+        {
+            outSocket.write("ping\n");
+            outSocket.flush();
+            String r = inSocket.readLine();
+            reply = r.equals("pong");
+        } catch (IOException ste)
+        {
+            return false;
+        }
+        return reply;
+    }
+
+    public boolean isConnected()
+    {
+        return isConnected;
+    }
+
+    public boolean sendMessage(String s) throws ClientOutOfReachException
+    {
         outSocket.write("msg\n");
-        if(outSocket.checkError())
+        if (outSocket.checkError())
             isAlive = false;
         StringBuilder msg = new StringBuilder(s);
         msg.append("\n");
         outSocket.write(msg.toString());
-        if(outSocket.checkError())
+        if (outSocket.checkError())
             isAlive = false;
 
-        if(!isAlive)
-            throw new ClientOutOfReachException("Client is out of reach");
+        if (!isAlive)
+            throw new ClientOutOfReachException();
         return true;
     }
 
-    public boolean closeCommunication ( String cause) throws ClientOutOfReachException
+    public boolean closeCommunication(String cause) throws ClientOutOfReachException
     {
         StringBuilder sb = new StringBuilder(cause);
         outSocket.write("close\n");
@@ -274,45 +287,111 @@ public class ServerSocketHandler implements ClientRemoteInterface
         return outSocket.checkError();
     }
 
-    public String doTurn ()
+    public String doTurn()
     {
         return null;
     }
+    //</editor-fold>
 
-    @Override
-    public String updateGraphic(Pair[] dadiera) throws ClientOutOfReachException, RemoteException {
-        return null;
+    /**
+     * Update client structure for all type
+     *
+     * @param json json array to send
+     * @param msg  msg to send
+     * @return return value from client
+     */
+    private String updateClient(JSONArray json, String msg) throws ClientOutOfReachException
+    {
+        String response = "";
+
+        boolean reachable = ping();
+        if (reachable)
+        {
+            outSocket.write(msg);
+            outSocket.flush();
+            StringBuilder windows = new StringBuilder(json.toString());
+            windows.append("\n");
+            outSocket.write(windows.toString());
+            outSocket.flush();
+            try
+            {
+                response = inSocket.readLine();
+                isAlive = true;
+            } catch (IOException ste)
+            {
+                isAlive = false;
+            }
+        } else
+            isAlive = false;
+
+        if (!isAlive)
+            throw new ClientOutOfReachException();
+
+
+        return response;
     }
 
     @Override
-    public String updateGraphic(Pair[][] grid) throws ClientOutOfReachException, RemoteException {
-        return null;
+    public String updateGraphic(Pair[] dadiera) throws ClientOutOfReachException, RemoteException
+    {
+        String response = "";
+
+        try
+        {
+            JSONArray jsonArray = JSONFacilities.encodeArrayPair(dadiera);
+            return updateClient(jsonArray, "up_dadiera\n");
+        } catch (ClientOutOfReachException e)
+        {
+            throw new ClientOutOfReachException();
+        } catch (JSONException je)
+        {
+            LogFile.addLog("JSON can't encrypt client message", je.getStackTrace());
+            throw new ClientOutOfReachException();
+        }
     }
 
     @Override
-    public void updateOpponents(String user, Pair[][] grid) throws ClientOutOfReachException, RemoteException {
+    public String updateGraphic(Pair[][] grid) throws ClientOutOfReachException, RemoteException
+    {
+        String response = "";
+
+        try
+        {
+            JSONArray jsonArray = JSONFacilities.encodeMatrixPair(grid);
+            return updateClient(jsonArray, "up_window\n");
+        } catch (ClientOutOfReachException e)
+        {
+            throw new ClientOutOfReachException();
+        } catch (JSONException je)
+        {
+            LogFile.addLog("JSON can't encrypt client message", je.getStackTrace());
+            throw new ClientOutOfReachException();
+        }
+    }
+
+    @Override
+    public void updateOpponents(String user, Pair[][] grid) throws ClientOutOfReachException, RemoteException
+    {
 
     }
 
     @Override
-    public String updateTokens(int n) throws ClientOutOfReachException, RemoteException {
-        return null;
+    public String updateTokens(int n) throws ClientOutOfReachException, RemoteException
+    {
+        return "ok";
     }
 
     @Override
-    public String updateRoundTrace(ArrayList<Pair>[] dice) throws RemoteException {
-        return null;
+    public String updateRoundTrace(ArrayList<Pair>[] dice) throws RemoteException
+    {
+        return "ok";
     }
 
     @Override
-    public void sendResults(String[] user , int[] point) throws RemoteException {
+    public void sendResults(String[] user, int[] point) throws RemoteException
+    {
 
     }
-
-    /*@Override
-    public String updateRoundTrace(ArrayList<ArrayList<Pair>> dice) throws RemoteException {
-        return null;
-    }*/
 
     /*
     public void close() {

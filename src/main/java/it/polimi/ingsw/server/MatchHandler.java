@@ -194,8 +194,11 @@ public class MatchHandler implements Runnable
 
         for (int i = 0 ; i < player.size() ; i++)
         {
-            userList[i] = player.get(i).getUser();
-            pointsList[i] = player.get(i).getPoints();
+            if (player.get(i).isInitialized())
+            {
+                userList[i] = player.get(i).getUser();
+                pointsList[i] = player.get(i).getPoints();
+            }
         }
 
         for (int i = 0 ; i < player.size() ; i++)

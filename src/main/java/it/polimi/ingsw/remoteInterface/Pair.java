@@ -37,6 +37,9 @@ public class Pair implements Serializable {
         this.color = color;
     }
 
+
+
+
     @Override
     public String toString() {
         if (value != 0 && color != null)

@@ -36,6 +36,7 @@ public class ServerPlayer implements Runnable
     //Setup Phase
     private UsersEntry possibleUsers;
     private boolean inGame;
+    private boolean initialized;
 
     //passed parameters
     private String[] windowCard1,windowCard2;
@@ -54,6 +55,7 @@ public class ServerPlayer implements Runnable
         executor = Executors.newFixedThreadPool(1);
         communicator = cli;
         inGame = true;
+        initialized = false;
         try {
             connection_parameters_setup();
         } catch (ParserConfigurationException| IOException | SAXException e) {
@@ -83,6 +85,7 @@ public class ServerPlayer implements Runnable
                 //Notify token that client is dead
                 token.deletePlayer(user);
                 closeConnection("Timeout Expired");
+                inGame = false;
                 token.endSetup();
                 synchronized (token.getSynchronator()) {
                     token.getSynchronator().notifyAll();
@@ -92,6 +95,7 @@ public class ServerPlayer implements Runnable
             }
 
             //End Setup phase comunication
+            initialized = true;
             token.endSetup();
             synchronized (token.getSynchronator()) {
                 token.getSynchronator().notifyAll();
@@ -177,7 +181,7 @@ public class ServerPlayer implements Runnable
             LogFile.addLog("User: " + user + " Added");
         }
         catch (Exception e) {
-            LogFile.addLog("" , e.getStackTrace());
+            LogFile.addLog("Failed to add user");
             throw new ClientOutOfReachException();
         }
     }
@@ -514,6 +518,11 @@ public class ServerPlayer implements Runnable
 
     public boolean isInGame() {
         return inGame;
+    }
+
+    public boolean isInitialized()
+    {
+        return initialized;
     }
     //</editor-fold>
 

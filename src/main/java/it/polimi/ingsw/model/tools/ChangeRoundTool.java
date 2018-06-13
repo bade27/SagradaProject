@@ -21,7 +21,7 @@ public class ChangeRoundTool extends Tools
         TokenTurn token = adapter.getToken();
         String user = adapter.getUser();
         if (!token.useToolNumber8(user))
-            throw new IllegalStepException("tool utilizzabile durante il primo giro del turno");
+            throw new IllegalStepException("tool non utilizzabile in questo momento");
     }
 
     @Override

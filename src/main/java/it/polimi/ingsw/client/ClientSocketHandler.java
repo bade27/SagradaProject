@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.remoteInterface.*;
 import it.polimi.ingsw.utilities.JSONFacilities;
@@ -8,6 +9,7 @@ import org.json.JSONException;
 import java.io.*;
 import java.net.Socket;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -60,13 +62,21 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
                     case "login":
                         task = executor.submit(() -> {login();});
                         continue;
-                    case "pub_objs":
+                    case "cards":
                         String objs = inSocket.readLine();
-                        task = executor.submit(() -> {receivePublicObjectives(objs);});
+                        task = executor.submit(() -> {receiveCards(objs);});
                         continue;
                     case "windowinit":
                         String json = inSocket.readLine();
                         task = executor.submit(() -> {chooseWindow(json);});
+                        continue;
+                    case "up_dadiera":
+                        String dad = inSocket.readLine();
+                        task = executor.submit(() -> {updateDadiera(dad);});
+                        continue;
+                    case "up_window":
+                        String win = inSocket.readLine();
+                        task = executor.submit(() -> {updateWindow(win);});
                         continue;
                     case "close":
                         stop = true;
@@ -95,7 +105,6 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
     private Boolean chooseWindow(String json)
     {
         try {
-            System.out.println("choose your window");
             StringBuilder choice = new StringBuilder(player.chooseWindow(JSONFacilities.decodeStringArrays(json)));
             choice.append("\n");
             outSocket.write(choice.toString());
@@ -106,20 +115,54 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
         return false;
     }
 
-    private Boolean receivePublicObjectives(String objs)
+    private Boolean receiveCards(String json)
     {
-        System.out.println(objs);
-        outSocket.write("ok\n");
-        return outSocket.checkError();
-    }
-    /*public void myPrivateObj() {
         try {
-            String response = graph.myPrivateObj(inSocket.readLine()).toLowerCase();
-            outSocket.println(response);
-        } catch (IOException e) {
+            ArrayList<String[]> arr = JSONFacilities.decodeStringArrays(json);
+            player.sendCards(arr.get(0),arr.get(1),arr.get(2));
+            outSocket.write("ok\n");
+            return outSocket.checkError();
+        } catch (Exception e) {
             e.printStackTrace();
         }
-    }*/
+        return false;
+    }
+
+    private Boolean updateDadiera (String json)
+    {
+        try {
+            ArrayList<Pair> arr = JSONFacilities.decodeArrayPair(json);
+            Pair[] dices = new Pair[arr.size()];
+            for (int i = 0 ; i < arr.size() ; i++)
+                dices[i] = arr.get(i);
+            player.updateGraphic(dices);
+            outSocket.write("ok\n");
+            return outSocket.checkError();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private Boolean updateWindow (String json)
+    {
+        try {
+            ArrayList<ArrayList<Pair>> list = JSONFacilities.decodeMatrixPair(json);
+            Pair[][] board = new Pair[list.size()][];
+            for (int i = 0 ; i < list.size() ; i++)
+            {
+                board[i] = new Pair[list.get(i).size()];
+                for (int j = 0 ; j < list.get(i).size() ; j++)
+                    board[i][j] = list.get(i).get(j);
+            }
+            player.updateGraphic(board);
+            outSocket.write("ok\n");
+            return outSocket.checkError();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     private Boolean login() {
         try {
