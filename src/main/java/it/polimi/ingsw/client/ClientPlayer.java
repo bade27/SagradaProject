@@ -34,10 +34,9 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     private static int SOCKET_PORT;
     private static boolean initialized = false;
     private int typeOfCOnnection; //1 rmi , 0 Socket
-
     private GUI graph;
     private ServerRemoteInterface server;
-
+    private String clientName;
     //buffer mossa in upload
     private boolean finishedMove = false;
     private int num_of_moves = 0;
@@ -122,10 +121,18 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
      */
     public String login() throws ClientOutOfReachException
     {
-        System.out.println("Insert Username: ");
-        Scanner cli = new Scanner(System.in);
-        return cli.nextLine();
+        /*System.out.println("Insert Username: ");
+        Scanner cli = new Scanner(System.in);*/
+        return clientName;
+
     }
+
+    /**
+     * Set Client name
+     * @param clientName
+     */
+    public void setClientName(String clientName){
+        this.clientName=clientName; }
 
     /**
      * Choosing window method

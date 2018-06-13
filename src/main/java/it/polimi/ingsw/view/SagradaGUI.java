@@ -55,7 +55,7 @@ public class SagradaGUI extends Application implements GUI {
     public SagradaGUI() {
         enableBoard = false;
         toolPhase = false;
-        initailizeComunication();
+        //initailizeComunication();
     }
 
 
@@ -85,7 +85,7 @@ public class SagradaGUI extends Application implements GUI {
     @Override
     public void start(Stage loginStage){
 
-        /*boolean log;
+        boolean log;
         //clientConnectionHandler =new ClientSocketHandler();
         VBox root=new VBox();
         GridPane login=new GridPane();
@@ -138,13 +138,25 @@ public class SagradaGUI extends Application implements GUI {
         t.setDisable(false);
         t.setFill(Color.INDIANRED);
         root.getChildren().add(t);
-
+        SagradaGUI sagradaGUI=this;
         st.setOnAction(new EventHandler<ActionEvent>() {
-
             public void handle(ActionEvent event) {
                 String n=textname.getText();
                 String p=textip.getText();
-                if(!(n.contentEquals("")) && !(p.contentEquals("")) && (connection.getValue()!=null) && log==false) {
+                int typeOfConnection=-1;
+                if(connection.getValue()=="Socket")
+                    typeOfConnection=0;
+                else if (connection.getValue()=="RMI")
+                    typeOfConnection=1;
+                if(!(n.contentEquals("")) && isIPAddressValid(p) && (connection.getValue()!=null) && log==false) {
+                    try {
+                        clientPlayer = new ClientPlayer(typeOfConnection,sagradaGUI, p);
+                        clientPlayer.setClientName(n);
+
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                        Thread.currentThread().interrupt();
+                    }
                     //String[] buffer = {n,p};
                     //boolean b= clientConnectionHandler.setBuffer(buffer);
                     //if(b==true)
@@ -165,8 +177,7 @@ public class SagradaGUI extends Application implements GUI {
         loginStage.setTitle("Sagrada");
         loginStage.setScene(scene);
         loginStage.show();
-        loginStage.setResizable(false);*/
-        game(loginStage);
+        loginStage.setResizable(false);
     }
 
     public void game(Stage primaryStage) {
