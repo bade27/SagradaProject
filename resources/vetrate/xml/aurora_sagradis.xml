@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<map>
+
+    <name>Aurora Sagradis</name>
+    <difficulty>4</difficulty>
+
+    <!--
+            quando non ci sono restrizioni sul numero, il suo value è zero
+            quando non ci sono restrizioni sul color, il suo value è dc (don't care)
+
+            per ora il campo img_source lo lascio vuoto, quando avremo le immagini lo completeremo
+    -->
+    <grid>
+
+        <!--first row-->
+        <cell number="1">
+            <value>0</value>
+            <color>red</color>
+            <img_source></img_source>
+        </cell>
+
+        <cell number="2">
+            <value>0</value>
+            <color>dc</color>
+            <img_source></img_source>
+        </cell>
+
+        <cell number="3">
+            <value>0</value>
+            <color>blue</color>
+            <img_source></img_source>
+        </cell>
+
+        <cell number="4">
+            <value>0</value>
+            <color>dc</color>
+            <img_source></img_source>
+        </cell>
+
+        <cell number="5">
+            <value>0</value>
+            <color>yellow</color>
+            <img_source></img_source>
+        </cell>
+
+        <!--second row-->
+        <cell number="6">
+            <value>4</value>
+            <color>dc</color>
+            <img_source></img_source>
+        </cell>
+
+        <cell number="7">
+            <value>0</value>
+            <color>purple</color>
+            <img_source></img_source>
+        </cell>
+
+        <cell number="8">
+            <value>3</value>
+            <color>dc</color>
+            <img_source></img_source>
+        </cell>
+
+        <cell number="9">
+            <value>0</value>
+            <color>green</color>
+            <img_source></img_source>
+        </cell>
+
+        <cell number="10">
+            <value>2</value>
+            <color>dc</color>
+            <img_source></img_source>
+        </cell>
+
+        <!--third row-->
+        <cell number="11">
+            <value>0</value>
+            <color>dc</color>
+            <img_source></img_source>
+        </cell>
+
+        <cell number="12">
+            <value>1</value>
+            <color>dc</color>
+            <img_source></img_source>
+        </cell>
+
+        <cell number="13">
+            <value>0</value>
+            <color>dc</color>
+            <img_source></img_source>
+        </cell>
+
+        <cell number="14">
+            <value>5</value>
+            <color>dc</color>
+            <img_source></img_source>
+        </cell>
+
+        <cell number="15">
+            <value>0</value>
+            <color>dc</color>
+            <img_source></img_source>
+        </cell>
+
+        <!--fourth row-->
+        <cell number="16">
+            <value>0</value>
+            <color>dc</color>
+            <img_source></img_source>
+        </cell>
+
+        <cell number="17">
+            <value>0</value>
+            <color>dc</color>
+            <img_source></img_source>
+        </cell>
+
+        <cell number="18">
+            <value>6</value>
+            <color>dc</color>
+            <img_source></img_source>
+        </cell>
+
+        <cell number="19">
+            <value>0</value>
+            <color>dc</color>
+            <img_source></img_source>
+        </cell>
+
+        <cell number="20">
+            <value>0</value>
+            <color>dc</color>
+            <img_source></img_source>
+        </cell>
+
+    </grid>
+
+</map>
