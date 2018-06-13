@@ -1,9 +1,13 @@
 package it.polimi.ingsw.model.objectives.Public;
 
+import it.polimi.ingsw.exceptions.ModelException;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.model.Dice;
 import it.polimi.ingsw.model.Placement;
+import it.polimi.ingsw.model.objectives.ObjectivesFactory;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
@@ -17,27 +21,40 @@ class PairScoreTest {
     static int cols;
     static int value;
     static int[] pair;
-    static PairScore score;
+    static PublicObjective obj;
+    static Score score;
 
-    @org.junit.jupiter.api.BeforeAll
+    @BeforeAll
     static void setup() {
         rows = 4;
         cols = 5;
-        value = 5;
         pair = new int[2];
-        int first = 2;
-        boolean validPair = false;
-        while(first == 2 || first == 4) {
-            first = new Random().nextInt(5) + 1;
-        }
-        pair[0] = first;
-        pair[1] = first + 1 ;
-
-        score = new PairScore(pair[0] + " " + pair[1]);
     }
 
-    @org.junit.jupiter.api.BeforeEach
-    void setupGrid() {
+    @BeforeEach
+    void setupEnvironment() throws ModelException {
+
+        String pa = "/home/matteo/Scrivania/SagradaProject/resources/carte/obbiettivi/obbiettiviPubblici/xml/sfumatura/sfumature_";
+        String[] pb = {"chiare.xml", "medie.xml", "scure.xml"};
+        int n = new Random().nextInt(3);
+        obj = ObjectivesFactory.getPublicObjective(pa + pb[n]);
+        switch (n) {
+            case 0:
+                pair[0] = 1;
+                pair[1] = 2;
+                break;
+            case 1:
+                pair[0] = 3;
+                pair[1] = 4;
+                break;
+            case 2:
+                pair[0] = 5;
+                pair[1] = 6;
+                break;
+        }
+        value = obj.getValue();
+        score = obj.getScoreObjbect();
+
         grid = new Cell[rows][cols];
         for(int i = 0; i < rows; i++)
             for(int j = 0; j < cols; j++) {
@@ -45,44 +62,28 @@ class PairScoreTest {
             }
     }
 
-    /*@Test
+    @Test
     void calcScore() {
         int numCells = new Random().nextInt(rows * cols) + 1;
-        int fh = numCells / 2;
-        int sh = numCells - fh;
+        int first = 0;
+        int second = 0;
 
-        ArrayList<Coordinates> cells = new ArrayList<>();
-
-        while (cells.size() < numCells) {
-            Coordinates c = new Coordinates(new Random().nextInt(rows), new Random().nextInt(cols));
-            if (!cells.contains(c))
-                cells.add(c);
-        }
-
-        int here = 0;
-        for (int i = 0; i < fh; i++) {
-            Coordinates current = cells.get(i);
-            grid[current.getI()][current.getJ()].setDice(new Dice(pair[0], ColorEnum.GREEN));
-            here = i;
-        }
-        here++;
-        for (int i = 0; i < sh; i++) {
-            Coordinates current = cells.get(i + here);
-            grid[current.getI()][current.getJ()].setDice(new Dice(pair[1], ColorEnum.GREEN));
-        }
-
-        for(int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                Cell current = grid[i][j];
-                if(current.getFrontDice() == null)
-                    current.setDice(new Dice(0, ColorEnum.GREEN));
+        for(int i = 0; i < grid.length; i++) {
+            for (int j = 0; j < grid[0].length; j++) {
+                if ((first + second <= numCells) && new Random().nextBoolean()) {
+                    grid[i][j].setFrontDice(new Dice(pair[0], ColorEnum.WHITE));
+                    first++;
+                } else {
+                    grid[i][j].setFrontDice(new Dice(pair[1], ColorEnum.WHITE));
+                    second++;
+                }
             }
         }
 
-        int min = fh < sh ? fh : sh;
-        assertEquals(value * min, score.calcScore(value, grid));
+        int min = first < second ? first : second;
+        assertEquals(min * value, score.calcScore(value, grid));
 
-    }*/
+    }
 
     @Test
     void calcScoreZero() {

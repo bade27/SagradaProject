@@ -46,4 +46,8 @@ public class PublicObjective {
                 0 : value;
 
     }
+
+    public Score getScoreObjbect() {
+        return score;
+    }
 }
