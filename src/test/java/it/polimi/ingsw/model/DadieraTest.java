@@ -3,7 +3,6 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.exceptions.IllegalDiceException;
 import it.polimi.ingsw.exceptions.NotEnoughDiceException;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -20,7 +19,7 @@ class DadieraTest {
 
     @BeforeEach
     void setUp() {
-        n = new Random().nextInt(9) + 1;
+        n = new Random().nextInt(4) + 1;
         d = new Dadiera();
         expectedDice = 2*n + 1;
     }
@@ -144,23 +143,38 @@ class DadieraTest {
         assertThrows(IllegalDiceException.class, () -> d.setDiceValue(b,dice));
     }
 
-    @RepeatedTest(100)
+    @Test
     void setDiceValue() throws IllegalDiceException,NotEnoughDiceException{
         d.mix(n);
         ArrayList<Dice> playableDice = d.getDiceList();
+
+        playableDice.forEach(System.out::println);
+        System.out.println();
+
         int which_Die = new Random().nextInt(expectedDice);
 
         //creo valore del dado casualmente
-        Integer n=new Random().nextInt(6)+1;
+        Integer n;
 
         //estrazione di un dado da dadiera
         Dice dice = playableDice.get(which_Die);
-        d.setDiceValue(n,dice);
+        Dice oldDice = dice.cloneDice();
 
-        //assertEquals(dice.getValue(),n);
-        //assertEquals(dice.getValue(),playableDice.get(which_Die).getValue());
+        do {
+            n = new Random().nextInt(6)+1;
+        } while(n == oldDice.getValue());
 
-        assertEquals(d.getDiceList().get(which_Die).getValue(), n);
+        System.out.println(dice + "\n");
+
+        long numBeforeSet = playableDice.stream().filter(d -> d.isEqual(oldDice)).count();
+        d.setDiceValue(n, dice);
+
+        long numAfterSet = playableDice.stream().filter(d -> d.isEqual(oldDice)).count();
+        System.out.println(numBeforeSet + " " + numAfterSet);
+        playableDice.forEach(System.out::println);
+        System.out.println();
+
+        assertEquals(numAfterSet, numBeforeSet - 1);
 
     }
 
