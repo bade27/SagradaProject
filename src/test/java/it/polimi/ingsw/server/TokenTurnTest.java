@@ -292,13 +292,13 @@ class TokenTurnTest {
 
         assertTrue(token.isEndRound());
 
-        /*//B - A - A - B
+        //B - C - C - B
         token.nextTurn();
         assertTurnB();
         token.nextTurn();
-        assertTurnA();
+        assertTurnC();
         token.nextTurn();
-        assertTurnA();
+        assertTurnC();
         token.nextTurn();
         assertTurnB();
 
@@ -309,9 +309,8 @@ class TokenTurnTest {
         token.deletePlayer("A");
 
         token.nextTurn();
+
         assertTurnB();
-        token.nextTurn();
-        assertTurnB();*/
     }
 
     @Test

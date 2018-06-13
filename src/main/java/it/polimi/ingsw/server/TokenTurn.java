@@ -225,26 +225,33 @@ public class TokenTurn
             {
                 //if (clockwise)
                 //{
-                    if (currentTurn == players.size())
+
+                if (!clockwise)
+                    currentTurn--;
+
+                if (currentTurn == players.size())
+                {
+                    currentTurn--;
+                    clockwise = false;
+                }
+                if (currentTurn == 1)
+                {
+                    endRound = true;
+                    //clockwise = true;
+                }
+                turnDel = players.get(i).getIdTurn();
+                players.remove(i);
+                inc = 0;
+                for (int j = 0; j < players.size(); j++)
+                {
+                    if (players.get(j).getIdTurn() > turnDel)
                     {
-                        currentTurn--;
-                        clockwise = false;
+                        players.get(j).setIdTurn(turnDel + inc);
+                        inc++;
                     }
-                    if (currentTurn == 0)
-                        clockwise = true;
-                    turnDel = players.get(i).getIdTurn();
-                    players.remove(i);
-                    inc = 0;
-                    for (int j = 0; j < players.size(); j++)
-                    {
-                        if (players.get(j).getIdTurn() > turnDel)
-                        {
-                            players.get(j).setIdTurn(turnDel + inc);
-                            inc++;
-                        }
-                    }
-                    justDeleting = true;
-                    return;
+                }
+                justDeleting = true;
+                return;
                 //}
                 /*else
                 {
