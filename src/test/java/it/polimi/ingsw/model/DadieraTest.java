@@ -171,7 +171,6 @@ class DadieraTest {
 
         long numAfterSet = playableDice.stream().filter(d -> d.isEqual(oldDice)).count();
         System.out.println(numBeforeSet + " " + numAfterSet);
-        playableDice.forEach(System.out::println);
         System.out.println();
 
         assertEquals(numAfterSet, numBeforeSet - 1);
