@@ -2,7 +2,7 @@
 
 - Obbligatorio (to 30)
 	- Gioco
-		- [ ] Implementazione Tool
+		- [X] Implementazione Tool
 			- [X] Tool 1
 			- [X] Tool 2
 			- [X] Tool 3
@@ -15,7 +15,7 @@
 			- [X] Tool 10
 			- [X] Tool 11
 			- [X] Tool 12
-		- [ ] Implementazione Obbiettivi 
+		- [X] Implementazione Obbiettivi
 		- [ ] Gestione utenti con login e registrazione
 	- Grafica
 		- [ ] GUI base completa (Senza caricamento immagini)
@@ -26,6 +26,18 @@
 		- [ ] Gestione riconnessioni
 		- [ ] Timeout lato client e lato server del turno
 	- F.A da scegliere
+	    - [ ] Partite multiple
+	
+	- Varie
+	    - [ ] Test
+            - [X] Obbiettivi
+        	- [ ] Tools
+        - [ ] Creazione di <i>tutte</i> le carte su MatchHandler
+        - [ ] XML di tutte le vetrate
+        - [ ] Test gioco su WAN (se rimane tempo)
+	    - [ ] UML del progetto finito (conservere il vecchio per confronto)
+	    - [ ] Finire la traduzione in inglese del progetto (grafica esclusa)
+	
 	
 - Non obbligatorio (to 30L)
 	- F.A da scegliere

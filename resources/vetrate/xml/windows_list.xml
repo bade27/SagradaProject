@@ -2,24 +2,22 @@
 
 <list>
 
-  <numberOfCards>6</numberOfCards>
+  <numberOfCards>4</numberOfCards>
 
+  <!--1-->
   <card n = "1">resources/vetrate/xml/kaleidoscopic_dream.xml</card>
-  <card n = "2">resources/vetrate/xml/virtus.xml</card>
+  <card n = "2">resources/vetrate/xml/firmitas.xml</card>
 
+  <!--6-->
   <card n = "3">resources/vetrate/xml/aurorae_magnificus.xml</card>
-  <card n = "4">resources/vetrate/xml/via_lux.xml</card>
+  <card n = "4">resources/vetrate/xml/aurora_sagradis.xml</card>
 
-  <card n = "5">resources/vetrate/xml/kaleidoscopic_dream.xml</card>
+  <!--7-->
+  <card n = "5">resources/vetrate/xml/symphony_of_light.xml</card>
   <card n = "6">resources/vetrate/xml/virtus.xml</card>
 
-  <card n = "7">resources/vetrate/xml/aurorae_magnificus.xml</card>
-  <card n = "8">resources/vetrate/xml/via_lux.xml</card>
-
-  <card n = "9">resources/vetrate/xml/kaleidoscopic_dream.xml</card>
-  <card n = "10">resources/vetrate/xml/virtus.xml</card>
-
-  <card n = "11">resources/vetrate/xml/aurorae_magnificus.xml</card>
-  <card n = "12">resources/vetrate/xml/via_lux.xml</card>
+  <!--12-->
+  <card n = "7">resources/vetrate/xml/via_lux.xml</card>
+  <card n = "8">resources/vetrate/xml/industria.xml</card>
 
 </list>

@@ -2,9 +2,8 @@
 
 <map>
 
-	<id>2</id>
-	<name>Virtus</name>
-	<difficulty>5</difficulty>
+	<name>Via Lux</name>
+	<difficulty>4</difficulty>
 
 	<!--
 			quando non ci sono restrizioni sul numero, il suo value è zero
@@ -16,8 +15,8 @@
 
 		<!--first row-->
 		<cell number="1">
-			<value>4</value>
-			<color>dc</color>
+			<value>0</value>
+			<color>yellow</color>
 			<img_source></img_source>
 		</cell>
 
@@ -28,20 +27,20 @@
 		</cell>
 
 		<cell number="3">
-			<value>2</value>
+			<value>6</value>
 			<color>dc</color>
 			<img_source></img_source>
 		</cell>
 
 		<cell number="4">
-			<value>5</value>
+			<value>0</value>
 			<color>dc</color>
 			<img_source></img_source>
 		</cell>
 
 		<cell number="5">
 			<value>0</value>
-			<color>verde</color>
+			<color>dc</color>
 			<img_source></img_source>
 		</cell>
 
@@ -53,20 +52,20 @@
 		</cell>
 
 		<cell number="7">
-			<value>0</value>
+			<value>1</value>
 			<color>dc</color>
 			<img_source></img_source>
 		</cell>
 
 		<cell number="8">
-			<value>6</value>
+			<value>5</value>
 			<color>dc</color>
 			<img_source></img_source>
 		</cell>
 
 		<cell number="9">
 			<value>0</value>
-			<color>verde</color>
+			<color>dc</color>
 			<img_source></img_source>
 		</cell>
 
@@ -78,26 +77,26 @@
 
 		<!--third row-->
 		<cell number="11">
-			<value>0</value>
-			<color>dc</color>
-			<img_source></img_source>
-		</cell>
-
-		<cell number="12">
 			<value>3</value>
 			<color>dc</color>
 			<img_source></img_source>
 		</cell>
 
+		<cell number="12">
+			<value>0</value>
+			<color>yellow</color>
+			<img_source></img_source>
+		</cell>
+
 		<cell number="13">
 			<value>0</value>
-			<color>verde</color>
+			<color>red</color>
 			<img_source></img_source>
 		</cell>
 
 		<cell number="14">
-			<value>4</value>
-			<color>dc</color>
+			<value>0</value>
+			<color>purple</color>
 			<img_source></img_source>
 		</cell>
 
@@ -109,32 +108,32 @@
 
 		<!--fourth row-->
 		<cell number="16">
-			<value>5</value>
+			<value>0</value>
 			<color>dc</color>
 			<img_source></img_source>
 		</cell>
 
 		<cell number="17">
 			<value>0</value>
-			<color>verde</color>
+			<color>dc</color>
 			<img_source></img_source>
 		</cell>
 
 		<cell number="18">
-			<value>1</value>
+			<value>4</value>
 			<color>dc</color>
 			<img_source></img_source>
 		</cell>
 
 		<cell number="19">
-			<value>0</value>
+			<value>3</value>
 			<color>dc</color>
 			<img_source></img_source>
 		</cell>
 
 		<cell number="20">
 			<value>0</value>
-			<color>dc</color>
+			<color>red</color>
 			<img_source></img_source>
 		</cell>
 

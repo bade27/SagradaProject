@@ -2,7 +2,6 @@
 
 <map>
 
-	<id>2</id>
 	<name>Virtus</name>
 	<difficulty>5</difficulty>
 
@@ -41,7 +40,7 @@
 
 		<cell number="5">
 			<value>0</value>
-			<color>verde</color>
+			<color>green</color>
 			<img_source></img_source>
 		</cell>
 
@@ -66,7 +65,7 @@
 
 		<cell number="9">
 			<value>0</value>
-			<color>verde</color>
+			<color>green</color>
 			<img_source></img_source>
 		</cell>
 
@@ -91,7 +90,7 @@
 
 		<cell number="13">
 			<value>0</value>
-			<color>verde</color>
+			<color>green</color>
 			<img_source></img_source>
 		</cell>
 
@@ -116,7 +115,7 @@
 
 		<cell number="17">
 			<value>0</value>
-			<color>verde</color>
+			<color>green</color>
 			<img_source></img_source>
 		</cell>
 

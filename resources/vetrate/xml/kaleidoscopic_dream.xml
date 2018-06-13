@@ -2,7 +2,6 @@
 
 <map>
 
-	<id>1</id>
 	<name>Kaleidoscopic Dream</name>
 	<difficulty>4</difficulty>
 
@@ -17,13 +16,13 @@
 		<!--first row-->
 		<cell number="1">
 			<value>0</value>
-			<color>giallo</color>
+			<color>yellow</color>
 			<img_source></img_source>
 		</cell>
 
 		<cell number="2">
 			<value>0</value>
-			<color>azzurro</color>
+			<color>blue</color>
 			<img_source></img_source>
 		</cell>
 
@@ -48,7 +47,7 @@
 		<!--second row-->
 		<cell number="6">
 			<value>0</value>
-			<color>verde</color>
+			<color>green</color>
 			<img_source></img_source>
 		</cell>
 
@@ -91,7 +90,7 @@
 
 		<cell number="13">
 			<value>0</value>
-			<color>rosso</color>
+			<color>red</color>
 			<img_source></img_source>
 		</cell>
 
@@ -103,7 +102,7 @@
 
 		<cell number="15">
 			<value>0</value>
-			<color>verde</color>
+			<color>green</color>
 			<img_source></img_source>
 		</cell>
 
@@ -128,13 +127,13 @@
 
 		<cell number="19">
 			<value>0</value>
-			<color>azzurro</color>
+			<color>blue</color>
 			<img_source></img_source>
 		</cell>
 
 		<cell number="20">
 			<value>0</value>
-			<color>giallo</color>
+			<color>yellow</color>
 			<img_source></img_source>
 		</cell>
 

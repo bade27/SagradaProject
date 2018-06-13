@@ -36,7 +36,6 @@ public class ParserXML
             Document document = documentBuilder.parse(file);
 
             //ora è un po' più efficiente anche qui (prendo solo i tag che mi servono, senza fare la lista di tutti
-            int id = Integer.parseInt(document.getElementsByTagName("id").item(0).getTextContent());
             String name = document.getElementsByTagName("name").item(0).getTextContent();
             int difficult = Integer.parseInt(document.getElementsByTagName("difficulty").item(0).getTextContent());
 
@@ -57,15 +56,15 @@ public class ParserXML
                         board[i][j] = new Cell(new Placement(currentValue,null));
                     else
                     {
-                        if (currentColor.equals("rosso"))
+                        if (currentColor.equals("red"))
                             board[i][j] = new Cell(new Placement(currentValue, ColorEnum.RED));
-                        if (currentColor.equals("verde"))
+                        if (currentColor.equals("green"))
                             board[i][j] = new Cell(new Placement(currentValue,ColorEnum.GREEN));
-                        if (currentColor.equals("giallo"))
+                        if (currentColor.equals("yellow"))
                             board[i][j] = new Cell(new Placement(currentValue,ColorEnum.YELLOW));
-                        if (currentColor.equals("azzurro"))
+                        if (currentColor.equals("blue"))
                             board[i][j] = new Cell(new Placement(currentValue,ColorEnum.BLUE));
-                        if (currentColor.equals("viola"))
+                        if (currentColor.equals("purple"))
                             board[i][j] = new Cell(new Placement(currentValue,ColorEnum.PURPLE));
                     }
                     k++;
