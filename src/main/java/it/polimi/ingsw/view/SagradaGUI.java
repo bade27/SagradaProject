@@ -144,7 +144,6 @@ public class SagradaGUI extends Application implements GUI {
             public void handle(ActionEvent event) {
                 String n=textname.getText();
                 String p=textip.getText();
-                System.out.println(connection.getValue());
                 if(!(n.contentEquals("")) && !(p.contentEquals("")) && (connection.getValue()!=null) && log==false) {
                     /*String[] buffer = {n,p};
                     boolean b= clientConnectionHandler.setBuffer(buffer);
