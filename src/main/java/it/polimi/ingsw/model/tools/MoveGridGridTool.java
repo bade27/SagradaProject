@@ -55,7 +55,7 @@ public class MoveGridGridTool extends Tools {
         try {
             window.moveDice(pos_iniz1,pos_fin1, lev);
         } catch (Exception ex) {
-            throw new IllegalStepException();
+            throw new IllegalStepException("Impossibile eseguire il tool coi parametri selezionati");
         }
     }
 
@@ -65,7 +65,7 @@ public class MoveGridGridTool extends Tools {
             window.moveDice(pos_iniz2, pos_fin2, lev);
         } catch (Exception ex) {
             window.moveDice(pos_fin1, pos_iniz1, -1);
-            throw new IllegalStepException();
+            throw new IllegalStepException("Impossibile eseguire il tool coi parametri selezionati");
         }
     }
 
@@ -75,7 +75,7 @@ public class MoveGridGridTool extends Tools {
      */
     private void moveOneDieTool() throws IllegalStepException {
         if(pos_iniz1 == null || pos_fin1 == null)
-            throw new IllegalStepException();
+            throw new IllegalStepException("Riprova selezionando tutti i parametri del tool");
 
         moveFirstDieWindow(level);
         setPrice();
@@ -90,7 +90,7 @@ public class MoveGridGridTool extends Tools {
     private void moveTwoDieTool() throws IllegalStepException, IllegalDiceException
     {
         if(pos_iniz1 == null || pos_fin1 == null || pos_iniz2 == null || pos_fin2 == null)
-            throw new IllegalStepException();
+            throw new IllegalStepException("Riprova selezionando tutti i parametri del tool");
         moveFirstDieWindow(0);
         moveSecondDieWindow(0);
     }
@@ -99,7 +99,7 @@ public class MoveGridGridTool extends Tools {
     private void moveTwoDieRestriction () throws IllegalStepException,IllegalDiceException
     {
         if(pos_iniz1 == null || pos_fin1 == null || d1 == null)
-            throw new IllegalStepException();
+            throw new IllegalStepException("Riprova selezionando tutti i parametri del tool");
 
         Dice dOne = window.getCell(pos_iniz1.getI(), pos_iniz1.getJ()).getFrontDice();
 
@@ -115,7 +115,7 @@ public class MoveGridGridTool extends Tools {
 
         }
         else
-            throw new IllegalStepException();
+            throw new IllegalStepException("I colori dei dadi devono essere compatibili");
     }
 
     void setPrice(){

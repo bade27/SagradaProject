@@ -60,7 +60,7 @@ public class ServerModelAdapter
         if (toolInUse == null)
         {
             LogFile.addLog("User: " + user + "\t Tool not permission asked");
-            return "Not using tool permission asked";
+            return "Uso tool non eseguito: non hai fatto richiesta per alcun tool";
         }
 
         //sets all the necessary parameters inside the tool in use
@@ -74,7 +74,7 @@ public class ServerModelAdapter
             toolInUse.use();
         } catch (IllegalDiceException | IllegalStepException e) {
             LogFile.addLog("User: " + user + "\t Tool Action failed: " + e.getMessage());
-            return "Tool Action failed: " + e.getMessage();
+            return "Uso tool non eseguito: " + e.getMessage();
         }
         //If performed decrees client's own marker
         //first branch guarantees tool 11's right use
@@ -82,7 +82,7 @@ public class ServerModelAdapter
             replyToClient = toolInUse.getColor();
         } else {
             marker = marker - current_price;
-            replyToClient = "Tool used correctly";
+            replyToClient = "Uso tool eseguito corretamente";
         }
         Tools.setAllToNull();
         return replyToClient;
@@ -101,8 +101,8 @@ public class ServerModelAdapter
         if (toolInUse != null)
             if (!toolInUse.isToolFinished())
             {
-                LogFile.addLog("User: " + user + "\t Tool request nr." + nrTool);
-                return "Tool permission rejected: Another Tool in use";
+                LogFile.addLog("User: " + user + "\t Tool permission rejected: Another Tool in use");
+                return "Richiesta utilizzo tool respinta: tool precedente ancora in funzione";
             }
 
         //Check if tool is callable
@@ -113,10 +113,10 @@ public class ServerModelAdapter
                     toolInUse = tools[i];
                     LogFile.addLog("User: " + user + "\t Tool permission accepted");
                     Tools.setAllToNull();
-                    return "Tool permission accepted";
+                    return "Richiesta utilizzo tool accolta";
                 }
         LogFile.addLog("User: " + user + "\t Tool permission rejected: Not enough marker");
-        return "Tool permission rejected: Not enough marker";
+        return "Richiesta utilizzo tool respinta: segnalini insufficienti";
     }
 
     /**
@@ -133,7 +133,7 @@ public class ServerModelAdapter
             if (!toolInUse.canPlaceDie(d))
             {
                 LogFile.addLog("User: " + user + "\t Impossible to place die, wrong die selected");
-                throw new ModelException("Impossible to place die, wrong die selected ");
+                throw new ModelException("Impossibile piazzare il dado: devi piazzare il dado appena modificato");
             }
 
         //Try to put die on board
@@ -145,7 +145,7 @@ public class ServerModelAdapter
         }
         catch (IllegalDiceException ex) {
             LogFile.addLog("User: " + user + "\t Impossible to place die: " + ex.getMessage());
-            throw new ModelException("Impossible to place die: " + ex.getMessage());
+            throw new ModelException("Impossibile piazzare il dado: " + ex.getMessage());
         }
         canMove = false;
         //After adding die, it will be delete from Dadiera

@@ -112,7 +112,7 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
     public String makeMove(Coordinates coor, Pair p) throws RemoteException {
         try {
             if (!adapter.CanMove())
-                return "You have already moved on this turn";
+                return "Hai già mosso in questo turno";
             adapter.addDiceToBoard(coor.getI(), coor.getJ(), new Dice(p.getValue(), p.getColor()));
 
             match.updateClient();
@@ -121,7 +121,7 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
             return e.getMessage();
         }
 
-        return "Move ok";
+        return "Mossa applicata correttamente";
     }
 
 

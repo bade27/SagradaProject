@@ -271,7 +271,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             e.printStackTrace();
             return false;
         }
-        return response.equals("Tool permission accepted");
+        return response.equals("Richiesta utilizzo tool accolta");
     }
 
     public synchronized void useTool() {
