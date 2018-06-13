@@ -25,9 +25,7 @@ import java.io.IOException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Random;
-import java.util.Vector;
 
 public class MatchHandler implements Runnable
 {
@@ -129,7 +127,7 @@ public class MatchHandler implements Runnable
                     turnsPlayed++;
 
                     //Update Round Trace
-                    while(dices.getListaDadi().size() > 0)
+                    while(dices.getDiceList().size() > 0)
                     {
                         Dice tmp = null;
                         try {

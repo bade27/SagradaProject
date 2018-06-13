@@ -5,9 +5,12 @@ import it.polimi.ingsw.model.Cell;
 import java.util.Arrays;
 import java.util.OptionalInt;
 
-public class PairScore implements ScoreInterface {
+public class PairScore extends Score {
 
     private int[] couple;
+
+    public PairScore() {
+    }
 
     public PairScore(String tag) {
         couple = new int[2];
