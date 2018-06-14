@@ -24,7 +24,10 @@
 		- [ ] Implementazione Socket
 		- [ ] Gestione disconnessioni
 		- [ ] Gestione riconnessioni
-		- [ ] Timeout lato client e lato server del turno
+		- [ ] Timeout di login
+		- [ ] Timeout del turno
+		    - [ ] lato client
+		    - [X] lato server
 	- F.A da scegliere
 	    - [ ] Partite multiple
 	

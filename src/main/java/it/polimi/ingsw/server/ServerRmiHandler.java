@@ -214,9 +214,9 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
     private void notifyServer ()
     {
         try{
-            synchronized (adapter) {
-                adapter.notifyAll();
-            }
+
+            adapter.setTurnDone(true);
+
         }catch (Exception e){
             System.out.println(e.getMessage());
             //log.addLog("Fatal error on thread " + user  , e.getStackTrace());

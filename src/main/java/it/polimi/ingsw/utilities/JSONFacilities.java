@@ -97,8 +97,7 @@ public class JSONFacilities {
         return msg;
     }
 
-    private static JSONArray encodeArrayPair (ArrayList<Pair> toEncode)
-    {
+    private static JSONArray encodeArrayPair (ArrayList<Pair> toEncode) throws JSONException {
         JSONArray msg = new JSONArray();
         for (int i = 0; i < toEncode.size(); i++)
         {
@@ -152,8 +151,7 @@ public class JSONFacilities {
         return list;
     }
 
-    public static JSONArray encodeListArrayPair (ArrayList<Pair>[] toEncode)
-    {
+    public static JSONArray encodeListArrayPair (ArrayList<Pair>[] toEncode) throws JSONException {
         JSONArray msg = new JSONArray();
         for (int i = 0; i < toEncode.length; i++)
         {

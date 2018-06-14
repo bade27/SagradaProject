@@ -46,10 +46,14 @@ public class ServerPlayer implements Runnable
     private Tools[] toolCards;
     private PublicObjective[] publicObjectives;
 
+    //turn phase
+    private boolean turnInterrupted = false;
+
 
     public ServerPlayer(TokenTurn tok, ServerModelAdapter adp, UsersEntry ps, ClientRemoteInterface cli)
     {
         adapter = adp;
+        adapter.setServerPlayer(this);
         token = tok;
         possibleUsers = ps;
         communicator = null;
@@ -120,6 +124,8 @@ public class ServerPlayer implements Runnable
                     while (!token.isMyTurn(user))
                         token.getSynchronator().wait();
 
+                    adapter.setTurnDone(false);
+
                     if (token.isEndGame())
                     {
                         LogFile.addLog("(User:" + user + ")" + " End communication with client and close connection");
@@ -141,10 +147,22 @@ public class ServerPlayer implements Runnable
                         break;
                     }
 
+                    //da sistemare con costante
+                    adapter.setTimer(30);
+                    adapter.startTimer();
+
                     //End turn comunication
                     synchronized (adapter){
                         adapter.wait();
                     }
+
+                    if(turnInterrupted) {
+                        LogFile.addLog("(User: " + user + ")" + "turn interrupted");
+                        token.deletePlayer(user);
+                        inGame = false;
+                        token.getSynchronator().notifyAll();
+                        break;
+                    } else System.out.println("turn ended well");
 
                     token.getSynchronator().notifyAll();
                     token.getSynchronator().wait();
@@ -526,6 +544,15 @@ public class ServerPlayer implements Runnable
     {
         return initialized;
     }
+
+    public void setTurnInterrupted() {
+        this.turnInterrupted = true;
+    }
+
+    public boolean isTurnInterrupted() {
+        return turnInterrupted;
+    }
+
     //</editor-fold>
 
 }

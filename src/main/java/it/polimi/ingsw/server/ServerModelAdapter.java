@@ -17,6 +17,7 @@ import it.polimi.ingsw.utilities.LogFile;
 import it.polimi.ingsw.utilities.Wrapper;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 public class ServerModelAdapter
 {
@@ -36,6 +37,9 @@ public class ServerModelAdapter
     private int marker;
     private Tools toolInUse;
 
+    private boolean turnDone = false;
+    private ServerPlayer serverPlayer;
+    private TimerTurn timer;
 
     public ServerModelAdapter (Dadiera d, RoundTrace trace, TokenTurn tok)
     {
@@ -285,6 +289,75 @@ public class ServerModelAdapter
         return user;
     }
 
+    public void setTurnDone(boolean turnDone) {
+        this.turnDone = turnDone;
+    }
+
+    public void setServerPlayer(ServerPlayer serverPlayer) {
+        this.serverPlayer = serverPlayer;
+    }
+
+    public void setTimer(int n) {
+        timer = new TimerTurn(n, this);
+    }
+
+    public synchronized void startTimer() {
+        new Thread(timer).start();
+    }
+
+    public synchronized boolean isTurnDone() {
+        return turnDone;
+    }
+
     //</editor-fold>
+
+
+    private class TimerTurn implements Runnable {
+
+        private int period;
+        private double actualTime;
+        private ServerModelAdapter adapter;
+
+        public TimerTurn(int period, ServerModelAdapter adapter) {
+            this.period = period;
+            this.adapter = adapter;
+        }
+
+        @Override
+        public void run() {
+            Thread timer = new Thread(() -> {
+                boolean interrupted = false;
+                try {
+                    TimeUnit.SECONDS.sleep(period);
+                } catch (InterruptedException e) {
+                    interrupted = true;
+                }
+                if(!interrupted) {
+                    serverPlayer.setTurnInterrupted();
+                    synchronized (adapter) {
+                        adapter.notifyAll();
+                    }
+                }
+            });
+
+            long initialTime = System.nanoTime();
+            timer.start();
+            while(!adapter.isTurnDone() && !serverPlayer.isTurnInterrupted())
+                continue;
+            if(timer.isAlive())
+                timer.interrupt();
+            if(!serverPlayer.isTurnInterrupted())
+                actualTime = ((System.nanoTime() - initialTime) / 1000000);
+
+            synchronized (adapter) {
+                adapter.notifyAll();
+            }
+        }
+
+        public double getActualTime() {
+            return actualTime;
+        }
+    }
+
 
 }

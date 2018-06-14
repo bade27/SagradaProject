@@ -61,8 +61,7 @@ class JSONFacilitiesTest
 
 
     @Test
-    void encodeAndDecodeListArrayPair() throws ParserXMLException,IllegalDiceException
-    {
+    void encodeAndDecodeListArrayPair() throws ParserXMLException, IllegalDiceException, JSONException {
         ArrayList<Pair>[] original = t.getPair();
         JSONArray arr = JSONFacilities.encodeListArrayPair(original);
         StringBuilder trace = new StringBuilder(arr.toString());
