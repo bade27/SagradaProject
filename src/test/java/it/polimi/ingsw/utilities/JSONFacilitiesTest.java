@@ -1,16 +1,14 @@
 package it.polimi.ingsw.utilities;
 
 import it.polimi.ingsw.exceptions.IllegalDiceException;
-import it.polimi.ingsw.exceptions.ModelException;
 import it.polimi.ingsw.exceptions.ParserXMLException;
-import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.model.Dice;
+import it.polimi.ingsw.model.RoundTrace;
 import it.polimi.ingsw.model.Window;
 import it.polimi.ingsw.remoteInterface.Pair;
 import org.json.JSONArray;
 import org.junit.jupiter.api.Test;
-import org.opentest4j.TestAbortedException;
 
 import java.util.ArrayList;
 
@@ -19,12 +17,18 @@ import static org.junit.jupiter.api.Assertions.*;
 class JSONFacilitiesTest
 {
     Window w;
+    RoundTrace t;
     @org.junit.jupiter.api.BeforeEach
     void setUp() throws ParserXMLException,IllegalDiceException
     {
         w = new Window("resources/vetrate/xml/kaleidoscopic_dream.xml");
         w.addDice(0,0,new Dice(1, ColorEnum.YELLOW),0);
         w.addDice(0,1,new Dice(5,ColorEnum.BLUE),0);
+
+        t = new RoundTrace();
+        t.addDice(1,new Dice(1, ColorEnum.YELLOW));
+        t.addDice(1,new Dice(2, ColorEnum.RED));
+        t.addDice(2,new Dice(1, ColorEnum.BLUE));
     }
 
     @Test
@@ -51,6 +55,31 @@ class JSONFacilitiesTest
             {
                 assertEquals (board[i][j].getColor(),original[i][j].getColor());
                 assertEquals (board[i][j].getValue(),original[i][j].getValue());
+            }
+        }
+    }
+
+
+    @Test
+    void encodeAndDecodeListArrayPair() throws ParserXMLException,IllegalDiceException
+    {
+        ArrayList<Pair>[] original = t.getPair();
+        JSONArray arr = JSONFacilities.encodeListArrayPair(original);
+        StringBuilder trace = new StringBuilder(arr.toString());
+        trace.append("\n");
+
+        ArrayList<ArrayList<Pair>> list = JSONFacilities.decodeMatrixPair(trace.toString());
+
+        ArrayList<Pair>[] round = new ArrayList[list.size()];
+        for (int i = 0 ; i < list.size() ; i++)
+            round[i] = list.get(i);
+
+        for (int i = 0 ; i < round.length ; i++)
+        {
+            for (int j = 0 ; j < round[i].size() ; j++)
+            {
+                assertEquals (round[i].get(j).getColor(),original[i].get(j).getColor());
+                assertEquals (round[i].get(j).getValue(),original[i].get(j).getValue());
             }
         }
     }

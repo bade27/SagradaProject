@@ -334,8 +334,6 @@ public class ServerSocketHandler implements ClientRemoteInterface
     @Override
     public String updateGraphic(Pair[] dadiera) throws ClientOutOfReachException, RemoteException
     {
-        String response = "";
-
         try
         {
             JSONArray jsonArray = JSONFacilities.encodeArrayPair(dadiera);
@@ -353,8 +351,6 @@ public class ServerSocketHandler implements ClientRemoteInterface
     @Override
     public String updateGraphic(Pair[][] grid) throws ClientOutOfReachException, RemoteException
     {
-        String response = "";
-
         try
         {
             JSONArray jsonArray = JSONFacilities.encodeMatrixPair(grid);
@@ -382,9 +378,20 @@ public class ServerSocketHandler implements ClientRemoteInterface
     }
 
     @Override
-    public String updateRoundTrace(ArrayList<Pair>[] dice) throws RemoteException
+    public String updateRoundTrace(ArrayList<Pair>[] dice) throws RemoteException,ClientOutOfReachException
     {
-        return "ok";
+        try
+        {
+            JSONArray jsonArray = JSONFacilities.encodeListArrayPair(dice);
+            return updateClient(jsonArray, "up_trace\n");
+        } catch (ClientOutOfReachException e)
+        {
+            throw new ClientOutOfReachException();
+        } catch (JSONException je)
+        {
+            LogFile.addLog("JSON can't encrypt client message", je.getStackTrace());
+            throw new ClientOutOfReachException();
+        }
     }
 
     @Override

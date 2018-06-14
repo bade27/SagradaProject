@@ -78,6 +78,10 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
                         String win = inSocket.readLine();
                         task = executor.submit(() -> {updateWindow(win);});
                         continue;
+                    case "up_trace":
+                        String tra = inSocket.readLine();
+                        task = executor.submit(() -> {updateRoundTrace(tra);});
+                        continue;
                     case "close":
                         stop = true;
                         break;
@@ -156,6 +160,23 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
                     board[i][j] = list.get(i).get(j);
             }
             player.updateGraphic(board);
+            outSocket.write("ok\n");
+            return outSocket.checkError();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private Boolean updateRoundTrace (String json)
+    {
+        try {
+            ArrayList<ArrayList<Pair>> list = JSONFacilities.decodeMatrixPair(json);
+            ArrayList<Pair>[] round = new ArrayList[list.size()];
+            for (int i = 0 ; i < list.size() ; i++)
+                round[i] = list.get(i);
+
+            player.updateRoundTrace(round);
             outSocket.write("ok\n");
             return outSocket.checkError();
         } catch (Exception e) {

@@ -34,7 +34,7 @@ public class ObjectivesFactory {
         map.put("diag", new DiagonalScore());
     }
 
-    public static PrivateObjective getPrivateObjective(String path) throws ModelException
+    public synchronized static PrivateObjective getPrivateObjective(String path) throws ModelException
     {
 
         try {
@@ -57,7 +57,7 @@ public class ObjectivesFactory {
 
     }
 
-    public static PublicObjective getPublicObjective(String path) throws ModelException {
+    public synchronized static PublicObjective getPublicObjective(String path) throws ModelException {
 
         PublicObjective publicObjective;
         try {

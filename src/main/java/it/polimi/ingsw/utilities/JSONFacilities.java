@@ -7,7 +7,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class JSONFacilities {
@@ -90,8 +89,27 @@ public class JSONFacilities {
         for (int i = 0; i < toEncode.length; i++)
         {
             JSONObject jsonObj = new JSONObject();
-            jsonObj.put("color",toEncode[i].getColor().toString());
+            if (toEncode[i].getColor() != null)
+                jsonObj.put("color",toEncode[i].getColor().toString());
+            else
+                jsonObj.put("color","n/d");
             jsonObj.put("value",toEncode[i].getValue());
+            msg.put(jsonObj);
+        }
+        return msg;
+    }
+
+    private static JSONArray encodeArrayPair (ArrayList<Pair> toEncode)
+    {
+        JSONArray msg = new JSONArray();
+        for (int i = 0; i < toEncode.size(); i++)
+        {
+            JSONObject jsonObj = new JSONObject();
+            if (toEncode.get(i).getColor() != null)
+                jsonObj.put("color",toEncode.get(i).getColor().toString());
+            else
+                jsonObj.put("color","n/d");
+            jsonObj.put("value",toEncode.get(i).getValue());
             msg.put(jsonObj);
         }
         return msg;
@@ -119,17 +137,7 @@ public class JSONFacilities {
         JSONArray msg = new JSONArray();
         for (int i = 0; i < toEncode.length; i++)
         {
-            JSONArray arr = new JSONArray();
-            for (int j = 0 ; j < toEncode[i].length ; j++)
-            {
-                JSONObject jsonObj = new JSONObject();
-                if (toEncode[i][j].getColor() != null)
-                    jsonObj.put("color",toEncode[i][j].getColor().toString());
-                else
-                    jsonObj.put("color","n/d");
-                jsonObj.put("value",toEncode[i][j].getValue());
-                arr.put(jsonObj);
-            }
+            JSONArray arr = encodeArrayPair(toEncode[i]);
             msg.put(arr);
         }
         return msg;
@@ -145,6 +153,17 @@ public class JSONFacilities {
             list.add(decodeArrayPair(row));
         }
         return list;
+    }
+
+    public static JSONArray encodeListArrayPair (ArrayList<Pair>[] toEncode)
+    {
+        JSONArray msg = new JSONArray();
+        for (int i = 0; i < toEncode.length; i++)
+        {
+            JSONArray arr = encodeArrayPair(toEncode[i]);
+            msg.put(arr);
+        }
+        return msg;
     }
 
 

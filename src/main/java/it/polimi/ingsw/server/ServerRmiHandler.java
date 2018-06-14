@@ -76,7 +76,7 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
     }
 
     @Override
-    public String updateRoundTrace(ArrayList<Pair>[] dice) throws RemoteException {
+    public String updateRoundTrace(ArrayList<Pair>[] dice) throws RemoteException,ClientOutOfReachException {
         return client.updateRoundTrace(dice);
     }
 
