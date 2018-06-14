@@ -1,13 +1,11 @@
 package it.polimi.ingsw.utilities;
 
 import it.polimi.ingsw.model.ColorEnum;
-import it.polimi.ingsw.model.Dice;
 import it.polimi.ingsw.remoteInterface.Pair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class JSONFacilities {
@@ -84,8 +82,7 @@ public class JSONFacilities {
         return list;
     }
 
-    public static JSONArray encodeArrayPair (Pair[] toEncode)
-    {
+    public static JSONArray encodeArrayPair (Pair[] toEncode) throws JSONException {
         JSONArray msg = new JSONArray();
         for (int i = 0; i < toEncode.length; i++)
         {
@@ -114,8 +111,7 @@ public class JSONFacilities {
         return list;
     }
 
-    public static JSONArray encodeMatrixPair (Pair[][] toEncode)
-    {
+    public static JSONArray encodeMatrixPair (Pair[][] toEncode) throws JSONException {
         JSONArray msg = new JSONArray();
         for (int i = 0; i < toEncode.length; i++)
         {

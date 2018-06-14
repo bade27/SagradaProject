@@ -6,13 +6,15 @@ import it.polimi.ingsw.model.Window;
 public class PublicObjective {
 
     private String name;
+    private String path;
     private String description;
     private int value;
     Score score;
 
-    public PublicObjective(String name, String description,
+    public PublicObjective(String name, String path, String description,
                            int value, Score score) {
         this.name = name;
+        this.path = path;
         this.description = description;
         this.value = value;
         this.score = score;
@@ -45,6 +47,10 @@ public class PublicObjective {
         return score.getClass().getSimpleName().equals("DiagonalScore") ?
                 0 : value;
 
+    }
+
+    public String getPath() {
+        return path;
     }
 
     public Score getScoreObjbect() {

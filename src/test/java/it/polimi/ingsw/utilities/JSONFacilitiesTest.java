@@ -1,20 +1,18 @@
 package it.polimi.ingsw.utilities;
 
 import it.polimi.ingsw.exceptions.IllegalDiceException;
-import it.polimi.ingsw.exceptions.ModelException;
 import it.polimi.ingsw.exceptions.ParserXMLException;
-import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.model.Dice;
 import it.polimi.ingsw.model.Window;
 import it.polimi.ingsw.remoteInterface.Pair;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.junit.jupiter.api.Test;
-import org.opentest4j.TestAbortedException;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class JSONFacilitiesTest
 {
@@ -28,8 +26,7 @@ class JSONFacilitiesTest
     }
 
     @Test
-    void encodeAndDecodeMatrixPair() throws ParserXMLException,IllegalDiceException
-    {
+    void encodeAndDecodeMatrixPair() throws ParserXMLException, IllegalDiceException, JSONException {
         Pair[][] original = w.getPairMatrix();
         JSONArray arr = JSONFacilities.encodeMatrixPair(original);
         StringBuilder windows = new StringBuilder(arr.toString());
