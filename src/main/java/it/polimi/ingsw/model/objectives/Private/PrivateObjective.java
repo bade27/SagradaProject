@@ -10,12 +10,14 @@ import java.util.stream.Stream;
 public class PrivateObjective {
 
     private String name;
+    private String path;
     private String description;
     private ColorEnum color;
 
-    public PrivateObjective(String name, String color, String description) {
+    public PrivateObjective(String name, String path, String color, String description) {
 
         this.name = name;
+        this.path = path;
         this.description = description;
         Optional<ColorEnum> result = Stream.of(ColorEnum.values())
                 .filter(e -> e.toString().toLowerCase().equals(color))
@@ -47,6 +49,10 @@ public class PrivateObjective {
 
     public String getName() {
         return name;
+    }
+
+    public String getPath() {
+        return path;
     }
 
     public String getDescription() {

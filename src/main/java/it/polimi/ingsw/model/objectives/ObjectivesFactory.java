@@ -25,7 +25,7 @@ public class ObjectivesFactory {
     private static String tag;
     private static Map<String, Score> map;
 
-    static {
+    private static void initMap() {
         map = new HashMap<>();
         map.put("row", new ColRowScore());
         map.put("col", new ColRowScore());
@@ -48,7 +48,7 @@ public class ObjectivesFactory {
             target = card.getElementsByTagName("target").item(0).getTextContent();
             description = card.getElementsByTagName("description").item(0).getTextContent();
 
-            return new PrivateObjective(name, target, description);
+            return new PrivateObjective(name, path, target, description);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -58,6 +58,8 @@ public class ObjectivesFactory {
     }
 
     public synchronized static PublicObjective getPublicObjective(String path) throws ModelException {
+
+        initMap();
 
         PublicObjective publicObjective;
         try {
@@ -77,7 +79,7 @@ public class ObjectivesFactory {
             Score score = map.get(patterns);
             score.setPattern(patterns);
             score.setTag(tag);
-            publicObjective = new PublicObjective(name, description, value, score);
+            publicObjective = new PublicObjective(name, path, description, value, score);
 
         } catch (Exception e) {
             e.printStackTrace();

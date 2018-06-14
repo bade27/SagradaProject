@@ -1,6 +1,5 @@
 package it.polimi.ingsw.client;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.remoteInterface.*;
 import it.polimi.ingsw.utilities.JSONFacilities;

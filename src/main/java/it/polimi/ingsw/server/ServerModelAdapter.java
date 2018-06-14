@@ -173,18 +173,11 @@ public class ServerModelAdapter
 
     /**
      * Initialize Public objectives with path passed
-     * @param path path of objectives' pattern
+     * @param objs objectives created
      */
-    public void initializePublicObjectives(String[] path) throws ModelException
+    public void setPublicObjectives(PublicObjective[] objs) throws ModelException
     {
-        try
-        {
-            for (int i = 0 ; i < numPublicObj ; i++)
-                publicObjectives[i] = ObjectivesFactory.getPublicObjective(path[i]);
-
-        }catch (Exception ex){
-            throw new ModelException("Impossible to create public objectives");
-        }
+        publicObjectives = objs;
     }
 
     /**
@@ -205,17 +198,9 @@ public class ServerModelAdapter
      * Initialize tool cards with path passed
      * @param toolCards names of tools' pattern
      */
-    public void initializeToolCards(Tools[] toolCards) throws ModelException
+    public void setToolCards(Tools[] toolCards) throws ModelException
     {
         tools = toolCards;
-        /*try
-        {
-            for (int i = 0 ; i < numTools ; i++)
-                tools[i] = ToolsFactory.getTools(names[i]);
-
-        }catch (Exception ex){
-            throw new ModelException("Impossible to create public objectives");
-        }*/
     }
 
     public void setUser (String s)

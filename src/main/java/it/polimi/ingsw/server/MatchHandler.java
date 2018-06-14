@@ -7,6 +7,8 @@ import it.polimi.ingsw.exceptions.ParserXMLException;
 import it.polimi.ingsw.model.Dadiera;
 import it.polimi.ingsw.model.Dice;
 import it.polimi.ingsw.model.RoundTrace;
+import it.polimi.ingsw.model.objectives.ObjectivesFactory;
+import it.polimi.ingsw.model.objectives.Public.PublicObjective;
 import it.polimi.ingsw.model.tools.Tools;
 import it.polimi.ingsw.model.tools.ToolsFactory;
 import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
@@ -504,17 +506,24 @@ public class MatchHandler implements Runnable
 
         try
         {
-            String [] objs = new String[3];
+            String [] objStrings = new String[3];
             //Select randomly 3 public objective cards from list
             for (int i = 0; i < 3; i++)
             {
                 c = (int)(Math.random()* (cards.size()));
-                objs[i]=cards.get(c);
+                objStrings[i]=cards.get(c);
                 cards.remove(c);
             }
+
+            //creation of the actual cards
+            PublicObjective[] pubObjs = new PublicObjective[3];
+            for(int i = 0; i < 3; i++) {
+                pubObjs[i] = ObjectivesFactory.getPublicObjective(objStrings[i]);
+            }
+
             //For each players initialize public objective already selected
             for (int i=0;i<nConn;i++)
-                player.get(i).setPublicObjCard(objs);
+                player.get(i).setPublicObjCard(pubObjs);
         }
         catch (Exception ex) {
             LogFile.addLog("Impossible to set XML publicObj",ex.getStackTrace());
@@ -601,6 +610,7 @@ public class MatchHandler implements Runnable
         }
 
     }
+
     /**
      * sets up connection parameters
      */

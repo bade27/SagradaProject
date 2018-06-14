@@ -2,6 +2,7 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.exceptions.ModelException;
+import it.polimi.ingsw.model.objectives.Public.PublicObjective;
 import it.polimi.ingsw.model.tools.Tools;
 import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
 import it.polimi.ingsw.remoteInterface.Pair;
@@ -16,7 +17,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.*;
 
@@ -40,11 +40,12 @@ public class ServerPlayer implements Runnable
 
     //passed parameters
     private String[] windowCard1,windowCard2;
-    private String[] publicObjCard;
     private String privateObjCard;
 
     //actual cards
     private Tools[] toolCards;
+    private PublicObjective[] publicObjectives;
+
 
     public ServerPlayer(TokenTurn tok, ServerModelAdapter adp, UsersEntry ps, ClientRemoteInterface cli)
     {
@@ -229,7 +230,8 @@ public class ServerPlayer implements Runnable
         try {
             boolean performed;
             String[] toolnames = Arrays.stream(toolCards).map(t -> t.getName()).toArray(String[]::new);
-            performed = stopTask(() -> communicator.sendCards(publicObjCard,toolnames,new String[] {privateObjCard}), INIT_TIMEOUT, executor);
+            String[] publicObjNames = Arrays.stream(publicObjectives).map(obj -> obj.getPath()).toArray(String[]::new);
+            performed = stopTask(() -> communicator.sendCards(publicObjNames,toolnames,new String[] {privateObjCard}), INIT_TIMEOUT, executor);
             if(!performed)
             {
                 LogFile.addLog("(User:" + user + ") Failed to initialize cards");
@@ -243,8 +245,8 @@ public class ServerPlayer implements Runnable
 
         try {
             adapter.initializePrivateObjectives(privateObjCard);
-            adapter.initializePublicObjectives(publicObjCard);
-            adapter.initializeToolCards(toolCards);
+            adapter.setPublicObjectives(publicObjectives);
+            adapter.setToolCards(toolCards);
             LogFile.addLog("User: " + user + " Tools and Objectives initialized ");
 
         }catch (ModelException e ){
@@ -471,9 +473,9 @@ public class ServerPlayer implements Runnable
      * receives from the match the array of the public objectives of the current match
      * @param c array of the public objectives of the current match
      */
-    public void setPublicObjCard (String[] c)
+    public void setPublicObjCard (PublicObjective[] c)
     {
-        publicObjCard = c;
+        publicObjectives = c;
     }
 
     /**

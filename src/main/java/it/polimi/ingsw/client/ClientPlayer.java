@@ -21,7 +21,6 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
@@ -67,7 +66,6 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             HOSTNAME = serverIP;
         typeOfCOnnection = t;
         this.graph = g;
-        //adp = new ClientModelAdapter(graph);
         try
         {
             //since the parameters are static, the initialization is performed once

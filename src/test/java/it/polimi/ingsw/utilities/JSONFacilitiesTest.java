@@ -8,11 +8,12 @@ import it.polimi.ingsw.model.RoundTrace;
 import it.polimi.ingsw.model.Window;
 import it.polimi.ingsw.remoteInterface.Pair;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class JSONFacilitiesTest
 {
@@ -32,8 +33,7 @@ class JSONFacilitiesTest
     }
 
     @Test
-    void encodeAndDecodeMatrixPair() throws ParserXMLException,IllegalDiceException
-    {
+    void encodeAndDecodeMatrixPair() throws ParserXMLException, IllegalDiceException, JSONException {
         Pair[][] original = w.getPairMatrix();
         JSONArray arr = JSONFacilities.encodeMatrixPair(original);
         StringBuilder windows = new StringBuilder(arr.toString());
