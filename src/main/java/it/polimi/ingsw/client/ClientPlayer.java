@@ -21,6 +21,7 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
@@ -39,6 +40,8 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     //buffer mossa in upload
     private boolean finishedMove = false;
     private int num_of_moves = 0;
+
+    private final Integer sync = 5;
 
 
     //<editor-fold desc="Initialization Phase">
@@ -119,18 +122,17 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
      */
     public String login() throws ClientOutOfReachException
     {
-        /*System.out.println("Insert Username: ");
-        Scanner cli = new Scanner(System.in);*/
         return clientName;
-
     }
 
     /**
      * Set Client name
      * @param clientName
      */
-    public void setClientName(String clientName){
-        this.clientName=clientName; }
+    public void setClientName(String clientName)
+    {
+        this.clientName = clientName;
+    }
 
     /**
      * Choosing window method

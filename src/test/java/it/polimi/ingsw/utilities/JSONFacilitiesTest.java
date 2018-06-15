@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.Window;
 import it.polimi.ingsw.remoteInterface.Pair;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -63,7 +64,7 @@ class JSONFacilitiesTest
     @Test
     void encodeAndDecodeListArrayPair() throws ParserXMLException, IllegalDiceException, JSONException {
         ArrayList<Pair>[] original = t.getPair();
-        JSONArray arr = JSONFacilities.encodeListArrayPair(original);
+        JSONArray arr = JSONFacilities.encodeMatrixPair(original);
         StringBuilder trace = new StringBuilder(arr.toString());
         trace.append("\n");
 
@@ -81,5 +82,48 @@ class JSONFacilitiesTest
                 assertEquals (round[i].get(j).getValue(),original[i].get(j).getValue());
             }
         }
+    }
+
+    @Test
+    void encodeAndDecodeNumber () throws JSONException
+    {
+        int original = 5;
+        JSONObject obj = JSONFacilities.encodeInteger(original);
+        StringBuilder trace = new StringBuilder(obj.toString());
+        trace.append("\n");
+
+        int decoded = JSONFacilities.decodeInteger(trace.toString());
+        assertEquals(original,decoded);
+    }
+
+    @Test
+    void encodeANdDecodeMatrixPairWithString ()
+    {
+        String user = "KIMOSABE";
+        Pair[][] original = w.getPairMatrix();
+        JSONArray arr = JSONFacilities.encodeMatrixPair(user,original);
+        StringBuilder windows = new StringBuilder(arr.toString());
+        windows.append("\n");
+
+        String recived = JSONFacilities.decodeStringInMatrixPair(windows.toString());
+        ArrayList<ArrayList<Pair>> list = JSONFacilities.decodeMatrixPairWithString(windows.toString());
+
+        Pair[][] board = new Pair[list.size()][];
+        for (int i = 0 ; i < list.size() ; i++)
+        {
+            board[i] = new Pair[list.get(i).size()];
+            for (int j = 0 ; j < list.get(i).size() ; j++)
+                board[i][j] = list.get(i).get(j);
+        }
+
+        for (int i = 0 ; i < list.size() ; i++)
+        {
+            for (int j = 0 ; j < list.get(i).size() ; j++)
+            {
+                assertEquals (board[i][j].getColor(),original[i][j].getColor());
+                assertEquals (board[i][j].getValue(),original[i][j].getValue());
+            }
+        }
+        assertEquals(recived,user);
     }
 }

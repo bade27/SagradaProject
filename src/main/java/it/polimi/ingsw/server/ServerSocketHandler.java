@@ -7,6 +7,7 @@ import it.polimi.ingsw.utilities.JSONFacilities;
 import it.polimi.ingsw.utilities.LogFile;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.*;
 import java.net.ServerSocket;
@@ -286,20 +287,17 @@ public class ServerSocketHandler implements ClientRemoteInterface
         return outSocket.checkError();
     }
 
-    public String doTurn()
-    {
-        return null;
-    }
+
     //</editor-fold>
 
+    //<editor-fold desc="Update clients">
     /**
      * Update client structure for all type
-     *
      * @param json json array to send
      * @param msg  msg to send
      * @return return value from client
      */
-    private String updateClient(JSONArray json, String msg) throws ClientOutOfReachException
+    private String updateClient(String json, String msg) throws ClientOutOfReachException
     {
         String response = "";
 
@@ -308,7 +306,7 @@ public class ServerSocketHandler implements ClientRemoteInterface
         {
             outSocket.write(msg);
             outSocket.flush();
-            StringBuilder windows = new StringBuilder(json.toString());
+            StringBuilder windows = new StringBuilder(json);
             windows.append("\n");
             outSocket.write(windows.toString());
             outSocket.flush();
@@ -330,13 +328,14 @@ public class ServerSocketHandler implements ClientRemoteInterface
         return response;
     }
 
+
     @Override
     public String updateGraphic(Pair[] dadiera) throws ClientOutOfReachException, RemoteException
     {
         try
         {
             JSONArray jsonArray = JSONFacilities.encodeArrayPair(dadiera);
-            return updateClient(jsonArray, "up_dadiera\n");
+            return updateClient(jsonArray.toString(), "up_dadiera\n");
         } catch (ClientOutOfReachException e)
         {
             throw new ClientOutOfReachException();
@@ -353,7 +352,7 @@ public class ServerSocketHandler implements ClientRemoteInterface
         try
         {
             JSONArray jsonArray = JSONFacilities.encodeMatrixPair(grid);
-            return updateClient(jsonArray, "up_window\n");
+            return updateClient(jsonArray.toString(), "up_window\n");
         } catch (ClientOutOfReachException e)
         {
             throw new ClientOutOfReachException();
@@ -367,22 +366,10 @@ public class ServerSocketHandler implements ClientRemoteInterface
     @Override
     public void updateOpponents(String user, Pair[][] grid) throws ClientOutOfReachException, RemoteException
     {
-
-    }
-
-    @Override
-    public String updateTokens(int n) throws ClientOutOfReachException, RemoteException
-    {
-        return "ok";
-    }
-
-    @Override
-    public String updateRoundTrace(ArrayList<Pair>[] dice) throws RemoteException,ClientOutOfReachException
-    {
         try
         {
-            JSONArray jsonArray = JSONFacilities.encodeListArrayPair(dice);
-            return updateClient(jsonArray, "up_trace\n");
+            JSONArray jsonArray = JSONFacilities.encodeMatrixPair(user,grid);
+            updateClient(jsonArray.toString(), "up_opponents\n");
         } catch (ClientOutOfReachException e)
         {
             throw new ClientOutOfReachException();
@@ -391,6 +378,47 @@ public class ServerSocketHandler implements ClientRemoteInterface
             LogFile.addLog("JSON can't encrypt client message", je.getStackTrace());
             throw new ClientOutOfReachException();
         }
+    }
+
+    @Override
+    public String updateTokens(int n) throws ClientOutOfReachException, RemoteException
+    {
+        try
+        {
+            JSONObject jsonObj = JSONFacilities.encodeInteger(n);
+            return updateClient(jsonObj.toString(), "up_tokens\n");
+        } catch (ClientOutOfReachException e)
+        {
+            throw new ClientOutOfReachException();
+        } catch (JSONException je)
+        {
+            LogFile.addLog("JSON can't encrypt client message", je.getStackTrace());
+            throw new ClientOutOfReachException();
+        }
+    }
+
+    @Override
+    public String updateRoundTrace(ArrayList<Pair>[] dice) throws RemoteException,ClientOutOfReachException
+    {
+        try
+        {
+            JSONArray jsonArray = JSONFacilities.encodeMatrixPair(dice);
+            return updateClient(jsonArray.toString(), "up_trace\n");
+        } catch (ClientOutOfReachException e)
+        {
+            throw new ClientOutOfReachException();
+        } catch (JSONException je)
+        {
+            LogFile.addLog("JSON can't encrypt client message", je.getStackTrace());
+            throw new ClientOutOfReachException();
+        }
+    }
+    //</editor-fold>
+
+    @Override
+    public String doTurn()
+    {
+        return null;
     }
 
     @Override

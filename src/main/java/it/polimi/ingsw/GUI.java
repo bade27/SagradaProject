@@ -21,4 +21,5 @@ public interface GUI {
     public void updateOpponents(Pair[][] pair, String user);
     public void updateTokens(int n);
     public void updateRoundTrace(ArrayList<Pair>[] trace);
+    public void login (String s);
 }

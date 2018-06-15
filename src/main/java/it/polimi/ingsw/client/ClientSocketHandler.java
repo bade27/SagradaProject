@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client;
 
+import com.sun.org.apache.bcel.internal.generic.JsrInstruction;
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.remoteInterface.*;
 import it.polimi.ingsw.utilities.JSONFacilities;
@@ -81,6 +82,14 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
                         String tra = inSocket.readLine();
                         task = executor.submit(() -> {updateRoundTrace(tra);});
                         continue;
+                    case "up_tokens":
+                        String tok = inSocket.readLine();
+                        task = executor.submit(() -> {updateTokens(tok);});
+                        continue;
+                    case "up_opponents":
+                        String opp = inSocket.readLine();
+                        task = executor.submit(() -> {updateOpponents(opp);});
+                        continue;
                     case "close":
                         stop = true;
                         break;
@@ -103,6 +112,20 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
             close(task);
         }
 
+    }
+
+    //<editor-fold desc="Setup Phase">
+    private Boolean login() {
+        try {
+            //Da modificare con finestra a popup con username
+            StringBuilder username = new StringBuilder(player.login());
+            username.append("\n");
+            outSocket.write(username.toString());
+            return outSocket.checkError();
+        } catch (ClientOutOfReachException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     private Boolean chooseWindow(String json)
@@ -130,7 +153,9 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
         }
         return false;
     }
+    //</editor-fold>
 
+    //<editor-fold desc="Update Client">
     private Boolean updateDadiera (String json)
     {
         try {
@@ -184,41 +209,42 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
         return false;
     }
 
-    private Boolean login() {
+    private Boolean updateTokens (String json)
+    {
         try {
-            //Da modificare con finestra a popup con username
-            StringBuilder username = new StringBuilder(player.login());
-            username.append("\n");
-            outSocket.write(username.toString());
+            int toks = JSONFacilities.decodeInteger(json);
+            player.updateTokens(toks);
+            outSocket.write("ok\n");
             return outSocket.checkError();
-        } catch (ClientOutOfReachException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
     }
 
-    private void close(Future<?> task) {
-        String msg = "";
+    private Boolean updateOpponents (String json)
+    {
         try {
-            msg = inSocket.readLine();
-            if(msg == null)
-                throw new NullPointerException();
-            task.cancel(true);
-            socket.close();
-            System.out.println("socket closed");
-        } catch(Exception e) {
-            //System.out.println("Exception: "+e);
-            //e.printStackTrace();
-            msg = "server ended communication";
-        } finally {
-            try {
-                socket.close();
-            } catch(IOException ex) {
-                System.err.println("Socket not closed");
+            String user = JSONFacilities.decodeStringInMatrixPair(json);
+            ArrayList<ArrayList<Pair>> list = JSONFacilities.decodeMatrixPairWithString(json);
+            Pair[][] board = new Pair[list.size()][];
+            for (int i = 0 ; i < list.size() ; i++)
+            {
+                board[i] = new Pair[list.get(i).size()];
+                for (int j = 0 ; j < list.get(i).size() ; j++)
+                    board[i][j] = list.get(i).get(j);
             }
-            player.closeCommunication(msg);
+            player.updateOpponents(user,board);
+            outSocket.write("ok\n");
+            return outSocket.checkError();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return false;
     }
+    //</editor-fold>
+
+
 
     //Sono obbligato ad implementarlo, per ora non ha uno scopo preciso
     public void setClient (ClientRemoteInterface client)
@@ -271,5 +297,30 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
         return null;
     }
 
+
+    //<editor-fold desc="Utilities">
+    private void close(Future<?> task) {
+        String msg = "";
+        try {
+            msg = inSocket.readLine();
+            if(msg == null)
+                throw new NullPointerException();
+            task.cancel(true);
+            socket.close();
+            System.out.println("socket closed");
+        } catch(Exception e) {
+            //System.out.println("Exception: "+e);
+            //e.printStackTrace();
+            msg = "server ended communication";
+        } finally {
+            try {
+                socket.close();
+            } catch(IOException ex) {
+                System.err.println("Socket not closed");
+            }
+            player.closeCommunication(msg);
+        }
+    }
+    //</editor-fold>
 
 }

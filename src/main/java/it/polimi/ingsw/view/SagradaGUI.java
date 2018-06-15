@@ -25,6 +25,7 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.awt.*;
 import java.rmi.RemoteException;
@@ -43,7 +44,7 @@ public class SagradaGUI extends Application implements GUI {
     private ToolsGUI tools;
     private RoundsGUI rounds;
     private TargetGUI target;
-
+    private Stage stage;
     private MessageBox msgb;
     private UseToolButton useTool;
 
@@ -84,8 +85,32 @@ public class SagradaGUI extends Application implements GUI {
 
     @Override
     public void start(Stage loginStage){
+        stage=loginStage;
+        VBox root= new VBox();
+        Label l=new Label("Welcome!");
+        l.setFont(Font.font("verdana",  FontWeight.BOLD, FontPosture.REGULAR,30));
+        Button b=new Button("start");
+        b.setPrefSize(100,50);
+        root.getChildren().add(l);
+        root.getChildren().add(b);
+        b.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                login("inserisci nome, indirizzo e connessione");
+            }
+        });
+        Scene scene=new Scene(root,500,450);
+        root.setAlignment(Pos.CENTER);
+        root.setSpacing(10);
+        stage.setTitle("Sagrada");
+        stage.setScene(scene);
+        stage.show();
+        stage.setResizable(false);
+    }
 
-        boolean log;
+    @Override
+    public void login(String s){
+
+        //Stage n = new Stage();
         //clientConnectionHandler =new ClientSocketHandler();
         VBox root=new VBox();
         GridPane login=new GridPane();
@@ -100,7 +125,7 @@ public class SagradaGUI extends Application implements GUI {
         GridPane ip=new GridPane();
 
         //RMI-Socket
-
+        GridPane c=new GridPane();
 
         //fascia dove inserirò il bottone invio
         Button st=new Button("INVIO");
@@ -127,14 +152,17 @@ public class SagradaGUI extends Application implements GUI {
         ObservableList<String> type = FXCollections.observableArrayList("RMI", "Socket");
         ComboBox connection=new ComboBox(type);
         connection.setPromptText("Scegliere tipo di connessione...");
-        login.add(connection,0,3);
+        c.add(connection,0,0);
+        c.add(new Label("(default RMI)"),0,1);
+        login.add(c,0,3);
 
-        login.setVgap(10);
-        name.setHgap(5);
-        ip.setHgap(5);
-        log=false;
+        login.setVgap(15);
+        name.setHgap(10);
+        ip.setHgap(10);
+        c.setHgap(5);
+        c.setVgap(5);
 
-        Text t=new Text();
+        Text t=new Text(s);
         t.setDisable(false);
         t.setFill(Color.INDIANRED);
         root.getChildren().add(t);
@@ -146,22 +174,19 @@ public class SagradaGUI extends Application implements GUI {
                 int typeOfConnection=-1;
                 if(connection.getValue()=="Socket")
                     typeOfConnection=0;
-                else if (connection.getValue()=="RMI")
+                else if (connection.getValue()=="RMI" || connection.getValue()==null)
                     typeOfConnection=1;
-                if(!(n.contentEquals("")) && isIPAddressValid(p) && (connection.getValue()!=null) && log==false) {
+                if(!(n.contentEquals("")) && isIPAddressValid(p) && isNameValid(n)) {
                     try {
-                        clientPlayer = new ClientPlayer(typeOfConnection,sagradaGUI, p);
+                        if (clientPlayer == null)
+                            clientPlayer = new ClientPlayer(typeOfConnection,sagradaGUI, p);
                         clientPlayer.setClientName(n);
-
                     } catch (RemoteException e) {
                         e.printStackTrace();
                         Thread.currentThread().interrupt();
                     }
-                    //String[] buffer = {n,p};
-                    //boolean b= clientConnectionHandler.setBuffer(buffer);
-                    //if(b==true)
-                        //log=true;
-                    game(loginStage);
+                    game(stage);
+                    //loading();
                     System.out.println(n);
                     System.out.println(p);
                 }else{
@@ -172,12 +197,141 @@ public class SagradaGUI extends Application implements GUI {
 
         login.setAlignment(Pos.CENTER);
         root.setAlignment(Pos.CENTER);
-        root.setSpacing(30);
+        root.setSpacing(35);
+        Scene scene=new Scene(root,500,450);
+        stage.setTitle("Sagrada");
+        stage.setScene(scene);
+        stage.show();
+        stage.setResizable(false);
+        stage.setOnCloseRequest(e -> {
+            Platform.exit();
+            System.exit(0);
+        });
+    }
+
+    public void updateLogin(){
+        VBox root=new VBox();
+        GridPane login=new GridPane();
+        root.getChildren().add(login);
+        //fascia del titolo
+        Label l=new Label("LOGIN");
+        l.setFont(Font.font("verdana",  FontWeight.BOLD, FontPosture.REGULAR,30));
+        //fascia dove inserirò il nome
+        GridPane name=new GridPane();
+
+        //fascia dove inseriro l'ip
+        GridPane ip=new GridPane();
+
+        //RMI-Socket
+        GridPane c=new GridPane();
+
+        //fascia dove inserirò il bottone invio
+        Button st=new Button("INVIO");
+        root.getChildren().add(st);
+        st.setAlignment(Pos.TOP_RIGHT);
+
+        //inserimento degli elementi nella scena
+        login.add(l,0,0);
+        login.add(name,0,1);
+        login.add(ip,0,2);
+
+        final TextField textname= new TextField();
+        name.add(textname,0,0);
+        Text txnome=new Text("Nome");
+        txnome.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
+        name.add(txnome,1,0);
+
+        final TextField textip= new TextField();
+        ip.add(textip,0,0);
+        Text txip=new Text("Indirizzo ip Server");
+        txip.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
+        ip.add(txip,1,0);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public void loading(){
+        GridPane root=new GridPane();
+        Label msg=new Label("Please, wait...");
+        msg.setFont(Font.font("verdana",  FontWeight.NORMAL,15));
+        ProgressIndicator pi=new ProgressIndicator();
+        root.add(msg,0,0);
+        root.add(pi,0,1);
+        Button b=new Button();
+        root.add(b,0,2);
+        b.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                updateMaps(new String[2],new String[2]);
+            }
+        });
+        root.setAlignment(Pos.CENTER);
+        root.setVgap(10);
         Scene scene=new Scene(root,500,500);
-        loginStage.setTitle("Sagrada");
-        loginStage.setScene(scene);
-        loginStage.show();
-        loginStage.setResizable(false);
+        stage.setScene(scene);
+        stage.show();
+        stage.setResizable(false);
+        stage.setOnCloseRequest(e -> {
+            Platform.exit();
+            System.exit(0);
+        });
+    }
+
+    public void updateMaps(String[] s1,String[] s2){
+        VBox root=new VBox();
+        Label title=new Label("Seleziona mappa da voler usare");
+        title.setFont(Font.font("verdana",  FontWeight.BOLD, FontPosture.REGULAR,25));
+        root.getChildren().add(title);
+        GridPane maps=new GridPane();
+        root.getChildren().add(maps);
+        Button map1f=new Button(""+s1[0]);
+        Button map1r=new Button(""+s1[1]);
+        Button map2f=new Button(""+s2[0]);
+        Button map2r=new Button(""+s2[1]);
+        maps.add(map1f,0,0);
+        maps.add(map1r,0,1);
+        maps.add(map2f,1,0);
+        maps.add(map2r,1,1);
+        map1f.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                game(stage);
+            }
+        });
+        map1r.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("map1r");
+                game(stage);
+            }
+        });
+        root.setAlignment(Pos.TOP_CENTER);
+        maps.setAlignment(Pos.CENTER);
+        maps.setHgap(20);
+        maps.setVgap(5);
+        maps.setPrefSize(100,500);
+        map1f.setPrefSize(450,200);
+        map1r.setPrefSize(450,200);
+        map2f.setPrefSize(450,200);
+        map2r.setPrefSize(450,200);
+        Scene scene=new Scene(root,700,500);
+
+        stage.setScene(scene);
+        stage.setResizable(false);
     }
 
     public void game(Stage primaryStage) {
@@ -286,6 +440,7 @@ public class SagradaGUI extends Application implements GUI {
 
     public void updateTokens(int n) {
         System.out.println("num of remaining tokens: " + n);
+        tokenG.updateTockens(n);
     }
 
     /**
@@ -437,8 +592,17 @@ public class SagradaGUI extends Application implements GUI {
             return false;
         }
     }
+    private boolean isNameValid(String name){
+        if(name.isEmpty())
+            return false;
+        /*if(nome esiste gia)
+            return false;*/
+        return true;
+    }
 
     public static void main(String[] args) {
         launch(args);
     }
+
+
 }

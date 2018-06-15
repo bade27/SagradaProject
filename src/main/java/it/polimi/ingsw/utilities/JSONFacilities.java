@@ -51,7 +51,13 @@ public class JSONFacilities {
         return move;
     }*/
 
-    //string arrays
+
+    //<editor-fold desc="JSON for cards">
+    /**
+     * Encode strings' array into JSON
+     * @param s String's array
+     * @return JSON
+     */
     public static JSONArray encodeStringArrays(String[]... s) throws JSONException {
         JSONArray msg = new JSONArray();
         for (int i = 0; i < s.length; i++) {
@@ -65,6 +71,11 @@ public class JSONFacilities {
         return msg;
     }
 
+    /**
+     * Decode JSON to ArrayList of strings's array
+     * @param message JSON
+     * @return ArrayList of strings's array
+     */
     public static ArrayList<String[]> decodeStringArrays(String message) throws JSONException
     {
         ArrayList<String[]> list = new ArrayList<>();
@@ -81,7 +92,14 @@ public class JSONFacilities {
         }
         return list;
     }
+    //</editor-fold>
 
+    //<editor-fold desc="JSON for Array of Pair">
+    /**
+     * Encode an array of Pair into JSON
+     * @param toEncode array of Pair
+     * @return JSON
+     */
     public static JSONArray encodeArrayPair (Pair[] toEncode) throws JSONException {
         JSONArray msg = new JSONArray();
         for (int i = 0; i < toEncode.length; i++)
@@ -97,6 +115,11 @@ public class JSONFacilities {
         return msg;
     }
 
+    /**
+     * Encode an arrayList of Pair into JSON
+     * @param toEncode arrayList of Pair
+     * @return JSON
+     */
     private static JSONArray encodeArrayPair (ArrayList<Pair> toEncode) throws JSONException {
         JSONArray msg = new JSONArray();
         for (int i = 0; i < toEncode.size(); i++)
@@ -112,12 +135,18 @@ public class JSONFacilities {
         return msg;
     }
 
+    /**
+     * Decode a JSON into an ArrayList of Pair
+     * @param message JSON
+     * @return ArrayList of Pair
+     */
     public static ArrayList<Pair> decodeArrayPair (String message) throws JSONException
     {
         JSONArray json = new JSONArray(message);
         return decodeArrayPair(json);
     }
 
+    //Used in upper function
     private static ArrayList<Pair> decodeArrayPair (JSONArray arr) throws JSONException
     {
         ArrayList<Pair> list = new ArrayList<>();
@@ -128,7 +157,31 @@ public class JSONFacilities {
         }
         return list;
     }
+    //</editor-fold>
 
+    //<editor-fold desc="JSON for matrix of pair">
+
+    /**
+     * Encode into Json a matrix of Pair and a string
+     * @param toEncode matrix of Pair
+     * @return json
+     */
+    public static JSONArray encodeMatrixPair (String str ,Pair[][] toEncode) throws JSONException {
+        JSONArray msg = new JSONArray();
+        msg.put(str);
+        for (int i = 0; i < toEncode.length; i++)
+        {
+            JSONArray arr = encodeArrayPair(toEncode[i]);
+            msg.put(arr);
+        }
+        return msg;
+    }
+
+    /**
+     * Encode into Json a matrix of Pair
+     * @param toEncode matrix of Pair
+     * @return json
+     */
     public static JSONArray encodeMatrixPair (Pair[][] toEncode) throws JSONException {
         JSONArray msg = new JSONArray();
         for (int i = 0; i < toEncode.length; i++)
@@ -139,6 +192,26 @@ public class JSONFacilities {
         return msg;
     }
 
+    /**
+     * Encode into Json a matrix of Pair
+     * @param toEncode matrix of Pair
+     * @return json
+     */
+    public static JSONArray encodeMatrixPair (ArrayList<Pair>[] toEncode) throws JSONException {
+        JSONArray msg = new JSONArray();
+        for (int i = 0; i < toEncode.length; i++)
+        {
+            JSONArray arr = encodeArrayPair(toEncode[i]);
+            msg.put(arr);
+        }
+        return msg;
+    }
+
+    /**
+     * Decode from json a matrix of Pair
+     * @param message json
+     * @return matrix of pair
+     */
     public static ArrayList<ArrayList<Pair>> decodeMatrixPair (String message) throws JSONException
     {
         ArrayList<ArrayList<Pair>> list = new ArrayList<>();
@@ -151,15 +224,45 @@ public class JSONFacilities {
         return list;
     }
 
-    public static JSONArray encodeListArrayPair (ArrayList<Pair>[] toEncode) throws JSONException {
-        JSONArray msg = new JSONArray();
-        for (int i = 0; i < toEncode.length; i++)
+    /**
+     * Decode from json a matrix of Pair with a string in first position
+     * @param message json
+     * @return matrix of pair
+     */
+    public static ArrayList<ArrayList<Pair>> decodeMatrixPairWithString (String message) throws JSONException
+    {
+        ArrayList<ArrayList<Pair>> list = new ArrayList<>();
+        JSONArray matrix = new JSONArray(message);
+        for (int i = 1; i < matrix.length(); i++)
         {
-            JSONArray arr = encodeArrayPair(toEncode[i]);
-            msg.put(arr);
+            JSONArray row = (JSONArray)matrix.get(i);
+            list.add(decodeArrayPair(row));
         }
-        return msg;
+        return list;
     }
+
+    public static String decodeStringInMatrixPair (String message) throws JSONException
+    {
+        JSONArray matrix = new JSONArray(message);
+        return matrix.get(0).toString();
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="JSON for Integer">
+    public static JSONObject encodeInteger (Integer num)
+    {
+        JSONObject json = new JSONObject();
+        json.put("number",num);
+        return json;
+    }
+
+    public static int decodeInteger (String message)
+    {
+        JSONObject json = new JSONObject(message);
+        return (Integer)json.get("number");
+    }
+    //</editor-fold>
 
 
 }
