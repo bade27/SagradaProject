@@ -122,7 +122,32 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
      */
     public String login() throws ClientOutOfReachException
     {
-        return clientName;
+        if (clientName == null)
+        {
+            try {
+                graph.login("nome già esistente");
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+
+            try {
+                synchronized (sync)
+                {
+                    while (clientName == null)
+                        sync.wait();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
+        String ret = clientName;
+        clientName = null;
+        return ret;
     }
 
     /**

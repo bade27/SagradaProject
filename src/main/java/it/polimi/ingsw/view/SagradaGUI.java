@@ -45,9 +45,9 @@ public class SagradaGUI extends Application implements GUI {
     private RoundsGUI rounds;
     private TargetGUI target;
     private Stage stage;
+    private Scene scene;
     private MessageBox msgb;
     private UseToolButton useTool;
-
     private int num=4;
     private ClientPlayer clientPlayer;
     private boolean enableBoard;
@@ -84,23 +84,27 @@ public class SagradaGUI extends Application implements GUI {
 
 
     @Override
-    public void start(Stage loginStage){
-        stage=loginStage;
-        VBox root= new VBox();
+    public void start(Stage welcomeStage){
+        stage=welcomeStage;
+        VBox welcomeRoot= new VBox();
         Label l=new Label("Welcome!");
         l.setFont(Font.font("verdana",  FontWeight.BOLD, FontPosture.REGULAR,30));
         Button b=new Button("start");
         b.setPrefSize(100,50);
-        root.getChildren().add(l);
-        root.getChildren().add(b);
+        welcomeRoot.getChildren().add(l);
+        welcomeRoot.getChildren().add(b);
         b.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-                login("inserisci nome, indirizzo e connessione");
-            }
-        });
-        Scene scene=new Scene(root,500,450);
-        root.setAlignment(Pos.CENTER);
-        root.setSpacing(10);
+                try {
+                    login("inserisci nome, indirizzo e connessione");                                       ///////////
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            } });
+
+        scene=new Scene(welcomeRoot,500,450);
+        welcomeRoot.setAlignment(Pos.CENTER);
+        welcomeRoot.setSpacing(10);
         stage.setTitle("Sagrada");
         stage.setScene(scene);
         stage.show();
@@ -109,12 +113,10 @@ public class SagradaGUI extends Application implements GUI {
 
     @Override
     public void login(String s){
-
-        //Stage n = new Stage();
         //clientConnectionHandler =new ClientSocketHandler();
-        VBox root=new VBox();
+        VBox loginRoot=new VBox();
         GridPane login=new GridPane();
-        root.getChildren().add(login);
+        loginRoot.getChildren().add(login);
         //fascia del titolo
         Label l=new Label("LOGIN");
         l.setFont(Font.font("verdana",  FontWeight.BOLD, FontPosture.REGULAR,30));
@@ -129,7 +131,7 @@ public class SagradaGUI extends Application implements GUI {
 
         //fascia dove inserirò il bottone invio
         Button st=new Button("INVIO");
-        root.getChildren().add(st);
+        loginRoot.getChildren().add(st);
         st.setAlignment(Pos.TOP_RIGHT);
 
         //inserimento degli elementi nella scena
@@ -165,10 +167,11 @@ public class SagradaGUI extends Application implements GUI {
         Text t=new Text(s);
         t.setDisable(false);
         t.setFill(Color.INDIANRED);
-        root.getChildren().add(t);
+        loginRoot.getChildren().add(t);
         SagradaGUI sagradaGUI=this;
         st.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
+                t.setText("");
                 String n=textname.getText();
                 String p=textip.getText();
                 int typeOfConnection=-1;
@@ -181,14 +184,17 @@ public class SagradaGUI extends Application implements GUI {
                         if (clientPlayer == null)
                             clientPlayer = new ClientPlayer(typeOfConnection,sagradaGUI, p);
                         clientPlayer.setClientName(n);
+                        //ProgressIndicator pi=new ProgressIndicator();
+                        //root.getChildren().set(2,pi);
                     } catch (RemoteException e) {
                         e.printStackTrace();
                         Thread.currentThread().interrupt();
                     }
-                    game(stage);
-                    //loading();
-                    System.out.println(n);
-                    System.out.println(p);
+                    try {
+                        game();                                                                                //////////
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                 }else{
                     t.setText("valori in input non validi!");
                 }
@@ -196,24 +202,97 @@ public class SagradaGUI extends Application implements GUI {
         });
 
         login.setAlignment(Pos.CENTER);
-        root.setAlignment(Pos.CENTER);
-        root.setSpacing(35);
-        Scene scene=new Scene(root,500,450);
+        loginRoot.setAlignment(Pos.CENTER);
+        loginRoot.setSpacing(35);
+        //scene=new Scene(root,500,450);
         stage.setTitle("Sagrada");
-        stage.setScene(scene);
-        stage.show();
+        stage.getScene().getWindow().setWidth(500);
+        stage.getScene().getWindow().setHeight(450);
+        stage.getScene().setRoot(loginRoot);
+        //stage.show();
         stage.setResizable(false);
         stage.setOnCloseRequest(e -> {
             Platform.exit();
             System.exit(0);
         });
     }
-    
 
-    public void game(Stage primaryStage) {
+    @Override
+    public void loading(){
+        GridPane loadingRoot=new GridPane();
+        Label msg=new Label("Please, wait...");
+        msg.setFont(Font.font("verdana",  FontWeight.NORMAL,15));
+        ProgressIndicator pi=new ProgressIndicator();
+        loadingRoot.add(msg,0,0);
+        loadingRoot.add(pi,0,1);
+        /*Button b=new Button();
+        root.add(b,0,2);
+        b.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                maps(new String[2],new String[2]);
+            }
+        });*/
+        loadingRoot.setAlignment(Pos.CENTER);
+        loadingRoot.setVgap(10);
+        //scene=new Scene(root,500,500);
+        //stage.show();
+        stage.getScene().setRoot(loadingRoot);
+        stage.setResizable(false);
+        stage.setOnCloseRequest(e -> {
+            Platform.exit();
+            System.exit(0);
+        });
+    }
+
+    @Override
+    public void maps(String[] s1,String[] s2){
+        VBox mapsRoot=new VBox();
+        Label title=new Label("Seleziona mappa da voler usare");
+        title.setFont(Font.font("verdana",  FontWeight.BOLD, FontPosture.REGULAR,25));
+        mapsRoot.getChildren().add(title);
+        GridPane maps=new GridPane();
+        mapsRoot.getChildren().add(maps);
+        Button map1f=new Button(""+s1[0]);
+        Button map1r=new Button(""+s1[1]);
+        Button map2f=new Button(""+s2[0]);
+        Button map2r=new Button(""+s2[1]);
+        maps.add(map1f,0,0);
+        maps.add(map1r,0,1);
+        maps.add(map2f,1,0);
+        maps.add(map2r,1,1);
+        map1f.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                game();                                                                                         ////////
+            }
+        });
+        map1r.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                game();                                                                                         ////////
+            }
+        });
+        mapsRoot.setAlignment(Pos.TOP_CENTER);
+        maps.setAlignment(Pos.CENTER);
+        maps.setHgap(20);
+        maps.setVgap(5);
+        maps.setPrefSize(100,500);
+        map1f.setPrefSize(450,200);
+        map1r.setPrefSize(450,200);
+        map2f.setPrefSize(450,200);
+        map2r.setPrefSize(450,200);
+
+        //scene=new Scene(root,700,500);
+        stage.getScene().setRoot(mapsRoot);
+        //stage.show();
+        stage.setResizable(false);
+    }
+    @Override
+    public void game() {
 
         //root
-        BorderPane root = new BorderPane();
+        BorderPane gameRoot = new BorderPane();
 
         //initialization of the main space
         //it's the main space, it contains everything except for the end turn button and the status message
@@ -254,15 +333,14 @@ public class SagradaGUI extends Application implements GUI {
         bottom.setCenter(useTool);
 
         //putting it all together
-        root.setCenter(mainContent);
-        root.setBottom(bottom);
+        gameRoot.setCenter(mainContent);
+        gameRoot.setBottom(bottom);
 
-        Scene scene=new Scene(root,800,500);
-        primaryStage.setTitle("Sagrada");
-        primaryStage.setScene(scene);
-        primaryStage.show();
-        primaryStage.setResizable(false);
-        primaryStage.setOnCloseRequest(e -> {
+        stage.getScene().setRoot(gameRoot);
+        stage.getScene().getWindow().setWidth(800);
+        stage.getScene().getWindow().setHeight(500);
+        stage.setResizable(false);
+        stage.setOnCloseRequest(e -> {
             Platform.exit();
             System.exit(0);
         });
