@@ -208,7 +208,7 @@ public class SagradaGUI extends Application implements GUI {
             System.exit(0);
         });
     }
-    
+
 
     public void game(Stage primaryStage) {
 

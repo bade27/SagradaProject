@@ -311,7 +311,7 @@ public class ServerModelAdapter
 
     //</editor-fold>
 
-
+    //<editor-fold desc="Timer Class">
     private class TimerTurn implements Runnable {
 
         private int period;
@@ -358,6 +358,7 @@ public class ServerModelAdapter
             return actualTime;
         }
     }
+    //</editor-fold>
 
 
 }

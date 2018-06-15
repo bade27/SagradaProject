@@ -291,8 +291,10 @@ public class ServerSocketHandler implements ClientRemoteInterface
     //</editor-fold>
 
     //<editor-fold desc="Update clients">
+
     /**
      * Update client structure for all type
+     *
      * @param json json array to send
      * @param msg  msg to send
      * @return return value from client
@@ -368,7 +370,7 @@ public class ServerSocketHandler implements ClientRemoteInterface
     {
         try
         {
-            JSONArray jsonArray = JSONFacilities.encodeMatrixPair(user,grid);
+            JSONArray jsonArray = JSONFacilities.encodeMatrixPair(user, grid);
             updateClient(jsonArray.toString(), "up_opponents\n");
         } catch (ClientOutOfReachException e)
         {
@@ -398,7 +400,7 @@ public class ServerSocketHandler implements ClientRemoteInterface
     }
 
     @Override
-    public String updateRoundTrace(ArrayList<Pair>[] dice) throws RemoteException,ClientOutOfReachException
+    public String updateRoundTrace(ArrayList<Pair>[] dice) throws RemoteException, ClientOutOfReachException
     {
         try
         {
@@ -415,16 +417,53 @@ public class ServerSocketHandler implements ClientRemoteInterface
     }
     //</editor-fold>
 
+    //<editor-fold desc="Turn Phase">
+    /**
+     * Send message to notify client about his turn
+     */
     @Override
-    public String doTurn()
+    public String doTurn() throws ClientOutOfReachException
     {
-        return null;
+        String response = "";
+        boolean reachable = ping();
+        if (reachable)
+        {
+            outSocket.write("doTurn\n");
+            outSocket.flush();
+            try
+            {
+                response = inSocket.readLine();
+                isAlive = true;
+            } catch (IOException ste)
+            {
+                isAlive = false;
+            }
+        } else
+            isAlive = false;
+
+        if (!isAlive)
+            throw new ClientOutOfReachException();
+
+        return response;
     }
+    //</editor-fold>
 
+    //<editor-fold desc="End Game Phase">
     @Override
-    public void sendResults(String[] user, int[] point) throws RemoteException
+    public void sendResults(String[] user, int[] point) throws RemoteException,ClientOutOfReachException
     {
-
+        try
+        {
+            JSONArray jsonArray = JSONFacilities.encodeStringInteger(user,point);
+            updateClient(jsonArray.toString(), "up_results\n");
+        } catch (ClientOutOfReachException e)
+        {
+            throw new ClientOutOfReachException();
+        } catch (JSONException je)
+        {
+            LogFile.addLog("JSON can't encrypt client message", je.getStackTrace());
+            throw new ClientOutOfReachException();
+        }
     }
 
     /*
@@ -449,8 +488,7 @@ public class ServerSocketHandler implements ClientRemoteInterface
             e.printStackTrace();
         }
     }*/
-
-
+    //</editor-fold>
 
 
 }
