@@ -191,7 +191,7 @@ public class SagradaGUI extends Application implements GUI {
                         Thread.currentThread().interrupt();
                     }
                     try {
-                        game();                                                                                //////////
+                        //game();                                                                                //////////
                     }catch (Exception e){
                         e.printStackTrace();
                     }

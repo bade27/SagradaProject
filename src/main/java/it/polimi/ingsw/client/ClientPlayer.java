@@ -157,6 +157,9 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     public void setClientName(String clientName)
     {
         this.clientName = clientName;
+        synchronized (sync) {
+            sync.notifyAll();
+        }
     }
 
     /**
