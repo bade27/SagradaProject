@@ -90,6 +90,13 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
                         String opp = inSocket.readLine();
                         task = executor.submit(() -> {updateOpponents(opp);});
                         continue;
+                    case "up_results":
+                        String res = inSocket.readLine();
+                        task = executor.submit(() -> {getResults(res);});
+                        continue;
+                    case "doTurn":
+                        task = executor.submit(() -> {player.doTurn();});
+                        continue;
                     case "close":
                         stop = true;
                         break;
@@ -244,6 +251,25 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
     }
     //</editor-fold>
 
+    private Boolean getResults (String json)
+    {
+        try {
+            String[][] recived = JSONFacilities.decodeStringInteger(json);
+            String[] user = new String[recived.length];
+            int[] point = new int[recived.length];
+            for (int i = 0 ; i < recived.length ; i++)
+            {
+                user[i] =  recived[i][0];
+                point[i] = Integer.parseInt(recived[i][1]);
+            }
+            player.sendResults(user,point);
+            outSocket.write("ok\n");
+            return outSocket.checkError();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 
     //Sono obbligato ad implementarlo, per ora non ha uno scopo preciso

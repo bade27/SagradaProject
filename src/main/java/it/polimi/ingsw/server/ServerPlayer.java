@@ -275,7 +275,6 @@ public class ServerPlayer implements Runnable
     }
     //</editor-fold>
 
-
     //<editor-fold desc="End Game Phase">
     public void endGameCommunication (String [] users, int [] points)
     {
@@ -293,7 +292,6 @@ public class ServerPlayer implements Runnable
         return adapter.calculatePoints();
     }
     //</editor-fold>
-
 
     //<editor-fold desc="Update Client's information">
     /**

@@ -126,4 +126,23 @@ class JSONFacilitiesTest
         }
         assertEquals(recived,user);
     }
+
+    @Test
+    void encodeAndDecodeStringInteger ()
+    {
+        String[] originalUser = new String[] {"KIMOSABE","LONE RANGER", "THE BEARD"};
+        int[] originalPoints = new int[] {15,4,87};
+
+        JSONArray arr = JSONFacilities.encodeStringInteger(originalUser,originalPoints);
+        StringBuilder result = new StringBuilder(arr.toString());
+        result.append("\n");
+
+        String[][] recived = JSONFacilities.decodeStringInteger(result.toString());
+
+        for (int i = 0 ; i < recived.length ; i++)
+        {
+            assertEquals(originalUser[i], recived[i][0]);
+            assertEquals(originalPoints[i], Integer.parseInt(recived[i][1]));
+        }
+    }
 }

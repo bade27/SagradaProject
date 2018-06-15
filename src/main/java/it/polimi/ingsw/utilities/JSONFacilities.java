@@ -94,7 +94,7 @@ public class JSONFacilities {
     }
     //</editor-fold>
 
-    //<editor-fold desc="JSON for Array of Pair">
+    //<editor-fold desc="JSON for Dadiera">
     /**
      * Encode an array of Pair into JSON
      * @param toEncode array of Pair
@@ -159,7 +159,7 @@ public class JSONFacilities {
     }
     //</editor-fold>
 
-    //<editor-fold desc="JSON for matrix of pair">
+    //<editor-fold desc="JSON for Window and RoundTrace">
 
     /**
      * Encode into Json a matrix of Pair and a string
@@ -249,7 +249,7 @@ public class JSONFacilities {
 
     //</editor-fold>
 
-    //<editor-fold desc="JSON for Integer">
+    //<editor-fold desc="JSON for Tokens">
     public static JSONObject encodeInteger (Integer num)
     {
         JSONObject json = new JSONObject();
@@ -265,4 +265,30 @@ public class JSONFacilities {
     //</editor-fold>
 
 
+    public static JSONArray encodeStringInteger (String[] user, int[] point)
+    {
+        JSONArray msg = new JSONArray();
+        for (int i = 0; i < user.length; i++)
+        {
+            JSONObject item = new JSONObject();
+            item.put("user",user[i]);
+            item.put("points",point[i]);
+            msg.put(item);
+        }
+        return msg;
+    }
+
+    public static String[][] decodeStringInteger (String message)
+    {
+        JSONArray msg = new JSONArray(message);
+        String [][] ret = new String[msg.length()][];
+        for (int i = 0; i < msg.length() ; i++)
+        {
+            JSONObject obj = (JSONObject) msg.get(i);
+            ret[i] = new String [2];
+            ret[i][0]=(String)obj.get("user");
+            ret[i][1]=((Integer)obj.get("points")).toString();
+        }
+        return ret;
+    }
 }

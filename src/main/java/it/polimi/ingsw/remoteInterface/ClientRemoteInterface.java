@@ -29,6 +29,6 @@ public interface ClientRemoteInterface extends Remote
     public String updateRoundTrace(ArrayList<Pair>[] dice) throws RemoteException,ClientOutOfReachException;
 
     //End Game
-    public void sendResults (String[] u,int [] p) throws RemoteException;
+    public void sendResults (String[] u,int [] p) throws RemoteException,ClientOutOfReachException;
 
 }
