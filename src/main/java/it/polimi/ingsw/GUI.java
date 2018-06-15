@@ -16,10 +16,12 @@ public interface GUI {
     public void toolPermission(int i);
     public void setToolPhase(boolean toolPhase);
     public void makeToolMove();
-
+    public void game();
+    public void loading();
+    public void login(String s);
+    public void maps(String[] s1,String[]s2);
     public void updateTools(String[] toolNames);
     public void updateOpponents(Pair[][] pair, String user);
     public void updateTokens(int n);
     public void updateRoundTrace(ArrayList<Pair>[] trace);
-    public void login (String s);
 }
