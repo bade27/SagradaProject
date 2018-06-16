@@ -306,6 +306,7 @@ public class ServerPlayer implements Runnable
                 throw new ClientOutOfReachException();
         }
         catch (Exception e) {
+            System.out.println("aa");
             LogFile.addLog("(" + user + ") Move timeout expired");
             throw new ClientOutOfReachException();
         }

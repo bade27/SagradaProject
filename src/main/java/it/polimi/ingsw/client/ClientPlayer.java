@@ -187,6 +187,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     public String chooseWindow(String[] s1, String[] s2)  throws ClientOutOfReachException
     {
         //Ora qui ci deve essere la scelta dell'utente della carta
+        graph.game();
         System.out.println("Window selected:" + s1[0]);
         return s1[0];
     }

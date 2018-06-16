@@ -14,8 +14,11 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
-public class ServerSocketHandler implements ClientRemoteInterface
+public class ServerSocketHandler implements ClientRemoteInterface,Runnable
 {
     private ServerModelAdapter adapter;
 
@@ -28,11 +31,42 @@ public class ServerSocketHandler implements ClientRemoteInterface
     private boolean isAlive = true;
     private boolean isConnected;
 
+    private Thread deamon;
 
     public ServerSocketHandler(int port)
     {
         PORT = port;
         isConnected = false;
+
+    }
+
+    @Override
+    public void run()
+    {
+        boolean stop = false;
+        String action = "";
+        try
+        {
+            while ((action = inSocket.readLine()) != "close" && action != null)
+            {
+                switch (action)
+                {
+                    case "move":
+                        System.out.println("mossssa?");
+                        continue;
+
+                    case "content":
+                        continue;
+                    default:
+                        //System.out.println(action);
+                        continue;
+                }
+            }
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
     }
 
     //<editor-fold desc="Connection Phase">
@@ -443,6 +477,11 @@ public class ServerSocketHandler implements ClientRemoteInterface
 
         if (!isAlive)
             throw new ClientOutOfReachException();
+
+        //Test
+        deamon = new Thread(this);
+        deamon.start();
+        //Test
 
         return response;
     }

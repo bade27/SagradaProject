@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client;
 
 import com.sun.org.apache.bcel.internal.generic.JsrInstruction;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.remoteInterface.*;
 import it.polimi.ingsw.utilities.JSONFacilities;
@@ -14,7 +15,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
+public class ClientSocketHandler implements Runnable, ServerRemoteInterface
+{
 
     private String HOSTNAME;
     private int PORT;
@@ -27,18 +29,21 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
 
     private ClientPlayer player;
 
-    public ClientSocketHandler(ClientPlayer cli, String host, int port) throws ClientOutOfReachException {
+    public ClientSocketHandler(ClientPlayer cli, String host, int port) throws ClientOutOfReachException
+    {
         player = cli;
         HOSTNAME = host;
         PORT = port;
         socket = null;
-        try {
+        try
+        {
             System.out.println("Socket connection to host " + HOSTNAME + " port " + PORT + "...");
             socket = new Socket(HOSTNAME, PORT);
             inSocket = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             outSocket = new PrintWriter(new BufferedWriter(
                     new OutputStreamWriter(socket.getOutputStream())), true);
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
             throw new ClientOutOfReachException();
         }
@@ -47,14 +52,18 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
     }
 
     @Override
-    public void run() {
+    public void run()
+    {
         ExecutorService executor = Executors.newCachedThreadPool();
         Future<?> task = null;
         String action = "";
         boolean stop = false;
-        try {
-            while( (action = inSocket.readLine()) != "close" && action != null)  {
-                switch (action) {
+        try
+        {
+            while ((action = inSocket.readLine()) != "close" && action != null)
+            {
+                switch (action)
+                {
                     case "ping":
                         outSocket.write("pong\n");
                         outSocket.flush();
@@ -64,7 +73,8 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
                         continue;
                     case "cards":
                         String objs = inSocket.readLine();
-                        task = executor.submit(() -> {receiveCards(objs);});
+                        task = executor.submit(() ->
+                        {receiveCards(objs);});
                         continue;
                     case "windowinit":
                         String json = inSocket.readLine();
@@ -76,7 +86,8 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
                         continue;
                     case "up_window":
                         String win = inSocket.readLine();
-                        task = executor.submit(() -> {updateWindow(win);});
+                        task = executor.submit(() ->
+                        {updateWindow(win);});
                         continue;
                     case "up_trace":
                         String tra = inSocket.readLine();
@@ -95,7 +106,7 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
                         task = executor.submit(() -> {getResults(res);});
                         continue;
                     case "doTurn":
-                        task = executor.submit(() -> {player.doTurn();});
+                        task = executor.submit(() -> {doTurn();});
                         continue;
                     case "close":
                         stop = true;
@@ -110,11 +121,12 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
                         //System.out.println(action);
                         continue;
                 }
-                if(stop)
+                if (stop)
                     break;
             }
             close(task);
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             //e.printStackTrace();
             close(task);
         }
@@ -122,14 +134,17 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
     }
 
     //<editor-fold desc="Setup Phase">
-    private Boolean login() {
-        try {
+    private Boolean login()
+    {
+        try
+        {
             //Da modificare con finestra a popup con username
             StringBuilder username = new StringBuilder(player.login());
             username.append("\n");
             outSocket.write(username.toString());
             return outSocket.checkError();
-        } catch (ClientOutOfReachException e) {
+        } catch (ClientOutOfReachException e)
+        {
             e.printStackTrace();
         }
         return false;
@@ -137,12 +152,14 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
 
     private Boolean chooseWindow(String json)
     {
-        try {
+        try
+        {
             StringBuilder choice = new StringBuilder(player.chooseWindow(JSONFacilities.decodeStringArrays(json)));
             choice.append("\n");
             outSocket.write(choice.toString());
             return outSocket.checkError();
-        } catch (JSONException e) {
+        } catch (JSONException e)
+        {
             e.printStackTrace();
         }
         return false;
@@ -150,12 +167,14 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
 
     private Boolean receiveCards(String json)
     {
-        try {
+        try
+        {
             ArrayList<String[]> arr = JSONFacilities.decodeStringArrays(json);
-            player.sendCards(arr.get(0),arr.get(1),arr.get(2));
+            player.sendCards(arr.get(0), arr.get(1), arr.get(2));
             outSocket.write("ok\n");
             return outSocket.checkError();
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
         }
         return false;
@@ -163,189 +182,232 @@ public class ClientSocketHandler implements Runnable,ServerRemoteInterface {
     //</editor-fold>
 
     //<editor-fold desc="Update Client">
-    private Boolean updateDadiera (String json)
+    private Boolean updateDadiera(String json)
     {
-        try {
+        try
+        {
             ArrayList<Pair> arr = JSONFacilities.decodeArrayPair(json);
             Pair[] dices = new Pair[arr.size()];
-            for (int i = 0 ; i < arr.size() ; i++)
+            for (int i = 0; i < arr.size(); i++)
                 dices[i] = arr.get(i);
             player.updateGraphic(dices);
             outSocket.write("ok\n");
             return outSocket.checkError();
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
         }
         return false;
     }
 
-    private Boolean updateWindow (String json)
+    private Boolean updateWindow(String json)
     {
-        try {
+        try
+        {
             ArrayList<ArrayList<Pair>> list = JSONFacilities.decodeMatrixPair(json);
             Pair[][] board = new Pair[list.size()][];
-            for (int i = 0 ; i < list.size() ; i++)
+            for (int i = 0; i < list.size(); i++)
             {
                 board[i] = new Pair[list.get(i).size()];
-                for (int j = 0 ; j < list.get(i).size() ; j++)
+                for (int j = 0; j < list.get(i).size(); j++)
                     board[i][j] = list.get(i).get(j);
             }
             player.updateGraphic(board);
             outSocket.write("ok\n");
             return outSocket.checkError();
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
         }
         return false;
     }
 
-    private Boolean updateRoundTrace (String json)
+    private Boolean updateRoundTrace(String json)
     {
-        try {
+        try
+        {
             ArrayList<ArrayList<Pair>> list = JSONFacilities.decodeMatrixPair(json);
             ArrayList<Pair>[] round = new ArrayList[list.size()];
-            for (int i = 0 ; i < list.size() ; i++)
+            for (int i = 0; i < list.size(); i++)
                 round[i] = list.get(i);
 
             player.updateRoundTrace(round);
             outSocket.write("ok\n");
             return outSocket.checkError();
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
         }
         return false;
     }
 
-    private Boolean updateTokens (String json)
+    private Boolean updateTokens(String json)
     {
-        try {
+        try
+        {
             int toks = JSONFacilities.decodeInteger(json);
             player.updateTokens(toks);
             outSocket.write("ok\n");
             return outSocket.checkError();
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
         }
         return false;
     }
 
-    private Boolean updateOpponents (String json)
+    private Boolean updateOpponents(String json)
     {
-        try {
+        try
+        {
             String user = JSONFacilities.decodeStringInMatrixPair(json);
             ArrayList<ArrayList<Pair>> list = JSONFacilities.decodeMatrixPairWithString(json);
             Pair[][] board = new Pair[list.size()][];
-            for (int i = 0 ; i < list.size() ; i++)
+            for (int i = 0; i < list.size(); i++)
             {
                 board[i] = new Pair[list.get(i).size()];
-                for (int j = 0 ; j < list.get(i).size() ; j++)
+                for (int j = 0; j < list.get(i).size(); j++)
                     board[i][j] = list.get(i).get(j);
             }
-            player.updateOpponents(user,board);
+            player.updateOpponents(user, board);
             outSocket.write("ok\n");
             return outSocket.checkError();
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
         }
         return false;
     }
     //</editor-fold>
 
-    private Boolean getResults (String json)
+    private Boolean doTurn()
     {
-        try {
+        //Da modificare con finestra a popup con username
+        player.doTurn();
+        outSocket.write("ok\n");
+        return outSocket.checkError();
+    }
+
+    @Override
+    public String makeMove(Coordinates coord, Pair pair) throws RemoteException
+    {
+        try
+        {
+            outSocket.write("move\n");
+            outSocket.flush();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return "ok";
+    }
+
+
+    @Override
+    public String passTurn() throws RemoteException
+    {
+        return null;
+    }
+
+    @Override
+    public String askToolPermission(int nrTool) throws RemoteException
+    {
+        return null;
+    }
+
+    @Override
+    public String useTool(Pair p, String ins) throws RemoteException
+    {
+        return null;
+    }
+
+    @Override
+    public String useTool(Coordinates sartCoord, Coordinates endCoord) throws RemoteException
+    {
+        return null;
+    }
+
+    @Override
+    public String useTool(Pair p, Coordinates sartCoord1, Coordinates endCoord1, Coordinates sartCoord2, Coordinates endCoord2) throws RemoteException
+    {
+        return null;
+    }
+
+    @Override
+    public String useTool(Pair dadiera, Pair trace, int nrRound) throws RemoteException
+    {
+        return null;
+    }
+
+    @Override
+    public String useTool() throws RemoteException
+    {
+        return null;
+    }
+
+    @Override
+    public String useTool(Pair p, Coordinates endCoord) throws RemoteException
+    {
+        return null;
+    }
+
+    //<editor-fold desc="End Game Phase">
+    private Boolean getResults(String json)
+    {
+        try
+        {
             String[][] recived = JSONFacilities.decodeStringInteger(json);
             String[] user = new String[recived.length];
             int[] point = new int[recived.length];
-            for (int i = 0 ; i < recived.length ; i++)
+            for (int i = 0; i < recived.length; i++)
             {
-                user[i] =  recived[i][0];
+                user[i] = recived[i][0];
                 point[i] = Integer.parseInt(recived[i][1]);
             }
-            player.sendResults(user,point);
+            player.sendResults(user, point);
             outSocket.write("ok\n");
             return outSocket.checkError();
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             e.printStackTrace();
         }
         return false;
     }
-
-
-    //Sono obbligato ad implementarlo, per ora non ha uno scopo preciso
-    public void setClient (ClientRemoteInterface client)
-    {
-    }
-
-    @Override
-    public String makeMove(Coordinates coord, Pair pair) throws RemoteException {
-        return null;
-    }
-
-
-    @Override
-    public String passTurn() throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public String askToolPermission(int nrTool) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public String useTool(Pair p, String ins) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public String useTool( Coordinates sartCoord, Coordinates endCoord) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public String useTool(Pair p, Coordinates sartCoord1, Coordinates endCoord1, Coordinates sartCoord2, Coordinates endCoord2) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public String useTool(Pair dadiera, Pair trace, int nrRound) throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public String useTool() throws RemoteException {
-        return null;
-    }
-
-    @Override
-    public String useTool(Pair p, Coordinates endCoord) throws RemoteException {
-        return null;
-    }
-
+    //</editor-fold>
 
     //<editor-fold desc="Utilities">
-    private void close(Future<?> task) {
+    private void close(Future<?> task)
+    {
         String msg = "";
-        try {
+        try
+        {
             msg = inSocket.readLine();
-            if(msg == null)
+            if (msg == null)
                 throw new NullPointerException();
             task.cancel(true);
             socket.close();
             System.out.println("socket closed");
-        } catch(Exception e) {
+        } catch (Exception e)
+        {
             //System.out.println("Exception: "+e);
             //e.printStackTrace();
             msg = "server ended communication";
-        } finally {
-            try {
+        } finally
+        {
+            try
+            {
                 socket.close();
-            } catch(IOException ex) {
+            } catch (IOException ex)
+            {
                 System.err.println("Socket not closed");
             }
             player.closeCommunication(msg);
         }
+    }
+
+    //Sono obbligato ad implementarlo, per ora non ha uno scopo preciso
+    public void setClient(ClientRemoteInterface client)
+    {
     }
     //</editor-fold>
 
