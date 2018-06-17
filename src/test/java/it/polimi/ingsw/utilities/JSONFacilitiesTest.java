@@ -98,8 +98,7 @@ class JSONFacilitiesTest
     }
 
     @Test
-    void encodeANdDecodeMatrixPairWithString ()
-    {
+    void encodeANdDecodeMatrixPairWithString () throws JSONException {
         String user = "KIMOSABE";
         Pair[][] original = w.getPairMatrix();
         JSONArray arr = JSONFacilities.encodeMatrixPair(user,original);
@@ -129,8 +128,7 @@ class JSONFacilitiesTest
     }
 
     @Test
-    void encodeAndDecodeStringInteger ()
-    {
+    void encodeAndDecodeStringInteger () throws JSONException {
         String[] originalUser = new String[] {"KIMOSABE","LONE RANGER", "THE BEARD"};
         int[] originalPoints = new int[] {15,4,87};
 
@@ -148,8 +146,7 @@ class JSONFacilitiesTest
     }
 
     @Test
-    void encodeAndDecodeMove ()
-    {
+    void encodeAndDecodeMove () throws JSONException {
         Pair origianlPair = new Pair(3,ColorEnum.GREEN);
         Coordinates originalCoord = new Coordinates(4,2);
         JSONObject json = JSONFacilities.encodeMove(originalCoord,origianlPair);

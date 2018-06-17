@@ -1,10 +1,7 @@
 package it.polimi.ingsw.server;
 
-import com.sun.corba.se.spi.activation.Server;
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
-import it.polimi.ingsw.exceptions.ModelException;
 import it.polimi.ingsw.model.ColorEnum;
-import it.polimi.ingsw.model.Dice;
 import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
 import it.polimi.ingsw.remoteInterface.Coordinates;
 import it.polimi.ingsw.remoteInterface.Pair;
@@ -20,10 +17,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 public class ServerSocketHandler implements ClientRemoteInterface,Runnable
 {
@@ -562,20 +555,28 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
 
     private void receiveMove (String message)
     {
-        ArrayList arr = JSONFacilities.decodeMove(message);
+        ArrayList arr = null;
+        try {
 
-        Coordinates coord = new Coordinates((Integer)arr.get(0),(Integer)arr.get(1));
-        Pair pair = new Pair((Integer)arr.get(2),(ColorEnum)arr.get(3));
+            arr = JSONFacilities.decodeMove(message);
 
-        try{
-            ServerRemoteInterface temp = new ServerRmiHandler(match);
-            String ret = temp.makeMove(coord,pair);
 
-            outSocket.write(ret + "\n");
-            outSocket.flush();
+            Coordinates coord = new Coordinates((Integer) arr.get(0), (Integer) arr.get(1));
+            Pair pair = new Pair((Integer) arr.get(2), (ColorEnum) arr.get(3));
 
-        }catch (Exception e){
-            LogFile.addLog("Impossible to notify move");
+            try {
+                ServerRemoteInterface temp = new ServerRmiHandler(match);
+                String ret = temp.makeMove(coord, pair);
+
+                outSocket.write(ret + "\n");
+                outSocket.flush();
+
+            } catch (Exception e) {
+                LogFile.addLog("Impossible to notify move");
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
     }

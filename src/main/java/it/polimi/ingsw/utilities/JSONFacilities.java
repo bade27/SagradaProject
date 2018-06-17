@@ -232,23 +232,20 @@ public class JSONFacilities
     //</editor-fold>
 
     //<editor-fold desc="JSON for Tokens">
-    public static JSONObject encodeInteger (Integer num)
-    {
+    public static JSONObject encodeInteger (Integer num) throws JSONException {
         JSONObject json = new JSONObject();
         json.put("number",num);
         return json;
     }
 
-    public static int decodeInteger (String message)
-    {
+    public static int decodeInteger (String message) throws JSONException {
         JSONObject json = new JSONObject(message);
         return (Integer)json.get("number");
     }
     //</editor-fold>
 
     //<editor-fold desc="JSON for end game results">
-    public static JSONArray encodeStringInteger (String[] user, int[] point)
-    {
+    public static JSONArray encodeStringInteger (String[] user, int[] point) throws JSONException {
         JSONArray msg = new JSONArray();
         for (int i = 0; i < user.length; i++)
         {
@@ -260,8 +257,7 @@ public class JSONFacilities
         return msg;
     }
 
-    public static String[][] decodeStringInteger (String message)
-    {
+    public static String[][] decodeStringInteger (String message) throws JSONException {
         JSONArray msg = new JSONArray(message);
         String [][] ret = new String[msg.length()][];
         for (int i = 0; i < msg.length() ; i++)
