@@ -84,16 +84,17 @@ public class SagradaGUI extends Application implements GUI {
     public void start(Stage welcomeStage){
         stage=welcomeStage;
         VBox welcomeRoot= new VBox();
-        Label l=new Label("Welcome!");
+        Label l=new Label("Benvenuto!");
         l.setFont(Font.font("verdana",  FontWeight.BOLD, FontPosture.REGULAR,30));
-        Button b=new Button("start");
+        Button b=new Button("gioca");
         b.setPrefSize(100,50);
         welcomeRoot.getChildren().add(l);
         welcomeRoot.getChildren().add(b);
         b.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 try {
-                    login("inserisci nome, indirizzo e connessione");                                       ///////////
+                    fatalDisconnection("prova");
+                    //login("inserisci nome, indirizzo e connessione");                                       ///////////
                 }catch(Exception e){
                     e.printStackTrace();
                 }
@@ -188,7 +189,7 @@ public class SagradaGUI extends Application implements GUI {
                         Thread.currentThread().interrupt();
                     }
                     /*try {
-                        //game();                                                                                //////////
+                        //game();
                     }catch (Exception e){
                         e.printStackTrace();
                     }*/
@@ -208,34 +209,6 @@ public class SagradaGUI extends Application implements GUI {
         stage.getScene().getWindow().setHeight(450);
         stage.getScene().setRoot(loginRoot);
         //stage.show();
-        stage.setResizable(false);
-        stage.setOnCloseRequest(e -> {
-            Platform.exit();
-            System.exit(0);
-        });
-    }
-
-    @Override
-    public void loading(){
-        GridPane loadingRoot=new GridPane();
-        Label msg=new Label("Please, wait...");
-        msg.setFont(Font.font("verdana",  FontWeight.NORMAL,15));
-        ProgressIndicator pi=new ProgressIndicator();
-        loadingRoot.add(msg,0,0);
-        loadingRoot.add(pi,0,1);
-        /*Button b=new Button();
-        root.add(b,0,2);
-        b.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                maps(new String[2],new String[2]);
-            }
-        });*/
-        loadingRoot.setAlignment(Pos.CENTER);
-        loadingRoot.setVgap(10);
-        //scene=new Scene(root,500,500);
-        //stage.show();
-        stage.getScene().setRoot(loadingRoot);
         stage.setResizable(false);
         stage.setOnCloseRequest(e -> {
             Platform.exit();
@@ -353,7 +326,7 @@ public class SagradaGUI extends Application implements GUI {
 
         //status message and end of turn button
         BorderPane bottom = new BorderPane();
-        msgb = new MessageBox("Wellcome!");
+        msgb = new MessageBox("Benvenuto!");
         bottom.setLeft(msgb);
         EndButton pass = new EndButton(this);
         bottom.setRight(pass);
@@ -372,6 +345,99 @@ public class SagradaGUI extends Application implements GUI {
             Platform.exit();
             System.exit(0);
         });
+    }
+
+    @Override
+    public void loading(){
+        GridPane loadingRoot=new GridPane();
+        Label msg=new Label("Attendere...");
+        msg.setFont(Font.font("verdana",  FontWeight.NORMAL,15));
+        ProgressIndicator pi=new ProgressIndicator();
+        loadingRoot.add(msg,0,0);
+        loadingRoot.add(pi,0,1);
+        /*Button b=new Button();
+        root.add(b,0,2);
+        b.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                maps(new String[2],new String[2]);
+            }
+        });*/
+        loadingRoot.setAlignment(Pos.CENTER);
+        loadingRoot.setVgap(10);
+        //scene=new Scene(root,500,500);
+        //stage.show();
+        stage.getScene().setRoot(loadingRoot);
+        stage.setResizable(false);
+        stage.setOnCloseRequest(e -> {
+            Platform.exit();
+            System.exit(0);
+        });
+    }
+
+    @Override
+    public void disconnection(String s){
+        VBox discRoot= new VBox();
+        VBox text=new VBox();
+        Label title=new Label("ATTENZIONE!!!");
+        Label subtitle=new Label(s);
+        subtitle.setFont(Font.font("verdana",  FontWeight.BOLD, FontPosture.REGULAR,13));
+        title.setTextFill(Color.INDIANRED);
+        title.setFont(Font.font("verdana",  FontWeight.BOLD, FontPosture.REGULAR,30));
+
+        Button b=new Button("riprova");
+        b.setPrefSize(100,50);
+        text.getChildren().add(title);
+        text.getChildren().add(subtitle);
+        discRoot.getChildren().add(text);
+        discRoot.getChildren().add(b);
+
+        b.setOnAction(new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+                try {
+                      //riprova a collegarsi
+                }catch(Exception e){
+                    e.printStackTrace();
+                }
+            } });
+        discRoot.setAlignment(Pos.CENTER);
+        discRoot.setSpacing(30);
+        text.setAlignment(Pos.CENTER);
+        text.setSpacing(10);
+
+        stage.getScene().setRoot(discRoot);
+        stage.setResizable(false);
+        stage.setOnCloseRequest(e -> {
+            Platform.exit();
+            System.exit(0);
+        });
+    }
+
+    @Override
+    public void fatalDisconnection(String s){
+        VBox fatDicRoot= new VBox();
+        Label title=new Label("Spiacenti");
+        Label subtitle=new Label(s);
+        subtitle.setFont(Font.font("verdana",  FontWeight.BOLD, FontPosture.REGULAR,20));
+        title.setTextFill(Color.INDIANRED);
+        title.setFont(Font.font("verdana",  FontWeight.BOLD, FontPosture.REGULAR,35));
+
+        fatDicRoot.getChildren().add(title);
+        fatDicRoot.getChildren().add(subtitle);
+
+        fatDicRoot.setAlignment(Pos.CENTER);
+        fatDicRoot.setSpacing(10);
+        stage.getScene().setRoot(fatDicRoot);
+        stage.setResizable(false);
+        stage.setOnCloseRequest(e -> {
+            Platform.exit();
+            System.exit(0);
+        });
+
+    }
+
+    public void endGame(){
+        
     }
 
     /**
