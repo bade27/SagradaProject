@@ -227,8 +227,8 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
                 System.out.println("Strumenti: ");
                 try {
                     graph.updateTools(s[i]);
-                }catch (Exception e1){
-                    e1.printStackTrace();
+                }catch (Exception e2){
+                    e2.printStackTrace();
                 }
             }
             else if (i == 2)
@@ -236,8 +236,8 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
                 System.out.println("Obbiettivi Privati: ");
                 try {
                     graph.updatePrivateTarget(s[i]);
-                }catch (Exception e1){
-                    e1.printStackTrace();
+                }catch (Exception e3){
+                    e3.printStackTrace();
                 }
             }
             for (int j = 0; j< s[i].length ; j++)
