@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.model.Dice;
 import it.polimi.ingsw.model.RoundTrace;
 import it.polimi.ingsw.model.Window;
+import it.polimi.ingsw.remoteInterface.Coordinates;
 import it.polimi.ingsw.remoteInterface.Pair;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -144,5 +145,26 @@ class JSONFacilitiesTest
             assertEquals(originalUser[i], recived[i][0]);
             assertEquals(originalPoints[i], Integer.parseInt(recived[i][1]));
         }
+    }
+
+    @Test
+    void encodeAndDecodeMove ()
+    {
+        Pair origianlPair = new Pair(3,ColorEnum.GREEN);
+        Coordinates originalCoord = new Coordinates(4,2);
+        JSONObject json = JSONFacilities.encodeMove(originalCoord,origianlPair);
+
+        StringBuilder move = new StringBuilder(json.toString());
+        move.append("\n");
+
+        ArrayList arr = JSONFacilities.decodeMove(move.toString());
+
+        Coordinates coord = new Coordinates((Integer)arr.get(0),(Integer)arr.get(1));
+        Pair pair = new Pair((Integer)arr.get(2),(ColorEnum)arr.get(3));
+
+        assertEquals(coord.getI(),originalCoord.getI());
+        assertEquals(coord.getJ(),originalCoord.getJ());
+        assertEquals(origianlPair.getValue(),pair.getValue());
+        assertEquals(origianlPair.getColor(),pair.getColor());
     }
 }

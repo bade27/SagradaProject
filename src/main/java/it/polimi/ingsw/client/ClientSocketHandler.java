@@ -6,6 +6,7 @@ import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.remoteInterface.*;
 import it.polimi.ingsw.utilities.JSONFacilities;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.*;
 import java.net.Socket;
@@ -73,8 +74,7 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
                         continue;
                     case "cards":
                         String objs = inSocket.readLine();
-                        task = executor.submit(() ->
-                        {receiveCards(objs);});
+                        task = executor.submit(() -> {receiveCards(objs);});
                         continue;
                     case "windowinit":
                         String json = inSocket.readLine();
@@ -291,15 +291,42 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
     @Override
     public String makeMove(Coordinates coord, Pair pair) throws RemoteException
     {
+        String response = "";
+
         try
         {
-            outSocket.write("move\n");
-            outSocket.flush();
-        } catch (Exception e)
+            JSONObject json = JSONFacilities.encodeMove(coord,pair);
+            //boolean reachable = ping();
+            //if (reachable)
+            //{
+                outSocket.write("move\n");
+                outSocket.flush();
+                StringBuilder move = new StringBuilder(json.toString());
+                move.append("\n");
+                outSocket.write(move.toString());
+                outSocket.flush();
+                try
+                {
+                    response = inSocket.readLine();
+                    //isAlive = true;
+                } catch (IOException ste)
+                {
+                    ste.printStackTrace();
+                    //isAlive = false;
+                }
+            /*} else
+                isAlive = false;*/
+
+            //if (!isAlive)
+
+        } catch (JSONException je)
         {
-            e.printStackTrace();
+            /*LogFile.addLog("JSON can't encrypt client message", je.getStackTrace());
+            throw new ClientOutOfReachException();*/
+            je.printStackTrace();
         }
-        return "ok";
+
+        return response;
     }
 
 

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.utilities;
 
 import it.polimi.ingsw.model.ColorEnum;
+import it.polimi.ingsw.remoteInterface.Coordinates;
 import it.polimi.ingsw.remoteInterface.Pair;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -8,48 +9,29 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class JSONFacilities {
-    //moves
-    /*public static Move decodeMove(String move) throws JSONException {
+public class JSONFacilities
+{
 
-        //oggetto mossa
-        JSONObject obj = new JSONObject(move);
+    public static JSONObject encodeMove (Coordinates coord, Pair pair) throws JSONException
+    {
+        JSONObject obj = new JSONObject();
+        obj.put("coord_i",coord.getI());
+        obj.put("coord_j",coord.getJ());
+        obj.put("die_val",pair.getValue());
+        obj.put("die_col",pair.getColor().toString());
+        return obj;
+    }
 
-        //nome del giocatore che ha inviato la mossa
-        String player = String.valueOf(obj.get("player"));
-
-        //oggetto pair e valori associati
-        JSONObject pair = obj.getJSONObject("pair");
-        int x = pair.getInt("x-coordinate");
-        int y = pair.getInt("y-coordinate");
-
-        //oggetto dado e valori associati
-        JSONObject dice = obj.getJSONObject("dice");
-
-        int value = dice.getInt("value");
-        ColorEnum col  = (ColorEnum) dice.get("col");
-
-
-        return new Move(new Pair(x, y), new Dice(value, col), player);
-    }*/
-
-    /*public static JSONObject encodeMove(Move m) throws JSONException {
-        JSONObject move = new JSONObject();
-        move.put("player", m.getPlayerName());
-
-        JSONObject pair = new JSONObject();
-        pair.put("x-coordinate", m.getPair().getX());
-        pair.put("y-coordinate", m.getPair().getY());
-
-        JSONObject dice = new JSONObject();
-        dice.put("value", 3);
-        dice.put("color",  m.getDice().getColor());
-
-        move.put("pair", pair);
-        move.put("dice", dice);
-
-        return move;
-    }*/
+    public static ArrayList decodeMove (String message) throws JSONException
+    {
+        JSONObject json = new JSONObject(message);
+        ArrayList ret = new ArrayList();
+        ret.add(json.get("coord_i"));
+        ret.add(json.get("coord_j"));
+        ret.add(json.get("die_val"));
+        ret.add(ColorEnum.getColor((String)json.get("die_col")));
+        return ret;
+    }
 
 
     //<editor-fold desc="JSON for cards">
@@ -264,7 +246,7 @@ public class JSONFacilities {
     }
     //</editor-fold>
 
-
+    //<editor-fold desc="JSON for end game results">
     public static JSONArray encodeStringInteger (String[] user, int[] point)
     {
         JSONArray msg = new JSONArray();
@@ -291,4 +273,5 @@ public class JSONFacilities {
         }
         return ret;
     }
+    //</editor-fold>
 }

@@ -1,8 +1,14 @@
 package it.polimi.ingsw.server;
 
+import com.sun.corba.se.spi.activation.Server;
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
+import it.polimi.ingsw.exceptions.ModelException;
+import it.polimi.ingsw.model.ColorEnum;
+import it.polimi.ingsw.model.Dice;
 import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
+import it.polimi.ingsw.remoteInterface.Coordinates;
 import it.polimi.ingsw.remoteInterface.Pair;
+import it.polimi.ingsw.remoteInterface.ServerRemoteInterface;
 import it.polimi.ingsw.utilities.JSONFacilities;
 import it.polimi.ingsw.utilities.LogFile;
 import org.json.JSONArray;
@@ -14,6 +20,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
+import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -28,8 +35,13 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
     private PrintWriter outSocket;
     private ServerSocket serverSocket;
 
+
+    private String action;
+    private final Integer syncronator = 5;
+
     private boolean isAlive = true;
     private boolean isConnected;
+    private MatchHandler match;
 
     private Thread deamon;
 
@@ -44,23 +56,28 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
     public void run()
     {
         boolean stop = false;
-        String action = "";
+
         try
         {
+            action = null;
+            stop = true;
             while ((action = inSocket.readLine()) != "close" && action != null)
             {
+
                 switch (action)
                 {
                     case "move":
-                        System.out.println("mossssa?");
+                        String objs = inSocket.readLine();
+                        receiveMove(objs);
                         continue;
 
-                    case "content":
-                        continue;
                     default:
-                        //System.out.println(action);
+                        synchronized (syncronator) {
+                            syncronator.notifyAll();
+                        }
                         continue;
                 }
+
             }
         } catch (IOException e)
         {
@@ -85,6 +102,12 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
             outSocket = new PrintWriter(new BufferedWriter(
                     new OutputStreamWriter(client.getOutputStream())), true);
             isConnected = true;
+
+            //Test
+            deamon = new Thread(this);
+            deamon.start();
+            //Test
+
         } catch (IOException | NullPointerException e)
         {
             try
@@ -281,10 +304,18 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
         {
             outSocket.write("ping\n");
             outSocket.flush();
-            String r = inSocket.readLine();
+            synchronized (syncronator) {
+                while (action == null)
+                    syncronator.wait();
+            }
+            String r = action;
+            action = null;
+            //String r = loopBackinSocket.readLine();
+            //String r = inSocket.readLine();
             reply = r.equals("pong");
-        } catch (IOException ste)
+        } catch (InterruptedException ste )
         {
+            ste.printStackTrace();
             return false;
         }
         return reply;
@@ -529,5 +560,28 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
     }*/
     //</editor-fold>
 
+    private void receiveMove (String message)
+    {
+        ArrayList arr = JSONFacilities.decodeMove(message);
 
+        Coordinates coord = new Coordinates((Integer)arr.get(0),(Integer)arr.get(1));
+        Pair pair = new Pair((Integer)arr.get(2),(ColorEnum)arr.get(3));
+
+        try{
+            ServerRemoteInterface temp = new ServerRmiHandler(match);
+            String ret = temp.makeMove(coord,pair);
+
+            outSocket.write(ret + "\n");
+            outSocket.flush();
+
+        }catch (Exception e){
+            LogFile.addLog("Impossible to notify move");
+        }
+
+    }
+
+    public void setMatch(MatchHandler match)
+    {
+        this.match = match;
+    }
 }

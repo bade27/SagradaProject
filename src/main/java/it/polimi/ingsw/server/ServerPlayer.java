@@ -148,7 +148,7 @@ public class ServerPlayer implements Runnable
                     }
 
                     //da sistemare con costante
-                    adapter.setTimer(30);
+                    adapter.setTimer(300);
                     adapter.startTimer();
 
                     //End turn comunication

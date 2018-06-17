@@ -248,7 +248,8 @@ public class MatchHandler implements Runnable
         //When thread that accept client's connection has the right number of clients, all clients connected will be initialized
         try{
             synchronized (token.getSynchronator()){
-                token.getSynchronator().wait();
+                while (nConn < MAXGIOC)
+                    token.getSynchronator().wait();
             }
         }catch (Exception e){
             LogFile.addLog("Fatal Error: Impossible to put in wait Server");
@@ -728,6 +729,7 @@ public class MatchHandler implements Runnable
                         LogFile.addLog("Client accepted with Socket connection");
                     }
                     match.clientRegistration(socketCon);
+                    socketCon.setMatch(match);
                 }
                 catch (ClientOutOfReachException e) {
                     LogFile.addLog(e.getMessage() , e.getStackTrace());
