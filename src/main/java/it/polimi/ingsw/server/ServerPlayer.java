@@ -214,7 +214,8 @@ public class ServerPlayer implements Runnable
     {
         String s1;
         try {
-            s1 = stopTask(() -> communicator.chooseWindow(windowCard1, windowCard2), INIT_TIMEOUT, executor);//To change with ACTION when implement user choice
+            //s1 = stopTask(() -> communicator.chooseWindow(windowCard1, windowCard2), INIT_TIMEOUT, executor);//To change with ACTION when implement user choice
+            s1 = communicator.chooseWindow(windowCard1,windowCard2);
             if(s1 == null)
             {
                 LogFile.addLog("(User:" + user + ") Failed to initialize Windows");
@@ -302,7 +303,6 @@ public class ServerPlayer implements Runnable
         String u;
         try{
             u = communicator.doTurn();
-            //u = stopTask(() -> communicator.doTurn(), TURN_TIMEOUT, executor);
             if(u == null)
                 throw new ClientOutOfReachException();
         }
@@ -321,7 +321,6 @@ public class ServerPlayer implements Runnable
         String s;
         try{
             s = communicator.updateGraphic(adapter.getDadieraPair());
-            //s = stopTask(() -> communicator.updateGraphic(adapter.getDadieraPair()), PING_TIMEOUT, executor);
             if(s == null)
                 throw new ClientOutOfReachException();
         }
@@ -339,7 +338,6 @@ public class ServerPlayer implements Runnable
         String s;
         try{
             s = communicator.updateGraphic(adapter.getWindowPair());
-            //s = stopTask(() -> communicator.updateGraphic(adapter.getWindowPair()), PING_TIMEOUT, executor);
             if(s == null)
                 throw new ClientOutOfReachException();
         }
@@ -354,7 +352,6 @@ public class ServerPlayer implements Runnable
         String s;
         try{
             s = communicator.updateTokens(adapter.getMarker());
-            //s = stopTask(() -> communicator.updateTokens(adapter.getMarker()), PING_TIMEOUT, executor);
             if(s == null)
                 throw new ClientOutOfReachException();
         }
@@ -369,7 +366,6 @@ public class ServerPlayer implements Runnable
         String s;
         try{
             s = communicator.updateRoundTrace(adapter.getRoundTracePair());
-            //s = stopTask(() -> communicator.updateRoundTrace(adapter.getRoundTracePair()), 6000, executor);
             if(s == null)
                 throw new ClientOutOfReachException();
         }
@@ -387,13 +383,6 @@ public class ServerPlayer implements Runnable
 
         try{
             communicator.updateOpponents(user,grids);
-            /*stopTask(new Callable<Void>() {
-                @Override
-                public Void call() throws Exception {
-                    communicator.updateOpponents(user,grids);
-                    return null;
-                }
-            }, PING_TIMEOUT, executor);*/
         } catch (Exception e) {
             LogFile.addLog("" , e.getStackTrace());
             throw new ClientOutOfReachException();
@@ -559,5 +548,7 @@ public class ServerPlayer implements Runnable
     }
 
     //</editor-fold>
+
+
 
 }

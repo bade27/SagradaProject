@@ -728,8 +728,9 @@ public class MatchHandler implements Runnable
                     if (socketCon.isConnected()) {
                         LogFile.addLog("Client accepted with Socket connection");
                     }
-                    match.clientRegistration(socketCon);
+                    ServerModelAdapter adp = match.clientRegistration(socketCon);
                     socketCon.setMatch(match);
+                    socketCon.setAdapter(adp);
                 }
                 catch (ClientOutOfReachException e) {
                     LogFile.addLog(e.getMessage() , e.getStackTrace());

@@ -29,6 +29,8 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
     private Thread deamon;
 
     private ClientPlayer player;
+    private final Integer syncronator = 5;
+    private String action;
 
     public ClientSocketHandler(ClientPlayer cli, String host, int port) throws ClientOutOfReachException
     {
@@ -57,7 +59,7 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
     {
         ExecutorService executor = Executors.newCachedThreadPool();
         Future<?> task = null;
-        String action = "";
+        action = null;
         boolean stop = false;
         try
         {
@@ -68,45 +70,60 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
                     case "ping":
                         outSocket.write("pong\n");
                         outSocket.flush();
+                        action = null;
                         continue;
                     case "login":
                         task = executor.submit(() -> {login();});
+                        action = null;
                         continue;
                     case "cards":
                         String objs = inSocket.readLine();
                         task = executor.submit(() -> {receiveCards(objs);});
+                        action = null;
                         continue;
                     case "windowinit":
                         String json = inSocket.readLine();
                         task = executor.submit(() -> {chooseWindow(json);});
+                        action = null;
                         continue;
                     case "up_dadiera":
                         String dad = inSocket.readLine();
                         task = executor.submit(() -> {updateDadiera(dad);});
+                        action = null;
                         continue;
                     case "up_window":
                         String win = inSocket.readLine();
-                        task = executor.submit(() ->
-                        {updateWindow(win);});
+                        task = executor.submit(() -> {updateWindow(win);});
+                        action = null;
                         continue;
                     case "up_trace":
                         String tra = inSocket.readLine();
                         task = executor.submit(() -> {updateRoundTrace(tra);});
+                        action = null;
                         continue;
                     case "up_tokens":
                         String tok = inSocket.readLine();
                         task = executor.submit(() -> {updateTokens(tok);});
+                        action = null;
                         continue;
                     case "up_opponents":
                         String opp = inSocket.readLine();
                         task = executor.submit(() -> {updateOpponents(opp);});
+                        action = null;
                         continue;
                     case "up_results":
                         String res = inSocket.readLine();
                         task = executor.submit(() -> {getResults(res);});
+                        action = null;
                         continue;
                     case "doTurn":
                         task = executor.submit(() -> {doTurn();});
+                        action = null;
+                        continue;
+                    case "reply_move":
+                        synchronized (syncronator) {
+                            syncronator.notifyAll();
+                        }
                         continue;
                     case "close":
                         stop = true;
@@ -118,7 +135,6 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
                     case "content":
                         continue;
                     default:
-                        //System.out.println(action);
                         continue;
                 }
                 if (stop)
@@ -280,9 +296,9 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
     }
     //</editor-fold>
 
+    //<editor-fold desc="Turn Phase">
     private Boolean doTurn()
     {
-        //Da modificare con finestra a popup con username
         player.doTurn();
         outSocket.write("ok\n");
         return outSocket.checkError();
@@ -299,21 +315,20 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
             //boolean reachable = ping();
             //if (reachable)
             //{
+            try
+            {
                 outSocket.write("move\n");
                 outSocket.flush();
                 StringBuilder move = new StringBuilder(json.toString());
                 move.append("\n");
                 outSocket.write(move.toString());
                 outSocket.flush();
-                try
-                {
-                    response = inSocket.readLine();
-                    //isAlive = true;
-                } catch (IOException ste)
-                {
-                    ste.printStackTrace();
-                    //isAlive = false;
-                }
+                response = waitResponse();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+
             /*} else
                 isAlive = false;*/
 
@@ -328,6 +343,7 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
 
         return response;
     }
+    //</editor-fold>
 
 
     @Override
@@ -435,6 +451,26 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
     //Sono obbligato ad implementarlo, per ora non ha uno scopo preciso
     public void setClient(ClientRemoteInterface client)
     {
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="Wait Response">
+    private String waitResponse () throws ClientOutOfReachException
+    {
+        try
+        {
+            synchronized (syncronator) {
+                while (action == null)
+                    syncronator.wait();
+            }
+            String r = inSocket.readLine();
+            action = null;
+            return r;
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new ClientOutOfReachException();
+        }
+
     }
     //</editor-fold>
 

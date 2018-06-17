@@ -1,5 +1,6 @@
 package it.polimi.ingsw.utilities;
 
+import com.sun.org.apache.bcel.internal.generic.JsrInstruction;
 import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.remoteInterface.Coordinates;
 import it.polimi.ingsw.remoteInterface.Pair;
@@ -11,28 +12,6 @@ import java.util.ArrayList;
 
 public class JSONFacilities
 {
-
-    public static JSONObject encodeMove (Coordinates coord, Pair pair) throws JSONException
-    {
-        JSONObject obj = new JSONObject();
-        obj.put("coord_i",coord.getI());
-        obj.put("coord_j",coord.getJ());
-        obj.put("die_val",pair.getValue());
-        obj.put("die_col",pair.getColor().toString());
-        return obj;
-    }
-
-    public static ArrayList decodeMove (String message) throws JSONException
-    {
-        JSONObject json = new JSONObject(message);
-        ArrayList ret = new ArrayList();
-        ret.add(json.get("coord_i"));
-        ret.add(json.get("coord_j"));
-        ret.add(json.get("die_val"));
-        ret.add(ColorEnum.getColor((String)json.get("die_col")));
-        return ret;
-    }
-
 
     //<editor-fold desc="JSON for cards">
     /**
@@ -232,14 +211,14 @@ public class JSONFacilities
     //</editor-fold>
 
     //<editor-fold desc="JSON for Tokens">
-    public static JSONObject encodeInteger (Integer num)
+    public static JSONObject encodeInteger (Integer num) throws JSONException
     {
         JSONObject json = new JSONObject();
         json.put("number",num);
         return json;
     }
 
-    public static int decodeInteger (String message)
+    public static int decodeInteger (String message) throws JSONException
     {
         JSONObject json = new JSONObject(message);
         return (Integer)json.get("number");
@@ -247,7 +226,7 @@ public class JSONFacilities
     //</editor-fold>
 
     //<editor-fold desc="JSON for end game results">
-    public static JSONArray encodeStringInteger (String[] user, int[] point)
+    public static JSONArray encodeStringInteger (String[] user, int[] point) throws JSONException
     {
         JSONArray msg = new JSONArray();
         for (int i = 0; i < user.length; i++)
@@ -260,7 +239,7 @@ public class JSONFacilities
         return msg;
     }
 
-    public static String[][] decodeStringInteger (String message)
+    public static String[][] decodeStringInteger (String message) throws JSONException
     {
         JSONArray msg = new JSONArray(message);
         String [][] ret = new String[msg.length()][];
@@ -271,6 +250,29 @@ public class JSONFacilities
             ret[i][0]=(String)obj.get("user");
             ret[i][1]=((Integer)obj.get("points")).toString();
         }
+        return ret;
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="JSON for move">
+    public static JSONObject encodeMove (Coordinates coord, Pair pair) throws JSONException
+    {
+        JSONObject obj = new JSONObject();
+        obj.put("coord_i",coord.getI());
+        obj.put("coord_j",coord.getJ());
+        obj.put("die_val",pair.getValue());
+        obj.put("die_col",pair.getColor().toString());
+        return obj;
+    }
+
+    public static ArrayList decodeMove (String message) throws JSONException
+    {
+        JSONObject json = new JSONObject(message);
+        ArrayList ret = new ArrayList();
+        ret.add(json.get("coord_i"));
+        ret.add(json.get("coord_j"));
+        ret.add(json.get("die_val"));
+        ret.add(ColorEnum.getColor((String)json.get("die_col")));
         return ret;
     }
     //</editor-fold>

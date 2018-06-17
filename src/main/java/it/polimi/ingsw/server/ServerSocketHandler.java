@@ -27,8 +27,6 @@ import java.util.concurrent.Future;
 
 public class ServerSocketHandler implements ClientRemoteInterface,Runnable
 {
-    private ServerModelAdapter adapter;
-
     private int PORT;
     private Socket client;
     private BufferedReader inSocket;
@@ -42,6 +40,7 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
     private boolean isAlive = true;
     private boolean isConnected;
     private MatchHandler match;
+    private ServerModelAdapter adapter;
 
     private Thread deamon;
 
@@ -328,6 +327,10 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
         return outSocket.checkError();
     }
 
+    public void setMatch(MatchHandler match)
+    {
+        this.match = match;
+    }
 
     //</editor-fold>
 
@@ -473,6 +476,45 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
 
         return response;
     }
+
+    /**
+     * Recive move from client and process it
+     * @param message return message to client
+     */
+    private void receiveMove (String message)
+    {
+        ArrayList arr = JSONFacilities.decodeMove(message);
+
+        Coordinates coord = new Coordinates((Integer)arr.get(0),(Integer)arr.get(1));
+        Pair pair = new Pair((Integer)arr.get(2),(ColorEnum)arr.get(3));
+
+        String response = "Impossibile eseguire la mossa";
+        if (!adapter.CanMove())
+            response = "Hai già mosso in questo turno";
+        else
+        {
+            try {
+                adapter.addDiceToBoard(coord.getI(), coord.getJ(), new Dice(pair.getValue(), pair.getColor()));
+
+                response = "Mossa applicata correttamente";
+            } catch (ModelException e) {
+                response = e.getMessage();
+            }
+        }
+        try
+        {
+            outSocket.write("reply_move\n");
+            outSocket.flush();
+            outSocket.write(response + "\n");
+            outSocket.flush();
+
+            match.updateClient();
+        }catch (Exception e){
+            e.printStackTrace();
+            LogFile.addLog("Impossible to notify move");
+        }
+
+    }
     //</editor-fold>
 
     //<editor-fold desc="End Game Phase">
@@ -517,6 +559,7 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
     }*/
     //</editor-fold>
 
+    //<editor-fold desc="Wait Response">
     private String waitResponse () throws ClientOutOfReachException
     {
         try
@@ -536,43 +579,15 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
 
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    private void receiveMove (String message)
+    public void setAdapter(ServerModelAdapter adapter)
     {
-        ArrayList arr = JSONFacilities.decodeMove(message);
-
-        Coordinates coord = new Coordinates((Integer)arr.get(0),(Integer)arr.get(1));
-        Pair pair = new Pair((Integer)arr.get(2),(ColorEnum)arr.get(3));
-
-        try{
-            ServerRemoteInterface temp = new ServerRmiHandler(match);
-            String ret = temp.makeMove(coord,pair);
-
-            outSocket.write(ret + "\n");
-            outSocket.flush();
-
-        }catch (Exception e){
-            LogFile.addLog("Impossible to notify move");
-        }
-
+        this.adapter = adapter;
     }
+    //</editor-fold>
 
-    public void setMatch(MatchHandler match)
-    {
-        this.match = match;
-    }
+
+
+
+
+
 }
