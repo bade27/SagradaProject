@@ -1,11 +1,12 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
+import it.polimi.ingsw.exceptions.ModelException;
 import it.polimi.ingsw.model.ColorEnum;
+import it.polimi.ingsw.model.Dice;
 import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
 import it.polimi.ingsw.remoteInterface.Coordinates;
 import it.polimi.ingsw.remoteInterface.Pair;
-import it.polimi.ingsw.remoteInterface.ServerRemoteInterface;
 import it.polimi.ingsw.utilities.JSONFacilities;
 import it.polimi.ingsw.utilities.LogFile;
 import org.json.JSONArray;
@@ -20,8 +21,6 @@ import java.util.ArrayList;
 
 public class ServerSocketHandler implements ClientRemoteInterface,Runnable
 {
-    private ServerModelAdapter adapter;
-
     private int PORT;
     private Socket client;
     private BufferedReader inSocket;
@@ -35,6 +34,7 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
     private boolean isAlive = true;
     private boolean isConnected;
     private MatchHandler match;
+    private ServerModelAdapter adapter;
 
     private Thread deamon;
 
@@ -56,12 +56,15 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
             stop = true;
             while ((action = inSocket.readLine()) != "close" && action != null)
             {
-
                 switch (action)
                 {
                     case "move":
                         String objs = inSocket.readLine();
-                        receiveMove(objs);
+                        try {
+                            receiveMove(objs);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         continue;
 
                     default:
@@ -78,6 +81,8 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
         }
 
     }
+
+
 
     //<editor-fold desc="Connection Phase">
 
@@ -170,14 +175,8 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
             outSocket.flush();
             outSocket.write("Inserisci username\n");
             outSocket.flush();
-            try
-            {
-                user = inSocket.readLine();
-                isAlive = true;
-            } catch (IOException e)
-            {
-                isAlive = false;
-            }
+            user = waitResponse();
+            isAlive = true;
         } else
             isAlive = false;
 
@@ -211,14 +210,8 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
                 windows.append("\n");
                 outSocket.write(windows.toString());
                 outSocket.flush();
-                try
-                {
-                    response = inSocket.readLine();
-                    isAlive = true;
-                } catch (IOException ste)
-                {
-                    isAlive = false;
-                }
+                response = waitResponse();
+                isAlive = true;
             } else
                 isAlive = false;
 
@@ -260,14 +253,8 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
                 cards.append("\n");
                 outSocket.write(cards.toString());
                 outSocket.flush();
-                try
-                {
-                    response = inSocket.readLine();
-                    isAlive = true;
-                } catch (IOException ste)
-                {
-                    isAlive = false;
-                }
+                response = waitResponse();
+                isAlive = true;
             } else
                 isAlive = false;
 
@@ -297,16 +284,9 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
         {
             outSocket.write("ping\n");
             outSocket.flush();
-            synchronized (syncronator) {
-                while (action == null)
-                    syncronator.wait();
-            }
-            String r = action;
-            action = null;
-            //String r = loopBackinSocket.readLine();
-            //String r = inSocket.readLine();
+            String r = waitResponse();
             reply = r.equals("pong");
-        } catch (InterruptedException ste )
+        } catch (ClientOutOfReachException ste )
         {
             ste.printStackTrace();
             return false;
@@ -345,6 +325,10 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
         return outSocket.checkError();
     }
 
+    public void setMatch(MatchHandler match)
+    {
+        this.match = match;
+    }
 
     //</editor-fold>
 
@@ -353,7 +337,7 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
     /**
      * Update client structure for all type
      *
-     * @param json json array to send
+     * @param json json object to send
      * @param msg  msg to send
      * @return return value from client
      */
@@ -370,21 +354,13 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
             windows.append("\n");
             outSocket.write(windows.toString());
             outSocket.flush();
-            try
-            {
-                response = inSocket.readLine();
-                isAlive = true;
-            } catch (IOException ste)
-            {
-                isAlive = false;
-            }
+            response = waitResponse();
+            isAlive = true;
         } else
             isAlive = false;
 
         if (!isAlive)
             throw new ClientOutOfReachException();
-
-
         return response;
     }
 
@@ -488,26 +464,54 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
         {
             outSocket.write("doTurn\n");
             outSocket.flush();
-            try
-            {
-                response = inSocket.readLine();
-                isAlive = true;
-            } catch (IOException ste)
-            {
-                isAlive = false;
-            }
+            response = waitResponse();
+            isAlive = true;
         } else
             isAlive = false;
 
         if (!isAlive)
             throw new ClientOutOfReachException();
 
-        //Test
-        deamon = new Thread(this);
-        deamon.start();
-        //Test
-
         return response;
+    }
+
+    /**
+     * Recive move from client and process it
+     * @param message return message to client
+     */
+    private void receiveMove (String message) throws JSONException {
+
+        ArrayList arr = JSONFacilities.decodeMove(message);
+
+        Coordinates coord = new Coordinates((Integer)arr.get(0),(Integer)arr.get(1));
+        Pair pair = new Pair((Integer)arr.get(2),(ColorEnum)arr.get(3));
+
+        String response = "Impossibile eseguire la mossa";
+        if (!adapter.CanMove())
+            response = "Hai già mosso in questo turno";
+        else
+        {
+            try {
+                adapter.addDiceToBoard(coord.getI(), coord.getJ(), new Dice(pair.getValue(), pair.getColor()));
+
+                response = "Mossa applicata correttamente";
+            } catch (ModelException e) {
+                response = e.getMessage();
+            }
+        }
+        try
+        {
+            outSocket.write("reply_move\n");
+            outSocket.flush();
+            outSocket.write(response + "\n");
+            outSocket.flush();
+
+            match.updateClient();
+        }catch (Exception e){
+            e.printStackTrace();
+            LogFile.addLog("Impossible to notify move");
+        }
+
     }
     //</editor-fold>
 
@@ -553,36 +557,35 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
     }*/
     //</editor-fold>
 
-    private void receiveMove (String message)
+    //<editor-fold desc="Wait Response">
+    private String waitResponse () throws ClientOutOfReachException
     {
-        ArrayList arr = null;
-        try {
-
-            arr = JSONFacilities.decodeMove(message);
-
-
-            Coordinates coord = new Coordinates((Integer) arr.get(0), (Integer) arr.get(1));
-            Pair pair = new Pair((Integer) arr.get(2), (ColorEnum) arr.get(3));
-
-            try {
-                ServerRemoteInterface temp = new ServerRmiHandler(match);
-                String ret = temp.makeMove(coord, pair);
-
-                outSocket.write(ret + "\n");
-                outSocket.flush();
-
-            } catch (Exception e) {
-                LogFile.addLog("Impossible to notify move");
+        try
+        {
+            synchronized (syncronator) {
+                while (action == null)
+                    syncronator.wait();
             }
 
-        } catch (JSONException e) {
+            String r = action;
+            action = null;
+            return r;
+        }catch (Exception e){
             e.printStackTrace();
+            throw new ClientOutOfReachException();
         }
 
     }
 
-    public void setMatch(MatchHandler match)
+    public void setAdapter(ServerModelAdapter adapter)
     {
-        this.match = match;
+        this.adapter = adapter;
     }
+    //</editor-fold>
+
+
+
+
+
+
 }
