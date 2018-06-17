@@ -149,6 +149,7 @@ public class MatchHandler implements Runnable
                         return;
                     }
                 }
+
                 //Update client's graphic situation
                 updateClient();
 
@@ -721,9 +722,8 @@ public class MatchHandler implements Runnable
             //Socket creation and accept
             while (true)
             {
-                ServerSocketHandler socketCon;
                 try{
-                    socketCon = new ServerSocketHandler(SOCKET_PORT);
+                    ServerSocketHandler socketCon = new ServerSocketHandler(SOCKET_PORT);
                     socketCon.createConnection();
                     if (socketCon.isConnected()) {
                         LogFile.addLog("Client accepted with Socket connection");

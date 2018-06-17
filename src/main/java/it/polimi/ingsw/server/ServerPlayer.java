@@ -162,7 +162,7 @@ public class ServerPlayer implements Runnable
                         inGame = false;
                         token.getSynchronator().notifyAll();
                         break;
-                    } else System.out.println("turn ended well");
+                    } //else System.out.println("turn ended well");
 
                     token.getSynchronator().notifyAll();
                     token.getSynchronator().wait();
@@ -301,7 +301,8 @@ public class ServerPlayer implements Runnable
     {
         String u;
         try{
-            u = stopTask(() -> communicator.doTurn(), TURN_TIMEOUT, executor);
+            u = communicator.doTurn();
+            //u = stopTask(() -> communicator.doTurn(), TURN_TIMEOUT, executor);
             if(u == null)
                 throw new ClientOutOfReachException();
         }
@@ -319,7 +320,8 @@ public class ServerPlayer implements Runnable
     {
         String s;
         try{
-            s = stopTask(() -> communicator.updateGraphic(adapter.getDadieraPair()), PING_TIMEOUT, executor);
+            s = communicator.updateGraphic(adapter.getDadieraPair());
+            //s = stopTask(() -> communicator.updateGraphic(adapter.getDadieraPair()), PING_TIMEOUT, executor);
             if(s == null)
                 throw new ClientOutOfReachException();
         }
@@ -336,7 +338,8 @@ public class ServerPlayer implements Runnable
     {
         String s;
         try{
-            s = stopTask(() -> communicator.updateGraphic(adapter.getWindowPair()), PING_TIMEOUT, executor);
+            s = communicator.updateGraphic(adapter.getWindowPair());
+            //s = stopTask(() -> communicator.updateGraphic(adapter.getWindowPair()), PING_TIMEOUT, executor);
             if(s == null)
                 throw new ClientOutOfReachException();
         }
@@ -350,7 +353,8 @@ public class ServerPlayer implements Runnable
     {
         String s;
         try{
-            s = stopTask(() -> communicator.updateTokens(adapter.getMarker()), PING_TIMEOUT, executor);
+            s = communicator.updateTokens(adapter.getMarker());
+            //s = stopTask(() -> communicator.updateTokens(adapter.getMarker()), PING_TIMEOUT, executor);
             if(s == null)
                 throw new ClientOutOfReachException();
         }
@@ -364,7 +368,8 @@ public class ServerPlayer implements Runnable
     {
         String s;
         try{
-            s = stopTask(() -> communicator.updateRoundTrace(adapter.getRoundTracePair()), PING_TIMEOUT, executor);
+            s = communicator.updateRoundTrace(adapter.getRoundTracePair());
+            //s = stopTask(() -> communicator.updateRoundTrace(adapter.getRoundTracePair()), 6000, executor);
             if(s == null)
                 throw new ClientOutOfReachException();
         }
@@ -381,13 +386,14 @@ public class ServerPlayer implements Runnable
     public void updateOpponents(String user, Pair[][] grids) throws ClientOutOfReachException {
 
         try{
-            stopTask(new Callable<Void>() {
+            communicator.updateOpponents(user,grids);
+            /*stopTask(new Callable<Void>() {
                 @Override
                 public Void call() throws Exception {
                     communicator.updateOpponents(user,grids);
                     return null;
                 }
-            }, PING_TIMEOUT, executor);
+            }, PING_TIMEOUT, executor);*/
         } catch (Exception e) {
             LogFile.addLog("" , e.getStackTrace());
             throw new ClientOutOfReachException();

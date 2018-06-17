@@ -63,7 +63,6 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
             stop = true;
             while ((action = inSocket.readLine()) != "close" && action != null)
             {
-
                 switch (action)
                 {
                     case "move":
@@ -85,6 +84,8 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
         }
 
     }
+
+
 
     //<editor-fold desc="Connection Phase">
 
@@ -177,14 +178,8 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
             outSocket.flush();
             outSocket.write("Inserisci username\n");
             outSocket.flush();
-            try
-            {
-                user = inSocket.readLine();
-                isAlive = true;
-            } catch (IOException e)
-            {
-                isAlive = false;
-            }
+            user = waitResponse();
+            isAlive = true;
         } else
             isAlive = false;
 
@@ -218,14 +213,8 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
                 windows.append("\n");
                 outSocket.write(windows.toString());
                 outSocket.flush();
-                try
-                {
-                    response = inSocket.readLine();
-                    isAlive = true;
-                } catch (IOException ste)
-                {
-                    isAlive = false;
-                }
+                response = waitResponse();
+                isAlive = true;
             } else
                 isAlive = false;
 
@@ -267,14 +256,8 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
                 cards.append("\n");
                 outSocket.write(cards.toString());
                 outSocket.flush();
-                try
-                {
-                    response = inSocket.readLine();
-                    isAlive = true;
-                } catch (IOException ste)
-                {
-                    isAlive = false;
-                }
+                response = waitResponse();
+                isAlive = true;
             } else
                 isAlive = false;
 
@@ -304,16 +287,9 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
         {
             outSocket.write("ping\n");
             outSocket.flush();
-            synchronized (syncronator) {
-                while (action == null)
-                    syncronator.wait();
-            }
-            String r = action;
-            action = null;
-            //String r = loopBackinSocket.readLine();
-            //String r = inSocket.readLine();
+            String r = waitResponse();
             reply = r.equals("pong");
-        } catch (InterruptedException ste )
+        } catch (ClientOutOfReachException ste )
         {
             ste.printStackTrace();
             return false;
@@ -360,7 +336,7 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
     /**
      * Update client structure for all type
      *
-     * @param json json array to send
+     * @param json json object to send
      * @param msg  msg to send
      * @return return value from client
      */
@@ -377,21 +353,13 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
             windows.append("\n");
             outSocket.write(windows.toString());
             outSocket.flush();
-            try
-            {
-                response = inSocket.readLine();
-                isAlive = true;
-            } catch (IOException ste)
-            {
-                isAlive = false;
-            }
+            response = waitResponse();
+            isAlive = true;
         } else
             isAlive = false;
 
         if (!isAlive)
             throw new ClientOutOfReachException();
-
-
         return response;
     }
 
@@ -495,24 +463,13 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
         {
             outSocket.write("doTurn\n");
             outSocket.flush();
-            try
-            {
-                response = inSocket.readLine();
-                isAlive = true;
-            } catch (IOException ste)
-            {
-                isAlive = false;
-            }
+            response = waitResponse();
+            isAlive = true;
         } else
             isAlive = false;
 
         if (!isAlive)
             throw new ClientOutOfReachException();
-
-        //Test
-        deamon = new Thread(this);
-        deamon.start();
-        //Test
 
         return response;
     }
@@ -559,6 +516,40 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
         }
     }*/
     //</editor-fold>
+
+    private String waitResponse () throws ClientOutOfReachException
+    {
+        try
+        {
+            synchronized (syncronator) {
+                while (action == null)
+                    syncronator.wait();
+            }
+
+            String r = action;
+            action = null;
+            return r;
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new ClientOutOfReachException();
+        }
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private void receiveMove (String message)
     {
