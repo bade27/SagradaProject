@@ -25,9 +25,6 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-
-import java.awt.*;
 import java.rmi.RemoteException;
 import java.util.*;
 import java.util.List;
@@ -184,18 +181,19 @@ public class SagradaGUI extends Application implements GUI {
                         if (clientPlayer == null)
                             clientPlayer = new ClientPlayer(typeOfConnection,sagradaGUI, p);
                         clientPlayer.setClientName(n);
-                        //ProgressIndicator pi=new ProgressIndicator();
-                        //root.getChildren().set(2,pi);
+                        t.setFill(Color.FORESTGREEN);
+                        t.setText("attendere l'ingresso degli altri giocatori");
                     } catch (RemoteException e) {
                         e.printStackTrace();
                         Thread.currentThread().interrupt();
                     }
-                    try {
+                    /*try {
                         //game();                                                                                //////////
                     }catch (Exception e){
                         e.printStackTrace();
-                    }
+                    }*/
                 }else{
+                    t.setFill(Color.INDIANRED);
                     t.setText("valori in input non validi!");
                 }
             }
@@ -251,33 +249,64 @@ public class SagradaGUI extends Application implements GUI {
         Label title=new Label("Seleziona mappa da voler usare");
         title.setFont(Font.font("verdana",  FontWeight.BOLD, FontPosture.REGULAR,25));
         mapsRoot.getChildren().add(title);
-        GridPane maps=new GridPane();
-        mapsRoot.getChildren().add(maps);
-        Button map1f=new Button(""+s1[0]);
-        Button map1r=new Button(""+s1[1]);
-        Button map2f=new Button(""+s2[0]);
-        Button map2r=new Button(""+s2[1]);
-        maps.add(map1f,0,0);
-        maps.add(map1r,0,1);
-        maps.add(map2f,1,0);
-        maps.add(map2r,1,1);
+        GridPane mapsgrid=new GridPane();
+        mapsRoot.getChildren().add(mapsgrid);
+
+        String [] vecname1=s1[0].split("\\/");
+        String [] vecname2=s1[1].split("\\/");
+        String [] vecname3=s2[0].split("\\/");
+        String [] vecname4=s2[1].split("\\/");
+
+        System.out.println();
+
+        String name1=(vecname1[vecname1.length-1].split("\\."))[0];
+        String name2=(vecname2[vecname2.length-1].split("\\."))[0];
+        String name3=(vecname3[vecname3.length-1].split("\\."))[0];
+        String name4=(vecname4[vecname4.length-1].split("\\."))[0];
+
+        Button map1f=new Button(""+name1);
+        Button map1r=new Button(""+name2);
+        Button map2f=new Button(""+name3);
+        Button map2r=new Button(""+name4);
+
+        mapsgrid.add(map1f,0,0);
+        mapsgrid.add(map1r,0,1);
+        mapsgrid.add(map2f,1,0);
+        mapsgrid.add(map2r,1,1);
+
+
         map1f.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                game();                                                                                         ////////
+                clientPlayer.setChooseMap(s1[0]);
             }
         });
+
         map1r.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                game();                                                                                         ////////
+                clientPlayer.setChooseMap(s1[1]);
+            }
+        });
+
+        map2f.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                clientPlayer.setChooseMap(s2[0]);
+            }
+        });
+
+        map2r.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                clientPlayer.setChooseMap(s2[1]);
             }
         });
         mapsRoot.setAlignment(Pos.TOP_CENTER);
-        maps.setAlignment(Pos.CENTER);
-        maps.setHgap(20);
-        maps.setVgap(5);
-        maps.setPrefSize(100,500);
+        mapsgrid.setAlignment(Pos.CENTER);
+        mapsgrid.setHgap(20);
+        mapsgrid.setVgap(5);
+        mapsgrid.setPrefSize(100,500);
         map1f.setPrefSize(450,200);
         map1r.setPrefSize(450,200);
         map2f.setPrefSize(450,200);
