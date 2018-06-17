@@ -38,9 +38,9 @@ public class SagradaGUI extends Application implements GUI {
     private GridGUI gridG;
     private PlayersGUI plaG;
     private TokenGUI tokenG;
-    private ToolsGUI tools;
-    private RoundsGUI rounds;
-    private TargetGUI target;
+    private ToolsGUI toolsG;
+    private RoundsGUI roundsG;
+    private TargetGUI targetG;
     private Stage stage;
     private Scene scene;
     private MessageBox msgb;
@@ -257,17 +257,16 @@ public class SagradaGUI extends Application implements GUI {
         String [] vecname3=s2[0].split("\\/");
         String [] vecname4=s2[1].split("\\/");
 
-        System.out.println();
 
         String name1=(vecname1[vecname1.length-1].split("\\."))[0];
         String name2=(vecname2[vecname2.length-1].split("\\."))[0];
         String name3=(vecname3[vecname3.length-1].split("\\."))[0];
         String name4=(vecname4[vecname4.length-1].split("\\."))[0];
 
-        Button map1f=new Button(""+name1);
-        Button map1r=new Button(""+name2);
-        Button map2f=new Button(""+name3);
-        Button map2r=new Button(""+name4);
+        Button map1f=new Button(name1);
+        Button map1r=new Button(name2);
+        Button map2f=new Button(name3);
+        Button map2r=new Button(name4);
 
         mapsgrid.add(map1f,0,0);
         mapsgrid.add(map1r,0,1);
@@ -344,13 +343,13 @@ public class SagradaGUI extends Application implements GUI {
         pcenter.setAlignment(Pos.CENTER);
 
         //placing the different gui components
-        tools = new ToolsGUI(mainContent, this);
-        rounds = new RoundsGUI(pcenter, this);
+        toolsG = new ToolsGUI(mainContent, this);
+        roundsG = new RoundsGUI(pcenter, this);
         dadieraG =new DadieraGUI(pcenter, 5, this);
         gridG = new GridGUI(pcenter, this);
         plaG=new PlayersGUI(pcenter,this);
         tokenG=new TokenGUI(pcenter,this);
-        target = new TargetGUI(mainContent);
+        targetG = new TargetGUI(mainContent,this);
 
         //status message and end of turn button
         BorderPane bottom = new BorderPane();
@@ -410,7 +409,7 @@ public class SagradaGUI extends Application implements GUI {
     }
 
     public void updateTools(String[] toolNames) {
-        tools.updateTools(toolNames);
+        toolsG.updateTools(toolNames);
     }
 
     public void updateOpponents(Pair[][] pair, String user) {
@@ -418,7 +417,15 @@ public class SagradaGUI extends Application implements GUI {
     }
 
     public void updateRoundTrace(ArrayList<Pair>[] trace) {
-        rounds.updateRoundTrace(trace);
+        roundsG.updateRoundTrace(trace);
+    }
+
+    public void updatePublicTarget(String [] s){
+        targetG.updatePublicTarget(s);
+    }
+
+    public void updatePrivateTarget(String[] s){
+        targetG.updatePrivateTarget(s);
     }
 
     public void updateTokens(int n) {

@@ -23,5 +23,7 @@ public interface GUI {
     public void updateTools(String[] toolNames);
     public void updateOpponents(Pair[][] pair, String user);
     public void updateTokens(int n);
+    public void updatePublicTarget(String [] s);
+    public void updatePrivateTarget(String [] s);
     public void updateRoundTrace(ArrayList<Pair>[] trace);
 }

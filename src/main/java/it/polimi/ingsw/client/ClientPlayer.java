@@ -212,19 +212,33 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     }
 
     @Override
-    public boolean sendCards(String[]... s) throws RemoteException {
+    public boolean sendCards(String[]...  s) throws RemoteException {
         for (int i = 0; i < s.length ; i++)
         {
             if (i == 0) {
                 System.out.println("Obbiettivi Pubblici: ");
+                try {
+                    graph.updatePublicTarget(s[i]);
+                }catch (Exception e1){
+                    e1.printStackTrace();
+                }
             }
             else if (i == 1) {
                 System.out.println("Strumenti: ");
-                graph.updateTools(s[i]);
+                try {
+                    graph.updateTools(s[i]);
+                }catch (Exception e1){
+                    e1.printStackTrace();
+                }
             }
-            else if (i == 20)
+            else if (i == 2)
             {
                 System.out.println("Obbiettivi Privati: ");
+                try {
+                    graph.updatePrivateTarget(s[i]);
+                }catch (Exception e1){
+                    e1.printStackTrace();
+                }
             }
             for (int j = 0; j< s[i].length ; j++)
                 System.out.println(s[i][j]);
