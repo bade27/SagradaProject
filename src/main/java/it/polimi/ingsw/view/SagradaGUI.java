@@ -435,7 +435,7 @@ public class SagradaGUI extends Application implements GUI {
 
     }
 
-    public void endGame(){
+    public void endGame(String name, int record){
 
     }
 
