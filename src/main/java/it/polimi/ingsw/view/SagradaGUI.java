@@ -93,8 +93,7 @@ public class SagradaGUI extends Application implements GUI {
         b.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 try {
-                    fatalDisconnection("prova");
-                    //login("inserisci nome, indirizzo e connessione");                                       ///////////
+                    login("inserisci nome, indirizzo e connessione");                                       ///////////
                 }catch(Exception e){
                     e.printStackTrace();
                 }
@@ -437,7 +436,7 @@ public class SagradaGUI extends Application implements GUI {
     }
 
     public void endGame(){
-        
+
     }
 
     /**
