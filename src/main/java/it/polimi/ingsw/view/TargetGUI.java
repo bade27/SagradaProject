@@ -43,10 +43,10 @@ public class TargetGUI extends GridPane{
 
 
     public void updatePrivateTarget(String []s){
-        String [] vecname1=s[0].split("\\/");
-        String name1=(vecname1[vecname1.length-1].split("\\."))[0];
-        bprivate.setText(name1);
-        bprivate.setMaxSize(Double.MAX_VALUE,Double.MAX_VALUE);;
+        String [] vecname0=s[0].split("\\/");
+        String name0=(vecname0[vecname0.length-1].split("\\."))[0];
+        bprivate.setText(name0);
+        bprivate.setMaxSize(Double.MAX_VALUE,Double.MAX_VALUE);
     }
 
     public void updatePublicTarget(String []s){
