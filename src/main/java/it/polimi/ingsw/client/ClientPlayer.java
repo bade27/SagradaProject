@@ -37,12 +37,12 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     private GUI graph;
     private ServerRemoteInterface server;
     private String clientName;
+    private String chooseMap;
     //buffer mossa in upload
     private boolean finishedMove = false;
     private int num_of_moves = 0;
-
-    private final Integer sync = 5;
-
+    private final Integer synclogin=5;
+    private final Integer syncmap = 5;
 
     //<editor-fold desc="Initialization Phase">
     private static void connection_parameters_setup() throws ParserConfigurationException, IOException, SAXException {
@@ -132,17 +132,14 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             }
 
             try {
-                synchronized (sync)
+                synchronized (synclogin)
                 {
                     while (clientName == null)
-                        sync.wait();
+                        synclogin.wait();
                 }
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
-
         }
 
         String ret = clientName;
@@ -157,8 +154,8 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     public void setClientName(String clientName)
     {
         this.clientName = clientName;
-        synchronized (sync) {
-            sync.notifyAll();
+        synchronized (synclogin) {
+            synclogin.notifyAll();
         }
     }
 
@@ -186,10 +183,32 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
      */
     public String chooseWindow(String[] s1, String[] s2)  throws ClientOutOfReachException
     {
-        //Ora qui ci deve essere la scelta dell'utente della carta
+        try {
+            graph.maps(s1,s2);
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+        try {
+            synchronized (syncmap)
+            {
+                while (chooseMap == null)
+                    syncmap.wait();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        String m = chooseMap;
+        chooseMap = null;
         graph.game();
-        System.out.println("Window selected:" + s1[0]);
-        return s1[0];
+        return m;
+    }
+
+    public void setChooseMap(String chooseMap){
+        this.chooseMap=chooseMap;
+        synchronized (syncmap) {
+            syncmap.notifyAll();
+        }
     }
 
     @Override
