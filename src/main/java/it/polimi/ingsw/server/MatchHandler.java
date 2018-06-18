@@ -41,7 +41,7 @@ public class MatchHandler implements Runnable
     private UsersEntry userList;
 
     private final static int TURNS = 3;
-    private final static int MAXGIOC = 1;//Da modificare a 4
+    private final static int MAXGIOC = 2;//Da modificare a 4
 
     //connection parameters
     private static int RMI_REGISTRY_PORT;
@@ -54,7 +54,7 @@ public class MatchHandler implements Runnable
     private final Object lockOnnConn = new Object();
     private final Object gameCannotStartYet = new Object();
     private Thread timer;
-    private final int threshold = 2;
+    private final int threshold = MAXGIOC;
     private final int sleepTime = 10;
 
     private class ConnectionTimer implements Runnable {
@@ -359,7 +359,7 @@ public class MatchHandler implements Runnable
         subFromnConn(n);
 
         //If max number of connection is reached starts game
-        if (/*nConn*/getnConn() == MAXGIOC)
+        if (getnConn() == MAXGIOC)
         {
             synchronized (gameCannotStartYet){
                 gameCannotStartYet.notifyAll();
