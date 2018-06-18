@@ -182,25 +182,25 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
      * Real Choosing window method
      */
     public String chooseWindow(String[] s1, String[] s2)  throws ClientOutOfReachException
-    {
-        try {
-            graph.maps(s1,s2);
-        }
-        catch (Exception e){
-            e.printStackTrace();
-        }
-        try {
-            synchronized (syncmap)
-            {
-                while (chooseMap == null)
-                    syncmap.wait();
+    {/*
+        if(chooseMap==null) {
+            try {
+                graph.maps(s1, s2);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+            try {
+                synchronized (syncmap) {
+                    while (chooseMap == null)
+                        syncmap.wait();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         String m = chooseMap;
-        chooseMap = null;
-        //String m = s1[0];
+        chooseMap = null;*/
+        String m = s1[0];
         graph.game();
         return m;
     }
@@ -279,6 +279,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         System.out.println("End game results:");
         for (int i = 0 ; i < user.length ; i++)
             System.out.println("Utente: " + user[i] + "\t Punti totalizzati: " + point[i]);
+        graph.endGame(user, point);
     }
 
     @Override

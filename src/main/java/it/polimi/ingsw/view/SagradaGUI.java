@@ -473,12 +473,10 @@ public class SagradaGUI extends Application implements GUI {
         }
 
         for(int k=0;k<name.length;k++){
-            Label index=new Label(""+k);
-            Label n=new Label(name[k]);
-            Label r=new Label(""+record[k]);
+            Label index=new Label(""+(k+1)+")");
+            Label n=new Label(name[k]+": "+record[k]);
             players.add(index,0,k);
             players.add(n,1,k);
-            players.add(r,2,k);
         }
 
         Text title2=new Text("Il vincitore è:");
