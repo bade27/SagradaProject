@@ -42,7 +42,6 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
     {
         PORT = port;
         isConnected = false;
-
     }
 
     @Override

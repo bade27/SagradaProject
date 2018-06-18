@@ -182,7 +182,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
      * Real Choosing window method
      */
     public String chooseWindow(String[] s1, String[] s2)  throws ClientOutOfReachException
-    {/*
+    {
         if(chooseMap==null) {
             try {
                 graph.maps(s1, s2);
@@ -199,8 +199,8 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             }
         }
         String m = chooseMap;
-        chooseMap = null;*/
-        String m = s1[0];
+        chooseMap = null;
+        //String m = s1[0];
         graph.game();
         return m;
     }
