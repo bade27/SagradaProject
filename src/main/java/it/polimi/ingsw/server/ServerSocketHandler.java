@@ -55,8 +55,13 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
             {
                 case "move":
                     System.out.println("move entered");
-                    String objs = inSocket.readLine();
-                    receiveMove(objs);
+                    String mv = inSocket.readLine();
+                    receiveMove(mv);
+                    break;
+                case "pass_turn":
+                    System.out.println("pass entered");
+                    passTurn();
+                    break;
                 default:
                     System.out.println("Problem");
             }
@@ -262,71 +267,6 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
     }
     //</editor-fold>
 
-    //<editor-fold desc="Utilitites">
-
-    /**
-     * ping function to see if the client is reachable
-     *
-     * @return weather the client is reachable or not
-     */
-    public boolean ping()
-    {
-        //ping-pong communication
-        boolean reply = false;
-        try
-        {
-            outSocket.write("ping\n");
-            outSocket.flush();
-            String r = inSocket.readLine();
-            //String r = waitResponse();
-            //System.out.println("ping recive:" + r);
-            reply = r.equals("pong");
-        } catch (IOException ste)
-        {
-            ste.printStackTrace();
-            return false;
-        }
-        return reply;
-    }
-
-    public boolean isConnected()
-    {
-        return isConnected;
-    }
-
-    public boolean sendMessage(String s) throws ClientOutOfReachException
-    {
-        outSocket.write("msg\n");
-        if (outSocket.checkError())
-            isAlive = false;
-        StringBuilder msg = new StringBuilder(s);
-        msg.append("\n");
-        outSocket.write(msg.toString());
-        if (outSocket.checkError())
-            isAlive = false;
-
-        if (!isAlive)
-            throw new ClientOutOfReachException();
-        return true;
-    }
-
-    public boolean closeCommunication(String cause) throws ClientOutOfReachException
-    {
-        StringBuilder sb = new StringBuilder(cause);
-        outSocket.write("close\n");
-        outSocket.flush();
-        sb.append("\n");
-        outSocket.write(sb.toString());
-        return outSocket.checkError();
-    }
-
-    public void setMatch(MatchHandler match)
-    {
-        this.match = match;
-    }
-
-    //</editor-fold>
-
     //<editor-fold desc="Update clients">
 
     /**
@@ -352,8 +292,6 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
                 outSocket.write(windows.toString());
                 outSocket.flush();
                 response = inSocket.readLine();
-                //response = waitResponse();
-                System.out.println("update: " + msg + " response: " + response);
                 isAlive = true;
             } else
                 isAlive = false;
@@ -473,7 +411,6 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
                 outSocket.write("doTurn\n");
                 outSocket.flush();
                 response = inSocket.readLine();
-                System.out.println("doTurn Response: " + response);
                 isAlive = true;
             } else
                 isAlive = false;
@@ -537,6 +474,20 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
             e.printStackTrace();
         }
     }
+
+    private void passTurn()
+    {
+        try
+        {
+            outSocket.write("Turn passed\n");
+            outSocket.flush();
+            notifyServer();
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogFile.addLog("Impossible to notify end turn");
+        }
+    }
+
     //</editor-fold>
 
     //<editor-fold desc="End Game Phase">
@@ -581,16 +532,73 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
     }*/
     //</editor-fold>
 
+    //<editor-fold desc="Ping test">
 
+    /**
+     * ping function to see if the client is reachable
+     *
+     * @return weather the client is reachable or not
+     */
+    public boolean ping()
+    {
+        //ping-pong communication
+        boolean reply = false;
+        try
+        {
+            outSocket.write("ping\n");
+            outSocket.flush();
+            String r = inSocket.readLine();
+            //String r = waitResponse();
+            //System.out.println("ping recive:" + r);
+            reply = r.equals("pong");
+        } catch (IOException ste)
+        {
+            ste.printStackTrace();
+            return false;
+        }
+        return reply;
+    }
 
+    public boolean isConnected()
+    {
+        return isConnected;
+    }
+
+    public boolean sendMessage(String s) throws ClientOutOfReachException
+    {
+        outSocket.write("msg\n");
+        if (outSocket.checkError())
+            isAlive = false;
+        StringBuilder msg = new StringBuilder(s);
+        msg.append("\n");
+        outSocket.write(msg.toString());
+        if (outSocket.checkError())
+            isAlive = false;
+
+        if (!isAlive)
+            throw new ClientOutOfReachException();
+        return true;
+    }
+
+    public boolean closeCommunication(String cause) throws ClientOutOfReachException
+    {
+        StringBuilder sb = new StringBuilder(cause);
+        outSocket.write("close\n");
+        outSocket.flush();
+        sb.append("\n");
+        outSocket.write(sb.toString());
+        return outSocket.checkError();
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="Utilities">
     private void startDaemon ()
     {
         try
         {
-            //Test
             deamon = new Thread(this);
             deamon.start();
-            //Test
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -602,5 +610,22 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
         this.adapter = adapter;
     }
 
-
+    public void setMatch(MatchHandler match)
+    {
+        this.match = match;
+    }
+    /**
+     * Notify server the end of current turn
+     */
+    private void notifyServer ()
+    {
+        try{
+            adapter.setTurnDone(true);
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println(e.getMessage());
+            Thread.currentThread().interrupt();
+        }
+    }
+    //</editor-fold>
 }

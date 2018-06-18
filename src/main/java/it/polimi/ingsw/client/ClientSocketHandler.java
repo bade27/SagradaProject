@@ -317,9 +317,6 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
         try
         {
             JSONObject json = JSONFacilities.encodeMove(coord,pair);
-            //boolean reachable = ping();
-            //if (reachable)
-            //{
             try
             {
                 outSocket.write("move\n");
@@ -328,37 +325,38 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
                 move.append("\n");
                 outSocket.write(move.toString());
                 outSocket.flush();
-
-                //TimeUnit.SECONDS.sleep(1);//why?
-                System.out.println("Move sended");
                 response = waitResponse();
             }
             catch (Exception e) {
                 e.printStackTrace();
             }
-
-            /*} else
-                isAlive = false;*/
-
-            //if (!isAlive)
-
         } catch (JSONException je)
         {
-            /*LogFile.addLog("JSON can't encrypt client message", je.getStackTrace());
-            throw new ClientOutOfReachException();*/
             je.printStackTrace();
         }
 
         return response;
     }
-    //</editor-fold>
-
 
     @Override
     public String passTurn() throws RemoteException
     {
-        return null;
+        String response = "";
+        try
+        {
+            outSocket.write("pass_turn\n");
+            outSocket.flush();
+            response = waitResponse();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return response;
     }
+    //</editor-fold>
+
+
+
 
     @Override
     public String askToolPermission(int nrTool) throws RemoteException
