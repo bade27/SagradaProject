@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+import com.sun.javafx.scene.layout.region.BorderStrokeStyleSequenceConverter;
 import it.polimi.ingsw.GUI;
 import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.client.ToolAction;
@@ -8,6 +9,7 @@ import javafx.application.Application;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.VBox;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -25,6 +27,7 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
 import java.rmi.RemoteException;
 import java.util.*;
 import java.util.List;
@@ -93,6 +96,8 @@ public class SagradaGUI extends Application implements GUI {
         b.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 try {
+                    String [] n={"Tizio","Caio","Sempronio","Boh"};
+                    int [] p={245,572,345,1000};
                     login("inserisci nome, indirizzo e connessione");                                       ///////////
                 }catch(Exception e){
                     e.printStackTrace();
@@ -150,15 +155,19 @@ public class SagradaGUI extends Application implements GUI {
 
         ObservableList<String> type = FXCollections.observableArrayList("RMI", "Socket");
         ComboBox connection=new ComboBox(type);
-        connection.setPromptText("Scegliere tipo di connessione...");
+        connection.setPromptText("RMI...");
         c.add(connection,0,0);
-        c.add(new Label("(default RMI)"),0,1);
+        Text txcon=new Text("tipo di connessione");
+        txcon.setFont(Font.font("Tahoma", FontWeight.NORMAL, 15));
+        c.add(txcon,1,0);
+        c.setHgap(30);
+
         login.add(c,0,3);
 
         login.setVgap(15);
         name.setHgap(10);
         ip.setHgap(10);
-        c.setHgap(5);
+        c.setHgap(20);
         c.setVgap(5);
 
         Text t=new Text(s);
@@ -435,8 +444,64 @@ public class SagradaGUI extends Application implements GUI {
 
     }
 
-    public void endGame(String name, int record){
+    public void endGame(String [] name, int [] record){
+        int max=0;
+        String tempName;
+        int tempRecord;
+        Label title1=new Label("FINE PARTITA!!!");
+        title1.setFont(Font.font("verdana",  FontWeight.BOLD, FontPosture.REGULAR,40));
+        VBox resultsRoot=new VBox();
+        GridPane players=new GridPane();
+        VBox winner=new VBox();
+        resultsRoot.getChildren().add(title1);
+        resultsRoot.getChildren().add(players);
+        resultsRoot.getChildren().add(winner);
 
+        for(int i=0;i<name.length-1;i++){
+            for(int j=i+1;j<name.length;j++) {
+                if (record[j] > record[i]) {
+
+                    tempName=name[j];
+                    name[j]=name[i];
+                    name[i]=tempName;
+
+                    tempRecord=record[j];
+                    record[j]=record[i];
+                    record[i]=tempRecord;
+                }
+            }
+        }
+
+        for(int k=0;k<name.length;k++){
+            Label index=new Label(""+k);
+            Label n=new Label(name[k]);
+            Label r=new Label(""+record[k]);
+            players.add(index,0,k);
+            players.add(n,1,k);
+            players.add(r,2,k);
+        }
+
+        Text title2=new Text("Il vincitore è:");
+        title2.setFont(Font.font("verdana",  FontWeight.BOLD, FontPosture.REGULAR,20));
+        title2.setFill(Color.INDIANRED);
+        winner.getChildren().add(title2);
+        Label playerOne= new Label(name[0]+":\t"+record[0]);
+
+        winner.getChildren().add(playerOne);
+        Text title3=new Text("Congratulazioni "+name[0]+" !!!");
+        title3.setFill(Color.FORESTGREEN);
+        winner.getChildren().add(title3);
+
+        winner.setSpacing(10);
+        winner.setAlignment(Pos.CENTER);
+        playerOne.setAlignment(Pos.CENTER);
+        players.setAlignment(Pos.CENTER);
+        resultsRoot.setAlignment(Pos.CENTER);
+        players.setHgap(30);
+        players.setVgap(10);
+        resultsRoot.setSpacing(40);
+        stage.getScene().setRoot(resultsRoot);
+        stage.setResizable(false);
     }
 
     /**
