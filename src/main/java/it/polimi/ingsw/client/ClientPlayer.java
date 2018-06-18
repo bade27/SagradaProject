@@ -166,7 +166,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     {
         String choice = "";
         try {
-            TimeUnit.SECONDS.sleep(3);//why?
+            TimeUnit.SECONDS.sleep(1);//why?
             choice = chooseWindow(list.get(0),list.get(1));
         }
         catch (ClientOutOfReachException ex){
@@ -183,7 +183,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
      */
     public String chooseWindow(String[] s1, String[] s2)  throws ClientOutOfReachException
     {
-        try {
+        /*try {
             graph.maps(s1,s2);
         }
         catch (Exception e){
@@ -199,7 +199,8 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             e.printStackTrace();
         }
         String m = chooseMap;
-        chooseMap = null;
+        chooseMap = null;*/
+        String m = s1[0];
         graph.game();
         return m;
     }
@@ -281,8 +282,9 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     }
 
     @Override
-    public void updateOpponents (String user, Pair[][] grids) {
+    public String updateOpponents (String user, Pair[][] grids) {
         graph.updateOpponents(grids, user);
+        return "ok";
     }
     //</editor-fold>
 

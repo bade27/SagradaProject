@@ -24,8 +24,9 @@ import java.util.Scanner;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
-public class ServerSocketHandler implements ClientRemoteInterface,Runnable
+public class ServerSocketHandler implements ClientRemoteInterface, Runnable
 {
     private int PORT;
     private Socket client;
@@ -54,36 +55,23 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
     @Override
     public void run()
     {
-        boolean stop = false;
-
         try
         {
-            action = null;
-            stop = true;
-            while ((action = inSocket.readLine()) != "close" && action != null)
+            action = inSocket.readLine();
+            switch (action)
             {
-                switch (action)
-                {
-                    case "move":
-                        String objs = inSocket.readLine();
-                        receiveMove(objs);
-                        continue;
-
-                    default:
-                        synchronized (syncronator) {
-                            syncronator.notifyAll();
-                        }
-                        continue;
-                }
-
+                case "move":
+                    System.out.println("move entered");
+                    String objs = inSocket.readLine();
+                    receiveMove(objs);
+                default:
+                    System.out.println("Problem");
             }
         } catch (IOException e)
         {
             e.printStackTrace();
         }
-
     }
-
 
 
     //<editor-fold desc="Connection Phase">
@@ -102,11 +90,6 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
             outSocket = new PrintWriter(new BufferedWriter(
                     new OutputStreamWriter(client.getOutputStream())), true);
             isConnected = true;
-
-            //Test
-            deamon = new Thread(this);
-            deamon.start();
-            //Test
 
         } catch (IOException | NullPointerException e)
         {
@@ -170,20 +153,27 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
     {
         String user = "";
 
-        boolean reachable = ping();
-        if (reachable)
+        try
         {
-            outSocket.write("login\n");
-            outSocket.flush();
-            outSocket.write("Inserisci username\n");
-            outSocket.flush();
-            user = waitResponse();
-            isAlive = true;
-        } else
-            isAlive = false;
+            boolean reachable = ping();
+            if (reachable)
+            {
+                outSocket.write("login\n");
+                outSocket.flush();
+                outSocket.write("Inserisci username\n");
+                outSocket.flush();
+                user = inSocket.readLine();
+                isAlive = true;
+            } else
+                isAlive = false;
 
-        if (!isAlive)
+            if (!isAlive)
+                throw new ClientOutOfReachException();
+        } catch (Exception e)
+        {
             throw new ClientOutOfReachException();
+        }
+
         return user;
 
     }
@@ -212,21 +202,23 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
                 windows.append("\n");
                 outSocket.write(windows.toString());
                 outSocket.flush();
-                response = waitResponse();
+
+                response = inSocket.readLine();
                 isAlive = true;
             } else
                 isAlive = false;
 
             if (!isAlive)
                 throw new ClientOutOfReachException();
-            outSocket.write("ok\n");
-            outSocket.flush();
         } catch (JSONException je)
         {
             LogFile.addLog("JSON can't encrypt client message", je.getStackTrace());
             throw new ClientOutOfReachException();
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+            throw new ClientOutOfReachException();
         }
-
         return response;
 
     }
@@ -255,7 +247,8 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
                 cards.append("\n");
                 outSocket.write(cards.toString());
                 outSocket.flush();
-                response = waitResponse();
+                //response = waitResponse();
+                response = inSocket.readLine();
                 isAlive = true;
             } else
                 isAlive = false;
@@ -266,7 +259,12 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
         {
             LogFile.addLog("JSON can't encrypt client message", je.getStackTrace());
             throw new ClientOutOfReachException();
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+            throw new ClientOutOfReachException();
         }
+
         return isAlive;
     }
     //</editor-fold>
@@ -286,9 +284,11 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
         {
             outSocket.write("ping\n");
             outSocket.flush();
-            String r = waitResponse();
+            String r = inSocket.readLine();
+            //String r = waitResponse();
+            //System.out.println("ping recive:" + r);
             reply = r.equals("pong");
-        } catch (ClientOutOfReachException ste )
+        } catch (IOException ste)
         {
             ste.printStackTrace();
             return false;
@@ -347,22 +347,32 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
     {
         String response = "";
 
-        boolean reachable = ping();
-        if (reachable)
+        try
         {
-            outSocket.write(msg);
-            outSocket.flush();
-            StringBuilder windows = new StringBuilder(json);
-            windows.append("\n");
-            outSocket.write(windows.toString());
-            outSocket.flush();
-            response = waitResponse();
-            isAlive = true;
-        } else
-            isAlive = false;
+            boolean reachable = ping();
+            if (reachable)
+            {
+                outSocket.write(msg);
+                outSocket.flush();
+                StringBuilder windows = new StringBuilder(json);
+                windows.append("\n");
+                outSocket.write(windows.toString());
+                outSocket.flush();
+                response = inSocket.readLine();
+                //response = waitResponse();
+                System.out.println("update: " + msg + " response: " + response);
+                isAlive = true;
+            } else
+                isAlive = false;
 
-        if (!isAlive)
+            if (!isAlive)
+                throw new ClientOutOfReachException();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
             throw new ClientOutOfReachException();
+        }
+
         return response;
     }
 
@@ -402,12 +412,12 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
     }
 
     @Override
-    public void updateOpponents(String user, Pair[][] grid) throws ClientOutOfReachException, RemoteException
+    public String updateOpponents(String user, Pair[][] grid) throws ClientOutOfReachException, RemoteException
     {
         try
         {
             JSONArray jsonArray = JSONFacilities.encodeMatrixPair(user, grid);
-            updateClient(jsonArray.toString(), "up_opponents\n");
+            return updateClient(jsonArray.toString(), "up_opponents\n");
         } catch (ClientOutOfReachException e)
         {
             throw new ClientOutOfReachException();
@@ -454,6 +464,7 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
     //</editor-fold>
 
     //<editor-fold desc="Turn Phase">
+
     /**
      * Send message to notify client about his turn
      */
@@ -461,55 +472,70 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
     public String doTurn() throws ClientOutOfReachException
     {
         String response = "";
-        boolean reachable = ping();
-        if (reachable)
+        try
         {
-            outSocket.write("doTurn\n");
-            outSocket.flush();
-            response = waitResponse();
-            isAlive = true;
-        } else
-            isAlive = false;
+            boolean reachable = ping();
+            if (reachable)
+            {
+                outSocket.write("doTurn\n");
+                outSocket.flush();
+                response = inSocket.readLine();
+                System.out.println("doTurn Response: " + response);
+                isAlive = true;
+            } else
+                isAlive = false;
 
-        if (!isAlive)
+            if (!isAlive)
+                throw new ClientOutOfReachException();
+
+            startDaemon();
+
+        } catch (Exception e)
+        {
+            e.printStackTrace();
             throw new ClientOutOfReachException();
-
+        }
         return response;
     }
 
     /**
      * Recive move from client and process it
+     *
      * @param message return message to client
      */
-    private void receiveMove (String message)
+    private void receiveMove(String message)
     {
         ArrayList arr = JSONFacilities.decodeMove(message);
 
-        Coordinates coord = new Coordinates((Integer)arr.get(0),(Integer)arr.get(1));
-        Pair pair = new Pair((Integer)arr.get(2),(ColorEnum)arr.get(3));
+        Coordinates coord = new Coordinates((Integer) arr.get(0), (Integer) arr.get(1));
+        Pair pair = new Pair((Integer) arr.get(2), (ColorEnum) arr.get(3));
 
         String response = "Impossibile eseguire la mossa";
         if (!adapter.CanMove())
             response = "Hai già mosso in questo turno";
         else
         {
-            try {
+            try
+            {
                 adapter.addDiceToBoard(coord.getI(), coord.getJ(), new Dice(pair.getValue(), pair.getColor()));
 
                 response = "Mossa applicata correttamente";
-            } catch (ModelException e) {
+            } catch (ModelException e)
+            {
                 response = e.getMessage();
             }
         }
         try
         {
-            outSocket.write("reply_move\n");
-            outSocket.flush();
             outSocket.write(response + "\n");
             outSocket.flush();
 
             match.updateClient();
-        }catch (Exception e){
+
+            startDaemon();
+
+        } catch (Exception e)
+        {
             e.printStackTrace();
             LogFile.addLog("Impossible to notify move");
         }
@@ -519,11 +545,11 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
 
     //<editor-fold desc="End Game Phase">
     @Override
-    public void sendResults(String[] user, int[] point) throws RemoteException,ClientOutOfReachException
+    public void sendResults(String[] user, int[] point) throws RemoteException, ClientOutOfReachException
     {
         try
         {
-            JSONArray jsonArray = JSONFacilities.encodeStringInteger(user,point);
+            JSONArray jsonArray = JSONFacilities.encodeStringInteger(user, point);
             updateClient(jsonArray.toString(), "up_results\n");
         } catch (ClientOutOfReachException e)
         {
@@ -559,22 +585,18 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
     }*/
     //</editor-fold>
 
-    //<editor-fold desc="Wait Response">
-    private String waitResponse () throws ClientOutOfReachException
+
+
+    private void startDaemon ()
     {
         try
         {
-            synchronized (syncronator) {
-                while (action == null)
-                    syncronator.wait();
-            }
-
-            String r = action;
-            action = null;
-            return r;
+            //Test
+            deamon = new Thread(this);
+            deamon.start();
+            //Test
         }catch (Exception e){
             e.printStackTrace();
-            throw new ClientOutOfReachException();
         }
 
     }
@@ -583,11 +605,6 @@ public class ServerSocketHandler implements ClientRemoteInterface,Runnable
     {
         this.adapter = adapter;
     }
-    //</editor-fold>
-
-
-
-
 
 
 }

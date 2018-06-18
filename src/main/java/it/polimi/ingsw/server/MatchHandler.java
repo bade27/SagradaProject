@@ -40,7 +40,7 @@ public class MatchHandler implements Runnable
     private UsersEntry userList;
 
     private final static int TURNS = 3;
-    private final static int MAXGIOC = 2;//Da modificare a 4
+    private final static int MAXGIOC = 1;//Da modificare a 4
 
     //connection parameters
     private static int RMI_REGISTRY_PORT;
@@ -109,11 +109,11 @@ public class MatchHandler implements Runnable
                     closeAllConnection();
 
                 //If number of players remaining are not enough the game will stop
-                if (token.getNumPlayers() <= 1)
+                /*if (token.getNumPlayers() <= 1)
                 {
                     endGame();
                     return;
-                }
+                }*/
 
                 //On end round situation
                 if (token.isEndRound())

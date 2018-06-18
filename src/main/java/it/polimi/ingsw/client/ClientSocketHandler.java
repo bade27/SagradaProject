@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 public class ClientSocketHandler implements Runnable, ServerRemoteInterface
 {
@@ -120,11 +121,6 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
                         task = executor.submit(() -> {doTurn();});
                         action = null;
                         continue;
-                    case "reply_move":
-                        synchronized (syncronator) {
-                            syncronator.notifyAll();
-                        }
-                        continue;
                     case "close":
                         stop = true;
                         break;
@@ -135,6 +131,9 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
                     case "content":
                         continue;
                     default:
+                        synchronized (syncronator) {
+                            syncronator.notifyAll();
+                        }
                         continue;
                 }
                 if (stop)
@@ -208,6 +207,7 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
                 dices[i] = arr.get(i);
             player.updateGraphic(dices);
             outSocket.write("ok\n");
+            outSocket.flush();
             return outSocket.checkError();
         } catch (Exception e)
         {
@@ -230,6 +230,7 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
             }
             player.updateGraphic(board);
             outSocket.write("ok\n");
+            outSocket.flush();
             return outSocket.checkError();
         } catch (Exception e)
         {
@@ -249,6 +250,7 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
 
             player.updateRoundTrace(round);
             outSocket.write("ok\n");
+            outSocket.flush();
             return outSocket.checkError();
         } catch (Exception e)
         {
@@ -264,6 +266,7 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
             int toks = JSONFacilities.decodeInteger(json);
             player.updateTokens(toks);
             outSocket.write("ok\n");
+            outSocket.flush();
             return outSocket.checkError();
         } catch (Exception e)
         {
@@ -287,6 +290,7 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
             }
             player.updateOpponents(user, board);
             outSocket.write("ok\n");
+            outSocket.flush();
             return outSocket.checkError();
         } catch (Exception e)
         {
@@ -301,6 +305,7 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
     {
         player.doTurn();
         outSocket.write("ok\n");
+        outSocket.flush();
         return outSocket.checkError();
     }
 
@@ -323,6 +328,9 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
                 move.append("\n");
                 outSocket.write(move.toString());
                 outSocket.flush();
+
+                //TimeUnit.SECONDS.sleep(1);//why?
+                System.out.println("Move sended");
                 response = waitResponse();
             }
             catch (Exception e) {
@@ -409,6 +417,7 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
             }
             player.sendResults(user, point);
             outSocket.write("ok\n");
+            outSocket.flush();
             return outSocket.checkError();
         } catch (Exception e)
         {
@@ -463,7 +472,7 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
                 while (action == null)
                     syncronator.wait();
             }
-            String r = inSocket.readLine();
+            String r = action;
             action = null;
             return r;
         }catch (Exception e){

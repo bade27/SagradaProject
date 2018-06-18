@@ -17,6 +17,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.rmi.RemoteException;
 import java.util.Arrays;
 import java.util.concurrent.*;
 
@@ -87,6 +88,7 @@ public class ServerPlayer implements Runnable
                 initializeCards();
             }
             catch (ClientOutOfReachException|ModelException ex) {
+                ex.printStackTrace();
                 //Notify token that client is dead
                 token.deletePlayer(user);
                 closeConnection("Timeout Expired");
