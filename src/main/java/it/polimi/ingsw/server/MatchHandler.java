@@ -40,8 +40,8 @@ public class MatchHandler implements Runnable
     private RoundTrace roundTrace;
     private UsersEntry userList;
 
-    private final static int TURNS = 3;
-    private final static int MAXGIOC = 2;//Da modificare a 4
+    private final static int TURNS = 10;
+    private final static int MAXGIOC = 3;//Da modificare a 4
 
     //connection parameters
     private static int RMI_REGISTRY_PORT;
