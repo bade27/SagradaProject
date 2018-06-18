@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server;
 
-import com.sun.corba.se.spi.activation.Server;
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.exceptions.ModelException;
 import it.polimi.ingsw.model.ColorEnum;
@@ -8,7 +7,6 @@ import it.polimi.ingsw.model.Dice;
 import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
 import it.polimi.ingsw.remoteInterface.Coordinates;
 import it.polimi.ingsw.remoteInterface.Pair;
-import it.polimi.ingsw.remoteInterface.ServerRemoteInterface;
 import it.polimi.ingsw.utilities.JSONFacilities;
 import it.polimi.ingsw.utilities.LogFile;
 import org.json.JSONArray;
@@ -20,11 +18,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 public class ServerSocketHandler implements ClientRemoteInterface, Runnable
 {
@@ -505,41 +498,44 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
      */
     private void receiveMove(String message)
     {
-        ArrayList arr = JSONFacilities.decodeMove(message);
-
-        Coordinates coord = new Coordinates((Integer) arr.get(0), (Integer) arr.get(1));
-        Pair pair = new Pair((Integer) arr.get(2), (ColorEnum) arr.get(3));
-
-        String response = "Impossibile eseguire la mossa";
-        if (!adapter.CanMove())
-            response = "Hai già mosso in questo turno";
-        else
-        {
-            try
-            {
-                adapter.addDiceToBoard(coord.getI(), coord.getJ(), new Dice(pair.getValue(), pair.getColor()));
-
-                response = "Mossa applicata correttamente";
-            } catch (ModelException e)
-            {
-                response = e.getMessage();
-            }
-        }
         try
         {
-            outSocket.write(response + "\n");
-            outSocket.flush();
+            ArrayList arr = JSONFacilities.decodeMove(message);
+            Coordinates coord = new Coordinates((Integer) arr.get(0), (Integer) arr.get(1));
+            Pair pair = new Pair((Integer) arr.get(2), (ColorEnum) arr.get(3));
 
-            match.updateClient();
+            String response = "Impossibile eseguire la mossa";
+            if (!adapter.CanMove())
+                response = "Hai già mosso in questo turno";
+            else
+            {
+                try
+                {
+                    adapter.addDiceToBoard(coord.getI(), coord.getJ(), new Dice(pair.getValue(), pair.getColor()));
 
-            startDaemon();
+                    response = "Mossa applicata correttamente";
+                } catch (ModelException e)
+                {
+                    response = e.getMessage();
+                }
+            }
+            try
+            {
+                outSocket.write(response + "\n");
+                outSocket.flush();
 
-        } catch (Exception e)
-        {
+                match.updateClient();
+
+                startDaemon();
+
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+                LogFile.addLog("Impossible to notify move");
+            }
+        }catch (JSONException e){
             e.printStackTrace();
-            LogFile.addLog("Impossible to notify move");
         }
-
     }
     //</editor-fold>
 

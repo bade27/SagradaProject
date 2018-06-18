@@ -28,6 +28,7 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 public class MatchHandler implements Runnable
 {
@@ -50,6 +51,42 @@ public class MatchHandler implements Runnable
     private int progressive;
     private int nConn;
 
+    private final Object lockOnnConn = new Object();
+    private final Object gameCannotStartYet = new Object();
+    private Thread timer;
+    private final int threshold = 2;
+    private final int sleepTime = 10;
+
+    private class ConnectionTimer implements Runnable {
+        @Override
+        public void run() {
+            synchronized (lockOnnConn) {
+                while (nConn < threshold) {
+                    try {
+                        lockOnnConn.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            System.out.println("dormo");
+            try {
+                TimeUnit.SECONDS.sleep(sleepTime);
+            } catch (InterruptedException e) {
+                return;
+            }
+
+            System.out.println("mi sveglio");
+            synchronized (gameCannotStartYet) {
+                gameCannotStartYet.notifyAll();
+            }
+
+            token.stopSetup();
+
+        }
+    }
+
 
     public synchronized void run ()
     {
@@ -61,6 +98,17 @@ public class MatchHandler implements Runnable
             return;
         }
 
+
+        //When thread that accept client's connection has the right number of clients, all clients connected will be initialized
+        try{
+            synchronized (gameCannotStartYet){
+                while (nConn < threshold)
+                    gameCannotStartYet.wait();
+            }
+        }catch (Exception e){
+            LogFile.addLog("Fatal Error: Impossible to put in wait Server");
+            Thread.currentThread().interrupt();
+        }
 
         initializeClients();
         System.out.println(">>>Connection Phase Ended");
@@ -98,9 +146,7 @@ public class MatchHandler implements Runnable
 
         turnsPlayed = 0;
 
-        boolean b = true;
-
-        while (b)
+        while (true)
         {
             synchronized (token.getSynchronator())
             {
@@ -221,6 +267,8 @@ public class MatchHandler implements Runnable
      */
     private boolean initializeServer ()
     {
+        timer = new Thread(new ConnectionTimer());
+        timer.start();
         LogFile.createLogFile();
         player = new ArrayList<ServerPlayer>();
         token = new TokenTurn();
@@ -236,7 +284,8 @@ public class MatchHandler implements Runnable
             LogFile.addLog("Impossible to read settings parameters" , e.getStackTrace());
             return false;
         }
-        nConn = 0;
+        //nConn = 0;
+        setnConn(0);
 
 
         System.out.println(">>>Server started");
@@ -246,17 +295,6 @@ public class MatchHandler implements Runnable
         InitializerConnection initializer = new InitializerConnection(this);
         initializer.start();
 
-        //When thread that accept client's connection has the right number of clients, all clients connected will be initialized
-        try{
-            synchronized (token.getSynchronator()){
-                while (nConn < MAXGIOC)
-                    token.getSynchronator().wait();
-            }
-        }catch (Exception e){
-            LogFile.addLog("Fatal Error: Impossible to put in wait Server");
-            Thread.currentThread().interrupt();
-            return false;
-        }
         return true;
     }
 
@@ -270,11 +308,13 @@ public class MatchHandler implements Runnable
         try
         {
             //Check connection status
-            nConn = MAXGIOC - checkClientAlive();
-            LogFile.addLog("Number of client(s) connected:" + nConn);
-            token.setInitNumberOfPlayers(nConn);
+            //nConn = MAXGIOC - checkClientAlive();
+            subFromnConn(checkClientAlive());
+            int n = getnConn();
+            LogFile.addLog("Number of client(s) connected:" + n/*nConn*/);
+            token.setInitNumberOfPlayers(n/*nConn*/);
             //Starting of all ServerPlayer
-            for (int i = 0; i <nConn ; i++)
+            for (int i = 0; i < n/*nConn*/ ; i++)
             {
                 Thread t = new Thread(player.get(i));
                 t.start();
@@ -296,7 +336,7 @@ public class MatchHandler implements Runnable
     private ServerModelAdapter clientRegistration (ClientRemoteInterface cli)
     {
         //If max number of connection is reached communicate the client he is one too many
-        if (nConn == MAXGIOC)
+        if (/*nConn*/getnConn() == MAXGIOC)
         {
             try {
                 LogFile.addLog("Client Rejected cause too many client connected");
@@ -311,24 +351,28 @@ public class MatchHandler implements Runnable
         ServerModelAdapter adp = new ServerModelAdapter(dices, roundTrace, token);
         ServerPlayer pl = new ServerPlayer(token,adp,userList,cli);
         player.add(pl);
-        nConn++;
+        //nConn++;
+        addTonConn(1);
         int n = checkClientAlive();
         clientConnectionUpdateMessage("connessi");
-        nConn = nConn-n;
+        //nConn = nConn-n;
+        subFromnConn(n);
 
-        try
+        //If max number of connection is reached starts game
+        if (/*nConn*/getnConn() == MAXGIOC)
         {
-            //If max number of connection is reached starts game
-            if (nConn == MAXGIOC)
-            {
-                synchronized (token.getSynchronator()){
-                    token.getSynchronator().notifyAll();
-                }
+            synchronized (gameCannotStartYet){
+                gameCannotStartYet.notifyAll();
             }
-        }catch ( Exception e){
-            e.printStackTrace();
-            LogFile.addLog("Impossible to notify server handler");
+            timer.interrupt();
         }
+
+        if(getnConn() == threshold) {
+            synchronized (lockOnnConn) {
+                lockOnnConn.notifyAll();
+            }
+        }
+
         return adp;
     }
 
@@ -359,6 +403,30 @@ public class MatchHandler implements Runnable
         return clientRegistration(cli);
     }
     //</editor-fold>
+
+    public int getnConn() {
+        synchronized (lockOnnConn) {
+            return nConn;
+        }
+    }
+
+    public void addTonConn(int n) {
+        synchronized (lockOnnConn) {
+            this.nConn += n;
+        }
+    }
+
+    public void subFromnConn(int n) {
+        synchronized (lockOnnConn) {
+            this.nConn -= n;
+        }
+    }
+
+    public void setnConn(int nConn) {
+        synchronized (lockOnnConn) {
+            this.nConn = nConn;
+        }
+    }
 
     //<editor-fold desc="Setup Phase">
     /**
@@ -428,7 +496,8 @@ public class MatchHandler implements Runnable
             return false;
         }
 
-        for (int i = 0; i < nConn ; i++)
+        int n = getnConn();
+        for (int i = 0; i < n/*nConn*/ ; i++)
         {
             //Pick up 2 random cards
             if (cards.size() > 2) {
@@ -475,7 +544,8 @@ public class MatchHandler implements Runnable
         try
         {
             //For each players initialize his own private objective randomly
-            for (int i=0;i<nConn;i++)
+            int n = getnConn();
+            for (int i=0;i<n/*nConn*/;i++)
             {
                 c = (int)(Math.random()* (cards.size()));
                 player.get(i).setPrivateObjCard(cards.get(c));
@@ -524,7 +594,8 @@ public class MatchHandler implements Runnable
             }
 
             //For each players initialize public objective already selected
-            for (int i=0;i<nConn;i++)
+            int n = getnConn();
+            for (int i=0;i<n/*nConn*/;i++)
                 player.get(i).setPublicObjCard(pubObjs);
         }
         catch (Exception ex) {
@@ -571,7 +642,8 @@ public class MatchHandler implements Runnable
             }
 
             //For each players initialize tool cards already selected
-            for (int i=0;i<nConn;i++)
+            int n = getnConn();
+            for (int i=0;i< n/*nConn*/;i++)
                 player.get(i).setToolCards(tools);
         }
         catch (Exception ex) {

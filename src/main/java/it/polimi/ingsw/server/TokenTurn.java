@@ -1,7 +1,5 @@
 package it.polimi.ingsw.server;
 
-import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
-
 import java.util.ArrayList;
 
 public class TokenTurn
@@ -445,6 +443,10 @@ public class TokenTurn
     {
         onSetup = true;
         playerEndSetup = 0;
+    }
+
+    public synchronized void stopSetup() {
+        onSetup = false;
     }
 
     /**
