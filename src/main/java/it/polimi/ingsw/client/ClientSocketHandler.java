@@ -5,6 +5,7 @@ import com.sun.org.apache.xpath.internal.operations.Bool;
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.remoteInterface.*;
 import it.polimi.ingsw.utilities.JSONFacilities;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -356,19 +357,54 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
     //</editor-fold>
 
 
-
-
+    //<editor-fold desc="Tool Phase">
     @Override
     public String askToolPermission(int nrTool) throws RemoteException
     {
-        return null;
+        String response = "";
+        try
+        {
+            outSocket.write("ask_tool\n");
+            outSocket.flush();
+            outSocket.write(nrTool + "\n");
+            outSocket.flush();
+            response = waitResponse();
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+        }
+        return response;
     }
 
     @Override
     public String useTool(Pair p, String ins) throws RemoteException
     {
-        return null;
+        String response = "";
+
+        try
+        {
+            JSONArray json = JSONFacilities.encodeTool(p,ins);
+            try
+            {
+                outSocket.write("use_tool_type0\n");
+                outSocket.flush();
+                StringBuilder move = new StringBuilder(json.toString());
+                move.append("\n");
+                outSocket.write(move.toString());
+                outSocket.flush();
+                response = waitResponse();
+            }
+            catch (Exception e) {
+                e.printStackTrace();
+            }
+        } catch (JSONException je)
+        {
+            je.printStackTrace();
+        }
+
+        return response;
     }
+    //</editor-fold>
 
     @Override
     public String useTool(Coordinates sartCoord, Coordinates endCoord) throws RemoteException

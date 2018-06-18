@@ -276,4 +276,37 @@ public class JSONFacilities
         return ret;
     }
     //</editor-fold>
+
+    public static JSONArray encodeTool (Pair p, String s) throws JSONException
+    {
+        JSONArray jsonArray = new JSONArray();
+        JSONObject obj = new JSONObject();
+        if (p.getColor() != null)
+            obj.put("color",p.getColor().toString());
+        else
+            obj.put("color","n/d");
+        obj.put("value",p.getValue());
+        jsonArray.put(obj);
+        jsonArray.put(s);
+        return jsonArray;
+    }
+
+    public static ArrayList decodeTool (int type,String message) throws JSONException
+    {
+        JSONArray jsonArray = new JSONArray(message);
+        ArrayList<Wrapper> ret = new ArrayList<Wrapper>();
+        switch (type)
+        {
+            case 0:
+                JSONObject obj = (JSONObject)jsonArray.get(0);
+                ret.add(new Wrapper(new Pair((int)obj.get("value"),ColorEnum.getColor((String)obj.get("color")))));
+                ret.add(new Wrapper(jsonArray.get(1)));
+                break;
+            case 1:
+                break;
+
+        }
+
+        return ret;
+    }
 }

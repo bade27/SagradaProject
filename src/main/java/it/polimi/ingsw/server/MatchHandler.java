@@ -54,7 +54,7 @@ public class MatchHandler implements Runnable
     private final Object lockOnnConn = new Object();
     private final Object gameCannotStartYet = new Object();
     private Thread timer;
-    private final int threshold = MAXGIOC;
+    private final int threshold = 2;
     private final int sleepTime = 10;
 
     private class ConnectionTimer implements Runnable {
@@ -155,11 +155,11 @@ public class MatchHandler implements Runnable
                     closeAllConnection();
 
                 //If number of players remaining are not enough the game will stop
-                /*if (token.getNumPlayers() <= 1)
+                if (token.getNumPlayers() <= 1)
                 {
                     endGame();
                     return;
-                }*/
+                }
 
                 //On end round situation
                 if (token.isEndRound())
@@ -640,6 +640,10 @@ public class MatchHandler implements Runnable
                 c = toolNum.get(i);
                 tools[i] = ToolsFactory.getTools(toolNames[c]);
             }
+
+            tools[0] = ToolsFactory.getTools(toolNames[0]);
+            tools[1] = ToolsFactory.getTools(toolNames[5]);
+            tools[2] = ToolsFactory.getTools(toolNames[9]);
 
             //For each players initialize tool cards already selected
             int n = getnConn();

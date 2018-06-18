@@ -9,6 +9,7 @@ import it.polimi.ingsw.remoteInterface.Coordinates;
 import it.polimi.ingsw.remoteInterface.Pair;
 import it.polimi.ingsw.utilities.JSONFacilities;
 import it.polimi.ingsw.utilities.LogFile;
+import it.polimi.ingsw.utilities.Wrapper;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -62,11 +63,21 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
                     //System.out.println("pass entered");
                     passTurn();
                     break;
+                case "ask_tool":
+                    //System.out.println("ask tool entered");
+                    int nrTool = Integer.parseInt(inSocket.readLine());
+                    askToolRequest(nrTool);
+                    break;
+                case "use_tool_type0":
+                    //System.out.println("ask tool entered");
+                    String tl = inSocket.readLine();
+                    useTool(0,tl);
+                    break;
+
                 default:
                     System.out.println("Problem");
             }
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -492,6 +503,55 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
     }
 
     //</editor-fold>
+
+    //<editor-fold desc="Tool Phase">
+    /**
+     * Request for using tool from client
+     * @param nrTool number of tool required
+     */
+    private void askToolRequest (int nrTool)
+    {
+        try
+        {
+            String s = adapter.toolRequest(nrTool);
+            outSocket.write(s + "\n");
+            outSocket.flush();
+            startDaemon();
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogFile.addLog("Impossible to notify end turn");
+        }
+    }
+
+    /**
+     *
+     * @param message
+     */
+    private void useTool (int type,String message)
+    {
+        try
+        {
+            ArrayList<Wrapper> parameters = JSONFacilities.decodeTool(type,message);
+            String ret = adapter.useTool(parameters.get(0), parameters.get(1));
+
+            match.updateClient();
+
+            outSocket.write(ret + "\n");
+            outSocket.flush();
+            startDaemon();
+        } catch (JSONException jre){
+            jre.printStackTrace();
+            LogFile.addLog("Impossible to decrypt JSON");
+        }catch (Exception e) {
+            e.printStackTrace();
+            LogFile.addLog("Impossible to notify use tool");
+        }
+    }
+
+
+    //</editor-fold>
+
+
 
     //<editor-fold desc="End Game Phase">
     @Override

@@ -217,7 +217,6 @@ public class ServerPlayer implements Runnable
         String s1;
         try {
             s1 = stopTask(() -> communicator.chooseWindow(windowCard1, windowCard2), INIT_TIMEOUT, executor);//To change with ACTION when implement user choice
-            //s1 = communicator.chooseWindow(windowCard1,windowCard2);
             if(s1 == null)
             {
                 LogFile.addLog("(User:" + user + ") Failed to initialize Windows");
