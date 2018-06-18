@@ -54,12 +54,12 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
             switch (action)
             {
                 case "move":
-                    System.out.println("move entered");
+                    //System.out.println("move entered");
                     String mv = inSocket.readLine();
                     receiveMove(mv);
                     break;
                 case "pass_turn":
-                    System.out.println("pass entered");
+                    //System.out.println("pass entered");
                     passTurn();
                     break;
                 default:
@@ -475,6 +475,9 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
         }
     }
 
+    /**
+     * Receive from client his intention to pass turn and notify server about it
+     */
     private void passTurn()
     {
         try
