@@ -68,10 +68,16 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
                     askToolRequest(nrTool);
                     break;
                 case "use_tool_type0":
-                    //System.out.println("ask tool entered");
-                    String tl = inSocket.readLine();
-                    useTool(0,tl);
+                    //System.out.println("tool 0 entered");
+                    String tool0 = inSocket.readLine();
+                    useTool(0,tool0);
                     break;
+                case "use_tool_type1":
+                    //System.out.println("tool 1 entered");
+                    String tool1 = inSocket.readLine();
+                    useTool(1,tool1);
+                    break;
+
 
                 default:
                     System.out.println("Problem");
@@ -530,8 +536,11 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
     {
         try
         {
+            String ret ="Tool non eseguito";
             ArrayList<Wrapper> parameters = JSONFacilities.decodeTool(type,message);
-            String ret = adapter.useTool(parameters.get(0), parameters.get(1));
+
+            if (parameters.size() == 2)
+                ret = adapter.useTool(parameters.get(0), parameters.get(1));
 
             match.updateClient();
 

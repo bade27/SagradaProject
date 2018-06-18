@@ -41,7 +41,7 @@ public class MatchHandler implements Runnable
     private UsersEntry userList;
 
     private final static int TURNS = 10;
-    private final static int MAXGIOC = 3;//Da modificare a 4
+    private final static int MAXGIOC = 2;//Da modificare a 4
 
     //connection parameters
     private static int RMI_REGISTRY_PORT;
@@ -642,8 +642,8 @@ public class MatchHandler implements Runnable
             }
 
             tools[0] = ToolsFactory.getTools(toolNames[0]);
-            tools[1] = ToolsFactory.getTools(toolNames[5]);
-            tools[2] = ToolsFactory.getTools(toolNames[9]);
+            tools[1] = ToolsFactory.getTools(toolNames[1]);
+            tools[2] = ToolsFactory.getTools(toolNames[2]);
 
             //For each players initialize tool cards already selected
             int n = getnConn();

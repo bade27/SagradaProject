@@ -376,27 +376,33 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
         return response;
     }
 
+    private String sendTool (String msg,String json)
+    {
+        String response = "";
+        try
+        {
+            outSocket.write(msg + "\n");
+            outSocket.flush();
+            StringBuilder move = new StringBuilder(json);
+            move.append("\n");
+            outSocket.write(move.toString());
+            outSocket.flush();
+            response = waitResponse();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return response;
+    }
+
     @Override
     public String useTool(Pair p, String ins) throws RemoteException
     {
         String response = "";
-
         try
         {
             JSONArray json = JSONFacilities.encodeTool(p,ins);
-            try
-            {
-                outSocket.write("use_tool_type0\n");
-                outSocket.flush();
-                StringBuilder move = new StringBuilder(json.toString());
-                move.append("\n");
-                outSocket.write(move.toString());
-                outSocket.flush();
-                response = waitResponse();
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
+            response = sendTool("use_tool_type0",json.toString());
         } catch (JSONException je)
         {
             je.printStackTrace();
@@ -404,13 +410,28 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
 
         return response;
     }
-    //</editor-fold>
 
     @Override
     public String useTool(Coordinates sartCoord, Coordinates endCoord) throws RemoteException
     {
-        return null;
+        String response = "";
+        try
+        {
+            JSONArray json = JSONFacilities.encodeTool(sartCoord,endCoord);
+            response = sendTool("use_tool_type1",json.toString());
+        } catch (JSONException je)
+        {
+            je.printStackTrace();
+        }
+
+        return response;
     }
+
+
+
+    //</editor-fold>
+
+
 
     @Override
     public String useTool(Pair p, Coordinates sartCoord1, Coordinates endCoord1, Coordinates sartCoord2, Coordinates endCoord2) throws RemoteException

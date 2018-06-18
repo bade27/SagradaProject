@@ -277,6 +277,8 @@ public class JSONFacilities
     }
     //</editor-fold>
 
+
+    //<editor-fold desc="JSON for tools">
     public static JSONArray encodeTool (Pair p, String s) throws JSONException
     {
         JSONArray jsonArray = new JSONArray();
@@ -288,6 +290,22 @@ public class JSONFacilities
         obj.put("value",p.getValue());
         jsonArray.put(obj);
         jsonArray.put(s);
+        return jsonArray;
+    }
+
+    public static JSONArray encodeTool (Coordinates c1,Coordinates c2) throws JSONException
+    {
+        JSONArray jsonArray = new JSONArray();
+        JSONObject obj1 = new JSONObject();
+        JSONObject obj2 = new JSONObject();
+
+        obj1.put("coord_i",c1.getI());
+        obj1.put("coord_j",c1.getJ());
+        obj2.put("coord_i",c2.getI());
+        obj2.put("coord_j",c2.getJ());
+
+        jsonArray.put(obj1);
+        jsonArray.put(obj2);
         return jsonArray;
     }
 
@@ -303,10 +321,15 @@ public class JSONFacilities
                 ret.add(new Wrapper(jsonArray.get(1)));
                 break;
             case 1:
+                JSONObject c1 = (JSONObject)jsonArray.get(0);
+                JSONObject c2 = (JSONObject)jsonArray.get(1);
+                ret.add(new Wrapper(new Coordinates((Integer)c1.get("coord_i"),(Integer)c1.get("coord_j"))));
+                ret.add(new Wrapper(new Coordinates((Integer)c2.get("coord_i"),(Integer)c2.get("coord_j"))));
                 break;
 
         }
 
         return ret;
     }
+    //</editor-fold>
 }
