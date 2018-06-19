@@ -343,9 +343,21 @@ public class JSONFacilities
      * Encode tool overload for tool type 3 (no parameters needed)
      * @return JSON with encoded parameters
      */
-    public static JSONArray encodeTool ()
+    public static JSONArray encodeTool () throws JSONException
     {
         return new JSONArray();
+    }
+
+    /**
+     * Encode tool overload for tool type 3 (no parameters needed)
+     * @return JSON with encoded parameters
+     */
+    public static JSONArray encodeTool(Pair dadieraDie,Coordinates fstDieStartPosition)throws JSONException
+    {
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.put(encodePair(dadieraDie));
+        jsonArray.put(encodeCoordinates(fstDieStartPosition));
+        return jsonArray;
     }
 
     /**
@@ -381,6 +393,10 @@ public class JSONFacilities
                 ret.add(new Wrapper(jsonArray.get(2)));
                 break;
             case 4:
+                break;
+            case 5:
+                ret.add(new Wrapper(decodePair((JSONObject)jsonArray.get(0))));
+                ret.add(new Wrapper(decodeCoordinates((JSONObject)jsonArray.get(1))));
                 break;
         }
 

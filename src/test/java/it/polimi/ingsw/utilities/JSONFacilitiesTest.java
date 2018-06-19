@@ -311,7 +311,7 @@ class JSONFacilitiesTest
         assertEquals(orginalPair1.getColor(), pair1.getColor());
         assertEquals(orginalPair2.getValue(), pair2.getValue());
         assertEquals(orginalPair2.getColor(), pair2.getColor());
-        assertEquals(orifginalPosition,position);
+        assertEquals(orifginalPosition, position);
     }
 
     @Test
@@ -324,6 +324,28 @@ class JSONFacilitiesTest
 
         ArrayList arr = JSONFacilities.decodeTool(4, move.toString());
 
-        assertEquals(arr.size(),0);
+        assertEquals(arr.size(), 0);
+    }
+
+    @Test
+    void encodeAndDecodeTool5() throws JSONException
+    {
+        Coordinates origianlCoord = new Coordinates(3, 5);
+        Pair orginalPair = new Pair(4, ColorEnum.RED);
+
+        JSONArray json = JSONFacilities.encodeTool(orginalPair, origianlCoord);
+        StringBuilder move = new StringBuilder(json.toString());
+        move.append("\n");
+
+        ArrayList arr = JSONFacilities.decodeTool(5, move.toString());
+
+        Pair pair = (Pair) ((Wrapper) arr.get(0)).getParam();
+        Coordinates coord = (Coordinates) ((Wrapper) arr.get(1)).getParam();
+
+        assertEquals(orginalPair.getValue(), pair.getValue());
+        assertEquals(orginalPair.getColor(), pair.getColor());
+        assertEquals(origianlCoord.getI(), coord.getI());
+        assertEquals(origianlCoord.getJ(), coord.getJ());
+
     }
 }

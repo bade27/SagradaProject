@@ -92,6 +92,11 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
                     String tool4 = inSocket.readLine();
                     useTool(4,tool4);
                     break;
+                case "use_tool_type5":
+                    //System.out.println("tool 1 entered");
+                    String tool5 = inSocket.readLine();
+                    useTool(5,tool5);
+                    break;
 
                 default:
                     System.out.println("Problem");
@@ -578,8 +583,6 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
 
 
     //</editor-fold>
-
-
 
     //<editor-fold desc="End Game Phase">
     @Override
