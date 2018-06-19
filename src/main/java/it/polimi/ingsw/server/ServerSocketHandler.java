@@ -77,7 +77,11 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
                     String tool1 = inSocket.readLine();
                     useTool(1,tool1);
                     break;
-
+                case "use_tool_type2":
+                    //System.out.println("tool 1 entered");
+                    String tool2 = inSocket.readLine();
+                    useTool(2,tool2);
+                    break;
 
                 default:
                     System.out.println("Problem");
@@ -454,8 +458,8 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
         try
         {
             ArrayList arr = JSONFacilities.decodeMove(message);
-            Coordinates coord = new Coordinates((Integer) arr.get(0), (Integer) arr.get(1));
-            Pair pair = new Pair((Integer) arr.get(2), (ColorEnum) arr.get(3));
+            Pair pair = (Pair)arr.get(0);
+            Coordinates coord = (Coordinates)arr.get(1);
 
             String response = "Impossibile eseguire la mossa";
             if (!adapter.CanMove())
@@ -541,6 +545,8 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
 
             if (parameters.size() == 2)
                 ret = adapter.useTool(parameters.get(0), parameters.get(1));
+            if (parameters.size() == 5)
+                ret = adapter.useTool(parameters.get(0),parameters.get(1),parameters.get(2),parameters.get(3),parameters.get(4));
 
             match.updateClient();
 

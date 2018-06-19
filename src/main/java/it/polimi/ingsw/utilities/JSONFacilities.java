@@ -255,24 +255,20 @@ public class JSONFacilities
     //</editor-fold>
 
     //<editor-fold desc="JSON for move">
-    public static JSONObject encodeMove (Coordinates coord, Pair pair) throws JSONException
+    public static JSONArray encodeMove (Coordinates coord, Pair pair) throws JSONException
     {
-        JSONObject obj = new JSONObject();
-        obj.put("coord_i",coord.getI());
-        obj.put("coord_j",coord.getJ());
-        obj.put("die_val",pair.getValue());
-        obj.put("die_col",pair.getColor().toString());
-        return obj;
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.put(encodePair(pair));
+        jsonArray.put(encodeCoordinates(coord));
+        return jsonArray;
     }
 
     public static ArrayList decodeMove (String message) throws JSONException
     {
-        JSONObject json = new JSONObject(message);
+        JSONArray jsonArray = new JSONArray(message);
         ArrayList ret = new ArrayList();
-        ret.add(json.get("coord_i"));
-        ret.add(json.get("coord_j"));
-        ret.add(json.get("die_val"));
-        ret.add(ColorEnum.getColor((String)json.get("die_col")));
+        ret.add(decodePair((JSONObject)jsonArray.get(0)));
+        ret.add(decodeCoordinates((JSONObject)jsonArray.get(1)));
         return ret;
     }
     //</editor-fold>
@@ -282,13 +278,7 @@ public class JSONFacilities
     public static JSONArray encodeTool (Pair p, String s) throws JSONException
     {
         JSONArray jsonArray = new JSONArray();
-        JSONObject obj = new JSONObject();
-        if (p.getColor() != null)
-            obj.put("color",p.getColor().toString());
-        else
-            obj.put("color","n/d");
-        obj.put("value",p.getValue());
-        jsonArray.put(obj);
+        jsonArray.put(encodePair(p));
         jsonArray.put(s);
         return jsonArray;
     }
@@ -296,16 +286,19 @@ public class JSONFacilities
     public static JSONArray encodeTool (Coordinates c1,Coordinates c2) throws JSONException
     {
         JSONArray jsonArray = new JSONArray();
-        JSONObject obj1 = new JSONObject();
-        JSONObject obj2 = new JSONObject();
+        jsonArray.put(encodeCoordinates(c1));
+        jsonArray.put(encodeCoordinates(c2));
+        return jsonArray;
+    }
 
-        obj1.put("coord_i",c1.getI());
-        obj1.put("coord_j",c1.getJ());
-        obj2.put("coord_i",c2.getI());
-        obj2.put("coord_j",c2.getJ());
-
-        jsonArray.put(obj1);
-        jsonArray.put(obj2);
+    public static JSONArray encodeTool (Pair traceDie ,Coordinates c1S,Coordinates c1E,Coordinates c2S,Coordinates c2E)
+    {
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.put(encodePair(traceDie));
+        jsonArray.put(encodeCoordinates(c1S));
+        jsonArray.put(encodeCoordinates(c1E));
+        jsonArray.put(encodeCoordinates(c2S));
+        jsonArray.put(encodeCoordinates(c2E));
         return jsonArray;
     }
 
@@ -316,20 +309,73 @@ public class JSONFacilities
         switch (type)
         {
             case 0:
-                JSONObject obj = (JSONObject)jsonArray.get(0);
-                ret.add(new Wrapper(new Pair((int)obj.get("value"),ColorEnum.getColor((String)obj.get("color")))));
+                ret.add(new Wrapper(decodePair((JSONObject)jsonArray.get(0))));
                 ret.add(new Wrapper(jsonArray.get(1)));
                 break;
             case 1:
-                JSONObject c1 = (JSONObject)jsonArray.get(0);
-                JSONObject c2 = (JSONObject)jsonArray.get(1);
-                ret.add(new Wrapper(new Coordinates((Integer)c1.get("coord_i"),(Integer)c1.get("coord_j"))));
-                ret.add(new Wrapper(new Coordinates((Integer)c2.get("coord_i"),(Integer)c2.get("coord_j"))));
+                ret.add(new Wrapper(decodeCoordinates((JSONObject)jsonArray.get(0))));
+                ret.add(new Wrapper(decodeCoordinates((JSONObject)jsonArray.get(1))));
                 break;
-
+            case 2:
+                ret.add(new Wrapper(decodePair((JSONObject)jsonArray.get(0))));
+                ret.add(new Wrapper(decodeCoordinates((JSONObject)jsonArray.get(1))));
+                ret.add(new Wrapper(decodeCoordinates((JSONObject)jsonArray.get(2))));
+                ret.add(new Wrapper(decodeCoordinates((JSONObject)jsonArray.get(3))));
+                ret.add(new Wrapper(decodeCoordinates((JSONObject)jsonArray.get(4))));
+                break;
         }
 
         return ret;
     }
+
     //</editor-fold>
+
+    //<editor-fold desc="Utilities">
+
+    private static JSONObject encodePair (Pair p) throws JSONException
+    {
+        JSONObject obj = new JSONObject();
+        if (p == null)
+            obj.put("enable",false);
+        else
+        {
+            obj.put("enable",true);
+            if (p.getColor() != null)
+                obj.put("color",p.getColor().toString());
+            else
+                obj.put("color","n/d");
+            obj.put("value",p.getValue());
+        }
+        return obj;
+    }
+
+    private static Pair decodePair (JSONObject obj) throws JSONException
+    {
+        if (!(Boolean)obj.get("enable"))
+            return null;
+        return new Pair((int)obj.get("value"),ColorEnum.getColor((String)obj.get("color")));
+    }
+
+    private static JSONObject encodeCoordinates (Coordinates c) throws JSONException
+    {
+        JSONObject obj = new JSONObject();
+        if (c == null)
+            obj.put("enable",false);
+        else
+        {
+            obj.put("enable",true);
+            obj.put("coord_i",c.getI());
+            obj.put("coord_j",c.getJ());
+        }
+        return obj;
+    }
+
+    private static Coordinates decodeCoordinates (JSONObject obj) throws JSONException
+    {
+        if (!(Boolean)obj.get("enable"))
+            return null;
+        return new Coordinates((Integer)obj.get("coord_i"),(Integer)obj.get("coord_j"));
+    }
+    //</editor-fold>
+
 }

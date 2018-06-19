@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.tools.Tools;
 
 public class Wrapper<T> {
 
-    T param;
+    private T param;
 
     public Wrapper(T param) {
         this.param = param;
@@ -16,5 +16,7 @@ public class Wrapper<T> {
                 Tools.map.get(param.getClass()).function(param);
         }
     }
+
+    public T getParam () {return this.param;}
 
 }
