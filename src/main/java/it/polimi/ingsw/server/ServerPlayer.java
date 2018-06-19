@@ -32,7 +32,10 @@ public class ServerPlayer implements Runnable
     private TokenTurn token;
     private ServerModelAdapter adapter;
     private String user;
-    private ExecutorService executor;
+    //private ExecutorService executor;
+
+    private boolean alive;
+    private final int turnTime = 10;
 
     //Setup Phase
     private UsersEntry possibleUsers;
@@ -58,7 +61,8 @@ public class ServerPlayer implements Runnable
         token = tok;
         possibleUsers = ps;
         communicator = null;
-        executor = Executors.newFixedThreadPool(1);
+        alive = true;
+        //executor = Executors.newFixedThreadPool(1);
         communicator = cli;
         inGame = true;
         initialized = false;
@@ -88,9 +92,11 @@ public class ServerPlayer implements Runnable
                 initializeCards();
             }
             catch (ClientOutOfReachException|ModelException ex) {
-                ex.printStackTrace();
+                LogFile.addLog("(User: " + user + ") cannot complete setup" + "\n"
+                        + ex.getStackTrace().toString());
                 //Notify token that client is dead
                 token.deletePlayer(user);
+                token.setJustDeleting(false);
                 closeConnection("Timeout Expired");
                 inGame = false;
                 token.endSetup();
@@ -150,7 +156,7 @@ public class ServerPlayer implements Runnable
                     }
 
                     //da sistemare con costante
-                    adapter.setTimer(300);
+                    adapter.setTimer(turnTime);
                     adapter.startTimer();
 
                     //End turn comunication
@@ -190,7 +196,8 @@ public class ServerPlayer implements Runnable
         String u;
         try{
             do{
-                u = stopTask(() -> communicator.login(), INIT_TIMEOUT, executor);
+                //u = stopTask(() -> communicator.login(), INIT_TIMEOUT, executor);
+                u = communicator.login();
                 if(u == null)
                 {
                     LogFile.addLog("Failed to add user");
@@ -216,7 +223,8 @@ public class ServerPlayer implements Runnable
     {
         String s1;
         try {
-            s1 = stopTask(() -> communicator.chooseWindow(windowCard1, windowCard2), INIT_TIMEOUT, executor);//To change with ACTION when implement user choice
+            //s1 = stopTask(() -> communicator.chooseWindow(windowCard1, windowCard2), INIT_TIMEOUT, executor);//To change with ACTION when implement user choice
+            s1 = communicator.chooseWindow(windowCard1, windowCard2);
             if(s1 == null)
             {
                 LogFile.addLog("(User:" + user + ") Failed to initialize Windows");
@@ -251,7 +259,8 @@ public class ServerPlayer implements Runnable
             boolean performed;
             String[] toolnames = Arrays.stream(toolCards).map(t -> t.getName()).toArray(String[]::new);
             String[] publicObjNames = Arrays.stream(publicObjectives).map(obj -> obj.getPath()).toArray(String[]::new);
-            performed = stopTask(() -> communicator.sendCards(publicObjNames,toolnames,new String[] {privateObjCard}), INIT_TIMEOUT, executor);
+            //performed = stopTask(() -> communicator.sendCards(publicObjNames,toolnames,new String[] {privateObjCard}), INIT_TIMEOUT, executor);
+            performed = communicator.sendCards(publicObjNames,toolnames,new String[] {privateObjCard});
             if(!performed)
             {
                 LogFile.addLog("(User:" + user + ") Failed to initialize cards");
@@ -395,19 +404,20 @@ public class ServerPlayer implements Runnable
     public boolean isClientAlive ()
     {
         try {
-            boolean performed;
-            performed = stopTask(() -> communicator.ping(), PING_TIMEOUT, executor);
-            return performed;
-        } catch (NullPointerException e) {
-            return false;
+            //performed = stopTask(() -> communicator.ping(), PING_TIMEOUT, executor);
+            alive = communicator.ping();
+        } catch (RemoteException e) {
+            alive = false;
         }
+        return alive;
     }
 
     public void sendMessage (String s)
     {
         try {
             boolean performed;
-            performed = stopTask(() -> communicator.sendMessage(s), PING_TIMEOUT, executor);
+            //performed = stopTask(() -> communicator.sendMessage(s), PING_TIMEOUT, executor);
+            performed = communicator.sendMessage(s);
             if (!performed)
                 LogFile.addLog("(" + user + ")end message to client failed");
         }catch (Exception ex) {
@@ -419,10 +429,11 @@ public class ServerPlayer implements Runnable
     {
         try {
             boolean performed;
-            performed = stopTask(() -> communicator.closeCommunication(s), PING_TIMEOUT, executor);
+            //performed = stopTask(() -> communicator.closeCommunication(s), PING_TIMEOUT, executor);
+            performed = communicator.closeCommunication(s);
             if (!performed)
                 LogFile.addLog("Impossible to communicate to client (" + user + ") cause closed connection");
-        }catch (NullPointerException e) {
+        }catch (RemoteException|ClientOutOfReachException e) {
             LogFile.addLog("Impossible to communicate to client (" + user + ") cause closed connection");
         }
 
@@ -510,8 +521,11 @@ public class ServerPlayer implements Runnable
     }
     //</editor-fold>
 
+
+    //metodo da cancellare una volta che tutte le disconnessioni funzionano senza executor
+
     //<editor-fold desc="Executor">
-    private <T> T stopTask(Callable<T> task, int executionTime, ExecutorService executor) {
+    /*private <T> T stopTask(Callable<T> task, int executionTime, ExecutorService executor) {
         Object o = null;
         Future future = executor.submit(task);
         try {
@@ -529,7 +543,7 @@ public class ServerPlayer implements Runnable
             future.cancel(true);
         }
         return (T)o;
-    }
+    }*/
 
     public boolean isInGame() {
         return inGame;

@@ -473,4 +473,8 @@ public class TokenTurn
     }
     //</editor-fold>
 
+
+    public synchronized void setJustDeleting(boolean justDeleting) {
+        this.justDeleting = justDeleting;
+    }
 }

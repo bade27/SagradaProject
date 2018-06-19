@@ -1,15 +1,14 @@
-package it.polimi.ingsw.view;
+package it.polimi.ingsw.view.gui;
 
-import com.sun.javafx.scene.layout.region.BorderStrokeStyleSequenceConverter;
 import it.polimi.ingsw.GUI;
 import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.client.ToolAction;
 import it.polimi.ingsw.remoteInterface.Pair;
+import it.polimi.ingsw.view.DadieraGUI;
 import javafx.application.Application;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.Border;
 import javafx.scene.layout.VBox;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -27,7 +26,6 @@ import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-
 import java.rmi.RemoteException;
 import java.util.*;
 import java.util.List;
@@ -315,10 +313,10 @@ public class SagradaGUI extends Application implements GUI {
         mainContent.add(pcenter,1,0);
         mainContent.add(pright,2,0);
 
-        DimWindows.dim(mainContent);
-        DimWindows.dim(pright);
-        DimWindows.dim(pleft);
-        DimWindows.dim(pcenter);
+        it.polimi.ingsw.view.DimWindows.dim(mainContent);
+        it.polimi.ingsw.view.DimWindows.dim(pright);
+        it.polimi.ingsw.view.DimWindows.dim(pleft);
+        it.polimi.ingsw.view.DimWindows.dim(pcenter);
 
         mainContent.setAlignment(Pos.CENTER);
         pcenter.setAlignment(Pos.CENTER);
@@ -336,7 +334,7 @@ public class SagradaGUI extends Application implements GUI {
         BorderPane bottom = new BorderPane();
         msgb = new MessageBox("Benvenuto!");
         bottom.setLeft(msgb);
-        EndButton pass = new EndButton(this);
+        it.polimi.ingsw.view.EndButton pass = new it.polimi.ingsw.view.EndButton(this);
         bottom.setRight(pass);
         useTool = new UseToolButton("Usa il tool!", this);
         bottom.setCenter(useTool);
@@ -573,7 +571,7 @@ public class SagradaGUI extends Application implements GUI {
     }
 
     /**
-     * changes the behaviour of the GUI's components in order to perform a tool move
+     * changes the behaviour of the gui's components in order to perform a tool move
      * @param toolPhase
      */
     public void setToolPhase(boolean toolPhase) {

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view;
+package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.GUI;
 import it.polimi.ingsw.client.ToolAction;
@@ -10,7 +10,6 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class RoundsGUI extends GridPane {
@@ -50,7 +49,7 @@ public class RoundsGUI extends GridPane {
         roundTrace.setAlignment(Pos.TOP_CENTER);
         roundTrace.add(round,0,0);
         roundTrace.add(diceInRound,0,1);
-        DimWindows.dimHeight(round,20);
+        it.polimi.ingsw.view.DimWindows.dimHeight(round,20);
         round.setAlignment(Pos.TOP_CENTER);
         p.add(roundTrace,0,0);
     }

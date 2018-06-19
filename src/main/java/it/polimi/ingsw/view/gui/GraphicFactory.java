@@ -1,18 +1,15 @@
-package it.polimi.ingsw.view;
+package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.exceptions.ParserXMLException;
-import it.polimi.ingsw.view.GraphButton;
-import it.polimi.ingsw.view.ToolsGUI;
 import org.w3c.dom.Document;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
-import java.util.ArrayList;
 
 public class GraphicFactory {
 
-    public static GraphButton getToolButtonFromName (String path ,String name) throws ParserXMLException
+    public static it.polimi.ingsw.view.GraphButton getToolButtonFromName (String path , String name) throws ParserXMLException
     {
         try
         {
@@ -29,7 +26,7 @@ public class GraphicFactory {
                 int numtool = Integer.parseInt(document.getElementsByTagName(s).item(0).getAttributes().getNamedItem("num").getTextContent());
                 String nm = document.getElementsByTagName("name").item(numtool-1).getTextContent();
                 if (nm.equals(name))
-                    return new GraphButton(nm,numtool,"n/d");//n/d andrà sostiutito dal path immagine
+                    return new it.polimi.ingsw.view.GraphButton(nm,numtool,"n/d");//n/d andrà sostiutito dal path immagine
             }
             throw new ParserXMLException("Name: " + name + " Not founded in path: " + path);
         }
