@@ -1,17 +1,17 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.GUI;
+import it.polimi.ingsw.UI;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
 
 
 public class TokenGUI{
-    private GUI game;
+    private UI game;
     private GridPane root;
     private Text t;
     private BorderPane bp;
 
-    public TokenGUI(GridPane root, GUI game){
+    public TokenGUI(GridPane root, UI game){
         this.game=game;
         this.root=root;
         bp=new BorderPane();

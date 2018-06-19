@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.GUI;
+import it.polimi.ingsw.UI;
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
@@ -21,8 +21,6 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInterface
@@ -34,7 +32,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     private static int SOCKET_PORT;
     private static boolean initialized = false;
     private int typeOfCOnnection; //1 rmi , 0 Socket
-    private GUI graph;
+    private UI graph;
     private ServerRemoteInterface server;
     private String clientName;
     private String chooseMap;
@@ -63,7 +61,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     }
 
 
-    public ClientPlayer (int t,GUI g, String serverIP) throws RemoteException
+    public ClientPlayer (int t, UI g, String serverIP) throws RemoteException
     {
         if(!serverIP.isEmpty())
             HOSTNAME = serverIP;

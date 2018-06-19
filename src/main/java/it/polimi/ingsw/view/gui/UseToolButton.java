@@ -1,14 +1,14 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.GUI;
+import it.polimi.ingsw.UI;
 import javafx.scene.control.Button;
 
 public class UseToolButton extends Button {
 
-    private GUI game;
+    private UI game;
     private boolean enable;
 
-    public UseToolButton(String text, GUI game) {
+    public UseToolButton(String text, UI game) {
         super(text);
         this.setOnAction(actionEvent -> {
             if(enable)

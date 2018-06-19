@@ -1,18 +1,18 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.GUI;
+import it.polimi.ingsw.UI;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 
 public class TargetGUI extends GridPane{
-    GUI game;
+    UI game;
     GridPane t;
     Button bprivate;
     Button bpublic1;
     Button bpublic2;
     Button bpublic3;
-    public TargetGUI(GridPane p, GUI game){
+    public TargetGUI(GridPane p, UI game){
         this.game=game;
 
         bprivate =new Button();

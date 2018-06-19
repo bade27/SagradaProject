@@ -5,7 +5,7 @@ import it.polimi.ingsw.remoteInterface.Pair;
 
 import java.util.ArrayList;
 
-public interface GUI {
+public interface UI {
     public void updateDadiera (Pair[] dadiera);
     public void updateWindow (Pair[][] window);
     public void setEnableBoard(boolean enableBoard);
