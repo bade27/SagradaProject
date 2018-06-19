@@ -274,6 +274,13 @@ public class JSONFacilities
 
 
     //<editor-fold desc="JSON for tools">
+
+    /**
+     * Encode tool overload for tool type 0
+     * @param p pair to encode
+     * @param s string to encode
+     * @return JSON with encoded parameters
+     */
     public static JSONArray encodeTool (Pair p, String s) throws JSONException
     {
         JSONArray jsonArray = new JSONArray();
@@ -282,6 +289,12 @@ public class JSONFacilities
         return jsonArray;
     }
 
+    /**
+     * Encode tool overload for tool type 1
+     * @param c1 coordinate 1 to encode
+     * @param c2 coordinate 2 to encode
+     * @return JSON with encoded parameters
+     */
     public static JSONArray encodeTool (Coordinates c1,Coordinates c2) throws JSONException
     {
         JSONArray jsonArray = new JSONArray();
@@ -290,7 +303,16 @@ public class JSONFacilities
         return jsonArray;
     }
 
-    public static JSONArray encodeTool (Pair traceDie ,Coordinates c1S,Coordinates c1E,Coordinates c2S,Coordinates c2E)
+    /**
+     * Encode tool overload for tool type 2
+     * @param traceDie Pair from round trace to encode
+     * @param c1S coordinate 1 start to encode
+     * @param c1E coordinate 1 end to encode
+     * @param c2S coordinate 2 start to encode
+     * @param c2E coordinate 2 end to encode
+     * @return JSON with encoded parameters
+     */
+    public static JSONArray encodeTool (Pair traceDie ,Coordinates c1S,Coordinates c1E,Coordinates c2S,Coordinates c2E) throws JSONException
     {
         JSONArray jsonArray = new JSONArray();
         jsonArray.put(encodePair(traceDie));
@@ -301,6 +323,28 @@ public class JSONFacilities
         return jsonArray;
     }
 
+    /**
+     * Encode tool overload for tool type 3
+     * @param dadieraDie Pair from dadiera to encode
+     * @param traceDie  Pair from round trace to encode
+     * @param tracePosition position of round trace
+     * @return JSON with encoded parameters
+     */
+    public static JSONArray encodeTool (Pair dadieraDie, Pair traceDie, int tracePosition)
+    {
+        JSONArray jsonArray = new JSONArray();
+        jsonArray.put(encodePair(dadieraDie));
+        jsonArray.put(encodePair(traceDie));
+        jsonArray.put(tracePosition);
+        return jsonArray;
+    }
+
+    /**
+     * Decode JSON of tool
+     * @param type type of tool to decode
+     * @param message JSON to decode
+     * @return ArrayList of Wrapper of Tools' parameters
+     */
     public static ArrayList decodeTool (int type,String message) throws JSONException
     {
         JSONArray jsonArray = new JSONArray(message);
@@ -321,6 +365,11 @@ public class JSONFacilities
                 ret.add(new Wrapper(decodeCoordinates((JSONObject)jsonArray.get(2))));
                 ret.add(new Wrapper(decodeCoordinates((JSONObject)jsonArray.get(3))));
                 ret.add(new Wrapper(decodeCoordinates((JSONObject)jsonArray.get(4))));
+                break;
+            case 3:
+                ret.add(new Wrapper(decodePair((JSONObject)jsonArray.get(0))));
+                ret.add(new Wrapper(decodePair((JSONObject)jsonArray.get(1))));
+                ret.add(new Wrapper(jsonArray.get(2)));
                 break;
         }
 

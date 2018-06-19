@@ -441,15 +441,25 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
         return response;
     }
 
-
-
-    //</editor-fold>
-
     @Override
     public String useTool(Pair dadiera, Pair trace, int nrRound) throws RemoteException
     {
-        return null;
+        String response = "";
+        try
+        {
+            JSONArray json = JSONFacilities.encodeTool(dadiera,trace,nrRound);
+            response = sendTool("use_tool_type3",json.toString());
+        } catch (JSONException je)
+        {
+            je.printStackTrace();
+        }
+
+        return response;
     }
+
+    //</editor-fold>
+
+
 
     @Override
     public String useTool() throws RemoteException
