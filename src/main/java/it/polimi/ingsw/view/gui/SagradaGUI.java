@@ -113,7 +113,6 @@ public class SagradaGUI extends Application implements GUI {
 
     @Override
     public void login(String s){
-        //clientConnectionHandler =new ClientSocketHandler();
         VBox loginRoot=new VBox();
         GridPane login=new GridPane();
         loginRoot.getChildren().add(login);

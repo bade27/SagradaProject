@@ -18,11 +18,7 @@ import java.io.IOException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Scanner;
-import java.util.concurrent.TimeUnit;
+import java.util.*;
 import java.util.stream.Stream;
 
 public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInterface
@@ -42,6 +38,9 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     private boolean finishedMove = false;
     private final Integer synclogin=5;
     private final Integer syncmap = 5;
+
+    //to keep trak of server status. used ONLY with RMI
+    private Timer timer;
 
     //<editor-fold desc="Initialization Phase">
     private static void connection_parameters_setup() throws ParserConfigurationException, IOException, SAXException {
@@ -98,11 +97,13 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         catch (ClientOutOfReachException e){
             System.out.println("Impossible to connect to Host with socket");
             //e.printStackTrace();
+            graph.login("Ip sbagliato");
             return;
         }
         catch (RemoteException e){
             //e.printStackTrace();
             System.out.println("Impossible to connect to Host with RMI");
+            graph.login("Ip sbagliato");
             return;
         }
         catch (Exception e){
@@ -110,6 +111,23 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             System.out.println("Impossible to connect to Host");
             return;
         }
+
+        //this timertask is needed to keep trak of server status with RMI
+        if(typeOfCOnnection == 1) {
+            timer= new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    try {
+                        server.serverStatus();
+                    } catch (RemoteException e) {
+                        //e.printStackTrace();
+                        closeCommunication("server ended communication");
+                    }
+                }
+            }, 0,5000);
+        }
+
         System.out.println("Client connected");
     }
     //</editor-fold>
@@ -123,12 +141,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     {
         if (clientName == null)
         {
-            try {
-                graph.login("nome già esistente");
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
+            graph.login("nome già esistente");
 
             try {
                 synchronized (synclogin)
@@ -136,7 +149,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
                     while (clientName == null)
                         synclogin.wait();
                 }
-            } catch (Exception e) {
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
@@ -203,7 +216,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     }
 
     @Override
-    public boolean sendCards(String[]...  s) throws RemoteException {
+    public boolean sendCards(String[]...  s) {
         for (int i = 0; i < s.length ; i++)
         {
             if (i == 0) {
@@ -303,6 +316,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
                 graph.updateMessage(msg);
             } catch (RemoteException e) {
                 e.printStackTrace();
+                graph.disconnection("Impossibile contattare il server");
             }
 
         }
@@ -370,10 +384,16 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     public boolean closeCommunication (String cause)
     {
         //System.out.println("Game ended because " + cause);
+        if(timer != null) {
+            timer.cancel();
+            timer.purge();
+        }
         graph.disconnection("Game ended because " + cause);
         return true;
         //Graphic.setpopup connection down
 
     }
     //</editor-fold>
+
+
 }

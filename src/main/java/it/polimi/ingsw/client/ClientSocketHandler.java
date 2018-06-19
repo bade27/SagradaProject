@@ -6,7 +6,6 @@ import it.polimi.ingsw.remoteInterface.*;
 import it.polimi.ingsw.utilities.JSONFacilities;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.*;
 import java.net.Socket;
@@ -47,7 +46,7 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
                     new OutputStreamWriter(socket.getOutputStream())), true);
         } catch (Exception e)
         {
-            e.printStackTrace();
+            //e.printStackTrace();
             throw new ClientOutOfReachException();
         }
         deamon = new Thread(this);
@@ -569,4 +568,10 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
     }
     //</editor-fold>
 
+
+    //it is only called with RMI, so it has no function here with sockets
+    @Override
+    public String serverStatus() {
+        return null;
+    }
 }
