@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.Placement;
 import it.polimi.ingsw.model.objectives.ObjectivesFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
@@ -34,8 +35,9 @@ class PairScoreTest {
     @BeforeEach
     void setupEnvironment() throws ModelException {
 
-        String pa = "/home/matteo/Scrivania/SagradaProject/resources/carte/obbiettivi/obbiettiviPubblici/xml/sfumatura/sfumature_";
+        String pa = "resources/carte/obbiettivi/obbiettiviPubblici/xml/sfumatura/sfumature_";
         String[] pb = {"chiare.xml", "medie.xml", "scure.xml"};
+
         int n = new Random().nextInt(3);
         obj = ObjectivesFactory.getPublicObjective(pa + pb[n]);
         switch (n) {
@@ -62,7 +64,7 @@ class PairScoreTest {
             }
     }
 
-    @Test
+    @RepeatedTest(1000)
     void calcScore() {
         int numCells = new Random().nextInt(rows * cols) + 1;
         int first = 0;
@@ -85,7 +87,7 @@ class PairScoreTest {
 
     }
 
-    @Test
+    @RepeatedTest(1000)
     void calcScoreZero() {
 
         if(new Random().nextBoolean()) {
