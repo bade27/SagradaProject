@@ -340,6 +340,15 @@ public class JSONFacilities
     }
 
     /**
+     * Encode tool overload for tool type 3 (no parameters needed)
+     * @return JSON with encoded parameters
+     */
+    public static JSONArray encodeTool ()
+    {
+        return new JSONArray();
+    }
+
+    /**
      * Decode JSON of tool
      * @param type type of tool to decode
      * @param message JSON to decode
@@ -370,6 +379,8 @@ public class JSONFacilities
                 ret.add(new Wrapper(decodePair((JSONObject)jsonArray.get(0))));
                 ret.add(new Wrapper(decodePair((JSONObject)jsonArray.get(1))));
                 ret.add(new Wrapper(jsonArray.get(2)));
+                break;
+            case 4:
                 break;
         }
 

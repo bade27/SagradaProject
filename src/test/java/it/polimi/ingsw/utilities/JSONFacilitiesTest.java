@@ -312,6 +312,18 @@ class JSONFacilitiesTest
         assertEquals(orginalPair2.getValue(), pair2.getValue());
         assertEquals(orginalPair2.getColor(), pair2.getColor());
         assertEquals(orifginalPosition,position);
+    }
 
+    @Test
+    void encodeAndDecodeTool4() throws JSONException
+    {
+        JSONArray json = JSONFacilities.encodeTool();
+
+        StringBuilder move = new StringBuilder(json.toString());
+        move.append("\n");
+
+        ArrayList arr = JSONFacilities.decodeTool(4, move.toString());
+
+        assertEquals(arr.size(),0);
     }
 }
