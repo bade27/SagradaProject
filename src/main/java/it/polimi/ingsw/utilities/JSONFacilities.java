@@ -1,6 +1,5 @@
 package it.polimi.ingsw.utilities;
 
-import com.sun.org.apache.bcel.internal.generic.JsrInstruction;
 import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.remoteInterface.Coordinates;
 import it.polimi.ingsw.remoteInterface.Pair;

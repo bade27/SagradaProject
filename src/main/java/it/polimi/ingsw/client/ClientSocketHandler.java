@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client;
 
-import com.sun.org.apache.bcel.internal.generic.JsrInstruction;
-import com.sun.org.apache.xpath.internal.operations.Bool;
+
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.remoteInterface.*;
 import it.polimi.ingsw.utilities.JSONFacilities;
@@ -16,7 +15,6 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 public class ClientSocketHandler implements Runnable, ServerRemoteInterface
 {
