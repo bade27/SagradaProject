@@ -16,18 +16,17 @@
 			- [X] Tool 11
 			- [X] Tool 12
 		- [X] Implementazione Obbiettivi
-		- [ ] Gestione utenti con login e registrazione
+		- [X] Gestione utenti con login e registrazione
 	- Grafica
-		- [ ] GUI base completa (Senza caricamento immagini)
+		- [X] GUI base completa (Senza caricamento immagini)
 		- [ ] CLI molto base
 	- Rete
-		- [ ] Implementazione Socket
+		- [X] Implementazione Socket
 		- [ ] Gestione disconnessioni
 		- [ ] Gestione riconnessioni
-		- [ ] Timeout di login
-		- [ ] Timeout del turno
+		- [ ] Timeout setup-login-turno
 		    - [ ] lato client
-		    - [X] lato server
+		    - [ ] lato server
 	- F.A da scegliere
 	    - [ ] Partite multiple
 	
