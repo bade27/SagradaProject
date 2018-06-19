@@ -34,8 +34,9 @@ class PairScoreTest {
     @BeforeEach
     void setupEnvironment() throws ModelException {
 
-        String pa = "/home/matteo/Scrivania/SagradaProject/resources/carte/obbiettivi/obbiettiviPubblici/xml/sfumatura/sfumature_";
+        String pa = "resources/carte/obbiettivi/obbiettiviPubblici/xml/sfumatura/sfumature_";
         String[] pb = {"chiare.xml", "medie.xml", "scure.xml"};
+
         int n = new Random().nextInt(3);
         obj = ObjectivesFactory.getPublicObjective(pa + pb[n]);
         switch (n) {
