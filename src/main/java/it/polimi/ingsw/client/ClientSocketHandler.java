@@ -354,7 +354,6 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
     }
     //</editor-fold>
 
-
     //<editor-fold desc="Tool Phase">
     @Override
     public String askToolPermission(int nrTool) throws RemoteException
@@ -441,27 +440,53 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
         return response;
     }
 
-
-
-    //</editor-fold>
-
     @Override
     public String useTool(Pair dadiera, Pair trace, int nrRound) throws RemoteException
     {
-        return null;
+        String response = "";
+        try
+        {
+            JSONArray json = JSONFacilities.encodeTool(dadiera,trace,nrRound);
+            response = sendTool("use_tool_type3",json.toString());
+        } catch (JSONException je)
+        {
+            je.printStackTrace();
+        }
+
+        return response;
     }
 
     @Override
     public String useTool() throws RemoteException
     {
-        return null;
+        String response = "";
+        try
+        {
+            JSONArray json = JSONFacilities.encodeTool();
+            response = sendTool("use_tool_type4",json.toString());
+        } catch (JSONException je)
+        {
+            je.printStackTrace();
+        }
+
+        return response;
     }
 
     @Override
     public String useTool(Pair p, Coordinates endCoord) throws RemoteException
     {
-        return null;
+        String response = "";
+        try
+        {
+            JSONArray json = JSONFacilities.encodeTool(p,endCoord);
+            response = sendTool("use_tool_type5",json.toString());
+        } catch (JSONException je) {
+            je.printStackTrace();
+        }
+
+        return response;
     }
+    //</editor-fold>
 
     //<editor-fold desc="End Game Phase">
     private Boolean getResults(String json)

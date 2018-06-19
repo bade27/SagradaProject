@@ -163,8 +163,8 @@ class JSONFacilitiesTest
 
         ArrayList arr = JSONFacilities.decodeMove(move.toString());
 
-        Pair pair = (Pair)arr.get(0);
-        Coordinates coord = (Coordinates)arr.get(1);
+        Pair pair = (Pair) arr.get(0);
+        Coordinates coord = (Coordinates) arr.get(1);
 
         assertEquals(coord.getI(), originalCoord.getI());
         assertEquals(coord.getJ(), originalCoord.getJ());
@@ -178,25 +178,25 @@ class JSONFacilitiesTest
         Pair origianlPair = new Pair(3, ColorEnum.GREEN);
         String originalString = "helo";
 
-        for (int i = 0 ; i < 3; i++)
+        for (int i = 0; i < 3; i++)
         {
-            JSONArray json = JSONFacilities.encodeTool(origianlPair,originalString);
+            JSONArray json = JSONFacilities.encodeTool(origianlPair, originalString);
             StringBuilder move = new StringBuilder(json.toString());
             move.append("\n");
 
-            ArrayList arr = JSONFacilities.decodeTool(0,move.toString());
+            ArrayList arr = JSONFacilities.decodeTool(0, move.toString());
 
-            Pair pair = (Pair)((Wrapper)arr.get(0)).getParam();
-            String str = (String)((Wrapper)arr.get(1)).getParam();
+            Pair pair = (Pair) ((Wrapper) arr.get(0)).getParam();
+            String str = (String) ((Wrapper) arr.get(1)).getParam();
 
             if (origianlPair == null)
                 assertNull(pair);
             else
             {
-                assertEquals(pair.getColor(),origianlPair.getColor());
-                assertEquals(pair.getValue(),origianlPair.getValue());
+                assertEquals(pair.getColor(), origianlPair.getColor());
+                assertEquals(pair.getValue(), origianlPair.getValue());
             }
-            assertEquals(str,originalString);
+            assertEquals(str, originalString);
 
             if (i == 0)
                 origianlPair.setColor(null);
@@ -211,24 +211,24 @@ class JSONFacilitiesTest
     @Test
     void encodeAndDecodeTool1() throws JSONException
     {
-        Coordinates origianlCoord1 = new Coordinates(3,5);
-        Coordinates origianlCoord2 = new Coordinates(2,0);
+        Coordinates origianlCoord1 = new Coordinates(3, 5);
+        Coordinates origianlCoord2 = new Coordinates(2, 0);
 
-        for (int i = 0 ; i < 4; i++)
+        for (int i = 0; i < 4; i++)
         {
-            JSONArray json = JSONFacilities.encodeTool(origianlCoord1,origianlCoord2);
+            JSONArray json = JSONFacilities.encodeTool(origianlCoord1, origianlCoord2);
             StringBuilder move = new StringBuilder(json.toString());
             move.append("\n");
 
-            ArrayList arr = JSONFacilities.decodeTool(1,move.toString());
+            ArrayList arr = JSONFacilities.decodeTool(1, move.toString());
 
-            Coordinates coord1 = (Coordinates) ((Wrapper)arr.get(0)).getParam();
-            Coordinates coord2 = (Coordinates) ((Wrapper)arr.get(1)).getParam();
+            Coordinates coord1 = (Coordinates) ((Wrapper) arr.get(0)).getParam();
+            Coordinates coord2 = (Coordinates) ((Wrapper) arr.get(1)).getParam();
 
-            assertEquals(origianlCoord1.getI(),coord1.getI());
-            assertEquals(origianlCoord1.getJ(),coord1.getJ());
-            assertEquals(origianlCoord2.getI(),coord2.getI());
-            assertEquals(origianlCoord2.getJ(),coord2.getJ());
+            assertEquals(origianlCoord1.getI(), coord1.getI());
+            assertEquals(origianlCoord1.getJ(), coord1.getJ());
+            assertEquals(origianlCoord2.getI(), coord2.getI());
+            assertEquals(origianlCoord2.getJ(), coord2.getJ());
         }
     }
 
@@ -236,53 +236,52 @@ class JSONFacilitiesTest
     void encodeAndDecodeTool2() throws JSONException
     {
         Pair orginalPair = null;
-        Coordinates origianlCoord1 = new Coordinates(3,5);
-        Coordinates origianlCoord2 = new Coordinates(2,0);
-        Coordinates origianlCoord3 = new Coordinates(5,2);
-        Coordinates origianlCoord4 = new Coordinates(4,1);
+        Coordinates origianlCoord1 = new Coordinates(3, 5);
+        Coordinates origianlCoord2 = new Coordinates(2, 0);
+        Coordinates origianlCoord3 = new Coordinates(5, 2);
+        Coordinates origianlCoord4 = new Coordinates(4, 1);
 
-        for (int i = 0 ; i < 3; i++)
+        for (int i = 0; i < 3; i++)
         {
-            JSONArray json = JSONFacilities.encodeTool(orginalPair,origianlCoord1,origianlCoord2,origianlCoord3,origianlCoord4);
+            JSONArray json = JSONFacilities.encodeTool(orginalPair, origianlCoord1, origianlCoord2, origianlCoord3, origianlCoord4);
             StringBuilder move = new StringBuilder(json.toString());
             move.append("\n");
 
-            ArrayList arr = JSONFacilities.decodeTool(2,move.toString());
+            ArrayList arr = JSONFacilities.decodeTool(2, move.toString());
 
-            Pair pair = (Pair)((Wrapper)arr.get(0)).getParam();
-            Coordinates coord1 = (Coordinates) ((Wrapper)arr.get(1)).getParam();
-            Coordinates coord2 = (Coordinates) ((Wrapper)arr.get(2)).getParam();
-            Coordinates coord3 = (Coordinates) ((Wrapper)arr.get(3)).getParam();
-            Coordinates coord4 = (Coordinates) ((Wrapper)arr.get(4)).getParam();
+            Pair pair = (Pair) ((Wrapper) arr.get(0)).getParam();
+            Coordinates coord1 = (Coordinates) ((Wrapper) arr.get(1)).getParam();
+            Coordinates coord2 = (Coordinates) ((Wrapper) arr.get(2)).getParam();
+            Coordinates coord3 = (Coordinates) ((Wrapper) arr.get(3)).getParam();
+            Coordinates coord4 = (Coordinates) ((Wrapper) arr.get(4)).getParam();
 
-            if(orginalPair == null)
-                assertNull (pair);
+            if (orginalPair == null)
+                assertNull(pair);
             else
             {
-                assertEquals(orginalPair.getValue(),pair.getValue());
-                assertEquals(orginalPair.getColor(),pair.getColor());
+                assertEquals(orginalPair.getValue(), pair.getValue());
+                assertEquals(orginalPair.getColor(), pair.getColor());
             }
 
             if (origianlCoord3 == null && origianlCoord4 == null)
             {
                 assertNull(coord3);
                 assertNull(coord4);
-            }
-            else
+            } else
             {
-                assertEquals(origianlCoord3.getI(),coord3.getI());
-                assertEquals(origianlCoord3.getI(),coord3.getI());
-                assertEquals(origianlCoord4.getJ(),coord4.getJ());
-                assertEquals(origianlCoord4.getJ(),coord4.getJ());
+                assertEquals(origianlCoord3.getI(), coord3.getI());
+                assertEquals(origianlCoord3.getI(), coord3.getI());
+                assertEquals(origianlCoord4.getJ(), coord4.getJ());
+                assertEquals(origianlCoord4.getJ(), coord4.getJ());
             }
-            assertEquals(origianlCoord1.getI(),coord1.getI());
-            assertEquals(origianlCoord1.getJ(),coord1.getJ());
-            assertEquals(origianlCoord2.getI(),coord2.getI());
-            assertEquals(origianlCoord2.getJ(),coord2.getJ());
+            assertEquals(origianlCoord1.getI(), coord1.getI());
+            assertEquals(origianlCoord1.getJ(), coord1.getJ());
+            assertEquals(origianlCoord2.getI(), coord2.getI());
+            assertEquals(origianlCoord2.getJ(), coord2.getJ());
 
 
             if (i == 0)
-                orginalPair = new Pair(3,ColorEnum.GREEN);
+                orginalPair = new Pair(3, ColorEnum.GREEN);
             else if (i == 1)
             {
                 origianlCoord3 = null;
@@ -291,4 +290,62 @@ class JSONFacilitiesTest
         }
     }
 
+    @Test
+    void encodeAndDecodeTool3() throws JSONException
+    {
+        Pair orginalPair1 = new Pair(3, ColorEnum.GREEN);
+        Pair orginalPair2 = new Pair(5, ColorEnum.RED);
+        int orifginalPosition = 3;
+        JSONArray json = JSONFacilities.encodeTool(orginalPair1, orginalPair2, orifginalPosition);
+
+        StringBuilder move = new StringBuilder(json.toString());
+        move.append("\n");
+
+        ArrayList arr = JSONFacilities.decodeTool(3, move.toString());
+
+        Pair pair1 = (Pair) ((Wrapper) arr.get(0)).getParam();
+        Pair pair2 = (Pair) ((Wrapper) arr.get(1)).getParam();
+        int position = (Integer) ((Wrapper) arr.get(2)).getParam();
+
+        assertEquals(orginalPair1.getValue(), pair1.getValue());
+        assertEquals(orginalPair1.getColor(), pair1.getColor());
+        assertEquals(orginalPair2.getValue(), pair2.getValue());
+        assertEquals(orginalPair2.getColor(), pair2.getColor());
+        assertEquals(orifginalPosition, position);
+    }
+
+    @Test
+    void encodeAndDecodeTool4() throws JSONException
+    {
+        JSONArray json = JSONFacilities.encodeTool();
+
+        StringBuilder move = new StringBuilder(json.toString());
+        move.append("\n");
+
+        ArrayList arr = JSONFacilities.decodeTool(4, move.toString());
+
+        assertEquals(arr.size(), 0);
+    }
+
+    @Test
+    void encodeAndDecodeTool5() throws JSONException
+    {
+        Coordinates origianlCoord = new Coordinates(3, 5);
+        Pair orginalPair = new Pair(4, ColorEnum.RED);
+
+        JSONArray json = JSONFacilities.encodeTool(orginalPair, origianlCoord);
+        StringBuilder move = new StringBuilder(json.toString());
+        move.append("\n");
+
+        ArrayList arr = JSONFacilities.decodeTool(5, move.toString());
+
+        Pair pair = (Pair) ((Wrapper) arr.get(0)).getParam();
+        Coordinates coord = (Coordinates) ((Wrapper) arr.get(1)).getParam();
+
+        assertEquals(orginalPair.getValue(), pair.getValue());
+        assertEquals(orginalPair.getColor(), pair.getColor());
+        assertEquals(origianlCoord.getI(), coord.getI());
+        assertEquals(origianlCoord.getJ(), coord.getJ());
+
+    }
 }
