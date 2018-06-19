@@ -40,7 +40,6 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     private String chooseMap;
     //buffer mossa in upload
     private boolean finishedMove = false;
-    private int num_of_moves = 0;
     private final Integer synclogin=5;
     private final Integer syncmap = 5;
 
@@ -164,20 +163,15 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
      */
     public String chooseWindow(ArrayList<String[]> list)
     {
-        String choice = "";
-        try {
-            choice = chooseWindow(list.get(0),list.get(1));
-        }
-        catch (ClientOutOfReachException ex){
-            return "";
-        }
+        String choice;
+        choice = chooseWindow(list.get(0),list.get(1));
         return choice;
     }
 
     /**
      * Real Choosing window method
      */
-    public String chooseWindow(String[] s1, String[] s2)  throws ClientOutOfReachException
+    public String chooseWindow(String[] s1, String[] s2)
     {
         if(chooseMap==null) {
             try {
@@ -288,7 +282,6 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     //<editor-fold desc="Turn communication">
     public String doTurn ()
     {
-        num_of_moves = 0;
         MoveAction.clearMove();
         ToolAction.clearTool();
         graph.updateMessage("My turn");
@@ -298,34 +291,22 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
     public synchronized void myMove() {
 
-        if (num_of_moves == 0)
+        if (MoveAction.canMove())
+            finishedMove = true;
+        else
+            finishedMove = false;
+
+        if (finishedMove)
         {
-            if (MoveAction.canMove())
-                finishedMove = true;
-            else
-                finishedMove = false;
-
-            if (finishedMove)
-            {
-                try {
-                    String msg = MoveAction.perfromMove(server);
-                    graph.updateMessage(msg);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                    if (finishedMove) {
-                        try {
-                            String msg = MoveAction.perfromMove(server);
-                            graph.updateMessage(msg);
-                            graph.setEnableBoard(false);
-                            num_of_moves++;
-                        } catch (RemoteException ex) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-
+            try {
+                String msg = MoveAction.perfromMove(server);
+                graph.updateMessage(msg);
+            } catch (RemoteException e) {
+                e.printStackTrace();
             }
+
         }
+
     }
     //</editor-fold>
 
@@ -337,6 +318,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             System.out.println("tool response: " + response);
         } catch (RemoteException e) {
             e.printStackTrace();
+            graph.disconnection("Impossibile contattare il server");
             return false;
         }
         return response.equals("Richiesta utilizzo tool accolta");
@@ -387,7 +369,8 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
     public boolean closeCommunication (String cause)
     {
-        System.out.println("Game ended because " + cause);
+        //System.out.println("Game ended because " + cause);
+        graph.disconnection("Game ended because " + cause);
         return true;
         //Graphic.setpopup connection down
 

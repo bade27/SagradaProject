@@ -225,19 +225,11 @@ public class ServerPlayer implements Runnable
         try {
             //s1 = stopTask(() -> communicator.chooseWindow(windowCard1, windowCard2), INIT_TIMEOUT, executor);//To change with ACTION when implement user choice
             s1 = communicator.chooseWindow(windowCard1, windowCard2);
-            if(s1 == null)
-            {
-                LogFile.addLog("(User:" + user + ") Failed to initialize Windows");
-                throw new ClientOutOfReachException();
-            }
         }
-        catch (Exception e) {
+        catch (RemoteException e) {
             LogFile.addLog("(User:" + user + ")" + e.getMessage() , e.getStackTrace());
             throw new ClientOutOfReachException();
         }
-
-        if(s1.equals(""))
-            throw new ModelException("void field");
 
         try {
             adapter.initializeWindow(s1);
