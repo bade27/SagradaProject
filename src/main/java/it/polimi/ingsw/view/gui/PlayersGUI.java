@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.GUI;
+import it.polimi.ingsw.UI;
 import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.remoteInterface.Pair;
 import javafx.application.Platform;
@@ -13,11 +13,11 @@ import java.util.ArrayList;
 
 public class PlayersGUI extends GridPane {
 
-    private GUI game;
+    private UI game;
     private GridPane players;
     private ArrayList<String> name;
 
-    public PlayersGUI(GridPane root, GUI game) {
+    public PlayersGUI(GridPane root, UI game) {
 
 
         this.game = game;

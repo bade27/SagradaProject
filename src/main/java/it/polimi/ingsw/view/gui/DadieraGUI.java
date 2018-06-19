@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view;
 
-import it.polimi.ingsw.GUI;
+import it.polimi.ingsw.UI;
 import it.polimi.ingsw.client.MoveAction;
 import it.polimi.ingsw.client.ToolAction;
 import it.polimi.ingsw.model.ColorEnum;
@@ -14,11 +14,11 @@ public class DadieraGUI extends GridPane {
 
     private GridPane pane;
     private GridPane grid;
-    private GUI game;
+    private UI game;
     private boolean enable;
     private boolean tool;
 
-    public DadieraGUI(GridPane pane, int num, GUI game) {
+    public DadieraGUI(GridPane pane, int num, UI game) {
         this.game=game;
         this.pane = pane;
         enable = false;

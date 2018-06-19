@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.GUI;
+import it.polimi.ingsw.UI;
 import it.polimi.ingsw.utilities.FileLocator;
 import it.polimi.ingsw.view.GraphButton;
 import javafx.application.Platform;
@@ -8,14 +8,14 @@ import javafx.scene.layout.GridPane;
 
 public class ToolsGUI {
 
-    private GUI game;
+    private UI game;
     private GridPane pane;
     private GridPane t;
     GraphButton b1;
     GraphButton b2;
     GraphButton b3;
 
-    public ToolsGUI(GridPane pane,GUI game){
+    public ToolsGUI(GridPane pane,UI game){
 
         this.game = game;
         this.pane=pane;
