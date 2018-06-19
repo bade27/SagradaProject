@@ -315,7 +315,7 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
 
         try
         {
-            JSONObject json = JSONFacilities.encodeMove(coord,pair);
+            JSONArray json = JSONFacilities.encodeMove(coord,pair);
             try
             {
                 outSocket.write("move\n");
@@ -425,17 +425,25 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
         return response;
     }
 
-
-
-    //</editor-fold>
-
-
-
     @Override
     public String useTool(Pair p, Coordinates sartCoord1, Coordinates endCoord1, Coordinates sartCoord2, Coordinates endCoord2) throws RemoteException
     {
-        return null;
+        String response = "";
+        try
+        {
+            JSONArray json = JSONFacilities.encodeTool(p,sartCoord1,endCoord1,sartCoord2,endCoord2);
+            response = sendTool("use_tool_type2",json.toString());
+        } catch (JSONException je)
+        {
+            je.printStackTrace();
+        }
+
+        return response;
     }
+
+
+
+    //</editor-fold>
 
     @Override
     public String useTool(Pair dadiera, Pair trace, int nrRound) throws RemoteException
