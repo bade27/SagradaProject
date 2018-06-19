@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.UI;
 import it.polimi.ingsw.client.ClientPlayer;
+import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.remoteInterface.Pair;
 
 import java.io.*;
@@ -22,19 +23,21 @@ public class SagradaCLI implements UI {
     }
 
     public  void startGame(){
-        printbyFile("resources/titleCli/Sagrada.txt");
+        Color color=Color.ANSI_RED;
+        printbyFile("resources/titleCli/Sagrada.txt",color);
             login("Inserire dati per inizializzazione della partita");
     }
 
     @Override
     public void login(String message){
+        Color color=Color.ANSI_BLUE;
         String connection;
         String ip;
         String name;
-        printbyFile("resources/titleCli/Login.txt");
-        System.out.println(message);
+        printbyFile("resources/titleCli/Login.txt",color);
+        System.out.println("\n\n"+message+"\n");
         do {
-            System.out.println("Come ti vuoi connettere? (se non sarà messo nulla verrà impostati di default RMI)\n0. Socket\n1. RMI");
+            System.out.println("Come ti vuoi connettere? \n(se non sarà messo nulla verrà impostati di default RMI)\n0. Socket\n1. RMI");
             connection = readbyConsole().trim();
             if(connection.equals("")){
                 connection="1";
@@ -50,6 +53,7 @@ public class SagradaCLI implements UI {
         do{
             System.out.println("\nInserire un Nome:");
             name=readbyConsole().trim();
+            System.out.println("\n");
         }while(!(isNameValid(name)));
 
         SagradaCLI sagradaCLI=this;
@@ -62,9 +66,55 @@ public class SagradaCLI implements UI {
         }
     }
 
+
     @Override
     public void maps(String[] s1, String[] s2) {
+        Color color=Color.ANSI_GREEN;
+        String map;
+        printbyFile("resources/titleCli/Scegli_la_mappa.txt",color);
+        String [] vecname;
+        String name1, name2,name3,name4;
 
+        vecname=s1[0].split("\\/");
+        name1=(vecname[vecname.length-1].split("\\."))[0];
+
+        vecname=s1[1].split("\\/");
+        name2=(vecname[vecname.length-1].split("\\."))[0];
+
+        vecname=s2[0].split("\\/");
+        name3=(vecname[vecname.length-1].split("\\."))[0];
+
+        vecname=s2[1].split("\\/");
+        name4=(vecname[vecname.length-1].split("\\."))[0];
+
+
+        do{
+            System.out.println("\nSono state estratte queste mappe! Scegline una digitando il norrispettivo numero:");
+            System.out.println("\n\n1.\t"+name1+"\n");
+            //printGrid();
+            System.out.println("\n\n2.\t"+name2+"\n");
+            //printGrid();
+            System.out.println("\n\n3.\t"+name3+"\n");
+            //printGrid();
+            System.out.println("\n\n4.\t"+name4+"\n");
+            //printGrid();
+            map=readbyConsole();
+        }while(!(map.equals("1")||map.equals("2")||map.equals("3")||map.equals("4")));
+
+        switch (map){
+            case "1":
+                clientPlayer.setChooseMap(s1[0]);
+                break;
+            case "2":
+                clientPlayer.setChooseMap(s1[1]);
+                break;
+            case "3":
+                clientPlayer.setChooseMap(s2[0]);
+                break;
+            case "4":
+                clientPlayer.setChooseMap(s2[1]);
+                break;
+        }
     }
 
     @Override
@@ -201,12 +251,28 @@ public class SagradaCLI implements UI {
         return true;
     }
 
-    private void printbyFile (String s){
+    /*private void printGrid(){
+        System.out.println(" _____________________________");
+        System.out.println("|     |     |     |     |     |");
+        System.out.println("|     |     |     |     |     |");
+        System.out.println("|_____|_____|_____|_____|_____|");
+        System.out.println("|     |     |     |     |     |");
+        System.out.println("|     |     |     |     |     |");
+        System.out.println("|_____|_____|_____|_____|_____|");
+        System.out.println("|     |     |     |     |     |");
+        System.out.println("|     |     |     |     |     |");
+        System.out.println("|_____|_____|_____|_____|_____|");
+        System.out.println("|     |     |     |     |     |");
+        System.out.println("|     |     |     |     |     |");
+        System.out.println("|_____|_____|_____|_____|_____|");
+    }*/
+
+    private void printbyFile (String s, Color color){
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(s));
             String line = bufferedReader.readLine();
             while (line != null) {
-                System.out.println(line);
+                System.out.println(color.escape()+""+line+ Color.RESET);
                 line = bufferedReader.readLine();
             }
         }catch(IOException e){
