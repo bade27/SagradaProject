@@ -8,7 +8,6 @@ import it.polimi.ingsw.model.Placement;
 import it.polimi.ingsw.model.objectives.ObjectivesFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
@@ -64,7 +63,7 @@ class PairScoreTest {
             }
     }
 
-    @RepeatedTest(1000)
+    @Test
     void calcScore() {
         int numCells = new Random().nextInt(rows * cols) + 1;
         int first = 0;
@@ -87,7 +86,7 @@ class PairScoreTest {
 
     }
 
-    @RepeatedTest(1000)
+    @Test
     void calcScoreZero() {
 
         if(new Random().nextBoolean()) {
