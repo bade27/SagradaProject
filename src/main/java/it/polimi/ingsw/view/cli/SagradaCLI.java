@@ -55,7 +55,7 @@ public class SagradaCLI implements UI {
         }while(!(connection.equals("0")) && !(connection.equals("1")));
 
         do{
-            System.out.println("\nInserire l'indirizzo IP del server: \n(se non sarà messo nulla ne verrà messo uno di defauld)");
+            System.out.println("\nInserire l'indirizzo IP del server: \n(se non sarà messo nulla ne verrà messo uno di default)");
             ip=readbyConsole();
 
         }while(!(isIPAddressValid(ip)));
@@ -207,7 +207,7 @@ public class SagradaCLI implements UI {
 
     @Override
     public void updateTokens(int n) {
-        System.out.println("Tocken:\t"+n);
+        System.out.println("Token:\t"+n);
     }
 
     @Override
