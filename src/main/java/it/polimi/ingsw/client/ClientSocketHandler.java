@@ -8,6 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.*;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -315,19 +316,14 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
         try
         {
             JSONArray json = JSONFacilities.encodeMove(coord,pair);
-            try
-            {
-                outSocket.write("move\n");
-                outSocket.flush();
-                StringBuilder move = new StringBuilder(json.toString());
-                move.append("\n");
-                outSocket.write(move.toString());
-                outSocket.flush();
-                response = waitResponse();
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
+            outSocket.write("move\n");
+            outSocket.flush();
+            StringBuilder move = new StringBuilder(json.toString());
+            move.append("\n");
+            outSocket.write(move.toString());
+            outSocket.flush();
+            response = waitResponse();
+
         } catch (JSONException je)
         {
             je.printStackTrace();
@@ -549,8 +545,10 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
     //</editor-fold>
 
     //<editor-fold desc="Wait Response">
-    private String waitResponse () throws ClientOutOfReachException
+    private String waitResponse () throws RemoteException
     {
+        if(!isReachable())
+            throw new RemoteException();
         try
         {
             synchronized (syncronator) {
@@ -562,7 +560,7 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
             return r;
         }catch (Exception e){
             e.printStackTrace();
-            throw new ClientOutOfReachException();
+            throw new RemoteException();
         }
 
     }
@@ -573,5 +571,16 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
     @Override
     public String serverStatus() {
         return null;
+    }
+
+    private boolean isReachable() {
+        try {
+            try (Socket soc = new Socket()) {
+                soc.connect(new InetSocketAddress(HOSTNAME, PORT), 5000);
+            }
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
     }
 }

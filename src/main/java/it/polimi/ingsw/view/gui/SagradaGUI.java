@@ -209,7 +209,7 @@ public class SagradaGUI extends Application implements GUI {
         loginRoot.setAlignment(Pos.CENTER);
         loginRoot.setSpacing(35);
         //scene=new Scene(root,500,450);
-        stage.setTitle("Sagrada");
+        //stage.setTitle("Sagrada");
         stage.getScene().getWindow().setWidth(500);
         stage.getScene().getWindow().setHeight(450);
         stage.getScene().setRoot(loginRoot);
@@ -225,7 +225,7 @@ public class SagradaGUI extends Application implements GUI {
     public void maps(String[] s1,String[] s2){
         VBox mapsRoot=new VBox();
         Label title=new Label("Seleziona mappa da voler usare");
-        title.setFont(Font.font("verdana",  FontWeight.BOLD, FontPosture.REGULAR,25));
+        title.setFont(Font.font("Verdana",  FontWeight.BOLD, FontPosture.REGULAR,25));
         mapsRoot.getChildren().add(title);
         GridPane mapsgrid=new GridPane();
         mapsRoot.getChildren().add(mapsgrid);

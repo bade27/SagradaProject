@@ -65,19 +65,18 @@ public class MatchHandler implements Runnable
                     try {
                         lockOnnConn.wait();
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
+                        return;
                     }
                 }
             }
 
-            System.out.println("dormo");
             try {
                 TimeUnit.SECONDS.sleep(sleepTime);
             } catch (InterruptedException e) {
                 return;
             }
 
-            System.out.println("mi sveglio");
             synchronized (gameCannotStartYet) {
                 gameCannotStartYet.notifyAll();
             }

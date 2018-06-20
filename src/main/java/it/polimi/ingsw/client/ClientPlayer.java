@@ -311,13 +311,15 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
         if (finishedMove)
         {
+            String msg = "";
             try {
-                String msg = MoveAction.perfromMove(server);
-                graph.updateMessage(msg);
+                msg = MoveAction.perfromMove(server);
             } catch (RemoteException e) {
                 e.printStackTrace();
                 graph.disconnection("Impossibile contattare il server");
+                return;
             }
+            graph.updateMessage(msg);
 
         }
 
