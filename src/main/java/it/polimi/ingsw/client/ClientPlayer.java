@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.GUI;
+import it.polimi.ingsw.UI;
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
@@ -18,7 +18,9 @@ import java.io.IOException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInterface
@@ -30,7 +32,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     private static int SOCKET_PORT;
     private static boolean initialized = false;
     private int typeOfCOnnection; //1 rmi , 0 Socket
-    private GUI graph;
+    private UI graph;
     private ServerRemoteInterface server;
     private String clientName;
     private String chooseMap;
@@ -40,7 +42,12 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     private final Integer syncmap = 5;
 
     //to keep trak of server status. used ONLY with RMI
-    private Timer timer;
+    private Timer connectionStatusRMITimer;
+
+    private Thread timerTurn;
+    private final int turnTime = 15;
+    private Thread timerSetup;
+
 
     //<editor-fold desc="Initialization Phase">
     private static void connection_parameters_setup() throws ParserConfigurationException, IOException, SAXException {
@@ -61,7 +68,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     }
 
 
-    public ClientPlayer (int t,GUI g, String serverIP) throws RemoteException
+    public ClientPlayer (int t, UI g, String serverIP) throws RemoteException
     {
         if(!serverIP.isEmpty())
             HOSTNAME = serverIP;
@@ -114,8 +121,8 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
         //this timertask is needed to keep trak of server status with RMI
         if(typeOfCOnnection == 1) {
-            timer= new Timer();
-            timer.schedule(new TimerTask() {
+            connectionStatusRMITimer = new Timer();
+            connectionStatusRMITimer.schedule(new TimerTask() {
                 @Override
                 public void run() {
                     try {
@@ -186,7 +193,8 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
      */
     public String chooseWindow(String[] s1, String[] s2)
     {
-        if(chooseMap==null) {
+        if (chooseMap == null)
+        {
             try {
                 graph.maps(s1, s2);
             } catch (Exception e) {
@@ -201,9 +209,12 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
                 e.printStackTrace();
             }
         }
+
         String m = chooseMap;
         chooseMap = null;
         //String m = s1[0];
+
+        Boolean b = true;
         graph.game();
         return m;
     }
@@ -299,6 +310,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         ToolAction.clearTool();
         graph.updateMessage("My turn");
         graph.setEnableBoard(true);
+        startTimerTurn();
         return "ok";
     }
 
@@ -360,6 +372,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     public synchronized void pass() {
         try {
             String s = server.passTurn();
+            stopTimerTurn();
             graph.setEnableBoard(false);
             graph.updateMessage(s);
         } catch (RemoteException e) {
@@ -386,9 +399,9 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     public boolean closeCommunication (String cause)
     {
         //System.out.println("Game ended because " + cause);
-        if(timer != null) {
-            timer.cancel();
-            timer.purge();
+        if(connectionStatusRMITimer != null) {
+            connectionStatusRMITimer.cancel();
+            connectionStatusRMITimer.purge();
         }
         graph.disconnection("Game ended because " + cause);
         return true;
@@ -398,4 +411,33 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     //</editor-fold>
 
 
+    private void startTimerTurn() {
+        timerTurn = new Thread(new GameTimer(turnTime));
+        timerTurn.start();
+    }
+
+    private void stopTimerTurn(){
+        timerTurn.interrupt();
+        timerTurn = null;
+    }
+
+    //use to time the setup and turn phase
+    private class GameTimer implements Runnable {
+        int time;
+
+        public GameTimer(int time) {
+            this.time = time;
+        }
+
+        @Override
+        public void run() {
+            try {
+                TimeUnit.SECONDS.sleep(time);
+            } catch (InterruptedException e) {
+                //e.printStackTrace();
+                return;
+            }
+            closeCommunication("timeout reached");
+        }
+    }
 }

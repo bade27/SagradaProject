@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.GUI;
+import it.polimi.ingsw.UI;
 import it.polimi.ingsw.client.MoveAction;
 import it.polimi.ingsw.client.ToolAction;
 import it.polimi.ingsw.model.ColorEnum;
@@ -15,12 +15,12 @@ import javafx.scene.text.FontWeight;
 
 public class GridGUI extends GridPane{
 
-    private GUI game;
+    private UI game;
     private boolean enable;
     private boolean tool;
     private GridPane grid;
 
-    public GridGUI (GridPane p, GUI game){
+    public GridGUI (GridPane p, UI game){
         this.game=game;
         enable = false;
         grid=new GridPane();

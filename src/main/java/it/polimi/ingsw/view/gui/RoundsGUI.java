@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.GUI;
+import it.polimi.ingsw.UI;
 import it.polimi.ingsw.client.ToolAction;
 import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.model.Dice;
@@ -17,12 +17,12 @@ public class RoundsGUI extends GridPane {
     ArrayList<Dice> [] trace;
     int turn=3;
     boolean enable=true;
-    GUI game;
+    UI game;
     ArrayList<Pair> [] alldice;
     GridPane round;
     GridPane diceInRound;
     GridPane roundTrace;
-    public RoundsGUI(GridPane p, GUI game) {
+    public RoundsGUI(GridPane p, UI game) {
         this.game=game;
         ArrayList<Pair> listpair = new ArrayList<>();
         listpair.add(new Pair(0,ColorEnum.WHITE));

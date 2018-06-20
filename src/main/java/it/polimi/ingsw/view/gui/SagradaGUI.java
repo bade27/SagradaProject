@@ -1,6 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.GUI;
+import it.polimi.ingsw.UI;
 import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.client.ToolAction;
 import it.polimi.ingsw.remoteInterface.Pair;
@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class SagradaGUI extends Application implements GUI {
+public class SagradaGUI extends Application implements UI {
 
 
     private DadieraGUI dadieraG;
@@ -94,8 +94,6 @@ public class SagradaGUI extends Application implements GUI {
         b.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 try {
-                    String [] n={"Tizio","Caio","Sempronio","Boh"};
-                    int [] p={245,572,345,1000};
                     login("inserisci nome, indirizzo e connessione");                                       ///////////
                 }catch(Exception e){
                     e.printStackTrace();
