@@ -45,7 +45,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     private Timer connectionStatusRMITimer;
 
     private Thread timerTurn;
-    private final int turnTime = 15;
+    private final int turnTime = 20;
     private Thread timerSetup;
 
 
@@ -404,6 +404,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             connectionStatusRMITimer.purge();
         }
         graph.disconnection("Game ended because " + cause);
+        graph = null;
         return true;
         //Graphic.setpopup connection down
 

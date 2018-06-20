@@ -292,6 +292,11 @@ public class SagradaCLI implements UI {
         }
     }
 
+    @Override
+    public void deletePlayer() {
+
+    }
+
     public static void main(String[] args) {
         new SagradaCLI();
     }

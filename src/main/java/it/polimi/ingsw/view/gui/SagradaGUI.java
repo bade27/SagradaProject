@@ -388,7 +388,7 @@ public class SagradaGUI extends Application implements UI {
         title.setTextFill(Color.INDIANRED);
         title.setFont(Font.font("verdana",  FontWeight.BOLD, FontPosture.REGULAR,30));
 
-        Button b=new Button("riprova");
+        Button b=new Button("Riconnetti");
         b.setPrefSize(100,50);
         text.getChildren().add(title);
         text.getChildren().add(subtitle);
@@ -397,11 +397,7 @@ public class SagradaGUI extends Application implements UI {
 
         b.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-                try {
-                      //riprova a collegarsi
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
+                login("Ritorna in partita!");
             } });
         discRoot.setAlignment(Pos.CENTER);
         discRoot.setSpacing(30);
@@ -711,6 +707,10 @@ public class SagradaGUI extends Application implements UI {
         /*if(nome esiste gia)
             return false;*/
         return true;
+    }
+
+    public void deletePlayer() {
+        clientPlayer = null;
     }
 
     public static void main(String[] args) {
