@@ -368,21 +368,17 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
         return response;
     }
 
-    private String sendTool (String msg,String json)
+    private String sendTool (String msg,String json) throws RemoteException
     {
         String response = "";
-        try
-        {
-            outSocket.write(msg + "\n");
-            outSocket.flush();
-            StringBuilder move = new StringBuilder(json);
-            move.append("\n");
-            outSocket.write(move.toString());
-            outSocket.flush();
-            response = waitResponse();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+        outSocket.write(msg + "\n");
+        outSocket.flush();
+        StringBuilder move = new StringBuilder(json);
+        move.append("\n");
+        outSocket.write(move.toString());
+        outSocket.flush();
+        response = waitResponse();
 
         return response;
     }
@@ -524,7 +520,7 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
         {
             //System.out.println("Exception: "+e);
             //e.printStackTrace();
-            msg = "server ended communication";
+            msg = "Il server ha interrotto la comunicazione";
         } finally
         {
             try

@@ -40,13 +40,11 @@ public class ToolAction
         return comm.askToolPermission(idTool);
     }
 
-    public static String performTool (ServerRemoteInterface comm)
-    {
+    public static String performTool (ServerRemoteInterface comm) throws RemoteException {
         if (idTool == -1)
             return "Tool not selected";
         else {
-            try
-            {
+
                 if (idTool == 1 || idTool == 6 || idTool == 10)
                     return comm.useTool(dadieraDie,instruction);
                 if (idTool == 2 || idTool == 3)
@@ -62,9 +60,6 @@ public class ToolAction
                 if(idTool == 11)
                     return comm.useTool(dadieraDie, instruction);
 
-            }catch (Exception e){
-                return "Invalid Input";
-            }
 
         }
         return "Tool not yet implemented";

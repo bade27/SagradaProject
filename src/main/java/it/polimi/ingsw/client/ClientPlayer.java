@@ -45,7 +45,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     private Timer connectionStatusRMITimer;
 
     private Thread timerTurn;
-    private final int turnTime = 20;
+    private final int turnTime = 120;
     private Thread timerSetup;
 
 
@@ -120,7 +120,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         }
 
         //this timertask is needed to keep trak of server status with RMI
-        if(typeOfCOnnection == 1) {
+        /*if(typeOfCOnnection == 1) {
             connectionStatusRMITimer = new Timer();
             connectionStatusRMITimer.schedule(new TimerTask() {
                 @Override
@@ -129,11 +129,11 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
                         server.serverStatus();
                     } catch (RemoteException e) {
                         //e.printStackTrace();
-                        closeCommunication("server ended communication");
+                        closeCommunication("Il server ha interrotto la comunicazione");
                     }
                 }
             }, 0,5000);
-        }
+        }*/
 
         System.out.println("Client connected");
     }
@@ -328,7 +328,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
                 msg = MoveAction.perfromMove(server);
             } catch (RemoteException e) {
                 e.printStackTrace();
-                graph.disconnection("Impossibile contattare il server");
+                closeCommunication("Impossibile contattare il server");
                 return;
             }
             graph.updateMessage(msg);
@@ -346,14 +346,21 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             System.out.println("tool response: " + response);
         } catch (RemoteException e) {
             e.printStackTrace();
-            graph.disconnection("Impossibile contattare il server");
+            closeCommunication("Impossibile contattare il server");
             return false;
         }
         return response.equals("Richiesta utilizzo tool accolta");
     }
 
     public synchronized void useTool() {
-        String msg = ToolAction.performTool(server);
+        String msg = "";
+        try {
+            msg = ToolAction.performTool(server);
+        } catch (RemoteException e) {
+            //e.printStackTrace();
+            closeCommunication("Impossibile contattare il server");
+            return;
+        }
         graph.updateMessage(msg);
         if (!"redyellowgreenbluepurple".contains(msg)) {
             graph.setToolPhase(false);
@@ -403,7 +410,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             connectionStatusRMITimer.cancel();
             connectionStatusRMITimer.purge();
         }
-        graph.disconnection("Game ended because " + cause);
+        graph.disconnection(cause);
         graph = null;
         return true;
         //Graphic.setpopup connection down
