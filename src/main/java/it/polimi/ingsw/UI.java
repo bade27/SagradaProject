@@ -29,4 +29,6 @@ public interface UI {
     public void updatePublicTarget(String [] s);
     public void updatePrivateTarget(String [] s);
     public void updateRoundTrace(ArrayList<Pair>[] trace);
+
+    public void deletePlayer();
 }

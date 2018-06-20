@@ -40,8 +40,8 @@ public class MatchHandler implements Runnable
     private RoundTrace roundTrace;
     private UsersEntry userList;
 
-    private final static int TURNS = 10;
-    private final static int MAXGIOC = 2;//Da modificare a 4
+    private final static int TURNS = 3;
+    private final static int MAXGIOC = 3;//Da modificare a 4
 
     //connection parameters
     private static int RMI_REGISTRY_PORT;
@@ -56,36 +56,6 @@ public class MatchHandler implements Runnable
     private Thread timer;
     private final int threshold = 2;
     private final int sleepTime = 10;
-
-    private class ConnectionTimer implements Runnable {
-        @Override
-        public void run() {
-            synchronized (lockOnnConn) {
-                while (nConn < threshold) {
-                    try {
-                        lockOnnConn.wait();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-
-            System.out.println("dormo");
-            try {
-                TimeUnit.SECONDS.sleep(sleepTime);
-            } catch (InterruptedException e) {
-                return;
-            }
-
-            System.out.println("mi sveglio");
-            synchronized (gameCannotStartYet) {
-                gameCannotStartYet.notifyAll();
-            }
-
-            token.stopSetup();
-
-        }
-    }
 
 
     public synchronized void run ()
@@ -336,26 +306,23 @@ public class MatchHandler implements Runnable
     private ServerModelAdapter clientRegistration (ClientRemoteInterface cli)
     {
         //If max number of connection is reached communicate the client he is one too many
-        if (/*nConn*/getnConn() == MAXGIOC)
+        if (getnConn() == MAXGIOC)
         {
             try {
                 LogFile.addLog("Client Rejected cause too many client connected");
                 cli.sendMessage("Too many client connected");
-                return null;
             }catch (ClientOutOfReachException | RemoteException e){
                 LogFile.addLog("Impossible to communicate the client he is one too many");
             }
-
+            return null;
         }
         //Initialization of ServerPlayer for each player
         ServerModelAdapter adp = new ServerModelAdapter(dices, roundTrace, token);
         ServerPlayer pl = new ServerPlayer(token,adp,userList,cli);
         player.add(pl);
-        //nConn++;
         addTonConn(1);
         int n = checkClientAlive();
         clientConnectionUpdateMessage("connessi");
-        //nConn = nConn-n;
         subFromnConn(n);
 
         //If max number of connection is reached starts game
@@ -367,6 +334,7 @@ public class MatchHandler implements Runnable
             timer.interrupt();
         }
 
+        //If 2 connections reached starts the timer
         if(getnConn() == threshold) {
             synchronized (lockOnnConn) {
                 lockOnnConn.notifyAll();
@@ -404,6 +372,7 @@ public class MatchHandler implements Runnable
     }
     //</editor-fold>
 
+    //<editor-fold desc="nConn management">
     public int getnConn() {
         synchronized (lockOnnConn) {
             return nConn;
@@ -427,6 +396,7 @@ public class MatchHandler implements Runnable
             this.nConn = nConn;
         }
     }
+    //</editor-fold>
 
     //<editor-fold desc="Setup Phase">
     /**
@@ -760,11 +730,6 @@ public class MatchHandler implements Runnable
     }
     //</editor-fold>
 
-    public static void main(String[] args)
-    {
-        (new Thread(new MatchHandler())).start();
-    }
-
     //<editor-fold desc="Initializer connection class">
     /**
      * This thread-class is used to accept client's connection through RMI and Socket in a parallel process
@@ -816,6 +781,52 @@ public class MatchHandler implements Runnable
         }
     }
     //</editor-fold>
+
+    //<editor-fold desc="Initial timer">
+    /**
+     * This is the timer that starts when the number of connected clients
+     * is two, and is stopped if the number of connected players reaches MAXGIOC
+     */
+    private class ConnectionTimer implements Runnable {
+        @Override
+        public void run() {
+            synchronized (lockOnnConn) {
+                while (nConn < threshold) {
+                    try {
+                        lockOnnConn.wait();
+                    } catch (InterruptedException e) {
+                        //e.printStackTrace();
+                        return;
+                    }
+                }
+            }
+
+            try {
+                TimeUnit.SECONDS.sleep(sleepTime);
+            } catch (InterruptedException e) {
+                return;
+            }
+
+            synchronized (gameCannotStartYet) {
+                gameCannotStartYet.notifyAll();
+            }
+
+            token.stopSetup();
+
+        }
+    }
+    //</editor-fold>
+
+
+
+    /**
+     * Main method. It starts the server
+     * @param args
+     */
+    public static void main(String[] args)
+    {
+        (new Thread(new MatchHandler())).start();
+    }
 }
 
 

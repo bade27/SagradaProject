@@ -224,4 +224,10 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
             Thread.currentThread().interrupt();
         }
     }
+
+
+    @Override
+    public String serverStatus() {
+        return "alive";
+    }
 }

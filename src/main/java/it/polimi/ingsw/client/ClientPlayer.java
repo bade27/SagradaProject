@@ -18,9 +18,9 @@ import java.io.IOException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInterface
@@ -38,9 +38,16 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     private String chooseMap;
     //buffer mossa in upload
     private boolean finishedMove = false;
-    private int num_of_moves = 0;
     private final Integer synclogin=5;
     private final Integer syncmap = 5;
+
+    //to keep trak of server status. used ONLY with RMI
+    private Timer connectionStatusRMITimer;
+
+    private Thread timerTurn;
+    private final int turnTime = 120;
+    private Thread timerSetup;
+
 
     //<editor-fold desc="Initialization Phase">
     private static void connection_parameters_setup() throws ParserConfigurationException, IOException, SAXException {
@@ -97,11 +104,13 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         catch (ClientOutOfReachException e){
             System.out.println("Impossible to connect to Host with socket");
             //e.printStackTrace();
+            graph.login("Ip sbagliato");
             return;
         }
         catch (RemoteException e){
             //e.printStackTrace();
             System.out.println("Impossible to connect to Host with RMI");
+            graph.login("Ip sbagliato");
             return;
         }
         catch (Exception e){
@@ -109,6 +118,23 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             System.out.println("Impossible to connect to Host");
             return;
         }
+
+        //this timertask is needed to keep trak of server status with RMI
+        /*if(typeOfCOnnection == 1) {
+            connectionStatusRMITimer = new Timer();
+            connectionStatusRMITimer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    try {
+                        server.serverStatus();
+                    } catch (RemoteException e) {
+                        //e.printStackTrace();
+                        closeCommunication("Il server ha interrotto la comunicazione");
+                    }
+                }
+            }, 0,5000);
+        }*/
+
         System.out.println("Client connected");
     }
     //</editor-fold>
@@ -122,12 +148,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     {
         if (clientName == null)
         {
-            try {
-                graph.login("nome già esistente");
-            }
-            catch (Exception e){
-                e.printStackTrace();
-            }
+            graph.login("nome già esistente");
 
             try {
                 synchronized (synclogin)
@@ -135,7 +156,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
                     while (clientName == null)
                         synclogin.wait();
                 }
-            } catch (Exception e) {
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         }
@@ -162,20 +183,15 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
      */
     public String chooseWindow(ArrayList<String[]> list)
     {
-        String choice = "";
-        try {
-            choice = chooseWindow(list.get(0),list.get(1));
-        }
-        catch (ClientOutOfReachException ex){
-            return "";
-        }
+        String choice;
+        choice = chooseWindow(list.get(0),list.get(1));
         return choice;
     }
 
     /**
      * Real Choosing window method
      */
-    public String chooseWindow(String[] s1, String[] s2)  throws ClientOutOfReachException
+    public String chooseWindow(String[] s1, String[] s2)
     {
         if (chooseMap == null)
         {
@@ -211,7 +227,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     }
 
     @Override
-    public boolean sendCards(String[]...  s) throws RemoteException {
+    public boolean sendCards(String[]...  s) {
         for (int i = 0; i < s.length ; i++)
         {
             if (i == 0) {
@@ -290,44 +306,35 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     //<editor-fold desc="Turn communication">
     public String doTurn ()
     {
-        num_of_moves = 0;
         MoveAction.clearMove();
         ToolAction.clearTool();
         graph.updateMessage("My turn");
         graph.setEnableBoard(true);
+        startTimerTurn();
         return "ok";
     }
 
     public synchronized void myMove() {
 
-        if (num_of_moves == 0)
+        if (MoveAction.canMove())
+            finishedMove = true;
+        else
+            finishedMove = false;
+
+        if (finishedMove)
         {
-            if (MoveAction.canMove())
-                finishedMove = true;
-            else
-                finishedMove = false;
-
-            if (finishedMove)
-            {
-                try {
-                    String msg = MoveAction.perfromMove(server);
-                    graph.updateMessage(msg);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                    if (finishedMove) {
-                        try {
-                            String msg = MoveAction.perfromMove(server);
-                            graph.updateMessage(msg);
-                            graph.setEnableBoard(false);
-                            num_of_moves++;
-                        } catch (RemoteException ex) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-
+            String msg = "";
+            try {
+                msg = MoveAction.perfromMove(server);
+            } catch (RemoteException e) {
+                e.printStackTrace();
+                closeCommunication("Impossibile contattare il server");
+                return;
             }
+            graph.updateMessage(msg);
+
         }
+
     }
     //</editor-fold>
 
@@ -339,13 +346,21 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             System.out.println("tool response: " + response);
         } catch (RemoteException e) {
             e.printStackTrace();
+            closeCommunication("Impossibile contattare il server");
             return false;
         }
         return response.equals("Richiesta utilizzo tool accolta");
     }
 
     public synchronized void useTool() {
-        String msg = ToolAction.performTool(server);
+        String msg = "";
+        try {
+            msg = ToolAction.performTool(server);
+        } catch (RemoteException e) {
+            //e.printStackTrace();
+            closeCommunication("Impossibile contattare il server");
+            return;
+        }
         graph.updateMessage(msg);
         if (!"redyellowgreenbluepurple".contains(msg)) {
             graph.setToolPhase(false);
@@ -364,6 +379,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     public synchronized void pass() {
         try {
             String s = server.passTurn();
+            stopTimerTurn();
             graph.setEnableBoard(false);
             graph.updateMessage(s);
         } catch (RemoteException e) {
@@ -389,10 +405,47 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
     public boolean closeCommunication (String cause)
     {
-        System.out.println("Game ended because " + cause);
+        //System.out.println("Game ended because " + cause);
+        if(connectionStatusRMITimer != null) {
+            connectionStatusRMITimer.cancel();
+            connectionStatusRMITimer.purge();
+        }
+        graph.disconnection(cause);
+        graph = null;
         return true;
         //Graphic.setpopup connection down
 
     }
     //</editor-fold>
+
+
+    private void startTimerTurn() {
+        timerTurn = new Thread(new GameTimer(turnTime));
+        timerTurn.start();
+    }
+
+    private void stopTimerTurn(){
+        timerTurn.interrupt();
+        timerTurn = null;
+    }
+
+    //use to time the setup and turn phase
+    private class GameTimer implements Runnable {
+        int time;
+
+        public GameTimer(int time) {
+            this.time = time;
+        }
+
+        @Override
+        public void run() {
+            try {
+                TimeUnit.SECONDS.sleep(time);
+            } catch (InterruptedException e) {
+                //e.printStackTrace();
+                return;
+            }
+            closeCommunication("timeout reached");
+        }
+    }
 }

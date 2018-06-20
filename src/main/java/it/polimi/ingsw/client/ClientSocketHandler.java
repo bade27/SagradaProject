@@ -6,9 +6,9 @@ import it.polimi.ingsw.remoteInterface.*;
 import it.polimi.ingsw.utilities.JSONFacilities;
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.*;
+import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -47,7 +47,7 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
                     new OutputStreamWriter(socket.getOutputStream())), true);
         } catch (Exception e)
         {
-            e.printStackTrace();
+            //e.printStackTrace();
             throw new ClientOutOfReachException();
         }
         deamon = new Thread(this);
@@ -316,19 +316,14 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
         try
         {
             JSONArray json = JSONFacilities.encodeMove(coord,pair);
-            try
-            {
-                outSocket.write("move\n");
-                outSocket.flush();
-                StringBuilder move = new StringBuilder(json.toString());
-                move.append("\n");
-                outSocket.write(move.toString());
-                outSocket.flush();
-                response = waitResponse();
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-            }
+            outSocket.write("move\n");
+            outSocket.flush();
+            StringBuilder move = new StringBuilder(json.toString());
+            move.append("\n");
+            outSocket.write(move.toString());
+            outSocket.flush();
+            response = waitResponse();
+
         } catch (JSONException je)
         {
             je.printStackTrace();
@@ -373,21 +368,17 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
         return response;
     }
 
-    private String sendTool (String msg,String json)
+    private String sendTool (String msg,String json) throws RemoteException
     {
         String response = "";
-        try
-        {
-            outSocket.write(msg + "\n");
-            outSocket.flush();
-            StringBuilder move = new StringBuilder(json);
-            move.append("\n");
-            outSocket.write(move.toString());
-            outSocket.flush();
-            response = waitResponse();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
+        outSocket.write(msg + "\n");
+        outSocket.flush();
+        StringBuilder move = new StringBuilder(json);
+        move.append("\n");
+        outSocket.write(move.toString());
+        outSocket.flush();
+        response = waitResponse();
 
         return response;
     }
@@ -529,7 +520,7 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
         {
             //System.out.println("Exception: "+e);
             //e.printStackTrace();
-            msg = "server ended communication";
+            msg = "Il server ha interrotto la comunicazione";
         } finally
         {
             try
@@ -550,8 +541,10 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
     //</editor-fold>
 
     //<editor-fold desc="Wait Response">
-    private String waitResponse () throws ClientOutOfReachException
+    private String waitResponse () throws RemoteException
     {
+        if(!isReachable())
+            throw new RemoteException();
         try
         {
             synchronized (syncronator) {
@@ -563,10 +556,27 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
             return r;
         }catch (Exception e){
             e.printStackTrace();
-            throw new ClientOutOfReachException();
+            throw new RemoteException();
         }
 
     }
     //</editor-fold>
 
+
+    //it is only called with RMI, so it has no function here with sockets
+    @Override
+    public String serverStatus() {
+        return null;
+    }
+
+    private boolean isReachable() {
+        try {
+            try (Socket soc = new Socket()) {
+                soc.connect(new InetSocketAddress(HOSTNAME, PORT), 5000);
+            }
+            return true;
+        } catch (IOException e) {
+            return false;
+        }
+    }
 }

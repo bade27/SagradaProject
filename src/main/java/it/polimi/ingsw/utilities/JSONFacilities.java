@@ -330,8 +330,7 @@ public class JSONFacilities
      * @param tracePosition position of round trace
      * @return JSON with encoded parameters
      */
-    public static JSONArray encodeTool (Pair dadieraDie, Pair traceDie, int tracePosition)
-    {
+    public static JSONArray encodeTool (Pair dadieraDie, Pair traceDie, int tracePosition) throws JSONException {
         JSONArray jsonArray = new JSONArray();
         jsonArray.put(encodePair(dadieraDie));
         jsonArray.put(encodePair(traceDie));
