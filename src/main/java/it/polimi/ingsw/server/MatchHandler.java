@@ -137,6 +137,7 @@ public class MatchHandler implements Runnable
     {
         int turnsPlayed;
         LogFile.addLog("Game Phase started");
+        token.setOnGame(true);
         try{
             mixDadiera();
         }catch (Exception e){
@@ -336,7 +337,7 @@ public class MatchHandler implements Runnable
     private ServerModelAdapter clientRegistration (ClientRemoteInterface cli)
     {
         //If max number of connection is reached communicate the client he is one too many
-        if (/*nConn*/getnConn() == MAXGIOC)
+        if (getnConn() == MAXGIOC)
         {
             try {
                 LogFile.addLog("Client Rejected cause too many client connected");

@@ -196,9 +196,6 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
         String m = chooseMap;
         chooseMap = null;
-        //String m = s1[0];
-
-        Boolean b = true;
         graph.game();
         return m;
     }

@@ -6,6 +6,7 @@ public class TokenTurn
 {
     //List of effective players
     private ArrayList<Player> players;
+    private ArrayList<Player> inWaitConnection;
 
     //Tools using
     private ArrayList<Player> tempPlayers;
@@ -19,6 +20,7 @@ public class TokenTurn
     private int currentTurn;
     private boolean clockwise;
     private boolean endRound;
+    private boolean onGame;
 
 
     //Setup Phase
@@ -43,11 +45,13 @@ public class TokenTurn
         clockwise = true;
         onSetup = false;
         players = new ArrayList<>();
+        inWaitConnection = new ArrayList<>();
         initNumberOfPlayers = 0;
         fatalError = false;
         toolInUsing = false;
         tempPlayers = new ArrayList<>();
         justDeleting = false;
+        onGame = false;
     }
 
     /**
@@ -115,7 +119,7 @@ public class TokenTurn
             {
                 currentTurn--;
                 if (currentTurn == 1)
-                    endRound = true;
+                    closeRound();
             } else
             {
                 clockwise = true;
@@ -138,7 +142,7 @@ public class TokenTurn
             {
                 clockwise = false;
                 if (tempPlayers.size() == 2)
-                    endRound = true;
+                    closeRound();
             }
         } else
         {
@@ -146,7 +150,7 @@ public class TokenTurn
             {
                 currentTurn--;
                 if (currentTurn == 2)
-                    endRound = true;
+                   closeRound();
             } else
             {
                 clockwise = true;
@@ -192,7 +196,10 @@ public class TokenTurn
      */
     public synchronized void addPlayer(String name)
     {
-        players.add(new Player(name, players.size() + 1));
+        if (!onGame)
+            players.add(new Player(name, players.size() + 1));
+        else
+            inWaitConnection.add(new Player(name, players.size() + 1 + inWaitConnection.size()));
     }
 
     /**
@@ -236,7 +243,7 @@ public class TokenTurn
                 }
 
                 if (currentTurn == 1)
-                    endRound = true;
+                    closeRound();
 
                 turnDel = players.get(i).getIdTurn();
                 players.remove(i);
@@ -338,6 +345,15 @@ public class TokenTurn
 
     //<editor-fold desc="Utilities">
 
+    private void closeRound ()
+    {
+        endRound = true;
+        for (int i = 0 ; i < inWaitConnection.size() ; i++) {
+            players.add(inWaitConnection.get(i));
+        }
+        inWaitConnection.clear();
+    }
+
     public int getNumPlayers()
     {
         return players.size();
@@ -385,6 +401,10 @@ public class TokenTurn
     public void setEndGame()
     {
         this.endGame = true;
+    }
+
+    public void setOnGame(boolean onGame) {
+        this.onGame = onGame;
     }
     //</editor-fold>
 
