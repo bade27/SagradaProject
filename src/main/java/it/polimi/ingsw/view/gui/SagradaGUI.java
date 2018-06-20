@@ -111,7 +111,6 @@ public class SagradaGUI extends Application implements UI {
 
     @Override
     public void login(String s){
-        //clientConnectionHandler =new ClientSocketHandler();
         VBox loginRoot=new VBox();
         GridPane login=new GridPane();
         loginRoot.getChildren().add(login);
@@ -208,7 +207,7 @@ public class SagradaGUI extends Application implements UI {
         loginRoot.setAlignment(Pos.CENTER);
         loginRoot.setSpacing(35);
         //scene=new Scene(root,500,450);
-        stage.setTitle("Sagrada");
+        //stage.setTitle("Sagrada");
         stage.getScene().getWindow().setWidth(500);
         stage.getScene().getWindow().setHeight(450);
         stage.getScene().setRoot(loginRoot);
@@ -224,7 +223,7 @@ public class SagradaGUI extends Application implements UI {
     public void maps(String[] s1,String[] s2){
         VBox mapsRoot=new VBox();
         Label title=new Label("Seleziona mappa da voler usare");
-        title.setFont(Font.font("verdana",  FontWeight.BOLD, FontPosture.REGULAR,25));
+        title.setFont(Font.font("Verdana",  FontWeight.BOLD, FontPosture.REGULAR,25));
         mapsRoot.getChildren().add(title);
         GridPane mapsgrid=new GridPane();
         mapsRoot.getChildren().add(mapsgrid);
@@ -389,7 +388,7 @@ public class SagradaGUI extends Application implements UI {
         title.setTextFill(Color.INDIANRED);
         title.setFont(Font.font("verdana",  FontWeight.BOLD, FontPosture.REGULAR,30));
 
-        Button b=new Button("riprova");
+        Button b=new Button("Riconnetti");
         b.setPrefSize(100,50);
         text.getChildren().add(title);
         text.getChildren().add(subtitle);
@@ -398,11 +397,7 @@ public class SagradaGUI extends Application implements UI {
 
         b.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
-                try {
-                      //riprova a collegarsi
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
+                login("Ritorna in partita!");
             } });
         discRoot.setAlignment(Pos.CENTER);
         discRoot.setSpacing(30);
@@ -712,6 +707,10 @@ public class SagradaGUI extends Application implements UI {
         /*if(nome esiste gia)
             return false;*/
         return true;
+    }
+
+    public void deletePlayer() {
+        clientPlayer = null;
     }
 
     public static void main(String[] args) {
