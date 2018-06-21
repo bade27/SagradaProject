@@ -317,9 +317,9 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
 
         try
         {
-            boolean reachable = ping();
-            if (reachable)
-            {
+            //boolean reachable = ping();
+            //if (reachable)
+//            {
                 outSocket.write(msg);
                 outSocket.flush();
                 StringBuilder windows = new StringBuilder(json);
@@ -328,8 +328,8 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
                 outSocket.flush();
                 response = inSocket.readLine();
                 isAlive = true;
-            } else
-                isAlive = false;
+            //} else
+              //  isAlive = false;
 
             if (!isAlive)
                 throw new ClientOutOfReachException();
@@ -517,6 +517,7 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
     {
         try
         {
+            System.out.println("pass?");
             outSocket.write("Turn passed\n");
             outSocket.flush();
             notifyServer();

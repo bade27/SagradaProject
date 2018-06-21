@@ -239,10 +239,11 @@ class TokenTurnTest {
     @Test
     void roundTestWithExits2 ()
     {
-        //A - B - C - delete(D) - C - B - A
+        //A - B - C - delete(D) - C - B
         token.nextTurn();
         assertTurnA();
         token.nextTurn();
+
         assertTurnB();
         token.nextTurn();
         assertTurnC();

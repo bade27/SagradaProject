@@ -12,6 +12,7 @@ import it.polimi.ingsw.model.objectives.Public.PublicObjective;
 import it.polimi.ingsw.model.tools.Tools;
 import it.polimi.ingsw.model.tools.ToolsFactory;
 import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
+import it.polimi.ingsw.remoteInterface.Pair;
 import it.polimi.ingsw.utilities.FileLocator;
 import it.polimi.ingsw.utilities.LogFile;
 import it.polimi.ingsw.utilities.ParserXML;
@@ -55,7 +56,7 @@ public class MatchHandler implements Runnable
     private final Object gameCannotStartYet = new Object();
     private Thread timer;
     private final int threshold = 2;
-    private final int sleepTime = 10;
+    private final int sleepTime = 100;
 
 
     public synchronized void run ()
@@ -117,6 +118,7 @@ public class MatchHandler implements Runnable
 
         turnsPlayed = 0;
 
+        //updateClient();
         while (true)
         {
             synchronized (token.getSynchronator())
@@ -612,10 +614,10 @@ public class MatchHandler implements Runnable
                 tools[i] = ToolsFactory.getTools(toolNames[c]);
             }
 
-            //Used to test tools
-            /*tools[0] = ToolsFactory.getTools(toolNames[6]);
-            tools[1] = ToolsFactory.getTools(toolNames[7]);
-            tools[2] = ToolsFactory.getTools(toolNames[8]);*/
+            //Used to test tools, do not delete
+            tools[0] = ToolsFactory.getTools(toolNames[0]);
+            tools[1] = ToolsFactory.getTools(toolNames[1]);
+            tools[2] = ToolsFactory.getTools(toolNames[2]);
 
             //For each players initialize tool cards already selected
             int n = getnConn();
@@ -639,12 +641,21 @@ public class MatchHandler implements Runnable
     {
         for (int i = 0; i < player.size(); i++)
         {
-            //Update user's window,dadiera,roundttrace and markers
+            //Update user's window,dadiera,round trace and markers
             if (player.get(i).isInGame())
             {
-                if (player.get(i).updateClient()) {
-                    for (int j = 0; j < player.size(); j++) {
-                        if (!player.get(j).getUser().equals(player.get(i).getUser())) {
+                if (player.get(i).updateClient())
+                {
+                    ArrayList<String> users = new ArrayList<>();
+                    ArrayList<Pair[][]> pairs = new ArrayList<>();
+                    for (int j = 0; j < player.size(); j++)
+                    {
+                        if (!player.get(j).getUser().equals(player.get(i).getUser()))
+                        {
+                            users.add(player.get(j).getUser());
+                            pairs.add( player.get(j).getGrid());
+                        }
+                        /*if (!player.get(j).getUser().equals(player.get(i).getUser())) {
 
                             try {
                                 //Update others users with user's window,dadiera,roundttrace and markers
@@ -653,8 +664,15 @@ public class MatchHandler implements Runnable
                                 LogFile.addLog("Client " + player.get(j).getUser() + " temporarily unreachable");
                             }
 
-                        }
+                        }*/
                     }
+                    try {
+                        //Update others users with user's window,dadiera,roundttrace and markers
+                        player.get(i).updateOpponents(users,pairs);
+                    } catch (ClientOutOfReachException e) {
+                        LogFile.addLog("Client  temporarily unreachable");
+                    }
+
                 }
             }
         }
@@ -710,6 +728,7 @@ public class MatchHandler implements Runnable
                     player.remove(i);
                     LogFile.addLog("Client does not respond to ping\r\n\t Client disconnected");
                 }
+                System.out.println("ok");
             }
         }
         catch (Exception e)

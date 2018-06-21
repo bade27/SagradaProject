@@ -120,7 +120,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         }
 
         //this timertask is needed to keep trak of server status with RMI
-        /*if(typeOfCOnnection == 1) {
+        if(typeOfCOnnection == 1) {
             connectionStatusRMITimer = new Timer();
             connectionStatusRMITimer.schedule(new TimerTask() {
                 @Override
@@ -133,7 +133,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
                     }
                 }
             }, 0,5000);
-        }*/
+        }
 
         System.out.println("Client connected");
     }

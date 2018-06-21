@@ -543,8 +543,8 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
     //<editor-fold desc="Wait Response">
     private String waitResponse () throws RemoteException
     {
-        if(!isReachable())
-            throw new RemoteException();
+        /*if(!isReachable())
+            throw new RemoteException();*/
         try
         {
             synchronized (syncronator) {

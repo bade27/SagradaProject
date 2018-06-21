@@ -18,6 +18,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.*;
 
@@ -35,7 +36,7 @@ public class ServerPlayer implements Runnable
     //private ExecutorService executor;
 
     private boolean alive;
-    private final int turnTime = 120;
+    private final int turnTime = 30;
 
     //Setup Phase
     private UsersEntry possibleUsers;
@@ -377,13 +378,20 @@ public class ServerPlayer implements Runnable
 
     }
 
+    public void updateOpponents (ArrayList<String> users, ArrayList<Pair[][]> grids) throws ClientOutOfReachException
+    {
+        for (int i = 0 ; i < users.size() ; i++)
+            updateOpponents(users.get(i),grids.get(i));
+    }
+
     /**
      *  Update opponent's situation on client's side
      */
     public void updateOpponents(String user, Pair[][] grids) throws ClientOutOfReachException {
 
         try{
-            communicator.updateOpponents(user,grids);
+            String r = communicator.updateOpponents(user,grids);
+            //System.out.println(r);
         } catch (Exception e) {
             LogFile.addLog("" , e.getStackTrace());
             throw new ClientOutOfReachException();
