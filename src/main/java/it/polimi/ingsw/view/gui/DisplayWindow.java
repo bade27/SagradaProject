@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view;
+package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.exceptions.ParserXMLException;
 import it.polimi.ingsw.model.ColorEnum;

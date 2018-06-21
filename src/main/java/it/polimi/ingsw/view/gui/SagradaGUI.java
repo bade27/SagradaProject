@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.client.ToolAction;
 import it.polimi.ingsw.remoteInterface.Pair;
 import it.polimi.ingsw.view.DadieraGUI;
+import it.polimi.ingsw.view.DimWindows;
 import javafx.application.Application;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -310,10 +311,11 @@ public class SagradaGUI extends Application implements UI {
         mainContent.add(pcenter,1,0);
         mainContent.add(pright,2,0);
 
-        it.polimi.ingsw.view.DimWindows.dim(mainContent);
-        it.polimi.ingsw.view.DimWindows.dim(pright);
-        it.polimi.ingsw.view.DimWindows.dim(pleft);
-        it.polimi.ingsw.view.DimWindows.dim(pcenter);
+        DimWindows.dim(mainContent);
+        DimWindows.dim(pright);
+        DimWindows.dim(pleft);
+        //pleft.prefWidth(Double.MAX_VALUE);
+        DimWindows.dim(pcenter);
 
         mainContent.setAlignment(Pos.CENTER);
         pcenter.setAlignment(Pos.CENTER);
@@ -331,7 +333,7 @@ public class SagradaGUI extends Application implements UI {
         BorderPane bottom = new BorderPane();
         msgb = new MessageBox("Benvenuto!");
         bottom.setLeft(msgb);
-        it.polimi.ingsw.view.EndButton pass = new it.polimi.ingsw.view.EndButton(this);
+        EndButton pass = new EndButton(this);
         bottom.setRight(pass);
         useTool = new UseToolButton("Usa il tool!", this);
         bottom.setCenter(useTool);

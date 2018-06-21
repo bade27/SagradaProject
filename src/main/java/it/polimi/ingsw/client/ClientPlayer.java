@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
 import it.polimi.ingsw.remoteInterface.Pair;
 import it.polimi.ingsw.remoteInterface.ServerRemoteInterface;
+import it.polimi.ingsw.server.ServerModelAdapter;
 import it.polimi.ingsw.utilities.FileLocator;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -380,7 +381,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             graph.setEnableBoard(false);
             graph.updateMessage(s);
         } catch (RemoteException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 
@@ -444,5 +445,15 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             }
             closeCommunication("timeout reached");
         }
+    }
+
+    @Override
+    public void reconnect() throws RemoteException {
+        graph.game();
+    }
+
+    @Override
+    public void setAdapter(ServerModelAdapter sma) throws RemoteException {
+        //unused
     }
 }

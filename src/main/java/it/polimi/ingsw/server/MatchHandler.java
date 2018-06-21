@@ -41,7 +41,7 @@ public class MatchHandler implements Runnable
     private RoundTrace roundTrace;
     private UsersEntry userList;
 
-    private final static int TURNS = 3;
+    private final static int TURNS = 10;
     private final static int MAXGIOC = 3;//Da modificare a 4
 
     //connection parameters
@@ -52,11 +52,18 @@ public class MatchHandler implements Runnable
     private int progressive;
     private int nConn;
 
+    //initial timer parameters
     private final Object lockOnnConn = new Object();
     private final Object gameCannotStartYet = new Object();
     private Thread timer;
     private final int threshold = 2;
     private final int sleepTime = 100;
+
+    //disconnections parameters
+    private final Object disconnCounterLock = new Object();
+    private int disconnCounter = 0;
+    private Thread reconnection;
+    private final Object reconnLock = new Object();
 
 
     public synchronized void run ()
@@ -321,27 +328,34 @@ public class MatchHandler implements Runnable
         }
         //Initialization of ServerPlayer for each player
         ServerModelAdapter adp = new ServerModelAdapter(dices, roundTrace, token);
-        ServerPlayer pl = new ServerPlayer(token,adp,userList,cli);
-        player.add(pl);
-        addTonConn(1);
-        int n = checkClientAlive();
-        clientConnectionUpdateMessage("connessi");
-        subFromnConn(n);
+        ServerPlayer pl = new ServerPlayer(token,adp,userList,cli, this);
 
-        //If max number of connection is reached starts game
-        if (getnConn() == MAXGIOC)
-        {
-            synchronized (gameCannotStartYet){
-                gameCannotStartYet.notifyAll();
-            }
-            timer.interrupt();
-        }
 
-        //If 2 connections reached starts the timer
-        if(getnConn() == threshold) {
-            synchronized (lockOnnConn) {
-                lockOnnConn.notifyAll();
+        //During a reconnection these operation mustn't to be performed
+        if(getDisconnCounter() == 0) {
+            player.add(pl);
+            addTonConn(1);
+            int n = checkClientAlive();
+            clientConnectionUpdateMessage("connessi");
+            subFromnConn(n);
+            //If max number of connection is reached starts game
+            if (getnConn() == MAXGIOC) {
+                synchronized (gameCannotStartYet) {
+                    gameCannotStartYet.notifyAll();
+                }
+                timer.interrupt();
             }
+
+            //If 2 connections reached starts the timer
+            if (getnConn() == threshold) {
+                synchronized (lockOnnConn) {
+                    lockOnnConn.notifyAll();
+                }
+            }
+        } else {
+            //If is some clients want to reconnect this thread handles the procedure
+            reconnection = new Thread(new Reconnector(pl));
+            reconnection.start();
         }
 
         return adp;
@@ -372,6 +386,54 @@ public class MatchHandler implements Runnable
             LogFile.addLog("RMI Bind failed" , e.getStackTrace());
         }
         return clientRegistration(cli);
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="Reconnector object">
+
+    /**
+     * This object handles the reconnection procedure
+     */
+    private class Reconnector implements Runnable {
+        ServerPlayer pl;
+
+        public Reconnector(ServerPlayer pl) {
+            this.pl = pl;
+        }
+
+        public void run() {
+            synchronized (reconnLock) {
+                //Login is performed
+                try {
+                    pl.justLogin();
+                } catch (ClientOutOfReachException e) {
+                    LogFile.addLog("(User : " + pl.getUser() + " ) unable to perform reconnection login\n"
+                            + e.getStackTrace().toString());
+                    return;
+                }
+                ServerPlayer newSP = null;
+                //search for the server player corresponding to the client that wants to reconnect
+                for (int i = 0; i < player.size(); i++)
+                    if (!player.get(i).isInGame() && player.get(i).getUser().equals(pl.getUser()))
+                        newSP = player.get(i);
+                if (newSP != null) {
+                    //set the new communicator
+                    newSP.setCommunicator(pl.getCommunicator());
+                    try {
+                        //set the old adapter on the old communicator
+                        newSP.getCommunicator().setAdapter(newSP.getAdapter());
+                    } catch (RemoteException e) {
+                        LogFile.addLog("Impossible to set the adapter on the new Communicator\n"
+                                + e.getStackTrace().toString());
+                        return;
+                    }
+                    newSP.setInGame(true);
+                    player.remove(pl);
+                    decDisconnCounter();
+                    newSP.reconnected();
+                }
+            }
+        }
     }
     //</editor-fold>
 
@@ -725,7 +787,7 @@ public class MatchHandler implements Runnable
                 if (!player.get(i).isClientAlive())
                 {
                     nDisc ++ ;
-                    player.remove(i);
+                    //player.remove(i);
                     LogFile.addLog("Client does not respond to ping\r\n\t Client disconnected");
                 }
                 System.out.println("ok");
@@ -837,7 +899,27 @@ public class MatchHandler implements Runnable
     }
     //</editor-fold>
 
+    //<editor-fold desc="Reconnection methods">
 
+    public int getDisconnCounter() {
+        synchronized (disconnCounterLock) {
+            return disconnCounter;
+        }
+    }
+
+    public void incDisconnCounter() {
+        synchronized (disconnCounterLock) {
+            this.disconnCounter++;
+        }
+    }
+
+    public void decDisconnCounter() {
+        synchronized (disconnCounterLock) {
+            this.disconnCounter--;
+        }
+    }
+
+    //</editor-fold>
 
     /**
      * Main method. It starts the server

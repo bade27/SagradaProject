@@ -1,5 +1,7 @@
 package it.polimi.ingsw.remoteInterface;
 
+import it.polimi.ingsw.server.ServerModelAdapter;
+
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 

@@ -33,6 +33,19 @@ public class UsersEntry
         return true;
     }
 
+    public synchronized boolean setUserGameStatus(String user, boolean status) {
+        boolean exit = false;
+        for(int i = 0; i < userList.size(); i++) {
+            if(userList.get(i).username == user)
+                if(status)
+                userList.get(i).setInGame();
+            else userList.get(i).setNotInGame();
+            exit = true;
+            break;
+        }
+        return exit;
+    }
+
     private class Users
     {
         String username;
@@ -49,6 +62,10 @@ public class UsersEntry
 
         private void setInGame() {
             this.inGame = true;
+        }
+
+        private void setNotInGame() {
+            this.inGame = false;
         }
 
         private String getUsername() {

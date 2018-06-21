@@ -208,6 +208,7 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
     //</editor-fold>
 
 
+    //<editor-fold desc="Utilities">
     /**
      * Notify server the end of current turn
      */
@@ -227,7 +228,18 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
 
 
     @Override
+    public void reconnect() throws RemoteException {
+        client.reconnect();
+    }
+
+    @Override
     public String serverStatus() {
         return "alive";
     }
+
+    @Override
+    public void setAdapter(ServerModelAdapter sma) {
+        this.adapter = sma;
+    }
+    //</editor-fold>
 }
