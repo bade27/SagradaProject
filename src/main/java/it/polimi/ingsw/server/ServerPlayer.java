@@ -316,7 +316,6 @@ public class ServerPlayer implements Runnable
                 throw new ClientOutOfReachException();
         }
         catch (Exception e) {
-            System.out.println("aa");
             LogFile.addLog("(" + user + ") Move timeout expired");
             throw new ClientOutOfReachException();
         }
@@ -520,30 +519,7 @@ public class ServerPlayer implements Runnable
     }
     //</editor-fold>
 
-
-    //metodo da cancellare una volta che tutte le disconnessioni funzionano senza executor
-
-    //<editor-fold desc="Executor">
-    /*private <T> T stopTask(Callable<T> task, int executionTime, ExecutorService executor) {
-        Object o = null;
-        Future future = executor.submit(task);
-        try {
-            o = future.get(executionTime, TimeUnit.MILLISECONDS);
-        } catch (TimeoutException te) {
-            //System.out.println(te.getMessage());
-            //LogFile.addLog("Client too late to reply");
-            //System.out.println("too late to reply");
-        } catch (InterruptedException ie) {
-            //System.out.println(ie.getMessage());
-            Thread.currentThread().interrupt();
-        } catch (ExecutionException ee) {
-            //System.out.println(ee.getMessage());
-        } finally {
-            future.cancel(true);
-        }
-        return (T)o;
-    }*/
-
+    //<editor-fold desc="Timer Utilities">
     public boolean isInGame() {
         return inGame;
     }
@@ -564,6 +540,8 @@ public class ServerPlayer implements Runnable
     //</editor-fold>
 
 
+
+    //<editor-fold desc="Reconnection facilities">
     public void setCommunicator(ClientRemoteInterface communicator) {
         this.communicator = communicator;
     }
@@ -576,6 +554,10 @@ public class ServerPlayer implements Runnable
         this.inGame = inGame;
     }
 
+    /**
+     * login, without username check
+     * @throws ClientOutOfReachException
+     */
     public void justLogin() throws ClientOutOfReachException {
         String u;
         try {
@@ -592,6 +574,10 @@ public class ServerPlayer implements Runnable
         System.out.println("new login ok");
     }
 
+
+    /**
+     * Sends to the client all the information it needs, once it's reconnected
+     */
     public void reconnected() {
         try {
             communicator.reconnect();
@@ -608,6 +594,15 @@ public class ServerPlayer implements Runnable
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+        if(inGame == true) {
+            new Thread(this).start();
+            token.addPlayer(user);
+        }
         System.out.println("user " + user + " riconnesso");
     }
+
+    public ServerModelAdapter getAdapter() {
+        return adapter;
+    }
+    //</editor-fold>
 }

@@ -61,7 +61,8 @@ public class MatchHandler implements Runnable
     //disconnections parameters
     private final Object disconnCounterLock = new Object();
     private int disconnCounter = 0;
-    Thread reconnection;
+    private Thread reconnection;
+    private final Object reconnLock = new Object();
 
 
     public synchronized void run ()
@@ -127,9 +128,6 @@ public class MatchHandler implements Runnable
         {
             synchronized (token.getSynchronator())
             {
-                /*for(int i = 0; i < player.size(); i++)
-                    if(!player.get(i).isInGame())
-                        subFromnConn(1);*/
                 //If a fatal error happens close all connection and return
                 if (token.isFatalError())
                     closeAllConnection();
@@ -353,42 +351,12 @@ public class MatchHandler implements Runnable
                 }
             }
         } else {
+            //If is some clients want to reconnect this thread handles the procedure
             reconnection = new Thread(new Reconnector(pl));
             reconnection.start();
         }
 
         return adp;
-    }
-
-
-    private class Reconnector implements Runnable {
-        ServerPlayer pl;
-
-        public Reconnector(ServerPlayer pl) {
-            this.pl = pl;
-        }
-
-        public void run() {
-            try {
-                pl.justLogin();
-            } catch (ClientOutOfReachException e) {
-                return;
-            }
-            player.forEach(s -> System.out.println(s.getUser() + " " + s.isInGame()));
-            ServerPlayer newSP = null;
-            for(int i = 0; i < player.size(); i++)
-                if(!player.get(i).isInGame() && player.get(i).getUser().equals(pl.getUser()))
-                    newSP = player.get(i);
-            if(newSP != null) {
-                newSP.setCommunicator(pl.getCommunicator());
-                newSP.setInGame(true);
-                player.remove(pl);
-                decDisconnCounter();
-                newSP.reconnected();
-                token.addPlayer(newSP.getUser());
-                new Thread(newSP).start();
-            }
-        }
     }
 
     /**
@@ -416,6 +384,54 @@ public class MatchHandler implements Runnable
             LogFile.addLog("RMI Bind failed" , e.getStackTrace());
         }
         return clientRegistration(cli);
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="Reconnector object">
+
+    /**
+     * This object handles the reconnection procedure
+     */
+    private class Reconnector implements Runnable {
+        ServerPlayer pl;
+
+        public Reconnector(ServerPlayer pl) {
+            this.pl = pl;
+        }
+
+        public void run() {
+            synchronized (reconnLock) {
+                //Login is performed
+                try {
+                    pl.justLogin();
+                } catch (ClientOutOfReachException e) {
+                    LogFile.addLog("(User : " + pl.getUser() + " ) unable to perform reconnection login\n"
+                            + e.getStackTrace().toString());
+                    return;
+                }
+                ServerPlayer newSP = null;
+                //search for the server player corresponding to the client that wants to reconnect
+                for (int i = 0; i < player.size(); i++)
+                    if (!player.get(i).isInGame() && player.get(i).getUser().equals(pl.getUser()))
+                        newSP = player.get(i);
+                if (newSP != null) {
+                    //set the new communicator
+                    newSP.setCommunicator(pl.getCommunicator());
+                    try {
+                        //set the old adapter on the old communicator
+                        newSP.getCommunicator().setAdapter(newSP.getAdapter());
+                    } catch (RemoteException e) {
+                        LogFile.addLog("Impossible to set the adapter on the new Communicator\n"
+                                + e.getStackTrace().toString());
+                        return;
+                    }
+                    newSP.setInGame(true);
+                    player.remove(pl);
+                    decDisconnCounter();
+                    newSP.reconnected();
+                }
+            }
+        }
     }
     //</editor-fold>
 

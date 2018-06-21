@@ -647,7 +647,7 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
             reply = r.equals("pong");
         } catch (IOException ste)
         {
-            ste.printStackTrace();
+            //ste.printStackTrace();
             return false;
         }
         return reply;
@@ -723,10 +723,11 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
     }
     //</editor-fold>
 
-
+    //<editor-fold desc="Reconnection">
     @Override
     public void reconnect() throws RemoteException {
         outSocket.write("reconnect\n");
         outSocket.flush();
     }
+    //</editor-fold>
 }
