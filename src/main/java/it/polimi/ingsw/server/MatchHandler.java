@@ -113,6 +113,7 @@ public class MatchHandler implements Runnable
     {
         int turnsPlayed;
         LogFile.addLog("Game Phase started");
+        token.setOnGame(true);
         try{
             mixDadiera();
         }catch (Exception e){

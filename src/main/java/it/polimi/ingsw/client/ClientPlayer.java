@@ -212,9 +212,6 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
         String m = chooseMap;
         chooseMap = null;
-        //String m = s1[0];
-
-        Boolean b = true;
         graph.game();
         return m;
     }
@@ -231,7 +228,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         for (int i = 0; i < s.length ; i++)
         {
             if (i == 0) {
-                System.out.println("Obbiettivi Pubblici: ");
+                //System.out.println("Obbiettivi Pubblici: ");
                 try {
                     graph.updatePublicTarget(s[i]);
                 }catch (Exception e1){
@@ -239,7 +236,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
                 }
             }
             else if (i == 1) {
-                System.out.println("Strumenti: ");
+                //System.out.println("Strumenti: ");
                 try {
                     graph.updateTools(s[i]);
                 }catch (Exception e2){
@@ -248,15 +245,15 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             }
             else if (i == 2)
             {
-                System.out.println("Obbiettivi Privati: ");
+                //System.out.println("Obbiettivi Privati: ");
                 try {
                     graph.updatePrivateTarget(s[i]);
                 }catch (Exception e3){
                     e3.printStackTrace();
                 }
             }
-            for (int j = 0; j< s[i].length ; j++)
-                System.out.println(s[i][j]);
+            //for (int j = 0; j< s[i].length ; j++)
+            //    System.out.println(s[i][j]);
 
         }
         return true;

@@ -63,7 +63,6 @@ public class ServerPlayer implements Runnable
         possibleUsers = ps;
         communicator = null;
         alive = true;
-        //executor = Executors.newFixedThreadPool(1);
         communicator = cli;
         mymatch = match;
         inGame = true;
