@@ -381,7 +381,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             graph.setEnableBoard(false);
             graph.updateMessage(s);
         } catch (RemoteException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 

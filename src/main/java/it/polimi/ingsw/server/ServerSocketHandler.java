@@ -207,6 +207,7 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
             throw new ClientOutOfReachException();
         }
 
+        assertstuff();
         return user;
 
     }
@@ -252,6 +253,7 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
             e.printStackTrace();
             throw new ClientOutOfReachException();
         }
+        assertstuff();
         return response;
 
     }
@@ -298,6 +300,7 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
             throw new ClientOutOfReachException();
         }
 
+        assertstuff();
         return isAlive;
     }
     //</editor-fold>
@@ -335,10 +338,11 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
                 throw new ClientOutOfReachException();
         } catch (Exception e)
         {
-            e.printStackTrace();
+            //e.printStackTrace();
             throw new ClientOutOfReachException();
         }
 
+        assertstuff();
         return response;
     }
 
@@ -457,9 +461,10 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
 
         } catch (Exception e)
         {
-            e.printStackTrace();
+            //e.printStackTrace();
             throw new ClientOutOfReachException();
         }
+        assertstuff();
         return response;
     }
 
@@ -636,7 +641,7 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
     public boolean ping()
     {
         //ping-pong communication
-        boolean reply = false;
+        boolean reply;
         try
         {
             outSocket.write("ping\n");
@@ -645,11 +650,12 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
             //String r = waitResponse();
             //System.out.println("ping recive:" + r);
             reply = r.equals("pong");
-        } catch (IOException ste)
+        } catch (IOException|NullPointerException ste)
         {
             //ste.printStackTrace();
             return false;
         }
+        assertstuff();
         return reply;
     }
 
@@ -671,6 +677,7 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
 
         if (!isAlive)
             throw new ClientOutOfReachException();
+        assertstuff();
         return true;
     }
 
@@ -730,4 +737,8 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
         outSocket.flush();
     }
     //</editor-fold>
+
+    public void assertstuff() {
+        assert !client.isClosed();
+    }
 }

@@ -594,6 +594,7 @@ public class ServerPlayer implements Runnable
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+        assert inGame;
         if(inGame == true) {
             new Thread(this).start();
             token.addPlayer(user);

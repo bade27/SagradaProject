@@ -546,8 +546,6 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
     //<editor-fold desc="Wait Response">
     private String waitResponse () throws RemoteException
     {
-        if(!isReachable())
-            throw new RemoteException();
         try
         {
             synchronized (syncronator) {
@@ -570,16 +568,5 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
     @Override
     public String serverStatus() {
         return null;
-    }
-
-    private boolean isReachable() {
-        try {
-            try (Socket soc = new Socket()) {
-                soc.connect(new InetSocketAddress(HOSTNAME, PORT), 5000);
-            }
-            return true;
-        } catch (IOException e) {
-            return false;
-        }
     }
 }
