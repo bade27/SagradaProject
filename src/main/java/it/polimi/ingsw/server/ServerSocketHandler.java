@@ -722,4 +722,11 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
         }
     }
     //</editor-fold>
+
+
+    @Override
+    public void reconnect() throws RemoteException {
+        outSocket.write("reconnect\n");
+        outSocket.flush();
+    }
 }

@@ -225,6 +225,10 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
         }
     }
 
+    @Override
+    public void reconnect() throws RemoteException {
+        client.reconnect();
+    }
 
     @Override
     public String serverStatus() {

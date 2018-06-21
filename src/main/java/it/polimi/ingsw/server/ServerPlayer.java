@@ -19,7 +19,6 @@ import java.io.File;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.Arrays;
-import java.util.concurrent.*;
 
 public class ServerPlayer implements Runnable
 {
@@ -31,6 +30,7 @@ public class ServerPlayer implements Runnable
     private ClientRemoteInterface communicator;
     private TokenTurn token;
     private ServerModelAdapter adapter;
+    private MatchHandler mymatch;
     private String user;
     //private ExecutorService executor;
 
@@ -54,7 +54,8 @@ public class ServerPlayer implements Runnable
     private boolean turnInterrupted = false;
 
 
-    public ServerPlayer(TokenTurn tok, ServerModelAdapter adp, UsersEntry ps, ClientRemoteInterface cli)
+    public ServerPlayer(TokenTurn tok, ServerModelAdapter adp, UsersEntry ps,
+                        ClientRemoteInterface cli, MatchHandler match)
     {
         adapter = adp;
         adapter.setServerPlayer(this);
@@ -64,6 +65,7 @@ public class ServerPlayer implements Runnable
         alive = true;
         //executor = Executors.newFixedThreadPool(1);
         communicator = cli;
+        mymatch = match;
         inGame = true;
         initialized = false;
         try {
@@ -75,50 +77,53 @@ public class ServerPlayer implements Runnable
 
     public synchronized void run ()
     {
-        //////SETUP PHASE//////
-        try
-        {
-            synchronized (token.getSynchronator()) {
-                //Wait until matchHandler signal start setup
-                while (!token.getOnSetup())
-                    token.getSynchronator().wait();
-            }
-
-            //Initialization of client
+        if(!initialized) {
+            //////SETUP PHASE//////
             try {
-                login();
-                token.addPlayer(user);
-                initializeWindow();
-                initializeCards();
-            }
-            catch (ClientOutOfReachException|ModelException ex) {
-                LogFile.addLog("(User: " + user + ") cannot complete setup" + "\n"
-                        + ex.getStackTrace().toString());
-                //Notify token that client is dead
-                token.deletePlayer(user);
-                token.setJustDeleting(false);
-                closeConnection("Timeout Expired");
-                inGame = false;
+                synchronized (token.getSynchronator()) {
+                    //Wait until matchHandler signal start setup
+                    while (!token.getOnSetup())
+                        token.getSynchronator().wait();
+                }
+
+                //Initialization of client
+                try {
+                    login();
+                    token.addPlayer(user);
+                    initializeWindow();
+                    initializeCards();
+                } catch (ClientOutOfReachException | ModelException ex) {
+                    LogFile.addLog("(User: " + user + ") cannot complete setup" + "\n"
+                            + ex.getStackTrace().toString());
+                    //Notify token that client is dead
+                    token.deletePlayer(user);
+                    token.setJustDeleting(false);
+                    //notify match that client disconnected
+                    mymatch.incDisconnCounter();
+                    mymatch.subFromnConn(1);
+                    possibleUsers.setUserGameStatus(user, false);
+                    closeConnection("Timeout Expired");
+                    inGame = false;
+                    token.endSetup();
+                    synchronized (token.getSynchronator()) {
+                        token.getSynchronator().notifyAll();
+                    }
+                    //If client fail initialization, he will not return on game
+                    return;
+                }
+
+                //End Setup phase comunication
+                initialized = true;
                 token.endSetup();
                 synchronized (token.getSynchronator()) {
                     token.getSynchronator().notifyAll();
                 }
-                //If client fail initialization, he will not return on game
-                return;
+            } catch (Exception ex) {
+                System.out.println(ex.getMessage());
+                LogFile.addLog("Fatal error on thread " + user, ex.getStackTrace());
+                token.notifyFatalError();
+                Thread.currentThread().interrupt();
             }
-
-            //End Setup phase comunication
-            initialized = true;
-            token.endSetup();
-            synchronized (token.getSynchronator()) {
-                token.getSynchronator().notifyAll();
-            }
-        }
-        catch (Exception ex) {
-            System.out.println(ex.getMessage());
-            LogFile.addLog("Fatal error on thread " + user  , ex.getStackTrace());
-            token.notifyFatalError();
-            Thread.currentThread().interrupt();
         }
 
         //////GAME PHASE//////
@@ -150,6 +155,9 @@ public class ServerPlayer implements Runnable
                     }catch (ClientOutOfReachException e){
                         //Notify token that client is dead
                         token.deletePlayer(user);
+                        possibleUsers.setUserGameStatus(user, false);
+                        mymatch.incDisconnCounter();
+                        mymatch.subFromnConn(1);
                         inGame = false;
                         token.getSynchronator().notifyAll();
                         break;
@@ -557,5 +565,50 @@ public class ServerPlayer implements Runnable
     //</editor-fold>
 
 
+    public void setCommunicator(ClientRemoteInterface communicator) {
+        this.communicator = communicator;
+    }
 
+    public ClientRemoteInterface getCommunicator() {
+        return communicator;
+    }
+
+    public void setInGame(boolean inGame) {
+        this.inGame = inGame;
+    }
+
+    public void justLogin() throws ClientOutOfReachException {
+        String u;
+        try {
+        u = communicator.login();
+
+        user = u;
+        adapter.setUser(u);
+        LogFile.addLog("User: " + user + " Added");
+        }
+        catch (Exception e) {
+            LogFile.addLog("Failed to add user");
+            throw new ClientOutOfReachException();
+        }
+        System.out.println("new login ok");
+    }
+
+    public void reconnected() {
+        try {
+            communicator.reconnect();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        possibleUsers.setUserGameStatus(user, true);
+        String[] toolnames = Arrays.stream(toolCards).map(t -> t.getName()).toArray(String[]::new);
+        String[] publicObjNames = Arrays.stream(publicObjectives).map(obj -> obj.getPath()).toArray(String[]::new);
+        try {
+            communicator.sendCards(publicObjNames,toolnames,new String[] {privateObjCard});
+        } catch (ClientOutOfReachException e) {
+            e.printStackTrace();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        System.out.println("user " + user + " riconnesso");
+    }
 }

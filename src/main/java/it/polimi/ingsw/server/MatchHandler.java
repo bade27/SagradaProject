@@ -40,7 +40,7 @@ public class MatchHandler implements Runnable
     private RoundTrace roundTrace;
     private UsersEntry userList;
 
-    private final static int TURNS = 3;
+    private final static int TURNS = 10;
     private final static int MAXGIOC = 3;//Da modificare a 4
 
     //connection parameters
@@ -51,11 +51,17 @@ public class MatchHandler implements Runnable
     private int progressive;
     private int nConn;
 
+    //initial timer parameters
     private final Object lockOnnConn = new Object();
     private final Object gameCannotStartYet = new Object();
     private Thread timer;
     private final int threshold = 2;
     private final int sleepTime = 10;
+
+    //disconnections parameters
+    private final Object disconnCounterLock = new Object();
+    private int disconnCounter = 0;
+    Thread reconnection;
 
 
     public synchronized void run ()
@@ -120,6 +126,9 @@ public class MatchHandler implements Runnable
         {
             synchronized (token.getSynchronator())
             {
+                /*for(int i = 0; i < player.size(); i++)
+                    if(!player.get(i).isInGame())
+                        subFromnConn(1);*/
                 //If a fatal error happens close all connection and return
                 if (token.isFatalError())
                     closeAllConnection();
@@ -318,30 +327,67 @@ public class MatchHandler implements Runnable
         }
         //Initialization of ServerPlayer for each player
         ServerModelAdapter adp = new ServerModelAdapter(dices, roundTrace, token);
-        ServerPlayer pl = new ServerPlayer(token,adp,userList,cli);
-        player.add(pl);
-        addTonConn(1);
-        int n = checkClientAlive();
-        clientConnectionUpdateMessage("connessi");
-        subFromnConn(n);
+        ServerPlayer pl = new ServerPlayer(token,adp,userList,cli, this);
 
-        //If max number of connection is reached starts game
-        if (getnConn() == MAXGIOC)
-        {
-            synchronized (gameCannotStartYet){
-                gameCannotStartYet.notifyAll();
-            }
-            timer.interrupt();
-        }
 
-        //If 2 connections reached starts the timer
-        if(getnConn() == threshold) {
-            synchronized (lockOnnConn) {
-                lockOnnConn.notifyAll();
+        //During a reconnection these operation mustn't to be performed
+        if(getDisconnCounter() == 0) {
+            player.add(pl);
+            addTonConn(1);
+            int n = checkClientAlive();
+            clientConnectionUpdateMessage("connessi");
+            subFromnConn(n);
+            //If max number of connection is reached starts game
+            if (getnConn() == MAXGIOC) {
+                synchronized (gameCannotStartYet) {
+                    gameCannotStartYet.notifyAll();
+                }
+                timer.interrupt();
             }
+
+            //If 2 connections reached starts the timer
+            if (getnConn() == threshold) {
+                synchronized (lockOnnConn) {
+                    lockOnnConn.notifyAll();
+                }
+            }
+        } else {
+            reconnection = new Thread(new Reconnector(pl));
+            reconnection.start();
         }
 
         return adp;
+    }
+
+
+    private class Reconnector implements Runnable {
+        ServerPlayer pl;
+
+        public Reconnector(ServerPlayer pl) {
+            this.pl = pl;
+        }
+
+        public void run() {
+            try {
+                pl.justLogin();
+            } catch (ClientOutOfReachException e) {
+                return;
+            }
+            player.forEach(s -> System.out.println(s.getUser() + " " + s.isInGame()));
+            ServerPlayer newSP = null;
+            for(int i = 0; i < player.size(); i++)
+                if(!player.get(i).isInGame() && player.get(i).getUser().equals(pl.getUser()))
+                    newSP = player.get(i);
+            if(newSP != null) {
+                newSP.setCommunicator(pl.getCommunicator());
+                newSP.setInGame(true);
+                player.remove(pl);
+                decDisconnCounter();
+                newSP.reconnected();
+                token.addPlayer(newSP.getUser());
+                new Thread(newSP).start();
+            }
+        }
     }
 
     /**
@@ -706,7 +752,7 @@ public class MatchHandler implements Runnable
                 if (!player.get(i).isClientAlive())
                 {
                     nDisc ++ ;
-                    player.remove(i);
+                    //player.remove(i);
                     LogFile.addLog("Client does not respond to ping\r\n\t Client disconnected");
                 }
             }
@@ -817,7 +863,27 @@ public class MatchHandler implements Runnable
     }
     //</editor-fold>
 
+    //<editor-fold desc="Reconnection methods">
 
+    public int getDisconnCounter() {
+        synchronized (disconnCounterLock) {
+            return disconnCounter;
+        }
+    }
+
+    public void incDisconnCounter() {
+        synchronized (disconnCounterLock) {
+            this.disconnCounter++;
+        }
+    }
+
+    public void decDisconnCounter() {
+        synchronized (disconnCounterLock) {
+            this.disconnCounter--;
+        }
+    }
+
+    //</editor-fold>
 
     /**
      * Main method. It starts the server

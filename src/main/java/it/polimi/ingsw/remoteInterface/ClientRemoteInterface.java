@@ -31,4 +31,7 @@ public interface ClientRemoteInterface extends Remote
     //End Game
     public void sendResults (String[] u,int [] p) throws RemoteException,ClientOutOfReachException;
 
+    //Reconnection
+    public void reconnect() throws RemoteException;
+
 }

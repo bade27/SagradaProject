@@ -129,6 +129,9 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
                         continue;
                     case "content":
                         continue;
+                    case "reconnect":
+                        player.reconnect();
+                        break;
                     default:
                         synchronized (syncronator) {
                             syncronator.notifyAll();

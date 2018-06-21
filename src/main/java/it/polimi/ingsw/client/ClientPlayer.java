@@ -448,4 +448,9 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             closeCommunication("timeout reached");
         }
     }
+
+    @Override
+    public void reconnect() throws RemoteException {
+        graph.game();
+    }
 }
