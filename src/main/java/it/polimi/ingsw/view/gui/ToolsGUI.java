@@ -2,7 +2,7 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.UI;
 import it.polimi.ingsw.utilities.FileLocator;
-import it.polimi.ingsw.view.GraphButton;
+import it.polimi.ingsw.view.gui.GraphButton;
 import javafx.application.Platform;
 import javafx.scene.layout.GridPane;
 
@@ -23,7 +23,7 @@ public class ToolsGUI {
         t = new GridPane();
         String [] name={"tool 1","tool 2","tool3"};
         updateTools(name);
-        it.polimi.ingsw.view.DimWindows.dimWidth(t,300);
+        DimWindows.dimWidth(t,300);
         pane.add(t,0,0);
 
     }

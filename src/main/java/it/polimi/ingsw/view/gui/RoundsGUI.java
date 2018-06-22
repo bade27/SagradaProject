@@ -49,7 +49,7 @@ public class RoundsGUI extends GridPane {
         roundTrace.setAlignment(Pos.TOP_CENTER);
         roundTrace.add(round,0,0);
         roundTrace.add(diceInRound,0,1);
-        it.polimi.ingsw.view.DimWindows.dimHeight(round,20);
+        DimWindows.dimHeight(round,20);
         round.setAlignment(Pos.TOP_CENTER);
         p.add(roundTrace,0,0);
     }

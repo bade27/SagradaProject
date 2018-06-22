@@ -36,7 +36,7 @@ public class ServerPlayer implements Runnable
     //private ExecutorService executor;
 
     private boolean alive;
-    private final int turnTime = 30;
+    private final int turnTime = 120;
 
     //Setup Phase
     private UsersEntry possibleUsers;
