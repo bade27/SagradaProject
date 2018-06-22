@@ -35,6 +35,7 @@ public class MatchHandler implements Runnable
     private RoundTrace roundTrace;
     private UsersEntry userList;
 
+    
     //connection parameters
     private static int RMI_REGISTRY_PORT;
     private static String HOSTNAME;

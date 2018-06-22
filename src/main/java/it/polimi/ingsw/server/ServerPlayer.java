@@ -35,7 +35,6 @@ public class ServerPlayer implements Runnable {
     private MatchHandler mymatch;
     private String user;
     private boolean alive;
-    //private ExecutorService executor;
 
     //Setup Phase
     private UsersEntry possibleUsers;

@@ -2,7 +2,9 @@ package it.polimi.ingsw.view.cli;
 
 import it.polimi.ingsw.UI;
 import it.polimi.ingsw.client.ClientPlayer;
+import it.polimi.ingsw.client.MoveAction;
 import it.polimi.ingsw.model.ColorEnum;
+import it.polimi.ingsw.remoteInterface.Coordinates;
 import it.polimi.ingsw.remoteInterface.Pair;
 
 import java.io.*;
@@ -17,6 +19,10 @@ public class SagradaCLI implements UI {
     private boolean toolPhase;
     private ClientPlayer clientPlayer;
     private HashMap<ColorEnum,Color> hashMap=new HashMap<>();
+    private String msg=null;
+    private Pair[] dadiera;
+    private Pair[][] grid;
+    private ArrayList<Pair> [] rt;
 
     public SagradaCLI() {
         enableBoard = false;
@@ -35,7 +41,7 @@ public class SagradaCLI implements UI {
     public  void startGame(){
         Color color=Color.ANSI_RED;
         printbyFile("resources/titleCli/Sagrada.txt",color);
-            login("Inserire dati per inizializzazione della partita");
+        login("Inserire dati per inizializzazione della partita");
     }
 
     @Override
@@ -55,7 +61,7 @@ public class SagradaCLI implements UI {
         }while(!(connection.equals("0")) && !(connection.equals("1")));
 
         do{
-            System.out.println("\nInserire l'indirizzo IP del server: \n(se non sarà messo nulla ne verrà messo uno di default)");
+            System.out.println("\nInserire l'indirizzo IP del server: \n(se non sarà messo nulla ne verrà messo uno di defauld)");
             ip=readbyConsole();
 
         }while(!(isIPAddressValid(ip)));
@@ -135,7 +141,33 @@ public class SagradaCLI implements UI {
 
     @Override
     public void endGame(String[] name, int[] record) {
+        String tempName;
+        int tempRecord;
+        Color color=Color.ANSI_RED;
+        printbyFile("resources/titleCli/finePartita.txt",color);
+        System.out.println("\n");
 
+        for(int i=0;i<name.length-1;i++){
+            for(int j=i+1;j<name.length;j++) {
+                if (record[j] > record[i]) {
+
+                    tempName=name[j];
+                    name[j]=name[i];
+                    name[i]=tempName;
+
+                    tempRecord=record[j];
+                    record[j]=record[i];
+                    record[i]=tempRecord;
+                }
+            }
+        }
+        for(int k=0;k<name.length;k++){
+            System.out.println(name[k]+":\t"+record[k]+"\n");
+        }
+
+        color=Color.ANSI_GREEN;
+        printbyFile("resources/titleCli/Vincitore.txt",color);
+        System.out.println("\n"+name[0]+":\t"+record[0]+"\n");
     }
 
     @Override
@@ -156,6 +188,7 @@ public class SagradaCLI implements UI {
 
     @Override
     public void updateDadiera(Pair[] dadiera) {
+        this.dadiera=dadiera;
         Color color=Color.ANSI_NOCOLOR;
         printbyFile("resources/titleCli/Dadiera.txt",color);
         try {
@@ -188,7 +221,6 @@ public class SagradaCLI implements UI {
         for(int i=0;i<toolNames.length;i++) {
             System.out.println(toolNames[i]);
         }
-
     }
 
     @Override
@@ -207,7 +239,7 @@ public class SagradaCLI implements UI {
 
     @Override
     public void updateTokens(int n) {
-        System.out.println("Token:\t"+n);
+        System.out.println("Tocken:\t"+n);
     }
 
     @Override
@@ -249,38 +281,214 @@ public class SagradaCLI implements UI {
 
     @Override
     public void updateMessage(String msg) {
-        //Color color=Color.ANSI_NOCOLOR;
-        //printbyFile("resources/titleCli/Il_gioco_comincia.txt",color);
+        this.msg=msg;
+        /*String ret;
+        String mossa;
+        String action="";
+        String [] vecmove;
+        int [] cell=new int[2];
+        System.out.println("\n"+msg+"\n");
+        if (msg.equals("My turn")||
+                msg.equals("Impossibile piazzare il dado: Dado posizionato su una cella incompatibile")||
+                        msg.equals("Move ok")){
+
+            do {
+                System.out.println("Vuoi fare una mossa [m], usare una carta strumento [t], o passare il purno [p]?");
+                action = readbyConsole();
+                System.out.println();
+                if (action.equals("m")) {
+
+                        System.out.println("MOSSA:\n");
+                        ColorEnum color = null;
+                        int value = -1;
+                        do {
+                            System.out.println("Seleziona un dado della dadiera: \n[esempio: 1 RED]");
+                            mossa = readbyConsole();
+                            vecmove = mossa.split("\\ ");
+                            value = Integer.parseInt(vecmove[0]);
+
+                            switch (vecmove[1]) {
+                                case "RED":
+                                    color = ColorEnum.RED;
+                                    break;
+                                case "GREEN":
+                                    color = ColorEnum.GREEN;
+                                    break;
+                                case "YELLOW":
+                                    color = ColorEnum.YELLOW;
+                                    break;
+                                case "BLUE":
+                                    color = ColorEnum.BLUE;
+                                    break;
+                                case "PURPLE":
+                                    color = ColorEnum.PURPLE;
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                        } while (!PairExist(new Pair(value, color), dadiera));
+
+                        MoveAction.setPair(new Pair(value, color));
+                        System.out.println("Seleziona una cella della griglia: \n");
+                        do {
+                            System.out.println("ascissa: ");
+                            cell[1] = Integer.parseInt(readbyConsole());
+                        } while (cell[1] < 1 || cell[1] > 5);
+
+                        do {
+                            System.out.println("ordinata: ");
+                            cell[0] = Integer.parseInt(readbyConsole());
+                        } while (cell[0] < 1 || cell[0] > 4);
+
+                        System.out.println("");
+
+                        MoveAction.setCoord(new Coordinates(cell[0] - 1, cell[1] - 1));
+                        makeMove();
+                }else if(action.equals("t")){
+                    System.out.println("tool usato con successo!");
+                }else if(action.equals("p")){
+                    passTurn();
+                    break;
+                }
+            }while(!action.equals("m")||!action.equals("t")||!action.equals("p"));
+        }*/
     }
 
     @Override
     public void setEnableBoard(boolean enableBoard) {
+        String action = "";
+        String end_turn;
+        boolean pass = false;
+        /*if (msg.equals("My turn")||
+                msg.equals("Impossibile piazzare il dado: Dado posizionato su una cella incompatibile")||
+                        msg.equals("Move ok")){*/
+        if(enableBoard==true) {
+            System.out.println(msg);
+            do {
+                do {
+                    System.out.println("Vuoi fare una mossa [m], usare una carta strumento [t], o passare il turno [p]?");
+                    action = readbyConsole();
+                    System.out.println();
 
+                    if (action.equals("m")) {
+                        doMovement();
+                    } else if (action.equals("t")) {
+                        doTool();
+                    } else if (action.equals("p")) {
+                        pass=true;
+                        doPassTurn();
+                    }
+                    System.out.println("\n" + msg + "\n");
+                } while (!action.equals("m") && !action.equals("t") && !action.equals("p"));
+                if(!action.equals("p")) {
+                    do {
+                        System.out.println("Vuoi fare dell'altro? [S/n]");
+                        end_turn = readbyConsole();
+                        if (end_turn.equals("n")) {
+                            pass = true;
+                            doPassTurn();
+                        } else if (end_turn.equals("S")) {
+                            pass = false;
+                        }
+                    } while (!end_turn.equals("S") && !end_turn.equals("n"));
+                }
+            } while (!pass);
+        } else{
+            System.out.println(msg);
+        }
+    }
+    private void doMovement(){
+        String mossa;
+
+        String [] vecmove;
+        int [] cell=new int[2];
+        System.out.println("MOSSA:\n");
+        ColorEnum color = null;
+        int value = -1;
+        do {
+            System.out.println("Seleziona un dado della dadiera: \n[esempio: 1 RED]");
+            mossa = readbyConsole();
+            vecmove = mossa.split("\\ ");
+            value = Integer.parseInt(vecmove[0]);
+
+            switch (vecmove[1].toUpperCase()) {
+                case "RED":
+                    color = ColorEnum.RED;
+                    break;
+                case "GREEN":
+                    color = ColorEnum.GREEN;
+                    break;
+                case "YELLOW":
+                    color = ColorEnum.YELLOW;
+                    break;
+                case "BLUE":
+                    color = ColorEnum.BLUE;
+                    break;
+                case "PURPLE":
+                    color = ColorEnum.PURPLE;
+                    break;
+                default:
+                    break;
+            }
+
+        } while (!PairExist(new Pair(value, color), dadiera));
+
+        MoveAction.setPair(new Pair(value, color));
+        System.out.println("Seleziona una cella della griglia: \n");
+        do {
+            System.out.println("ascissa: ");
+            cell[1] = Integer.parseInt(readbyConsole());
+        } while (cell[1] < 1 || cell[1] > 5);
+
+        do {
+            System.out.println("ordinata: ");
+            cell[0] = Integer.parseInt(readbyConsole());
+        } while (cell[0] < 1 || cell[0] > 4);
+
+        System.out.println("");
+
+        MoveAction.setCoord(new Coordinates(cell[0] - 1, cell[1] - 1));
+        makeMove();
+    }
+
+    private void  doTool(){
+        System.out.println("tool usato con successo!");
+    }
+
+    private void  doPassTurn(){
+        passTurn();
     }
 
     @Override
     public void passTurn() {
-
+        clientPlayer.pass();
     }
 
     @Override
     public void makeMove() {
-
-    }
-
-    @Override
-    public void toolPermission(int i) {
-
-    }
-
-    @Override
-    public void setToolPhase(boolean toolPhase) {
-
+        clientPlayer.myMove();
     }
 
     @Override
     public void makeToolMove() {
+        clientPlayer.useTool();
+    }
 
+    @Override
+    public void toolPermission(int i) {
+        toolPhase = clientPlayer.toolPermission(i);
+        if(toolPhase) {
+            setToolPhase(true);
+            if (i == 1) {
+                popUPMessage(i, "");
+            }
+        }
+    }
+
+    @Override
+    public void setToolPhase(boolean toolPhase) {
+        this.toolPhase = toolPhase;
     }
 
     private boolean isIPAddressValid(String ip) {
@@ -315,6 +523,7 @@ public class SagradaCLI implements UI {
         return true;
     }
 
+
     private void printPair(Pair [] p){
         //parte superione
         for(int i=0;i<cellHeight/2;i++) {
@@ -323,7 +532,7 @@ public class SagradaCLI implements UI {
                 for (int k = 0; k < cellWidth; k++) {
                     System.out.print(" ");
                 }
-                System.out.print(Color.ANSI_NOCOLOR.escape()+" ");
+                System.out.print(Color.ANSI_NOCOLOR.escape()+"  ");
             }
             System.out.println("" + Color.ANSI_NOCOLOR.escape());
         }
@@ -339,7 +548,7 @@ public class SagradaCLI implements UI {
             for (int k = 0; k < cellWidth/2; k++) {
                 System.out.print(" ");
             }
-            System.out.print(Color.ANSI_NOCOLOR.escape()+" ");
+            System.out.print(Color.ANSI_NOCOLOR.escape()+"  ");
         }
         System.out.println("" + Color.ANSI_NOCOLOR.escape());
 
@@ -350,7 +559,7 @@ public class SagradaCLI implements UI {
                 for (int k = 0; k < cellWidth; k++) {
                     System.out.print(" ");
                 }
-                System.out.print(Color.ANSI_NOCOLOR.escape()+" ");
+                System.out.print(Color.ANSI_NOCOLOR.escape()+"  ");
             }
             System.out.println("" + Color.ANSI_NOCOLOR.escape());
         }
@@ -371,7 +580,7 @@ public class SagradaCLI implements UI {
                     for (int k = 0; k < cellWidth; k++) {
                         System.out.print(" ");
                     }
-                    System.out.print(Color.ANSI_NOCOLOR.escape() + " ");
+                    System.out.print(Color.ANSI_NOCOLOR.escape() + "  ");
                 }
                 System.out.println("" + Color.ANSI_NOCOLOR.escape());
             }
@@ -387,7 +596,7 @@ public class SagradaCLI implements UI {
                 for (int k = 0; k < cellWidth / 2; k++) {
                     System.out.print(" ");
                 }
-                System.out.print(Color.ANSI_NOCOLOR.escape() + " ");
+                System.out.print(Color.ANSI_NOCOLOR.escape() + "  ");
             }
             System.out.println("" + Color.ANSI_NOCOLOR.escape());
 
@@ -398,11 +607,11 @@ public class SagradaCLI implements UI {
                     for (int k = 0; k < cellWidth; k++) {
                         System.out.print(" ");
                     }
-                    System.out.print(Color.ANSI_NOCOLOR.escape() + " ");
+                    System.out.print(Color.ANSI_NOCOLOR.escape() + "  ");
                 }
                 System.out.println("" + Color.ANSI_NOCOLOR.escape());
             }
-            System.out.println("\n");
+            System.out.println("");
         }
         for(int i=0;i<mp.length;i++){
             for(int j=0;j<mp[0].length;j++) {
@@ -437,6 +646,26 @@ public class SagradaCLI implements UI {
             return "";
         }
     }
+    private boolean PairExist(Pair p, Pair[] vecPair){
+        for(int i=0;i<vecPair.length;i++){
+            if((vecPair[i].getValue()).equals(p.getValue()) && (vecPair[i].getColor()).equals(p.getColor()))
+                return true;
+        }
+        return false;
+    }
+
+    private boolean PairExist(Pair p, Pair[][] matPair){
+        for(int i=0;i<matPair.length;i++){
+            for(int j=0;j<matPair[0].length;j++)
+                if((matPair[i][j].getValue()).equals(p.getValue()) && (matPair[i][j].getColor()).equals(p.getColor()))
+                    return true;
+        }
+        return false;
+    }
+
+    public void popUPMessage(int toolID, String str) {
+
+    }
 
     @Override
     public void deletePlayer() {
@@ -447,3 +676,6 @@ public class SagradaCLI implements UI {
         new SagradaCLI();
     }
 }
+
+
+

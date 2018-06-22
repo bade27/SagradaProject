@@ -39,7 +39,7 @@ public class TargetGUI extends GridPane{
         t.add(bpublic2,0,2);
         t.add(bpublic3,0,3);
         p.add(t,2,0);
-        it.polimi.ingsw.view.DimWindows.dimWidth(t,300);
+        DimWindows.dimWidth(t,300);
     }
 
 

@@ -291,8 +291,13 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         MoveAction.clearMove();
         ToolAction.clearTool();
         graph.updateMessage("My turn");
-        graph.setEnableBoard(true);
         startTimerTurn();
+        try {
+            graph.setEnableBoard(true);
+        }catch(Exception e){
+            stopTimerTurn();
+            e.printStackTrace();
+        }
         return "ok";
     }
 
