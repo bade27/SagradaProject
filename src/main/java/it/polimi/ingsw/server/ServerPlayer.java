@@ -25,9 +25,9 @@ import java.util.Arrays;
 
 public class ServerPlayer implements Runnable {
     //game parameters
-    private static int PING_TIMEOUT; //10 sec
+    private static int PING_TIMEOUT;
     private static int SETUP_TIMEOUT;
-    private static int TURN_TIMEOUT; //5 min
+    private static int TURN_TIMEOUT;
 
     private ClientRemoteInterface communicator;
     private TokenTurn token;

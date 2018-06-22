@@ -35,7 +35,7 @@ public class MatchHandler implements Runnable
     private RoundTrace roundTrace;
     private UsersEntry userList;
 
-    
+
     //connection parameters
     private static int RMI_REGISTRY_PORT;
     private static String HOSTNAME;
@@ -714,16 +714,6 @@ public class MatchHandler implements Runnable
                             users.add(player.get(j).getUser());
                             pairs.add( player.get(j).getGrid());
                         }
-                        /*if (!player.get(j).getUser().equals(player.get(i).getUser())) {
-
-                            try {
-                                //Update others users with user's window,dadiera,roundttrace and markers
-                                player.get(j).updateOpponents(player.get(i).getUser(), player.get(i).getGrid());
-                            } catch (ClientOutOfReachException e) {
-                                LogFile.addLog("Client " + player.get(j).getUser() + " temporarily unreachable");
-                            }
-
-                        }*/
                     }
                     try {
                         //Update others users with user's window,dadiera,roundttrace and markers
@@ -781,7 +771,6 @@ public class MatchHandler implements Runnable
                     //player.remove(i);
                     LogFile.addLog("Client does not respond to ping\r\n\t Client disconnected");
                 }
-                System.out.println("ok");
             }
         }
         catch (Exception e)

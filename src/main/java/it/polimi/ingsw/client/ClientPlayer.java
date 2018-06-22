@@ -374,7 +374,6 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
     //</editor-fold>
 
-
     //<editor-fold desc="Utilities">
 
     private static void connection_parameters_setup() throws ParserXMLException{
@@ -424,7 +423,6 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         //unused
     }
     //</editor-fold>
-
 
     //<editor-fold desc="Timer turn">
     private void startTimerTurn() {
