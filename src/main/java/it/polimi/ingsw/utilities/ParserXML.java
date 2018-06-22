@@ -5,15 +5,18 @@ import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.model.Placement;
 import org.w3c.dom.*;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class ParserXML
@@ -258,4 +261,73 @@ public class ParserXML
     }
     //</editor-fold>
 
+    //<editor-fold desc="Setup parameters XML">
+    public static class SetupParserXML
+    {
+        public static String getHostName (String path) throws ParserXMLException
+        {
+            return retrieveSetting(path,"host_name");
+        }
+
+        public static int getSocketPort (String path) throws ParserXMLException
+        {
+            return Integer.parseInt(retrieveSetting(path,"socket_port"));
+        }
+
+        public static int getRmiPort (String path) throws ParserXMLException
+        {
+            return Integer.parseInt(retrieveSetting(path,"rmi_port"));
+        }
+
+        public static int getMaxPlayers (String path) throws ParserXMLException
+        {
+            return Integer.parseInt(retrieveSetting(path,"max_players"));
+        }
+
+        public static int getThresholdPlayers (String path) throws ParserXMLException
+        {
+            return Integer.parseInt(retrieveSetting(path,"threshold_players"));
+        }
+
+        public static int getThresholdTimeLaps (String path) throws ParserXMLException
+        {
+            return Integer.parseInt(retrieveSetting(path,"threshold_time_laps"));
+        }
+
+        public static int getSetupTimeLaps (String path) throws ParserXMLException
+        {
+            return Integer.parseInt(retrieveSetting(path,"setup_time_laps"));
+        }
+
+        public static int getPingTimeLaps (String path) throws ParserXMLException
+        {
+            return Integer.parseInt(retrieveSetting(path,"ping_time_laps"));
+        }
+
+        public static int getTurnTimeLaps (String path) throws ParserXMLException
+        {
+            return Integer.parseInt(retrieveSetting(path,"turn_time_laps"));
+        }
+
+        public static int getTotalTurns (String path) throws ParserXMLException
+        {
+            return Integer.parseInt(retrieveSetting(path,"num_turns"));
+        }
+
+        private static String retrieveSetting (String path, String setting) throws ParserXMLException
+        {
+            try
+            {
+                File file = new File(path);
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document document = documentBuilder.parse(file);
+                return document.getElementsByTagName(setting).item(0).getTextContent();
+
+            }catch (SAXException | IOException | ParserConfigurationException e){
+                throw new ParserXMLException("Impossible to read file: " + path);
+            }
+        }
+    }
+    //</editor-fold>
 }

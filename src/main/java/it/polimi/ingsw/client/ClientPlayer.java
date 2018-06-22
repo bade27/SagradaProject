@@ -2,12 +2,14 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.UI;
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
+import it.polimi.ingsw.exceptions.ParserXMLException;
 import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
 import it.polimi.ingsw.remoteInterface.Pair;
 import it.polimi.ingsw.remoteInterface.ServerRemoteInterface;
 import it.polimi.ingsw.server.ServerModelAdapter;
 import it.polimi.ingsw.utilities.FileLocator;
+import it.polimi.ingsw.utilities.ParserXML;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
@@ -28,46 +30,28 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 {
     //connection parameters
     private static int RMI_REGISTRY_PORT;
-    private static int RMI_STUB_PORT;
+    private static int TURN_TIMEOUT;
     private static String HOSTNAME;
     private static int SOCKET_PORT;
+
     private static boolean initialized = false;
     private int typeOfCOnnection; //1 rmi , 0 Socket
     private UI graph;
     private ServerRemoteInterface server;
     private String clientName;
     private String chooseMap;
+
     //buffer mossa in upload
     private boolean finishedMove = false;
-    private final Integer synclogin=5;
-    private final Integer syncmap = 5;
+    private final Object synclogin = new Object();
+    private final Object syncmap = new Object();
 
     //to keep trak of server status. used ONLY with RMI
     private Timer connectionStatusRMITimer;
-
     private Thread timerTurn;
-    private final int turnTime = 120;
-    private Thread timerSetup;
 
 
     //<editor-fold desc="Initialization Phase">
-    private static void connection_parameters_setup() throws ParserConfigurationException, IOException, SAXException {
-        File file = new File(FileLocator.getClientSettingsPath());
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document document = documentBuilder.parse(file);
-
-        if(HOSTNAME == null)
-            HOSTNAME = document.getElementsByTagName("hostName").item(0).getTextContent();
-
-        //rmi setup
-        RMI_REGISTRY_PORT = Integer.parseInt(document.getElementsByTagName("registryPort").item(0).getTextContent());
-        RMI_STUB_PORT = Integer.parseInt(document.getElementsByTagName("stubPort").item(0).getTextContent());
-
-        //socket setup
-        SOCKET_PORT = Integer.parseInt(document.getElementsByTagName("portNumber").item(0).getTextContent());
-    }
-
 
     public ClientPlayer (int t, UI g, String serverIP) throws RemoteException
     {
@@ -334,6 +318,17 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         }
 
     }
+
+    public synchronized void pass() {
+        try {
+            String s = server.passTurn();
+            stopTimerTurn();
+            graph.setEnableBoard(false);
+            graph.updateMessage(s);
+        } catch (RemoteException e) {
+            //e.printStackTrace();
+        }
+    }
     //</editor-fold>
 
     //<editor-fold desc="Tool communication">
@@ -374,19 +369,20 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
     //</editor-fold>
 
-    public synchronized void pass() {
-        try {
-            String s = server.passTurn();
-            stopTimerTurn();
-            graph.setEnableBoard(false);
-            graph.updateMessage(s);
-        } catch (RemoteException e) {
-            //e.printStackTrace();
-        }
-    }
-
 
     //<editor-fold desc="Utilities">
+
+    private static void connection_parameters_setup() throws ParserXMLException{
+
+        if(HOSTNAME == null)
+            HOSTNAME = ParserXML.SetupParserXML.getHostName(FileLocator.getClientSettingsPath());
+
+        //rmi setup
+        RMI_REGISTRY_PORT = ParserXML.SetupParserXML.getRmiPort(FileLocator.getClientSettingsPath());
+        SOCKET_PORT = ParserXML.SetupParserXML.getSocketPort(FileLocator.getClientSettingsPath());
+        TURN_TIMEOUT = ParserXML.SetupParserXML.getTurnTimeLaps(FileLocator.getGameSettingsPath());
+    }
+
     /**
      * @return if we are alive
      */
@@ -411,14 +407,23 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         graph.disconnection(cause);
         graph = null;
         return true;
-        //Graphic.setpopup connection down
+    }
 
+    @Override
+    public void reconnect() throws RemoteException {
+        graph.game();
+    }
+
+    @Override
+    public void setAdapter(ServerModelAdapter sma) throws RemoteException {
+        //unused
     }
     //</editor-fold>
 
 
+    //<editor-fold desc="Timer turn">
     private void startTimerTurn() {
-        timerTurn = new Thread(new GameTimer(turnTime));
+        timerTurn = new Thread(new GameTimer(TURN_TIMEOUT));
         timerTurn.start();
     }
 
@@ -446,14 +451,5 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             closeCommunication("timeout reached");
         }
     }
-
-    @Override
-    public void reconnect() throws RemoteException {
-        graph.game();
-    }
-
-    @Override
-    public void setAdapter(ServerModelAdapter sma) throws RemoteException {
-        //unused
-    }
+    //</editor-fold>
 }

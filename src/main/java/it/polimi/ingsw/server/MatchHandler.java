@@ -17,14 +17,7 @@ import it.polimi.ingsw.utilities.FileLocator;
 import it.polimi.ingsw.utilities.LogFile;
 import it.polimi.ingsw.utilities.ParserXML;
 import it.polimi.ingsw.utilities.UsersEntry;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.IOException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -36,18 +29,22 @@ public class MatchHandler implements Runnable
     private ArrayList<ServerPlayer> player;
     private ArrayList<Thread> threadPlayers;
 
+    //Game objects
     private TokenTurn token;
     private Dadiera dices;
     private RoundTrace roundTrace;
     private UsersEntry userList;
 
-    private final static int TURNS = 10;
-    private final static int MAXGIOC = 3;//Da modificare a 4
-
     //connection parameters
     private static int RMI_REGISTRY_PORT;
     private static String HOSTNAME;
     private static int SOCKET_PORT;
+
+    //game parameters
+    private static int TURNS;
+    private static int MAXGIOC;
+    private static int TRESHGIOC;
+    private static int TRESHTIME;
 
     private int progressive;
     private int nConn;
@@ -56,8 +53,6 @@ public class MatchHandler implements Runnable
     private final Object lockOnnConn = new Object();
     private final Object gameCannotStartYet = new Object();
     private Thread timer;
-    private final int threshold = 2;
-    private final int sleepTime = 100;
 
     //disconnections parameters
     private final Object disconnCounterLock = new Object();
@@ -80,7 +75,7 @@ public class MatchHandler implements Runnable
         //When thread that accept client's connection has the right number of clients, all clients connected will be initialized
         try{
             synchronized (gameCannotStartYet){
-                while (nConn < threshold)
+                while (nConn < TRESHGIOC)
                     gameCannotStartYet.wait();
             }
         }catch (Exception e){
@@ -247,6 +242,13 @@ public class MatchHandler implements Runnable
      */
     private boolean initializeServer ()
     {
+        try {
+            parametersSetup();
+        } catch (ParserXMLException e) {
+            LogFile.addLog("Impossible to read settings parameters" , e.getStackTrace());
+            return false;
+        }
+
         timer = new Thread(new ConnectionTimer());
         timer.start();
         LogFile.createLogFile();
@@ -258,12 +260,6 @@ public class MatchHandler implements Runnable
         if (!initializeUsers())
             return false;
 
-        try {
-            connection_parameters_setup();
-        } catch (ParserConfigurationException| IOException | SAXException e) {
-            LogFile.addLog("Impossible to read settings parameters" , e.getStackTrace());
-            return false;
-        }
         //nConn = 0;
         setnConn(0);
 
@@ -347,7 +343,7 @@ public class MatchHandler implements Runnable
             }
 
             //If 2 connections reached starts the timer
-            if (getnConn() == threshold) {
+            if (getnConn() == TRESHGIOC) {
                 synchronized (lockOnnConn) {
                     lockOnnConn.notifyAll();
                 }
@@ -677,9 +673,9 @@ public class MatchHandler implements Runnable
             }
 
             //Used to test tools, do not delete
-            tools[0] = ToolsFactory.getTools(toolNames[0]);
+            /*tools[0] = ToolsFactory.getTools(toolNames[0]);
             tools[1] = ToolsFactory.getTools(toolNames[1]);
-            tools[2] = ToolsFactory.getTools(toolNames[2]);
+            tools[2] = ToolsFactory.getTools(toolNames[2]);*/
 
             //For each players initialize tool cards already selected
             int n = getnConn();
@@ -742,27 +738,21 @@ public class MatchHandler implements Runnable
     }
 
     /**
-     * sets up connection parameters
+     * sets up parameters
      */
-    private static void connection_parameters_setup() throws ParserConfigurationException, IOException, SAXException {
-        File file = new File(FileLocator.getServerSettingsPath());
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document document = documentBuilder.parse(file);
+    private static void parametersSetup() throws ParserXMLException
+    {
+        HOSTNAME = ParserXML.SetupParserXML.getHostName(FileLocator.getServerSettingsPath());
+        RMI_REGISTRY_PORT = ParserXML.SetupParserXML.getRmiPort(FileLocator.getServerSettingsPath());
+        SOCKET_PORT =ParserXML.SetupParserXML.getSocketPort(FileLocator.getServerSettingsPath());
 
-        //rmi setup
-        RMI_REGISTRY_PORT = Integer.parseInt(document.getElementsByTagName("registryPort").item(0).getTextContent());
-        HOSTNAME = document.getElementsByTagName("hostName").item(0).getTextContent();
-
-        //socket setup
-        SOCKET_PORT = Integer.parseInt(document.getElementsByTagName("portNumber").item(0).getTextContent());
+        TURNS = ParserXML.SetupParserXML.getTotalTurns(FileLocator.getGameSettingsPath());
+        MAXGIOC = ParserXML.SetupParserXML.getMaxPlayers(FileLocator.getGameSettingsPath());
+        TRESHGIOC = ParserXML.SetupParserXML.getThresholdPlayers(FileLocator.getGameSettingsPath());
+        TRESHTIME = ParserXML.SetupParserXML.getThresholdTimeLaps(FileLocator.getGameSettingsPath());
     }
 
 
-
-    /**
-     * DA MODIFICARE!! non funziona con interface runnable, serve memorizzare i thread di serverPlayer
-     */
     private void closeAllConnection ()
     {
         for (int i = 0; i < threadPlayers.size() ; i++)
@@ -873,7 +863,7 @@ public class MatchHandler implements Runnable
         @Override
         public void run() {
             synchronized (lockOnnConn) {
-                while (nConn < threshold) {
+                while (nConn < TRESHGIOC) {
                     try {
                         lockOnnConn.wait();
                     } catch (InterruptedException e) {
@@ -884,7 +874,7 @@ public class MatchHandler implements Runnable
             }
 
             try {
-                TimeUnit.SECONDS.sleep(sleepTime);
+                TimeUnit.SECONDS.sleep(TRESHTIME);
             } catch (InterruptedException e) {
                 return;
             }

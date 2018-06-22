@@ -2,12 +2,14 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.exceptions.ModelException;
+import it.polimi.ingsw.exceptions.ParserXMLException;
 import it.polimi.ingsw.model.objectives.Public.PublicObjective;
 import it.polimi.ingsw.model.tools.Tools;
 import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
 import it.polimi.ingsw.remoteInterface.Pair;
 import it.polimi.ingsw.utilities.FileLocator;
 import it.polimi.ingsw.utilities.LogFile;
+import it.polimi.ingsw.utilities.ParserXML;
 import it.polimi.ingsw.utilities.UsersEntry;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -21,11 +23,10 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class ServerPlayer implements Runnable
-{
-    //connection parameters
+public class ServerPlayer implements Runnable {
+    //game parameters
     private static int PING_TIMEOUT; //10 sec
-    private static int INIT_TIMEOUT;
+    private static int SETUP_TIMEOUT;
     private static int TURN_TIMEOUT; //5 min
 
     private ClientRemoteInterface communicator;
@@ -33,10 +34,8 @@ public class ServerPlayer implements Runnable
     private ServerModelAdapter adapter;
     private MatchHandler mymatch;
     private String user;
-    //private ExecutorService executor;
-
     private boolean alive;
-    private final int turnTime = 30;
+    //private ExecutorService executor;
 
     //Setup Phase
     private UsersEntry possibleUsers;
@@ -44,7 +43,7 @@ public class ServerPlayer implements Runnable
     private boolean initialized;
 
     //passed parameters
-    private String[] windowCard1,windowCard2;
+    private String[] windowCard1, windowCard2;
     private String privateObjCard;
 
     //actual cards
@@ -55,8 +54,7 @@ public class ServerPlayer implements Runnable
     private boolean turnInterrupted = false;
 
 
-    public ServerPlayer(TokenTurn tok, ServerModelAdapter adp, UsersEntry ps,
-                        ClientRemoteInterface cli, MatchHandler match)
+    public ServerPlayer(TokenTurn tok, ServerModelAdapter adp, UsersEntry ps, ClientRemoteInterface cli, MatchHandler match)
     {
         adapter = adp;
         adapter.setServerPlayer(this);
@@ -69,15 +67,14 @@ public class ServerPlayer implements Runnable
         inGame = true;
         initialized = false;
         try {
-            connection_parameters_setup();
-        } catch (ParserConfigurationException| IOException | SAXException e) {
-            LogFile.addLog("Impossible to read settings parameters" , e.getStackTrace());
+            parametersSetup();
+        } catch (ParserXMLException e) {
+            LogFile.addLog("Impossible to read settings parameters", e.getStackTrace());
         }
     }
 
-    public synchronized void run ()
-    {
-        if(!initialized) {
+    public synchronized void run() {
+        if (!initialized) {
             //////SETUP PHASE//////
             try {
                 synchronized (token.getSynchronator()) {
@@ -129,18 +126,15 @@ public class ServerPlayer implements Runnable
         //////GAME PHASE//////
         while (inGame)//Da cambiare con la condizione di fine partita
         {
-            synchronized (token.getSynchronator())
-            {
-                try
-                {
+            synchronized (token.getSynchronator()) {
+                try {
                     //Wait his turn
                     while (!token.isMyTurn(user))
                         token.getSynchronator().wait();
 
                     adapter.setTurnDone(false);
 
-                    if (token.isEndGame())
-                    {
+                    if (token.isEndGame()) {
                         LogFile.addLog("(User:" + user + ")" + " End communication with client and close connection");
                         token.getSynchronator().notifyAll();
                         return;
@@ -152,7 +146,7 @@ public class ServerPlayer implements Runnable
                     try {
                         adapter.setCanMove(true);
                         clientTurn();
-                    }catch (ClientOutOfReachException e){
+                    } catch (ClientOutOfReachException e) {
                         //Notify token that client is dead
                         token.deletePlayer(user);
                         possibleUsers.setUserGameStatus(user, false);
@@ -163,16 +157,15 @@ public class ServerPlayer implements Runnable
                         break;
                     }
 
-                    //da sistemare con costante
-                    adapter.setTimer(turnTime);
+                    adapter.setTimer(TURN_TIMEOUT);
                     adapter.startTimer();
 
                     //End turn comunication
-                    synchronized (adapter){
+                    synchronized (adapter) {
                         adapter.wait();
                     }
 
-                    if(turnInterrupted) {
+                    if (turnInterrupted) {
                         LogFile.addLog("(User: " + user + ")" + "turn interrupted");
                         token.deletePlayer(user);
                         inGame = false;
@@ -182,11 +175,9 @@ public class ServerPlayer implements Runnable
 
                     token.getSynchronator().notifyAll();
                     token.getSynchronator().wait();
-                }
-                catch (Exception ex)
-                {
+                } catch (Exception ex) {
                     System.out.println(ex.getMessage());
-                    LogFile.addLog("Fatal error on thread " + user  , ex.getStackTrace());
+                    LogFile.addLog("Fatal error on thread " + user, ex.getStackTrace());
                     token.notifyFatalError();
                     Thread.currentThread().interrupt();
                 }
@@ -195,19 +186,19 @@ public class ServerPlayer implements Runnable
     }
 
     //<editor-fold desc="Setup Phase">
+
     /**
      * Initialize username through login phase
+     *
      * @throws ClientOutOfReachException client is out of reach
      */
-    private void login () throws ClientOutOfReachException
-    {
+    private void login() throws ClientOutOfReachException {
         String u;
-        try{
-            do{
+        try {
+            do {
                 //u = stopTask(() -> communicator.login(), INIT_TIMEOUT, executor);
                 u = communicator.login();
-                if(u == null)
-                {
+                if (u == null) {
                     LogFile.addLog("Failed to add user");
                     throw new ClientOutOfReachException();
                 }
@@ -215,8 +206,7 @@ public class ServerPlayer implements Runnable
             user = u;
             adapter.setUser(u);
             LogFile.addLog("User: " + user + " Added");
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             LogFile.addLog("Failed to add user");
             throw new ClientOutOfReachException();
         }
@@ -224,26 +214,24 @@ public class ServerPlayer implements Runnable
 
     /**
      * Initialize client's window board
+     *
      * @throws ClientOutOfReachException client is out of reach
-     * @throws ModelException Impossible to set window
+     * @throws ModelException            Impossible to set window
      */
-    private void initializeWindow () throws ClientOutOfReachException,ModelException
-    {
+    private void initializeWindow() throws ClientOutOfReachException, ModelException {
         String s1;
         try {
             //s1 = stopTask(() -> communicator.chooseWindow(windowCard1, windowCard2), INIT_TIMEOUT, executor);//To change with ACTION when implement user choice
             s1 = communicator.chooseWindow(windowCard1, windowCard2);
-        }
-        catch (RemoteException e) {
-            LogFile.addLog("(User:" + user + ")" + e.getMessage() , e.getStackTrace());
+        } catch (RemoteException e) {
+            LogFile.addLog("(User:" + user + ")" + e.getMessage(), e.getStackTrace());
             throw new ClientOutOfReachException();
         }
 
         try {
             adapter.initializeWindow(s1);
             LogFile.addLog("User: " + user + " Window initialized ");
-        }
-        catch (ModelException ex) {
+        } catch (ModelException ex) {
             LogFile.addLog("Impossible to set Window from XML", ex.getStackTrace());
             throw new ModelException();
         }
@@ -253,22 +241,19 @@ public class ServerPlayer implements Runnable
      * receives the public objectives and the tools chosen for the current match
      * and sets the corresponding parameters on the model adapter
      */
-    private void initializeCards () throws ClientOutOfReachException,ModelException
-    {
+    private void initializeCards() throws ClientOutOfReachException, ModelException {
         try {
             boolean performed;
             String[] toolnames = Arrays.stream(toolCards).map(t -> t.getName()).toArray(String[]::new);
             String[] publicObjNames = Arrays.stream(publicObjectives).map(obj -> obj.getPath()).toArray(String[]::new);
             //performed = stopTask(() -> communicator.sendCards(publicObjNames,toolnames,new String[] {privateObjCard}), INIT_TIMEOUT, executor);
-            performed = communicator.sendCards(publicObjNames,toolnames,new String[] {privateObjCard});
-            if(!performed)
-            {
+            performed = communicator.sendCards(publicObjNames, toolnames, new String[]{privateObjCard});
+            if (!performed) {
                 LogFile.addLog("(User:" + user + ") Failed to initialize cards");
                 throw new ClientOutOfReachException();
             }
-        }
-        catch (Exception e) {
-            LogFile.addLog("(User:" + user + ")" + e.getMessage() , e.getStackTrace());
+        } catch (Exception e) {
+            LogFile.addLog("(User:" + user + ")" + e.getMessage(), e.getStackTrace());
             throw new ClientOutOfReachException();
         }
 
@@ -278,7 +263,7 @@ public class ServerPlayer implements Runnable
             adapter.setToolCards(toolCards);
             LogFile.addLog("User: " + user + " Tools and Objectives initialized ");
 
-        }catch (ModelException e ){
+        } catch (ModelException e) {
             LogFile.addLog("", e.getStackTrace());
             throw new ModelException();
         }
@@ -287,128 +272,114 @@ public class ServerPlayer implements Runnable
     //</editor-fold>
 
     //<editor-fold desc="End Game Phase">
-    public void endGameCommunication (String [] users, int [] points)
-    {
+    public void endGameCommunication(String[] users, int[] points) {
         try {
-            communicator.sendResults(users,points);
-        }
-        catch (Exception e) {
+            communicator.sendResults(users, points);
+        } catch (Exception e) {
             LogFile.addLog("(User:" + user + ")" + " Impossible to communicate to user results of match");
         }
     }
 
 
-    public int getPoints ()
-    {
+    public int getPoints() {
         return adapter.calculatePoints();
     }
     //</editor-fold>
 
     //<editor-fold desc="Update Client's information">
+
     /**
      * Send to client a massage that inform about his turn
      */
-    private void clientTurn () throws ClientOutOfReachException
-    {
+    private void clientTurn() throws ClientOutOfReachException {
         String u;
-        try{
+        try {
             u = communicator.doTurn();
-            if(u == null)
+            if (u == null)
                 throw new ClientOutOfReachException();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             LogFile.addLog("(" + user + ") Move timeout expired");
             throw new ClientOutOfReachException();
         }
     }
 
     /**
-     *  Update Dadiera information on client's side
+     * Update Dadiera information on client's side
      */
-    private void updateDadiera () throws ClientOutOfReachException
-    {
+    private void updateDadiera() throws ClientOutOfReachException {
         String s;
-        try{
+        try {
             s = communicator.updateGraphic(adapter.getDadieraPair());
-            if(s == null)
+            if (s == null)
                 throw new ClientOutOfReachException();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             LogFile.addLog("(" + user + ") Dadiera update timeout expired");
             throw new ClientOutOfReachException();
         }
     }
 
     /**
-     *  Update Window information on client's side
+     * Update Window information on client's side
      */
-    private void updateWindow () throws ClientOutOfReachException
-    {
+    private void updateWindow() throws ClientOutOfReachException {
         String s;
-        try{
+        try {
             s = communicator.updateGraphic(adapter.getWindowPair());
-            if(s == null)
+            if (s == null)
                 throw new ClientOutOfReachException();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             LogFile.addLog("(" + user + ")Window update timeout expired");
             throw new ClientOutOfReachException();
         }
     }
 
-    private void updateTokens () throws ClientOutOfReachException
-    {
+    private void updateTokens() throws ClientOutOfReachException {
         String s;
-        try{
+        try {
             s = communicator.updateTokens(adapter.getMarker());
-            if(s == null)
+            if (s == null)
                 throw new ClientOutOfReachException();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             LogFile.addLog("(" + user + ") Token update timeout expired");
             throw new ClientOutOfReachException();
         }
     }
 
-    private void updateRoundTrace () throws ClientOutOfReachException
-    {
+    private void updateRoundTrace() throws ClientOutOfReachException {
         String s;
-        try{
+        try {
             s = communicator.updateRoundTrace(adapter.getRoundTracePair());
-            if(s == null)
+            if (s == null)
                 throw new ClientOutOfReachException();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             LogFile.addLog("(" + user + ") Round Trace update timeout expired");
             throw new ClientOutOfReachException();
         }
 
     }
 
-    public void updateOpponents (ArrayList<String> users, ArrayList<Pair[][]> grids) throws ClientOutOfReachException
-    {
-        for (int i = 0 ; i < users.size() ; i++)
-            updateOpponents(users.get(i),grids.get(i));
+    public void updateOpponents(ArrayList<String> users, ArrayList<Pair[][]> grids) throws ClientOutOfReachException {
+        for (int i = 0; i < users.size(); i++)
+            updateOpponents(users.get(i), grids.get(i));
     }
 
     /**
-     *  Update opponent's situation on client's side
+     * Update opponent's situation on client's side
      */
     public void updateOpponents(String user, Pair[][] grids) throws ClientOutOfReachException {
 
-        try{
-            String r = communicator.updateOpponents(user,grids);
+        try {
+            String r = communicator.updateOpponents(user, grids);
             //System.out.println(r);
         } catch (Exception e) {
-            LogFile.addLog("" , e.getStackTrace());
+            LogFile.addLog("", e.getStackTrace());
             throw new ClientOutOfReachException();
         }
     }
     //</editor-fold>
 
     //<editor-fold desc="Utilities">
-    public boolean isClientAlive ()
-    {
+    public boolean isClientAlive() {
         try {
             //performed = stopTask(() -> communicator.ping(), PING_TIMEOUT, executor);
             alive = communicator.ping();
@@ -418,111 +389,101 @@ public class ServerPlayer implements Runnable
         return alive;
     }
 
-    public void sendMessage (String s)
-    {
+    public void sendMessage(String s) {
         try {
             boolean performed;
             //performed = stopTask(() -> communicator.sendMessage(s), PING_TIMEOUT, executor);
             performed = communicator.sendMessage(s);
             if (!performed)
                 LogFile.addLog("(" + user + ")end message to client failed");
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             LogFile.addLog("Send message to client failed", ex.getStackTrace());
         }
     }
 
-    public void closeConnection (String s)
-    {
+    public void closeConnection(String s) {
         try {
             boolean performed;
             //performed = stopTask(() -> communicator.closeCommunication(s), PING_TIMEOUT, executor);
             performed = communicator.closeCommunication(s);
             if (!performed)
                 LogFile.addLog("Impossible to communicate to client (" + user + ") cause closed connection");
-        }catch (RemoteException|ClientOutOfReachException e) {
+        } catch (RemoteException | ClientOutOfReachException e) {
             LogFile.addLog("Impossible to communicate to client (" + user + ") cause closed connection");
         }
 
     }
 
-    public boolean updateClient ()
-    {
+    public boolean updateClient() {
         boolean exit = true;
-        try{
+        try {
             updateDadiera();
             updateRoundTrace();
             updateWindow();
             updateTokens();
-        }catch (Exception e){
+        } catch (Exception e) {
             LogFile.addLog("(" + user + ") Impossible to communicate to client");
             exit = false;
         }
         return exit;
     }
 
-    public Pair[][] getGrid ()
-    {
+    public Pair[][] getGrid() {
         return adapter.getWindowPair();
     }
 
-    public String getUser ()
-    {
+    public String getUser() {
         return user;
     }
 
     /**
      * sets up connection parameters
      */
-    private static void connection_parameters_setup() throws ParserConfigurationException, IOException, SAXException {
-        File file = new File(FileLocator.getServerSettingsPath());
-        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document document = documentBuilder.parse(file);
-
-        //SOCKET_PORT = Integer.parseInt(document.getElementsByTagName("portNumber").item(0).getTextContent());
-        PING_TIMEOUT = Integer.parseInt(document.getElementsByTagName("ping").item(0).getTextContent());
-        INIT_TIMEOUT = Integer.parseInt(document.getElementsByTagName("init").item(0).getTextContent());
-        TURN_TIMEOUT = Integer.parseInt(document.getElementsByTagName("turn").item(0).getTextContent());
+    private static void parametersSetup() throws ParserXMLException {
+        PING_TIMEOUT = ParserXML.SetupParserXML.getPingTimeLaps(FileLocator.getGameSettingsPath());
+        SETUP_TIMEOUT = ParserXML.SetupParserXML.getSetupTimeLaps(FileLocator.getGameSettingsPath());
+        TURN_TIMEOUT = ParserXML.SetupParserXML.getTurnTimeLaps(FileLocator.getGameSettingsPath());
     }
 
     //</editor-fold>
 
     //<editor-fold desc="Set Windows/Objects/Tools">
+
     /**
      * receives from the match the window cards among which the client need to choose
+     *
      * @param c1 first card (two sides)
      * @param c2 second card (two sides)
      */
-    public void setWindowCards (String c1[],String c2 [])
-    {
+    public void setWindowCards(String c1[], String c2[]) {
         windowCard1 = c1;
         windowCard2 = c2;
     }
 
     /**
      * receives from the match the array of the public objectives of the current match
+     *
      * @param c array of the public objectives of the current match
      */
-    public void setPublicObjCard (PublicObjective[] c)
-    {
+    public void setPublicObjCard(PublicObjective[] c) {
         publicObjectives = c;
     }
 
     /**
      * receives from the match the player's private objective for the current match
+     *
      * @param c array of the public objectives of the current match
      */
-    public void setPrivateObjCard (String c)
-    {
+    public void setPrivateObjCard(String c) {
         privateObjCard = c;
     }
 
     /**
      * receives from the match the player's tool cards for the current match
+     *
      * @param tools array of the tool cards of the current match
      */
-    public void setToolCards (Tools[] tools)
-    {
+    public void setToolCards(Tools[] tools) {
         toolCards = tools;
     }
     //</editor-fold>
@@ -532,8 +493,7 @@ public class ServerPlayer implements Runnable
         return inGame;
     }
 
-    public boolean isInitialized()
-    {
+    public boolean isInitialized() {
         return initialized;
     }
 
@@ -546,8 +506,6 @@ public class ServerPlayer implements Runnable
     }
 
     //</editor-fold>
-
-
 
     //<editor-fold desc="Reconnection facilities">
     public void setCommunicator(ClientRemoteInterface communicator) {
@@ -564,18 +522,18 @@ public class ServerPlayer implements Runnable
 
     /**
      * login, without username check
+     *
      * @throws ClientOutOfReachException
      */
     public void justLogin() throws ClientOutOfReachException {
         String u;
         try {
-        u = communicator.login();
+            u = communicator.login();
 
-        user = u;
-        adapter.setUser(u);
-        LogFile.addLog("User: " + user + " Added");
-        }
-        catch (Exception e) {
+            user = u;
+            adapter.setUser(u);
+            LogFile.addLog("User: " + user + " Added");
+        } catch (Exception e) {
             LogFile.addLog("Failed to add user");
             throw new ClientOutOfReachException();
         }
@@ -596,14 +554,14 @@ public class ServerPlayer implements Runnable
         String[] toolnames = Arrays.stream(toolCards).map(t -> t.getName()).toArray(String[]::new);
         String[] publicObjNames = Arrays.stream(publicObjectives).map(obj -> obj.getPath()).toArray(String[]::new);
         try {
-            communicator.sendCards(publicObjNames,toolnames,new String[] {privateObjCard});
+            communicator.sendCards(publicObjNames, toolnames, new String[]{privateObjCard});
         } catch (ClientOutOfReachException e) {
             e.printStackTrace();
         } catch (RemoteException e) {
             e.printStackTrace();
         }
         assert inGame;
-        if(inGame == true) {
+        if (inGame == true) {
             new Thread(this).start();
             token.addPlayer(user);
         }

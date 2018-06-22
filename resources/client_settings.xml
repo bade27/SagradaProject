@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <client>
-
-    <hostName>127.0.0.1</hostName>
+    <host_name>127.0.0.1</host_name>
 
     <socket>
-        <portNumber>6000</portNumber>
+        <socket_port>6000</socket_port>
     </socket>
 
     <rmi>
-        <registryPort>5000</registryPort>
+        <rmi_port>5000</rmi_port>
         <stubPort>9000</stubPort>
     </rmi>
 </client>

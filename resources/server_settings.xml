@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <server>
-    <socket>
-        <portNumber>6000</portNumber>
-        <ping>500</ping>
-        <init>60000</init>
-        <turn>1000</turn>
+	<host_name>127.0.0.1</host_name>
+	
+	<socket>
+        <socket_port>6000</socket_port>
     </socket>
 
     <rmi>
-        <hostName>127.0.0.1</hostName>
-        <registryPort>5000</registryPort>
+        <rmi_port>5000</rmi_port>
         <stubPort>9000</stubPort>
     </rmi>
 </server>

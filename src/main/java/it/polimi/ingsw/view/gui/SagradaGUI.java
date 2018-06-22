@@ -47,7 +47,6 @@ public class SagradaGUI extends Application implements UI {
     private Scene scene;
     private MessageBox msgb;
     private UseToolButton useTool;
-    private int num=4;
     private ClientPlayer clientPlayer;
     private boolean enableBoard;
     private boolean toolPhase;

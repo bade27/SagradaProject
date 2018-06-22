@@ -9,6 +9,7 @@ public class FileLocator
     private static final String clientSettingsPath = "resources/client_settings.xml";
     private static final String serverSettingsPath = "resources/server_settings.xml";
     private static final String usersDatabasePath = "resources/username_database.xml";
+    private static final String gameSettingsPath = "resources/game_settings.xml";
 
     public static String getWindowListPath ()
     {
@@ -40,5 +41,9 @@ public class FileLocator
 
     public static String getUsersDatabasePath() {
         return usersDatabasePath;
+    }
+
+    public static String getGameSettingsPath() {
+        return gameSettingsPath;
     }
 }
