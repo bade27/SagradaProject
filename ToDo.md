@@ -10,10 +10,10 @@
 		- [ ] CLI molto base
 	- Rete
 		- [X] Implementazione Socket
-		- [ ] Gestione disconnessioni (testestata)
+		- [ ] Gestione disconnessioni (testata)
 		- [ ] Gestione riconnessioni (testata)
 	- F.A da scegliere
-	    - [ ] Partite multiple test
+	    - [ ] Partite multiple (testata)
 	
 	- Varie
 	    - [ ] La disconnessione durante il proprio turno da una notifica immediata al server
