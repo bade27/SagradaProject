@@ -81,6 +81,11 @@ public class MainServerApplication
         new Thread(m).start();
     }
 
+    public void removeMatchHandler (MatchHandler m)
+    {
+        matches.remove(m);
+    }
+
     /**
      * Update RMI's registry after an RMI's connection and call clientRegistration
      * @param cli communicator object, used for interact with client

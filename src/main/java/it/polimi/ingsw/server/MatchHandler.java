@@ -215,24 +215,28 @@ public class MatchHandler implements Runnable
         LogFile.addLog("The game is ended, count of players' point");
 
         //Conteggio dei punti da parte degli obbiettivi
-        String[] userList = new String[MAXGIOC];
+        String[] users = new String[MAXGIOC];
         int[] pointsList = new int[MAXGIOC];
 
         for (int i = 0 ; i < player.size() ; i++)
         {
             if (player.get(i).isInitialized())
             {
-                userList[i] = player.get(i).getUser();
+                users[i] = player.get(i).getUser();
                 pointsList[i] = player.get(i).getPoints();
             }
         }
 
+        for (int i = 0 ; i < users.length ; i++)
+            userList.setUserGameStatus(users[i],false);
+
         for (int i = 0 ; i < player.size() ; i++)
-            player.get(i).endGameCommunication(userList,pointsList);
+            player.get(i).endGameCommunication(users,pointsList);
 
         token.setEndGame();
         token.getSynchronator().notifyAll();
 
+        mainServer.removeMatchHandler(this);
         LogFile.addLog("The game is ended, MatchHandler closing");
     }
     //</editor-fold>

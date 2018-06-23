@@ -90,18 +90,18 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         catch (ClientOutOfReachException e){
             System.out.println("Impossible to connect to Host with socket");
             //e.printStackTrace();
-            graph.login("Ip sbagliato");
+            graph.login("Impossibile connettersi al server, riprova");
             return;
         }
         catch (RemoteException e){
             //e.printStackTrace();
             System.out.println("Impossible to connect to Host with RMI");
-            graph.login("Ip sbagliato");
+            graph.login("Impossibile connettersi al server, riprova");
             return;
         }
         catch (Exception e){
             //e.printStackTrace();
-            System.out.println("Impossible to connect to Host");
+            System.out.println("Impossibile connettersi al server, riprova");
             return;
         }
 
