@@ -223,7 +223,10 @@ public class MatchHandler implements Runnable
             if (player.get(i).isInitialized())
             {
                 users[i] = player.get(i).getUser();
-                pointsList[i] = player.get(i).getPoints();
+                if (player.get(i).isInGame())
+                    pointsList[i] = player.get(i).getPoints();
+                else
+                    pointsList[i] = -1;
             }
         }
 
@@ -286,8 +289,9 @@ public class MatchHandler implements Runnable
             //nConn = MAXGIOC - checkClientAlive();
             subFromnConn(checkClientAlive());
             int n = getnConn();
-            LogFile.addLog("Number of client(s) connected:" + n/*nConn*/);
-            token.setInitNumberOfPlayers(n/*nConn*/);
+            LogFile.addLog("Number of client(s) connected:" + n);
+            token.setInitNumberOfPlayers(n);
+            MAXGIOC = n;
             //Starting of all ServerPlayer
             for (int i = 0; i < n/*nConn*/ ; i++)
             {
@@ -615,7 +619,7 @@ public class MatchHandler implements Runnable
 
         ArrayList<Integer> toolNum = new ArrayList<>();
         do {
-            int i = new Random().nextInt(6);
+            int i = new Random().nextInt(12);
             if(!toolNum.contains(i))
                 toolNum.add(i);
         } while(toolNum.size() < 3);

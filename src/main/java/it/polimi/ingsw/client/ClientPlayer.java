@@ -330,6 +330,10 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             String s = server.passTurn();
             stopTimerTurn();
             graph.setEnableBoard(false);
+            graph.setToolPhase(false);
+            ToolAction.clearTool();
+            MoveAction.clearMove();
+
             graph.updateMessage(s);
         } catch (RemoteException e) {
             //e.printStackTrace();

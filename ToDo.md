@@ -19,12 +19,11 @@
 	    - [ ] La disconnessione durante il proprio turno da una notifica immediata al server
 		- [ ] Notifica ai client che ci sono state disconnessioni (non mandando più up_opponents)
 		- [ ] Timer setup e timer update (con excecutor?)
-		- [ ] Passa turno finisce tutte le mosse a metà
-		- [ ] Controllo su effettivi giocatori in registrazione
+		- [X] Passa turno finisce tutte le mosse a metà
+		- [ ] Registrazione dei giocatori in riconnessione
 		- [ ] Check server su client tramite ping 
-		- [ ] Punteggio negativo se ti disconnetti
+		- [X] Punteggio negativo se ti disconnetti
 		- [ ] Un log per ogni Match Handler
-		- [ ] Tutti i tools da generare casualmente
 		- [ ] Setup vetrata anche se ti discolleghi durante il setup (aggiuntivo)
 		- [ ] Test
             - [X] Obbiettivi
@@ -40,6 +39,7 @@
 		- [ ] Caricamento vetrata nella scelta
 		- [ ] Caricamento dadi da immagine
 		- [ ] Se non si riceve un up_opponent di un giocatore lo si mette in grigio
+		- [ ] Se ricevi un risultato negativo dici che si è disconnesso
 		
 	
 - Non obbligatorio (to 30L)
