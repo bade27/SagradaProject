@@ -313,7 +313,6 @@ public class MatchHandler implements Runnable
         //If max number of connection is reached communicate the client he is one too many
         if (getnConn() == MAXGIOC)
         {
-
             LogFile.addLog("Client Rejected cause too many client connected");
             //cli.sendMessage("Too many client connected");
 
@@ -803,14 +802,6 @@ public class MatchHandler implements Runnable
 
     //</editor-fold>
 
-    /**
-     * Main method. It starts the server
-     * @param args
-     */
-    /*public static void main(String[] args)
-    {
-        (new Thread(new MatchHandler())).start();
-    }*/
 }
 
 
