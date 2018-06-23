@@ -12,7 +12,7 @@
 		<threshold_time_laps>100</threshold_time_laps>	<!-- value in seconds  -->
 		<setup_time_laps>100</setup_time_laps>	<!-- value in seconds  -->
 		<ping_time_laps>500</ping_time_laps>	<!-- value in milliseconds  -->
-		<turn_time_laps>100</turn_time_laps>	<!-- value in seconds  -->
+		<turn_time_laps>1000</turn_time_laps>	<!-- value in seconds  -->
 	</time_intervals>
 	
 </game>

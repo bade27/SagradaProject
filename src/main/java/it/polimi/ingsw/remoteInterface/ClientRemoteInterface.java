@@ -1,6 +1,7 @@
 package it.polimi.ingsw.remoteInterface;
 
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
+import it.polimi.ingsw.server.MatchHandler;
 import it.polimi.ingsw.server.ServerModelAdapter;
 
 import java.rmi.Remote;
@@ -35,5 +36,5 @@ public interface ClientRemoteInterface extends Remote
     //Reconnection
     public void reconnect() throws RemoteException;
     public void setAdapter(ServerModelAdapter sma) throws RemoteException;
-
+    public void setMatchHandler(MatchHandler match) throws RemoteException;
 }

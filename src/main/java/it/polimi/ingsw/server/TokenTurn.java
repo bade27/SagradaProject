@@ -33,7 +33,7 @@ public class TokenTurn
     private boolean justDeleting;
 
     //Object to synchronize
-    private final Integer synchronator = 5;
+    private final Object synchronator = new Object();
 
     //End game
     private boolean endGame;
@@ -388,7 +388,7 @@ public class TokenTurn
         return r;
     }
 
-    public Integer getSynchronator()
+    public Object getSynchronator()
     {
         return synchronator;
     }

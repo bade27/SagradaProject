@@ -14,14 +14,14 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
 {
     private ServerModelAdapter adapter;
     private ClientRemoteInterface client;
+    private MainServerApplication main;
     private MatchHandler match;
 
 
-    public ServerRmiHandler (MatchHandler m) throws RemoteException
+    public ServerRmiHandler (MainServerApplication m) throws RemoteException
     {
-        match = m;
+        main = m;
     }
-
 
 
     //<editor-fold desc="From server to client">
@@ -97,7 +97,7 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
     public void setClient(ClientRemoteInterface client) throws RemoteException
     {
         this.client = client;
-        adapter = match.setClient(this);
+        main.setClient(this);
     }
 
 
@@ -240,6 +240,12 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
     @Override
     public void setAdapter(ServerModelAdapter sma) {
         this.adapter = sma;
+    }
+
+    @Override
+    public void setMatchHandler(MatchHandler match) throws RemoteException {
+
+        this.match = match;
     }
     //</editor-fold>
 }

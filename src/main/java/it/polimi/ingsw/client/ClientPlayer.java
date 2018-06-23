@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
 import it.polimi.ingsw.remoteInterface.Pair;
 import it.polimi.ingsw.remoteInterface.ServerRemoteInterface;
+import it.polimi.ingsw.server.MatchHandler;
 import it.polimi.ingsw.server.ServerModelAdapter;
 import it.polimi.ingsw.utilities.FileLocator;
 import it.polimi.ingsw.utilities.ParserXML;
@@ -420,6 +421,11 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
     @Override
     public void setAdapter(ServerModelAdapter sma) throws RemoteException {
+        //unused
+    }
+
+    @Override
+    public void setMatchHandler(MatchHandler match) throws RemoteException {
         //unused
     }
     //</editor-fold>

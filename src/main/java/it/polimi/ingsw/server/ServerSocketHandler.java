@@ -707,15 +707,17 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
 
     }
 
-    public void setAdapter(ServerModelAdapter adapter)
+    @Override
+    public void setAdapter(ServerModelAdapter adapter) throws RemoteException
     {
         this.adapter = adapter;
     }
 
-    public void setMatch(MatchHandler match)
-    {
+    @Override
+    public void setMatchHandler(MatchHandler match) throws RemoteException {
         this.match = match;
     }
+
     /**
      * Notify server the end of current turn
      */

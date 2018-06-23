@@ -34,12 +34,7 @@ public class MatchHandler implements Runnable
     private Dadiera dices;
     private RoundTrace roundTrace;
     private UsersEntry userList;
-
-
-    //connection parameters
-    private static int RMI_REGISTRY_PORT;
-    private static String HOSTNAME;
-    private static int SOCKET_PORT;
+    private MainServerApplication mainServer;
 
     //game parameters
     private static int TURNS;
@@ -47,7 +42,6 @@ public class MatchHandler implements Runnable
     private static int TRESHGIOC;
     private static int TRESHTIME;
 
-    private int progressive;
     private int nConn;
 
     //initial timer parameters
@@ -60,6 +54,13 @@ public class MatchHandler implements Runnable
     private int disconnCounter = 0;
     private Thread reconnection;
     private final Object reconnLock = new Object();
+
+
+    public MatchHandler (MainServerApplication main,UsersEntry users)
+    {
+        mainServer = main;
+        userList = users;
+    }
 
 
     public synchronized void run ()
@@ -252,25 +253,18 @@ public class MatchHandler implements Runnable
 
         timer = new Thread(new ConnectionTimer());
         timer.start();
-        LogFile.createLogFile();
+        //LogFile.createLogFile();
         player = new ArrayList<ServerPlayer>();
         token = new TokenTurn();
         dices = new Dadiera();
         roundTrace = new RoundTrace();
-        progressive = 0;
-        if (!initializeUsers())
-            return false;
 
         //nConn = 0;
         setnConn(0);
 
 
-        System.out.println(">>>Server started");
-        LogFile.addLog(">>>Server started");
-
-        //Starts thread that accept client's connection
-        InitializerConnection initializer = new InitializerConnection(this);
-        initializer.start();
+        System.out.println(">>>Match Handler started");
+        LogFile.addLog(">>>Match Handler started");
 
         return true;
     }
@@ -310,21 +304,25 @@ public class MatchHandler implements Runnable
      * Registration of client's communicator object passed and starting of relative thread
      * @param cli communicator object, used for interact with client
      */
-    private ServerModelAdapter clientRegistration (ClientRemoteInterface cli)
+    public boolean clientRegistration (ClientRemoteInterface cli)
     {
         //If max number of connection is reached communicate the client he is one too many
         if (getnConn() == MAXGIOC)
         {
-            try {
-                LogFile.addLog("Client Rejected cause too many client connected");
-                cli.sendMessage("Too many client connected");
-            }catch (ClientOutOfReachException | RemoteException e){
-                LogFile.addLog("Impossible to communicate the client he is one too many");
-            }
-            return null;
+
+            LogFile.addLog("Client Rejected cause too many client connected");
+            //cli.sendMessage("Too many client connected");
+
+            return false;
         }
         //Initialization of ServerPlayer for each player
         ServerModelAdapter adp = new ServerModelAdapter(dices, roundTrace, token);
+        try {
+            cli.setAdapter(adp);
+            cli.setMatchHandler(this);
+        }catch (RemoteException e){
+            return false;
+        }
         ServerPlayer pl = new ServerPlayer(token,adp,userList,cli, this);
 
 
@@ -355,34 +353,7 @@ public class MatchHandler implements Runnable
             reconnection.start();
         }
 
-        return adp;
-    }
-
-    /**
-     * Update RMI's registry after an RMI's connection and call clientRegistration
-     * @param cli communicator object, used for interact with client
-     */
-    public ServerModelAdapter setClient (ClientRemoteInterface cli)
-    {
-        ServerRmiHandler rmiCon;
-        progressive++;
-        LogFile.addLog("Client accepted with RMI connection");
-        //RMI Registry creation and bind server name
-        try {
-            rmiCon = new ServerRmiHandler(this);
-
-            String bindLocation = "rmi://" + HOSTNAME + ":" + RMI_REGISTRY_PORT + "/sagrada" + progressive;
-            try{
-                java.rmi.registry.LocateRegistry.createRegistry(RMI_REGISTRY_PORT);
-            }catch (Exception ex){}
-
-            Naming.bind(bindLocation, rmiCon );
-
-            LogFile.addLog("Server RMI waiting for client on port  " + RMI_REGISTRY_PORT);
-        }catch (Exception e) {
-            LogFile.addLog("RMI Bind failed" , e.getStackTrace());
-        }
-        return clientRegistration(cli);
+        return true;
     }
     //</editor-fold>
 
@@ -493,23 +464,6 @@ public class MatchHandler implements Runnable
     //</editor-fold>
 
     //<editor-fold desc = "Windows, tools and objectives initialization">
-
-    /**
-     * Initialize from file users's credential
-     * @return true if goes well, false otherwise
-     */
-    private boolean initializeUsers ()
-    {
-        try
-        {
-            userList = new UsersEntry();
-            return true;
-        }catch (Exception e){
-            LogFile.addLog(e.getMessage(),e.getStackTrace());
-            return false;
-        }
-    }
-
 
     /**
      *  Initialization board game for each players
@@ -733,10 +687,6 @@ public class MatchHandler implements Runnable
      */
     private static void parametersSetup() throws ParserXMLException
     {
-        HOSTNAME = ParserXML.SetupParserXML.getHostName(FileLocator.getServerSettingsPath());
-        RMI_REGISTRY_PORT = ParserXML.SetupParserXML.getRmiPort(FileLocator.getServerSettingsPath());
-        SOCKET_PORT =ParserXML.SetupParserXML.getSocketPort(FileLocator.getServerSettingsPath());
-
         TURNS = ParserXML.SetupParserXML.getTotalTurns(FileLocator.getGameSettingsPath());
         MAXGIOC = ParserXML.SetupParserXML.getMaxPlayers(FileLocator.getGameSettingsPath());
         TRESHGIOC = ParserXML.SetupParserXML.getThresholdPlayers(FileLocator.getGameSettingsPath());
@@ -789,58 +739,6 @@ public class MatchHandler implements Runnable
     {
         for (int i = 0; i < player.size(); i++)
             player.get(i).sendMessage("Numero di client " + str + ": "+ player.size());
-    }
-    //</editor-fold>
-
-    //<editor-fold desc="Initializer connection class">
-    /**
-     * This thread-class is used to accept client's connection through RMI and Socket in a parallel process
-     */
-    private class InitializerConnection extends Thread
-    {
-        MatchHandler match;
-        private InitializerConnection (MatchHandler m)
-        {
-            match = m;
-        }
-
-        public void run ()
-        {
-            ServerRmiHandler rmiCon;
-            //RMI Registry creation and bind server name
-            try {
-                rmiCon = new ServerRmiHandler(match);
-
-                String bindLocation = "rmi://" + HOSTNAME + ":" + RMI_REGISTRY_PORT + "/sagrada" + progressive;
-                try{
-                    java.rmi.registry.LocateRegistry.createRegistry(RMI_REGISTRY_PORT);
-                }catch (Exception ex){}
-
-                Naming.bind(bindLocation, rmiCon );
-
-                LogFile.addLog("Server RMI waiting for client on port  " + RMI_REGISTRY_PORT);
-            }catch (Exception e) {
-                LogFile.addLog("RMI Bind failed" , e.getStackTrace());
-            }
-
-            //Socket creation and accept
-            while (true)
-            {
-                try{
-                    ServerSocketHandler socketCon = new ServerSocketHandler(SOCKET_PORT);
-                    socketCon.createConnection();
-                    if (socketCon.isConnected()) {
-                        LogFile.addLog("Client accepted with Socket connection");
-                    }
-                    ServerModelAdapter adp = match.clientRegistration(socketCon);
-                    socketCon.setMatch(match);
-                    socketCon.setAdapter(adp);
-                }
-                catch (ClientOutOfReachException e) {
-                    LogFile.addLog(e.getMessage() , e.getStackTrace());
-                }
-            }
-        }
     }
     //</editor-fold>
 
@@ -905,10 +803,10 @@ public class MatchHandler implements Runnable
      * Main method. It starts the server
      * @param args
      */
-    public static void main(String[] args)
+    /*public static void main(String[] args)
     {
         (new Thread(new MatchHandler())).start();
-    }
+    }*/
 }
 
 
