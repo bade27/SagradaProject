@@ -11,7 +11,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class SagradaCLI implements UI {
+public class SagradaCLI extends Thread implements UI{
 
     final int cellHeight=3;
     final int cellWidth=7;
@@ -21,8 +21,8 @@ public class SagradaCLI implements UI {
     private HashMap<ColorEnum,Color> hashMap=new HashMap<>();
     private String msg=null;
     private Pair[] dadiera;
-    private Pair[][] grid;
-    private ArrayList<Pair> [] rt;
+    private Pair[][] window;
+    private ArrayList<Pair> [] trace;
 
     public SagradaCLI() {
         enableBoard = false;
@@ -81,7 +81,6 @@ public class SagradaCLI implements UI {
             e.printStackTrace();
         }
     }
-
 
     @Override
     public void maps(String[] s1, String[] s2) {
@@ -172,14 +171,23 @@ public class SagradaCLI implements UI {
 
     @Override
     public void disconnection(String s) {
-
+        String r;
+        Color color = Color.ANSI_RED;
+        printbyFile("resources/titleCli/Attenzione.txt", color);
+        System.out.println("\n" + s);
+        do {
+            System.out.println("premo 'r' per riprovare a connetterti:");
+            r = readbyConsole();
+        }while(!r.equals("r"));
+        login("Ritorna in partita!");
     }
 
     @Override
     public void fatalDisconnection(String s) {
-
+        Color color = Color.ANSI_RED;
+        printbyFile("resources/titleCli/Spiacenti.txt", color);
+        System.out.println("\n" + s);
     }
-
 
     @Override
     public void loading() {
@@ -200,6 +208,7 @@ public class SagradaCLI implements UI {
 
     @Override
     public void updateWindow(Pair[][] window) {
+        this.window=window;
         Color color=Color.ANSI_NOCOLOR;
         printbyFile("resources/titleCli/Griglia.txt",color);
         try {
@@ -208,7 +217,6 @@ public class SagradaCLI implements UI {
             e.printStackTrace();
         }
     }
-
 
     @Override
     public void updateTools(String[] toolNames) {
@@ -275,88 +283,37 @@ public class SagradaCLI implements UI {
 
     @Override
     public void updateRoundTrace(ArrayList<Pair>[] trace) {
+/*        this.trace=trace;
         Color color=Color.ANSI_NOCOLOR;
         printbyFile("resources/titleCli/Tracciato_round.txt",color);
+
+        try{
+            for(int i=0;i<trace.length;i++){
+
+            }
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+*/
     }
 
     @Override
     public void updateMessage(String msg) {
         this.msg=msg;
-        /*String ret;
-        String mossa;
-        String action="";
-        String [] vecmove;
-        int [] cell=new int[2];
-        System.out.println("\n"+msg+"\n");
-        if (msg.equals("My turn")||
-                msg.equals("Impossibile piazzare il dado: Dado posizionato su una cella incompatibile")||
-                        msg.equals("Move ok")){
-
-            do {
-                System.out.println("Vuoi fare una mossa [m], usare una carta strumento [t], o passare il purno [p]?");
-                action = readbyConsole();
-                System.out.println();
-                if (action.equals("m")) {
-
-                        System.out.println("MOSSA:\n");
-                        ColorEnum color = null;
-                        int value = -1;
-                        do {
-                            System.out.println("Seleziona un dado della dadiera: \n[esempio: 1 RED]");
-                            mossa = readbyConsole();
-                            vecmove = mossa.split("\\ ");
-                            value = Integer.parseInt(vecmove[0]);
-
-                            switch (vecmove[1]) {
-                                case "RED":
-                                    color = ColorEnum.RED;
-                                    break;
-                                case "GREEN":
-                                    color = ColorEnum.GREEN;
-                                    break;
-                                case "YELLOW":
-                                    color = ColorEnum.YELLOW;
-                                    break;
-                                case "BLUE":
-                                    color = ColorEnum.BLUE;
-                                    break;
-                                case "PURPLE":
-                                    color = ColorEnum.PURPLE;
-                                    break;
-                                default:
-                                    break;
-                            }
-
-                        } while (!PairExist(new Pair(value, color), dadiera));
-
-                        MoveAction.setPair(new Pair(value, color));
-                        System.out.println("Seleziona una cella della griglia: \n");
-                        do {
-                            System.out.println("ascissa: ");
-                            cell[1] = Integer.parseInt(readbyConsole());
-                        } while (cell[1] < 1 || cell[1] > 5);
-
-                        do {
-                            System.out.println("ordinata: ");
-                            cell[0] = Integer.parseInt(readbyConsole());
-                        } while (cell[0] < 1 || cell[0] > 4);
-
-                        System.out.println("");
-
-                        MoveAction.setCoord(new Coordinates(cell[0] - 1, cell[1] - 1));
-                        makeMove();
-                }else if(action.equals("t")){
-                    System.out.println("tool usato con successo!");
-                }else if(action.equals("p")){
-                    passTurn();
-                    break;
-                }
-            }while(!action.equals("m")||!action.equals("t")||!action.equals("p"));
-        }*/
     }
 
     @Override
     public void setEnableBoard(boolean enableBoard) {
+        this.enableBoard=enableBoard;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                turn();
+            }
+        }).start();
+    }
+
+    private void turn(){
         String action = "";
         String end_turn;
         boolean pass = false;
@@ -370,7 +327,6 @@ public class SagradaCLI implements UI {
                     System.out.println("Vuoi fare una mossa [m], usare una carta strumento [t], o passare il turno [p]?");
                     action = readbyConsole();
                     System.out.println();
-
                     if (action.equals("m")) {
                         doMovement();
                     } else if (action.equals("t")) {
@@ -397,6 +353,7 @@ public class SagradaCLI implements UI {
         } else{
             System.out.println(msg);
         }
+
     }
     private void doMovement(){
         String mossa;
@@ -452,11 +409,11 @@ public class SagradaCLI implements UI {
         makeMove();
     }
 
-    private void  doTool(){
+    private void doTool(){
         System.out.println("tool usato con successo!");
     }
 
-    private void  doPassTurn(){
+    private void doPassTurn(){
         passTurn();
     }
 
@@ -515,6 +472,7 @@ public class SagradaCLI implements UI {
             return false;
         }
     }
+
     private boolean isNameValid(String name){
         if(name.isEmpty())
             return false;
@@ -522,7 +480,6 @@ public class SagradaCLI implements UI {
             return false;*/
         return true;
     }
-
 
     private void printPair(Pair [] p){
         //parte superione
@@ -646,6 +603,7 @@ public class SagradaCLI implements UI {
             return "";
         }
     }
+
     private boolean PairExist(Pair p, Pair[] vecPair){
         for(int i=0;i<vecPair.length;i++){
             if((vecPair[i].getValue()).equals(p.getValue()) && (vecPair[i].getColor()).equals(p.getColor()))
@@ -669,7 +627,7 @@ public class SagradaCLI implements UI {
 
     @Override
     public void deletePlayer() {
-
+        clientPlayer = null;
     }
 
     public static void main(String[] args) {

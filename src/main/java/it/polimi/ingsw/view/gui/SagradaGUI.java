@@ -78,6 +78,10 @@ public class SagradaGUI extends Application implements UI {
         catch (RemoteException e){
             Thread.currentThread().interrupt();
         }
+        stage.setOnCloseRequest(e -> {
+            Platform.exit();
+            System.exit(0);
+        });
     }
 
 
@@ -213,10 +217,6 @@ public class SagradaGUI extends Application implements UI {
         stage.getScene().setRoot(loginRoot);
         //stage.show();
         stage.setResizable(false);
-        stage.setOnCloseRequest(e -> {
-            Platform.exit();
-            System.exit(0);
-        });
     }
 
     @Override
@@ -345,10 +345,6 @@ public class SagradaGUI extends Application implements UI {
         stage.getScene().getWindow().setWidth(800);
         stage.getScene().getWindow().setHeight(500);
         stage.setResizable(false);
-        stage.setOnCloseRequest(e -> {
-            Platform.exit();
-            System.exit(0);
-        });
     }
 
     @Override
@@ -373,10 +369,6 @@ public class SagradaGUI extends Application implements UI {
         //stage.show();
         stage.getScene().setRoot(loadingRoot);
         stage.setResizable(false);
-        stage.setOnCloseRequest(e -> {
-            Platform.exit();
-            System.exit(0);
-        });
     }
 
     @Override
@@ -407,10 +399,6 @@ public class SagradaGUI extends Application implements UI {
 
         stage.getScene().setRoot(discRoot);
         stage.setResizable(false);
-        stage.setOnCloseRequest(e -> {
-            Platform.exit();
-            System.exit(0);
-        });
     }
 
     @Override
@@ -429,11 +417,6 @@ public class SagradaGUI extends Application implements UI {
         fatDicRoot.setSpacing(10);
         stage.getScene().setRoot(fatDicRoot);
         stage.setResizable(false);
-        stage.setOnCloseRequest(e -> {
-            Platform.exit();
-            System.exit(0);
-        });
-
     }
 
     public void endGame(String [] name, int [] record){
