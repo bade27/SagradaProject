@@ -99,6 +99,10 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
                     String tool5 = inSocket.readLine();
                     useTool(5,tool5);
                     break;
+                case "disconnection":
+                    //System.out.println("tool 1 entered");
+                    clientDisconnection();
+                    break;
 
                 default:
                     System.out.println("Problem");
@@ -610,6 +614,10 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
         }
     }
 
+    private void clientDisconnection ()
+    {
+        adapter.notifyClientExited();
+    }
     /*
     public void close() {
         outSocket.println("close");

@@ -79,6 +79,8 @@ public class SagradaGUI extends Application implements UI {
             Thread.currentThread().interrupt();
         }
         stage.setOnCloseRequest(e -> {
+            if (clientPlayer != null)
+                clientPlayer.disconnect();
             Platform.exit();
             System.exit(0);
         });
@@ -348,6 +350,13 @@ public class SagradaGUI extends Application implements UI {
         stage.getScene().getWindow().setWidth(800);
         stage.getScene().getWindow().setHeight(500);
         stage.setResizable(false);
+
+        stage.setOnCloseRequest(e -> {
+            if (clientPlayer != null)
+                clientPlayer.disconnect();
+            Platform.exit();
+            System.exit(0);
+        });
     }
 
     @Override
@@ -372,6 +381,12 @@ public class SagradaGUI extends Application implements UI {
         //stage.show();
         stage.getScene().setRoot(loadingRoot);
         stage.setResizable(false);
+        stage.setOnCloseRequest(e -> {
+            if (clientPlayer != null)
+                clientPlayer.disconnect();
+            Platform.exit();
+            System.exit(0);
+        });
     }
 
     @Override
@@ -402,6 +417,12 @@ public class SagradaGUI extends Application implements UI {
 
         stage.getScene().setRoot(discRoot);
         stage.setResizable(false);
+        stage.setOnCloseRequest(e -> {
+            if (clientPlayer != null)
+                clientPlayer.disconnect();
+            Platform.exit();
+            System.exit(0);
+        });
     }
 
     @Override

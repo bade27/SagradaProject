@@ -15,6 +15,7 @@ public interface ServerRemoteInterface extends Remote
     public String askToolPermission(int nrTool) throws RemoteException;
     public String passTurn() throws RemoteException;
 
+
     //Tool nr. 1-6-7-10-11
     public String useTool (Pair p, String instruction) throws RemoteException;
     //Tool nr. 2-3
@@ -31,4 +32,7 @@ public interface ServerRemoteInterface extends Remote
 
     //to check RMI server status
     public String serverStatus() throws RemoteException;
+
+    //Disconnection message
+    public void disconnection () throws  RemoteException;
 }

@@ -505,6 +505,18 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
         }
         return false;
     }
+
+    @Override
+    public void disconnection() throws RemoteException {
+        try
+        {
+            outSocket.write("disconnection\n");
+            outSocket.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
     //</editor-fold>
 
     //<editor-fold desc="Utilities">

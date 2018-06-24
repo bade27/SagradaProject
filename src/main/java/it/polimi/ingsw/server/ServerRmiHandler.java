@@ -238,6 +238,11 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
     }
 
     @Override
+    public void disconnection() throws RemoteException {
+        adapter.notifyClientExited();
+    }
+
+    @Override
     public void setAdapter(ServerModelAdapter sma) {
         this.adapter = sma;
     }

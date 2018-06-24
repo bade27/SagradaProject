@@ -297,7 +297,7 @@ public class ServerModelAdapter
 
     public void setServerPlayer(ServerPlayer serverPlayer) {
         this.serverPlayer = serverPlayer;
-        log = this.serverPlayer.log;
+        log = serverPlayer.log;
     }
 
     public void setTimer(int n) {
@@ -312,6 +312,8 @@ public class ServerModelAdapter
         return turnDone;
     }
 
+    public synchronized void notifyClientExited () { timer.setClientDisconnection(true);}
+
     //</editor-fold>
 
     //<editor-fold desc="Timer Class">
@@ -320,6 +322,8 @@ public class ServerModelAdapter
         private int period;
         private double actualTime;
         private ServerModelAdapter adapter;
+        private boolean clientDisconnection;
+
 
         public TimerTurn(int period, ServerModelAdapter adapter) {
             this.period = period;
@@ -328,6 +332,7 @@ public class ServerModelAdapter
 
         @Override
         public void run() {
+            clientDisconnection = false;
             Thread timer = new Thread(() -> {
                 boolean interrupted = false;
                 try {
@@ -345,8 +350,10 @@ public class ServerModelAdapter
 
             long initialTime = System.nanoTime();
             timer.start();
-            while(!adapter.isTurnDone() && !serverPlayer.isTurnInterrupted())
+            while(!adapter.isTurnDone() && !serverPlayer.isTurnInterrupted() && !clientDisconnection)
                 continue;
+            if (clientDisconnection)
+                serverPlayer.setTurnInterrupted();
             if(timer.isAlive())
                 timer.interrupt();
             if(!serverPlayer.isTurnInterrupted())
@@ -359,6 +366,10 @@ public class ServerModelAdapter
 
         public double getActualTime() {
             return actualTime;
+        }
+
+        private synchronized void setClientDisconnection (boolean b) {
+            clientDisconnection = b;
         }
     }
     //</editor-fold>

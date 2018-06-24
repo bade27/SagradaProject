@@ -324,6 +324,7 @@ public class MatchHandler implements Runnable
             log.addLog("Client Rejected cause too many client connected");
             return false;
         }
+
         //Initialization of ServerPlayer for each player
         ServerModelAdapter adp = new ServerModelAdapter(dices, roundTrace, token);
         try {

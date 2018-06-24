@@ -52,7 +52,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     private Thread timerTurn;
 
     private boolean connected;
-    private boolean inGame;
+    private boolean inTurn;
 
     //<editor-fold desc="Initialization Phase">
 
@@ -126,6 +126,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
         System.out.println("Client connected");
         connected = true;
+        inTurn = false;
     }
     //</editor-fold>
 
@@ -303,6 +304,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             stopTimerTurn();
             e.printStackTrace();
         }
+        inTurn = true;
         return "ok";
     }
 
@@ -338,10 +340,26 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             ToolAction.clearTool();
             MoveAction.clearMove();
 
+            inTurn = false;
             graph.updateMessage(s);
         } catch (RemoteException e) {
             //e.printStackTrace();
         }
+    }
+
+    public synchronized void disconnect ()
+    {
+        System.out.println("disconnectionz");
+        if (inTurn)
+        {
+            try {
+                System.out.println("disconnectionz");
+                server.disconnection();
+            } catch (RemoteException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
     //</editor-fold>
 
