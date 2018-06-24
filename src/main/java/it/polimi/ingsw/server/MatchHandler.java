@@ -56,6 +56,10 @@ public class MatchHandler implements Runnable
     private final Object reconnLock = new Object();
 
 
+    private final Object startGameLock = new Object();
+    private boolean gameStarted = false;
+
+
     public MatchHandler (MainServerApplication main,UsersEntry users)
     {
         mainServer = main;
@@ -112,6 +116,7 @@ public class MatchHandler implements Runnable
     {
         int turnsPlayed;
         LogFile.addLog("Game Phase started");
+        setGameStarted(true);
         token.setOnGame(true);
         try{
             mixDadiera();
@@ -315,7 +320,7 @@ public class MatchHandler implements Runnable
     public boolean clientRegistration (ClientRemoteInterface cli)
     {
         //If max number of connection is reached communicate the client he is one too many
-        if (getnConn() == MAXGIOC)
+        if (getnConn() == MAXGIOC || (isGameStarted() && getDisconnCounter() == 0))
         {
             LogFile.addLog("Client Rejected cause too many client connected");
             //cli.sendMessage("Too many client connected");
@@ -806,6 +811,18 @@ public class MatchHandler implements Runnable
 
     //</editor-fold>
 
+
+    public boolean isGameStarted() {
+        synchronized (startGameLock) {
+            return gameStarted;
+        }
+    }
+
+    public void setGameStarted(boolean gameStarted) {
+        synchronized (startGameLock) {
+            this.gameStarted = gameStarted;
+        }
+    }
 }
 
 
