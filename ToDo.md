@@ -23,7 +23,7 @@
 		- [ ] Registrazione dei giocatori in riconnessione
 		- [ ] Check server su client tramite ping 
 		- [X] Punteggio negativo se ti disconnetti
-		- [ ] Un log per ogni Match Handler
+		- [X] Un log per ogni Match Handler
 		- [ ] Setup vetrata anche se ti discolleghi durante il setup (aggiuntivo)
 		- [ ] Test
             - [X] Obbiettivi

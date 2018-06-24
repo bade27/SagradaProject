@@ -184,6 +184,9 @@ public class SagradaGUI extends Application implements UI {
                     try {
                         if (clientPlayer == null)
                             clientPlayer = new ClientPlayer(typeOfConnection,sagradaGUI, p);
+                        if (!clientPlayer.isConnected())
+                            clientPlayer = new ClientPlayer(typeOfConnection,sagradaGUI, p);
+
                         clientPlayer.setClientName(n);
                         t.setFill(Color.FORESTGREEN);
                         t.setText("attendere l'ingresso degli altri giocatori");

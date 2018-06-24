@@ -59,7 +59,7 @@ public class MatchHandler implements Runnable
     private final Object startGameLock = new Object();
     private boolean gameStarted = false;
 
-    
+
     public MatchHandler (MainServerApplication main,UsersEntry users,int id)
     {
         this.id = id;
@@ -292,14 +292,12 @@ public class MatchHandler implements Runnable
         try
         {
             //Check connection status
-            //nConn = MAXGIOC - checkClientAlive();
             subFromnConn(checkClientAlive());
             int n = getnConn();
             log.addLog("Number of client(s) connected:" + n);
             token.setInitNumberOfPlayers(n);
-            MAXGIOC = n;
             //Starting of all ServerPlayer
-            for (int i = 0; i < n/*nConn*/ ; i++)
+            for (int i = 0; i < n ; i++)
             {
                 Thread t = new Thread(player.get(i));
                 t.start();

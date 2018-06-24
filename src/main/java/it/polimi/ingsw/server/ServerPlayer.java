@@ -148,7 +148,7 @@ public class ServerPlayer implements Runnable {
                         adapter.setCanMove(true);
                         clientTurn();
                     } catch (ClientOutOfReachException e) {
-                        //Notify token that client is dead
+                        log.addLog("(User: " + user + ")" + "player disconnected cause client unreachable");
                         token.deletePlayer(user);
                         possibleUsers.setUserGameStatus(user, false);
                         mymatch.incDisconnCounter();
@@ -167,8 +167,11 @@ public class ServerPlayer implements Runnable {
                     }
 
                     if (turnInterrupted) {
-                        log.addLog("(User: " + user + ")" + "turn interrupted");
+                        log.addLog("(User: " + user + ")" + "player disconnected cause client late in response");
                         token.deletePlayer(user);
+                        possibleUsers.setUserGameStatus(user, false);
+                        mymatch.incDisconnCounter();
+                        mymatch.subFromnConn(1);
                         inGame = false;
                         token.getSynchronator().notifyAll();
                         break;

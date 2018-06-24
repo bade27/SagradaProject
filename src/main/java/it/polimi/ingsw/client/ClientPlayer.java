@@ -51,11 +51,14 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     private Timer connectionStatusRMITimer;
     private Thread timerTurn;
 
+    private boolean connected;
+    private boolean inGame;
 
     //<editor-fold desc="Initialization Phase">
 
     public ClientPlayer (int t, UI g, String serverIP) throws RemoteException
     {
+        connected = false;
         if(!serverIP.isEmpty())
             HOSTNAME = serverIP;
         typeOfCOnnection = t;
@@ -122,6 +125,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         }
 
         System.out.println("Client connected");
+        connected = true;
     }
     //</editor-fold>
 
@@ -380,6 +384,10 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     //</editor-fold>
 
     //<editor-fold desc="Utilities">
+
+    public boolean isConnected() {
+        return connected;
+    }
 
     private static void connection_parameters_setup() throws ParserXMLException{
 
