@@ -8,7 +8,6 @@ import it.polimi.ingsw.utilities.LogFile;
 import it.polimi.ingsw.utilities.ParserXML;
 import it.polimi.ingsw.utilities.UsersEntry;
 
-import javax.management.modelmbean.XMLParseException;
 import java.rmi.Naming;
 import java.util.ArrayList;
 
@@ -22,14 +21,19 @@ public class MainServerApplication
 
     private ArrayList<MatchHandler> matches = new ArrayList<>();
     private UsersEntry userList;
+    private int handlerProgressive;
 
+    private LogFile mainLog;
 
     //<editor-fold desc="Server Bootstrap">
     public boolean initializeServer ()
     {
-        LogFile.createLogFile();
+        System.out.println(">>>Server Application Started");
+        mainLog = new LogFile();
+        mainLog.createLogFile("Main_Server");
 
         progressive = 0;
+        handlerProgressive = 0;
         try {
             parametersSetup();
         }catch (ParserXMLException e){
@@ -51,7 +55,7 @@ public class MainServerApplication
             userList = new UsersEntry();
             return true;
         }catch (Exception e){
-            LogFile.addLog("{MAIN SERVER} " + e.getMessage(),e.getStackTrace());
+            mainLog.addLog("Impossible to initialize users from db" + e.getMessage(),e.getStackTrace());
             return false;
         }
     }
@@ -76,14 +80,37 @@ public class MainServerApplication
 
     private void startNewMatchHandler()
     {
-        MatchHandler m = new MatchHandler(this,userList);
+        MatchHandler m = new MatchHandler(this,userList,handlerProgressive);
         matches.add(m);
         new Thread(m).start();
+        mainLog.addLog(">>>New Match Handler" + handlerProgressive + " Created");
+        handlerProgressive ++ ;
     }
 
     public void removeMatchHandler (MatchHandler m)
     {
+        mainLog.addLog(">>>Match Handler" + m.getId() + " Removed");
         matches.remove(m);
+    }
+
+    private void dynamicMathChoosing (ClientRemoteInterface cli)
+    {
+        for (int i = 0 ; i < matches.size() ; i++)
+            if (matches.get(i).clientRegistration(cli))
+            {
+                mainLog.addLog(">>>Match Handler" + matches.get(i).getId() + " client added");
+                return;
+            }
+
+        startNewMatchHandler();
+        try
+        {
+            Thread.sleep(500); //I need time before a new Match Handler will be created
+        }catch (InterruptedException ex){
+            ex.printStackTrace();
+        }
+
+        dynamicMathChoosing(cli);
     }
 
     /**
@@ -94,7 +121,7 @@ public class MainServerApplication
     {
         ServerRmiHandler rmiCon;
         progressive++;
-        LogFile.addLog("Client accepted with RMI connection");
+        mainLog.addLog("Client accepted with RMI connection");
         //RMI Registry creation and bind server name
         try {
             rmiCon = new ServerRmiHandler(this);
@@ -106,27 +133,9 @@ public class MainServerApplication
 
             Naming.bind(bindLocation, rmiCon );
 
-            LogFile.addLog("Server RMI waiting for client on port  " + RMI_REGISTRY_PORT);
+            mainLog.addLog("Server RMI waiting for client on port  " + RMI_REGISTRY_PORT);
         }catch (Exception e) {
-            LogFile.addLog("RMI Bind failed" , e.getStackTrace());
-        }
-
-        dynamicMathChoosing(cli);
-    }
-
-
-    private void dynamicMathChoosing (ClientRemoteInterface cli)
-    {
-        for (int i = 0 ; i < matches.size() ; i++)
-            if (matches.get(i).clientRegistration(cli))
-                return;
-
-        startNewMatchHandler();
-        try
-        {
-            Thread.sleep(500); //I need time before a new Match Handler will be created
-        }catch (InterruptedException ex){
-            ex.printStackTrace();
+            mainLog.addLog("RMI Bind failed" , e.getStackTrace());
         }
 
         dynamicMathChoosing(cli);
@@ -144,7 +153,7 @@ public class MainServerApplication
             main.startNewMatchHandler();
         }
         else
-            LogFile.addLog("{MAIN SERVER} Impossible to start, server Aborted");
+            System.out.println( "Impossible to start, server Aborted");
     }
 
 
@@ -174,9 +183,9 @@ public class MainServerApplication
 
                 Naming.bind(bindLocation, rmiCon );
 
-                LogFile.addLog("Server RMI waiting for client on port  " + RMI_REGISTRY_PORT);
+                mainLog.addLog("Server RMI waiting for client on port  " + RMI_REGISTRY_PORT);
             }catch (Exception e) {
-                LogFile.addLog("RMI Bind failed" , e.getStackTrace());
+                mainLog.addLog("RMI Bind failed" , e.getStackTrace());
             }
 
             //Socket creation and accept
@@ -184,14 +193,14 @@ public class MainServerApplication
             {
                 try{
                     ServerSocketHandler socketCon = new ServerSocketHandler(SOCKET_PORT);
-                    socketCon.createConnection();
+                    socketCon.createConnection(mainLog);
                     if (socketCon.isConnected()) {
-                        LogFile.addLog("Client accepted with Socket connection");
+                        mainLog.addLog("Client accepted with Socket connection");
                     }
                     dynamicMathChoosing(socketCon);
                 }
                 catch (ClientOutOfReachException e) {
-                    LogFile.addLog(e.getMessage() , e.getStackTrace());
+                    mainLog.addLog(e.getMessage() , e.getStackTrace());
                 }
             }
         }

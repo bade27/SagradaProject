@@ -39,6 +39,8 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
 
     private Thread deamon;
 
+    private LogFile log;
+
     public ServerSocketHandler(int port)
     {
         PORT = port;
@@ -114,11 +116,11 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
      *
      * @throws ClientOutOfReachException if client not reachable
      */
-    public void createConnection() throws ClientOutOfReachException
+    public void createConnection(LogFile mainLog) throws ClientOutOfReachException
     {
         try
         {
-            init_connection();
+            init_connection(mainLog);
             inSocket = new BufferedReader(new InputStreamReader(client.getInputStream()));
             outSocket = new PrintWriter(new BufferedWriter(
                     new OutputStreamWriter(client.getOutputStream())), true);
@@ -142,13 +144,13 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
      *
      * @throws ClientOutOfReachException if client could not connect to the server
      */
-    private void init_connection() throws ClientOutOfReachException
+    private void init_connection(LogFile mainLog) throws ClientOutOfReachException
     {
         serverSocket = null;
         try
         {
             serverSocket = new ServerSocket(PORT);
-            LogFile.addLog("\nit.polimi.ingsw.server socket waiting for client on port " + serverSocket.getLocalPort());
+            mainLog.addLog("\nit.polimi.ingsw.server socket waiting for client on port " + serverSocket.getLocalPort());
 
             client = serverSocket.accept();
         } catch (Exception e)
@@ -246,7 +248,7 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
                 throw new ClientOutOfReachException();
         } catch (JSONException je)
         {
-            LogFile.addLog("JSON can't encrypt client message", je.getStackTrace());
+            log.addLog("JSON can't encrypt client message", je.getStackTrace());
             throw new ClientOutOfReachException();
         } catch (IOException e)
         {
@@ -292,7 +294,7 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
                 throw new ClientOutOfReachException();
         } catch (JSONException je)
         {
-            LogFile.addLog("JSON can't encrypt client message", je.getStackTrace());
+            log.addLog("JSON can't encrypt client message", je.getStackTrace());
             throw new ClientOutOfReachException();
         } catch (IOException e)
         {
@@ -359,7 +361,7 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
             throw new ClientOutOfReachException();
         } catch (JSONException je)
         {
-            LogFile.addLog("JSON can't encrypt client message", je.getStackTrace());
+            log.addLog("JSON can't encrypt client message", je.getStackTrace());
             throw new ClientOutOfReachException();
         }
     }
@@ -376,7 +378,7 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
             throw new ClientOutOfReachException();
         } catch (JSONException je)
         {
-            LogFile.addLog("JSON can't encrypt client message", je.getStackTrace());
+            log.addLog("JSON can't encrypt client message", je.getStackTrace());
             throw new ClientOutOfReachException();
         }
     }
@@ -393,7 +395,7 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
             throw new ClientOutOfReachException();
         } catch (JSONException je)
         {
-            LogFile.addLog("JSON can't encrypt client message", je.getStackTrace());
+            log.addLog("JSON can't encrypt client message", je.getStackTrace());
             throw new ClientOutOfReachException();
         }
     }
@@ -410,7 +412,7 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
             throw new ClientOutOfReachException();
         } catch (JSONException je)
         {
-            LogFile.addLog("JSON can't encrypt client message", je.getStackTrace());
+            log.addLog("JSON can't encrypt client message", je.getStackTrace());
             throw new ClientOutOfReachException();
         }
     }
@@ -427,7 +429,7 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
             throw new ClientOutOfReachException();
         } catch (JSONException je)
         {
-            LogFile.addLog("JSON can't encrypt client message", je.getStackTrace());
+            log.addLog("JSON can't encrypt client message", je.getStackTrace());
             throw new ClientOutOfReachException();
         }
     }
@@ -508,7 +510,7 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
             } catch (Exception e)
             {
                 e.printStackTrace();
-                LogFile.addLog("Impossible to notify move");
+                log.addLog("Impossible to notify move");
             }
         }catch (JSONException e){
             e.printStackTrace();
@@ -528,7 +530,7 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
             notifyServer();
         } catch (Exception e) {
             e.printStackTrace();
-            LogFile.addLog("Impossible to notify end turn");
+            log.addLog("Impossible to notify end turn");
         }
     }
 
@@ -549,7 +551,7 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
             startDaemon();
         } catch (Exception e) {
             e.printStackTrace();
-            LogFile.addLog("Impossible to notify end turn");
+            log.addLog("Impossible to notify end turn");
         }
     }
 
@@ -580,10 +582,10 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
             startDaemon();
         } catch (JSONException jre){
             jre.printStackTrace();
-            LogFile.addLog("Impossible to decrypt JSON");
+            log.addLog("Impossible to decrypt JSON");
         }catch (Exception e) {
             e.printStackTrace();
-            LogFile.addLog("Impossible to notify use tool");
+            log.addLog("Impossible to notify use tool");
         }
     }
 
@@ -603,7 +605,7 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
             throw new ClientOutOfReachException();
         } catch (JSONException je)
         {
-            LogFile.addLog("JSON can't encrypt client message", je.getStackTrace());
+            log.addLog("JSON can't encrypt client message", je.getStackTrace());
             throw new ClientOutOfReachException();
         }
     }
@@ -716,6 +718,7 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
     @Override
     public void setMatchHandler(MatchHandler match) throws RemoteException {
         this.match = match;
+        log = match.log;
     }
 
     /**

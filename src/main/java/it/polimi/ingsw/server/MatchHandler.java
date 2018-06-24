@@ -26,8 +26,11 @@ import java.util.concurrent.TimeUnit;
 
 public class MatchHandler implements Runnable
 {
+    //Match Objects
     private ArrayList<ServerPlayer> player;
     private ArrayList<Thread> threadPlayers;
+    private int id;
+    public LogFile log;
 
     //Game objects
     private TokenTurn token;
@@ -41,7 +44,6 @@ public class MatchHandler implements Runnable
     private static int MAXGIOC;
     private static int TRESHGIOC;
     private static int TRESHTIME;
-
     private int nConn;
 
     //initial timer parameters
@@ -56,10 +58,13 @@ public class MatchHandler implements Runnable
     private final Object reconnLock = new Object();
 
 
-    public MatchHandler (MainServerApplication main,UsersEntry users)
+    public MatchHandler (MainServerApplication main,UsersEntry users,int id)
     {
+        this.id = id;
         mainServer = main;
         userList = users;
+        log = new LogFile();
+        log.createLogFile("Match_Handler" + id);
     }
 
 
@@ -68,8 +73,8 @@ public class MatchHandler implements Runnable
         //Connection Phase
         if (!initializeServer())
         {
-            LogFile.addLog(">>>Failed to initialize server, server aborted");
-            System.out.println(">>>Failed to initialize server, server aborted");
+            log.addLog(">>>Failed to initialize Match Handler, Match Handler aborted");
+            System.out.println(">>>Failed to initialize Match Handler" + id + ", Match Handler aborted");
             return;
         }
 
@@ -81,24 +86,23 @@ public class MatchHandler implements Runnable
                     gameCannotStartYet.wait();
             }
         }catch (Exception e){
-            LogFile.addLog("Fatal Error: Impossible to put in wait Server");
+            log.addLog("Fatal Error: Impossible to put in wait Server");
             Thread.currentThread().interrupt();
         }
 
         initializeClients();
-        System.out.println(">>>Connection Phase Ended");
+        log.addLog(">>>Match Handler" + id + ": Connection Phase Ended");
 
         //Windows, tools and objectives initialization
         if (! (initializeWindowPlayers() && initializePublicObjectiveCards() && initalizePrivateObjectiveCards() && initializeTools()))
         {
-            LogFile.addLog(">>>Failed to initialize cards, server aborted");
-            System.out.println(">>>Failed to initialize cards, server aborted");
+            log.addLog(">>>Failed to initialize cards, server aborted");
+            System.out.println(">>>Match Handler" + id + ": Failed to initialize cards, server aborted");
             return;
         }
 
         //Setup Phase
         waitInitialition();
-        System.out.println(">>>Setup Phase ended");
 
         //Game Phase
         startGame();
@@ -111,7 +115,7 @@ public class MatchHandler implements Runnable
     private void startGame ()
     {
         int turnsPlayed;
-        LogFile.addLog("Game Phase started");
+        log.addLog("Game Phase started");
         token.setOnGame(true);
         try{
             mixDadiera();
@@ -185,7 +189,7 @@ public class MatchHandler implements Runnable
                 }
                 catch (InterruptedException ex)
                 {
-                    LogFile.addLog("Interrupted exception occurred", ex.getStackTrace());
+                    log.addLog("Interrupted exception occurred", ex.getStackTrace());
                     ex.printStackTrace();
                     Thread.currentThread().interrupt();
                     closeAllConnection();
@@ -201,18 +205,16 @@ public class MatchHandler implements Runnable
     {
         try {
             dices.mix(token.getNumPlayers());
-            System.out.println(">>>Dadiera Mixed");
-            LogFile.addLog("Dadiera Mixed");
+            log.addLog("Dadiera Mixed");
         } catch (NotEnoughDiceException e) {
-            LogFile.addLog("No more dice into dice bag");
+            log.addLog("No more dice into dice bag");
             throw new IllegalDiceException();
         }
     }
 
     private void endGame ()
     {
-        System.out.println(">>>The game is ended");
-        LogFile.addLog("The game is ended, count of players' point");
+        log.addLog("The game is ended, count of players' point");
 
         //Conteggio dei punti da parte degli obbiettivi
         String[] users = new String[MAXGIOC];
@@ -240,7 +242,8 @@ public class MatchHandler implements Runnable
         token.getSynchronator().notifyAll();
 
         mainServer.removeMatchHandler(this);
-        LogFile.addLog("The game is ended, MatchHandler closing");
+        log.addLog("The game is ended, MatchHandler closing");
+        System.out.println(">>>Match Handler" + id + ": The game is ended");
     }
     //</editor-fold>
 
@@ -254,7 +257,7 @@ public class MatchHandler implements Runnable
         try {
             parametersSetup();
         } catch (ParserXMLException e) {
-            LogFile.addLog("Impossible to read settings parameters" , e.getStackTrace());
+            log.addLog("Impossible to read settings parameters" , e.getStackTrace());
             return false;
         }
 
@@ -270,8 +273,8 @@ public class MatchHandler implements Runnable
         setnConn(0);
 
 
-        System.out.println(">>>Match Handler started");
-        LogFile.addLog(">>>Match Handler started");
+        System.out.println(">>>Match Handler" + id + " started");
+        log.addLog("Match Handler started");
 
         return true;
     }
@@ -289,7 +292,7 @@ public class MatchHandler implements Runnable
             //nConn = MAXGIOC - checkClientAlive();
             subFromnConn(checkClientAlive());
             int n = getnConn();
-            LogFile.addLog("Number of client(s) connected:" + n);
+            log.addLog("Number of client(s) connected:" + n);
             token.setInitNumberOfPlayers(n);
             MAXGIOC = n;
             //Starting of all ServerPlayer
@@ -298,11 +301,11 @@ public class MatchHandler implements Runnable
                 Thread t = new Thread(player.get(i));
                 t.start();
                 threadPlayers.add(t);
-                LogFile.addLog("Thread ServerPlayer " + i + " Started");
+                log.addLog("Thread ServerPlayer " + i + " Started");
             }
         }
         catch (Exception e) {
-            LogFile.addLog("",e.getStackTrace());
+            log.addLog("",e.getStackTrace());
             closeAllConnection();
             e.printStackTrace();
         }
@@ -317,9 +320,7 @@ public class MatchHandler implements Runnable
         //If max number of connection is reached communicate the client he is one too many
         if (getnConn() == MAXGIOC)
         {
-            LogFile.addLog("Client Rejected cause too many client connected");
-            //cli.sendMessage("Too many client connected");
-
+            log.addLog("Client Rejected cause too many client connected");
             return false;
         }
         //Initialization of ServerPlayer for each player
@@ -382,7 +383,7 @@ public class MatchHandler implements Runnable
                 try {
                     pl.justLogin();
                 } catch (ClientOutOfReachException e) {
-                    LogFile.addLog("(User : " + pl.getUser() + " ) unable to perform reconnection login\n"
+                    log.addLog("(User : " + pl.getUser() + " ) unable to perform reconnection login\n"
                             + e.getStackTrace().toString());
                     return;
                 }
@@ -398,7 +399,7 @@ public class MatchHandler implements Runnable
                         //set the old adapter on the old communicator
                         newSP.getCommunicator().setAdapter(newSP.getAdapter());
                     } catch (RemoteException e) {
-                        LogFile.addLog("Impossible to set the adapter on the new Communicator\n"
+                        log.addLog("Impossible to set the adapter on the new Communicator\n"
                                 + e.getStackTrace().toString());
                         return;
                     }
@@ -451,18 +452,18 @@ public class MatchHandler implements Runnable
         {
             try
             {
-                LogFile.addLog("Setup Phase started");
+                log.addLog("Setup Phase started");
                 //Wake Up all ServerPlayers to start setup phase
                 token.getSynchronator().notifyAll();
 
                 //Wait until end setup phase
                 while (token.getOnSetup())
                     token.getSynchronator().wait();
-                LogFile.addLog("Setup Phase ended");
+                log.addLog("Setup Phase ended");
 
             }
             catch (InterruptedException ex) {
-                LogFile.addLog("" , ex.getStackTrace());
+                log.addLog("" , ex.getStackTrace());
                 Thread.currentThread().interrupt();
                 closeAllConnection();
             }
@@ -485,7 +486,7 @@ public class MatchHandler implements Runnable
             cards = ParserXML.readWindowsName(FileLocator.getWindowListPath());
         }
         catch (ParserXMLException ex){
-            LogFile.addLog("Impossible to read XML Window",ex.getStackTrace());
+            log.addLog("Impossible to read XML Window",ex.getStackTrace());
             return false;
         }
 
@@ -530,7 +531,7 @@ public class MatchHandler implements Runnable
             cards = ParserXML.readObjectiveNames(FileLocator.getPrivateObjectivesListPath());
         }
         catch (ParserXMLException ex){
-            LogFile.addLog("Impossible to read XML Private Obj",ex.getStackTrace());
+            log.addLog("Impossible to read XML Private Obj",ex.getStackTrace());
             return false;
         }
 
@@ -546,7 +547,7 @@ public class MatchHandler implements Runnable
             }
         }
         catch (Exception ex) {
-            LogFile.addLog("Impossible to set XML private Obj",ex.getStackTrace());
+            log.addLog("Impossible to set XML private Obj",ex.getStackTrace());
             return false;
         }
         return true;
@@ -565,7 +566,7 @@ public class MatchHandler implements Runnable
             cards = ParserXML.readObjectiveNames(FileLocator.getPublicObjectivesListPath());
         }
         catch (ParserXMLException ex){
-            LogFile.addLog("Impossible to read XML publicObj",ex.getStackTrace());
+            log.addLog("Impossible to read XML publicObj",ex.getStackTrace());
             return false;
         }
 
@@ -592,7 +593,7 @@ public class MatchHandler implements Runnable
                 player.get(i).setPublicObjCard(pubObjs);
         }
         catch (Exception ex) {
-            LogFile.addLog("Impossible to set XML publicObj",ex.getStackTrace());
+            log.addLog("Impossible to set XML publicObj",ex.getStackTrace());
             return false;
         }
         return true;
@@ -613,7 +614,7 @@ public class MatchHandler implements Runnable
             toolNames = toolNamesTmp.toArray(new String[toolNamesTmp.size()]);
         }
         catch (ParserXMLException ex){
-            LogFile.addLog("Impossible to read XML tools",ex.getStackTrace());
+            log.addLog("Impossible to read XML tools",ex.getStackTrace());
             return false;
         }
 
@@ -645,7 +646,7 @@ public class MatchHandler implements Runnable
                 player.get(i).setToolCards(tools);
         }
         catch (Exception ex) {
-            LogFile.addLog("Impossible to set XML tools",ex.getStackTrace());
+            log.addLog("Impossible to set XML tools",ex.getStackTrace());
             return false;
         }
         return true;
@@ -654,6 +655,7 @@ public class MatchHandler implements Runnable
 
     //<editor-fold desc="Utilities">
 
+    public int getId (){return id;}
     /**
      * Update all client's graphic
      */
@@ -680,7 +682,7 @@ public class MatchHandler implements Runnable
                         //Update others users with user's window,dadiera,roundttrace and markers
                         player.get(i).updateOpponents(users,pairs);
                     } catch (ClientOutOfReachException e) {
-                        LogFile.addLog("Client  temporarily unreachable");
+                        log.addLog("Client  temporarily unreachable");
                     }
 
                 }
@@ -708,7 +710,7 @@ public class MatchHandler implements Runnable
         for (int i = 0; i < player.size() ; i++)
             player.get(i).closeConnection("Fatal Error");
 
-        LogFile.addLog("All connections are forced to stop cause fatal error");
+        log.addLog("All connections are forced to stop cause fatal error");
     }
 
     /**
@@ -726,13 +728,13 @@ public class MatchHandler implements Runnable
                 {
                     nDisc ++ ;
                     //player.remove(i);
-                    LogFile.addLog("Client does not respond to ping\r\n\t Client disconnected");
+                    log.addLog("Client does not respond to ping\r\n\t Client disconnected");
                 }
             }
         }
         catch (Exception e)
         {
-            LogFile.addLog("" , e.getStackTrace());
+            log.addLog("" , e.getStackTrace());
             closeAllConnection();
         }
         return nDisc;

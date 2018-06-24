@@ -40,6 +40,7 @@ public class ServerModelAdapter
     private boolean turnDone = false;
     private ServerPlayer serverPlayer;
     private TimerTurn timer;
+    private LogFile log;
 
     public ServerModelAdapter (Dadiera d, RoundTrace trace, TokenTurn tok)
     {
@@ -50,6 +51,7 @@ public class ServerModelAdapter
         tools = new Tools[numTools];
         toolInUse = null;
         token = tok;
+
     }
 
     /**
@@ -63,7 +65,7 @@ public class ServerModelAdapter
         //Checks if any tool permission was requested
         if (toolInUse == null)
         {
-            LogFile.addLog("User: " + user + "\t Tool not permission asked");
+            log.addLog("User: " + user + "\t Tool not permission asked");
             return "Uso tool non eseguito: non hai fatto richiesta per alcun tool";
         }
 
@@ -77,7 +79,7 @@ public class ServerModelAdapter
         try {
             toolInUse.use();
         } catch (IllegalDiceException | IllegalStepException e) {
-            LogFile.addLog("User: " + user + "\t Tool Action failed: " + e.getMessage());
+            log.addLog("User: " + user + "\t Tool Action failed: " + e.getMessage());
             return "Uso tool non eseguito: " + e.getMessage();
         }
         //If performed decrees client's own marker
@@ -100,12 +102,12 @@ public class ServerModelAdapter
      */
     public String toolRequest (int nrTool)
     {
-        LogFile.addLog("User: " + user + "\t Tool request nr." + nrTool);
+        log.addLog("User: " + user + "\t Tool request nr." + nrTool);
         //Check if there is a tool already in use
         if (toolInUse != null)
             if (!toolInUse.isToolFinished())
             {
-                LogFile.addLog("User: " + user + "\t Tool permission rejected: Another Tool in use");
+                log.addLog("User: " + user + "\t Tool permission rejected: Another Tool in use");
                 return "Richiesta utilizzo tool respinta: tool precedente ancora in funzione";
             }
 
@@ -115,11 +117,11 @@ public class ServerModelAdapter
                 //Check if client has enough marker
                 if (tools[i].getPrice() <= marker) {
                     toolInUse = tools[i];
-                    LogFile.addLog("User: " + user + "\t Tool permission accepted");
+                    log.addLog("User: " + user + "\t Tool permission accepted");
                     Tools.setAllToNull();
                     return "Richiesta utilizzo tool accolta";
                 }
-        LogFile.addLog("User: " + user + "\t Tool permission rejected: Not enough marker");
+        log.addLog("User: " + user + "\t Tool permission rejected: Not enough marker");
         return "Richiesta utilizzo tool respinta: segnalini insufficienti";
     }
 
@@ -131,24 +133,24 @@ public class ServerModelAdapter
      */
     public void addDiceToBoard (int i, int j, Dice d) throws ModelException
     {
-        LogFile.addLog("User: " + user + "\t Placement Die move: row:" + i + " col:" + j + " " + d.toString());
+        log.addLog("User: " + user + "\t Placement Die move: row:" + i + " col:" + j + " " + d.toString());
         //Check if there is a tool in use that force client to place a specific die
         if (toolInUse != null)
             if (!toolInUse.canPlaceDie(d))
             {
-                LogFile.addLog("User: " + user + "\t Impossible to place die, wrong die selected");
+                log.addLog("User: " + user + "\t Impossible to place die, wrong die selected");
                 throw new ModelException("Impossibile piazzare il dado: devi piazzare il dado appena modificato");
             }
 
         //Try to put die on board
         try {
             board.addDice(i,j,d,0);
-            LogFile.addLog("User: " + user + "\t Placement die correct ");
+            log.addLog("User: " + user + "\t Placement die correct ");
             if (toolInUse != null)
                 toolInUse.setToolFinished(true); //Always set tool in use on finish mode
         }
         catch (IllegalDiceException ex) {
-            LogFile.addLog("User: " + user + "\t Impossible to place die: " + ex.getMessage());
+            log.addLog("User: " + user + "\t Impossible to place die: " + ex.getMessage());
             throw new ModelException("Impossibile piazzare il dado: " + ex.getMessage());
         }
         canMove = false;
@@ -295,6 +297,7 @@ public class ServerModelAdapter
 
     public void setServerPlayer(ServerPlayer serverPlayer) {
         this.serverPlayer = serverPlayer;
+        log = this.serverPlayer.log;
     }
 
     public void setTimer(int n) {

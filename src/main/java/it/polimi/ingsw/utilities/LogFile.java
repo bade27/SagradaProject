@@ -8,11 +8,12 @@ import java.util.Date;
 
 public class LogFile
 {
-    private static final String name = "ServerLog.log";
+    private String name = "logFile/";
 
-    public static void createLogFile ()
+    public void createLogFile (String n)
     {
         FileWriter f = null;
+        name = name + n + ".log";
         try {
             f = new FileWriter(name);
         }
@@ -31,7 +32,7 @@ public class LogFile
     }
 
 
-    public static synchronized void addLog (String s)
+    public synchronized void addLog (String s)
     {
         FileWriter f = null;
         try {
@@ -55,7 +56,7 @@ public class LogFile
         }
     }
 
-    public static synchronized void addLog (String s, StackTraceElement[] st)
+    public synchronized void addLog (String s, StackTraceElement[] st)
     {
         FileWriter f = null;
         try {

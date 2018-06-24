@@ -52,23 +52,26 @@ public class ServerPlayer implements Runnable {
     //turn phase
     private boolean turnInterrupted = false;
 
+    public LogFile log;
+
 
     public ServerPlayer(TokenTurn tok, ServerModelAdapter adp, UsersEntry ps, ClientRemoteInterface cli, MatchHandler match)
     {
         adapter = adp;
+        mymatch = match;
+        log = mymatch.log;
         adapter.setServerPlayer(this);
         token = tok;
         possibleUsers = ps;
         communicator = null;
         alive = true;
         communicator = cli;
-        mymatch = match;
         inGame = true;
         initialized = false;
         try {
             parametersSetup();
         } catch (ParserXMLException e) {
-            LogFile.addLog("Impossible to read settings parameters", e.getStackTrace());
+            log.addLog("Impossible to read settings parameters", e.getStackTrace());
         }
     }
 
@@ -89,7 +92,7 @@ public class ServerPlayer implements Runnable {
                     initializeWindow();
                     initializeCards();
                 } catch (ClientOutOfReachException | ModelException ex) {
-                    LogFile.addLog("(User: " + user + ") cannot complete setup" + "\n"
+                    log.addLog("(User: " + user + ") cannot complete setup" + "\n"
                             + ex.getStackTrace().toString());
                     //Notify token that client is dead
                     token.deletePlayer(user);
@@ -116,7 +119,7 @@ public class ServerPlayer implements Runnable {
                 }
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
-                LogFile.addLog("Fatal error on thread " + user, ex.getStackTrace());
+                log.addLog("Fatal error on thread " + user, ex.getStackTrace());
                 token.notifyFatalError();
                 Thread.currentThread().interrupt();
             }
@@ -134,13 +137,12 @@ public class ServerPlayer implements Runnable {
                     adapter.setTurnDone(false);
 
                     if (token.isEndGame()) {
-                        LogFile.addLog("(User:" + user + ")" + " End communication with client and close connection");
+                        log.addLog("(User:" + user + ")" + " End communication with client and close connection");
                         token.getSynchronator().notifyAll();
                         return;
                     }
 
-                    LogFile.addLog("Turn of:" + user);
-                    System.out.println("\n>>>Turn of:" + user);
+                    log.addLog("Turn of:" + user);
 
                     try {
                         adapter.setCanMove(true);
@@ -165,7 +167,7 @@ public class ServerPlayer implements Runnable {
                     }
 
                     if (turnInterrupted) {
-                        LogFile.addLog("(User: " + user + ")" + "turn interrupted");
+                        log.addLog("(User: " + user + ")" + "turn interrupted");
                         token.deletePlayer(user);
                         inGame = false;
                         token.getSynchronator().notifyAll();
@@ -176,7 +178,7 @@ public class ServerPlayer implements Runnable {
                     token.getSynchronator().wait();
                 } catch (Exception ex) {
                     System.out.println(ex.getMessage());
-                    LogFile.addLog("Fatal error on thread " + user, ex.getStackTrace());
+                    log.addLog("Fatal error on thread " + user, ex.getStackTrace());
                     token.notifyFatalError();
                     Thread.currentThread().interrupt();
                 }
@@ -198,15 +200,15 @@ public class ServerPlayer implements Runnable {
                 //u = stopTask(() -> communicator.login(), INIT_TIMEOUT, executor);
                 u = communicator.login();
                 if (u == null) {
-                    LogFile.addLog("Failed to add user");
+                    log.addLog("Failed to add user");
                     throw new ClientOutOfReachException();
                 }
             } while (!possibleUsers.loginCheck(u));
             user = u;
             adapter.setUser(u);
-            LogFile.addLog("User: " + user + " Added");
+            log.addLog("User: " + user + " Added");
         } catch (Exception e) {
-            LogFile.addLog("Failed to add user");
+            log.addLog("Failed to add user");
             throw new ClientOutOfReachException();
         }
     }
@@ -223,15 +225,15 @@ public class ServerPlayer implements Runnable {
             //s1 = stopTask(() -> communicator.chooseWindow(windowCard1, windowCard2), INIT_TIMEOUT, executor);//To change with ACTION when implement user choice
             s1 = communicator.chooseWindow(windowCard1, windowCard2);
         } catch (RemoteException e) {
-            LogFile.addLog("(User:" + user + ")" + e.getMessage(), e.getStackTrace());
+            log.addLog("(User:" + user + ")" + e.getMessage(), e.getStackTrace());
             throw new ClientOutOfReachException();
         }
 
         try {
             adapter.initializeWindow(s1);
-            LogFile.addLog("User: " + user + " Window initialized ");
+            log.addLog("User: " + user + " Window initialized ");
         } catch (ModelException ex) {
-            LogFile.addLog("Impossible to set Window from XML", ex.getStackTrace());
+            log.addLog("Impossible to set Window from XML", ex.getStackTrace());
             throw new ModelException();
         }
     }
@@ -248,11 +250,11 @@ public class ServerPlayer implements Runnable {
             //performed = stopTask(() -> communicator.sendCards(publicObjNames,toolnames,new String[] {privateObjCard}), INIT_TIMEOUT, executor);
             performed = communicator.sendCards(publicObjNames, toolnames, new String[]{privateObjCard});
             if (!performed) {
-                LogFile.addLog("(User:" + user + ") Failed to initialize cards");
+                log.addLog("(User:" + user + ") Failed to initialize cards");
                 throw new ClientOutOfReachException();
             }
         } catch (Exception e) {
-            LogFile.addLog("(User:" + user + ")" + e.getMessage(), e.getStackTrace());
+            log.addLog("(User:" + user + ")" + e.getMessage(), e.getStackTrace());
             throw new ClientOutOfReachException();
         }
 
@@ -260,10 +262,10 @@ public class ServerPlayer implements Runnable {
             adapter.initializePrivateObjectives(privateObjCard);
             adapter.setPublicObjectives(publicObjectives);
             adapter.setToolCards(toolCards);
-            LogFile.addLog("User: " + user + " Tools and Objectives initialized ");
+            log.addLog("User: " + user + " Tools and Objectives initialized ");
 
         } catch (ModelException e) {
-            LogFile.addLog("", e.getStackTrace());
+            log.addLog("", e.getStackTrace());
             throw new ModelException();
         }
 
@@ -275,7 +277,7 @@ public class ServerPlayer implements Runnable {
         try {
             communicator.sendResults(users, points);
         } catch (Exception e) {
-            LogFile.addLog("(User:" + user + ")" + " Impossible to communicate to user results of match");
+            log.addLog("(User:" + user + ")" + " Impossible to communicate to user results of match");
         }
     }
 
@@ -297,7 +299,7 @@ public class ServerPlayer implements Runnable {
             if (u == null)
                 throw new ClientOutOfReachException();
         } catch (Exception e) {
-            LogFile.addLog("(" + user + ") Move timeout expired");
+            log.addLog("(" + user + ") Move timeout expired");
             throw new ClientOutOfReachException();
         }
     }
@@ -312,7 +314,7 @@ public class ServerPlayer implements Runnable {
             if (s == null)
                 throw new ClientOutOfReachException();
         } catch (Exception e) {
-            LogFile.addLog("(" + user + ") Dadiera update timeout expired");
+            log.addLog("(" + user + ") Dadiera update timeout expired");
             throw new ClientOutOfReachException();
         }
     }
@@ -327,7 +329,7 @@ public class ServerPlayer implements Runnable {
             if (s == null)
                 throw new ClientOutOfReachException();
         } catch (Exception e) {
-            LogFile.addLog("(" + user + ")Window update timeout expired");
+            log.addLog("(" + user + ")Window update timeout expired");
             throw new ClientOutOfReachException();
         }
     }
@@ -339,7 +341,7 @@ public class ServerPlayer implements Runnable {
             if (s == null)
                 throw new ClientOutOfReachException();
         } catch (Exception e) {
-            LogFile.addLog("(" + user + ") Token update timeout expired");
+            log.addLog("(" + user + ") Token update timeout expired");
             throw new ClientOutOfReachException();
         }
     }
@@ -351,7 +353,7 @@ public class ServerPlayer implements Runnable {
             if (s == null)
                 throw new ClientOutOfReachException();
         } catch (Exception e) {
-            LogFile.addLog("(" + user + ") Round Trace update timeout expired");
+            log.addLog("(" + user + ") Round Trace update timeout expired");
             throw new ClientOutOfReachException();
         }
 
@@ -371,7 +373,7 @@ public class ServerPlayer implements Runnable {
             String r = communicator.updateOpponents(user, grids);
             //System.out.println(r);
         } catch (Exception e) {
-            LogFile.addLog("", e.getStackTrace());
+            log.addLog("", e.getStackTrace());
             throw new ClientOutOfReachException();
         }
     }
@@ -394,9 +396,9 @@ public class ServerPlayer implements Runnable {
             //performed = stopTask(() -> communicator.sendMessage(s), PING_TIMEOUT, executor);
             performed = communicator.sendMessage(s);
             if (!performed)
-                LogFile.addLog("(" + user + ")end message to client failed");
+                log.addLog("(" + user + ")end message to client failed");
         } catch (Exception ex) {
-            LogFile.addLog("Send message to client failed", ex.getStackTrace());
+            log.addLog("Send message to client failed", ex.getStackTrace());
         }
     }
 
@@ -406,9 +408,9 @@ public class ServerPlayer implements Runnable {
             //performed = stopTask(() -> communicator.closeCommunication(s), PING_TIMEOUT, executor);
             performed = communicator.closeCommunication(s);
             if (!performed)
-                LogFile.addLog("Impossible to communicate to client (" + user + ") cause closed connection");
+                log.addLog("Impossible to communicate to client (" + user + ") cause closed connection");
         } catch (RemoteException | ClientOutOfReachException e) {
-            LogFile.addLog("Impossible to communicate to client (" + user + ") cause closed connection");
+            log.addLog("Impossible to communicate to client (" + user + ") cause closed connection");
         }
 
     }
@@ -421,7 +423,7 @@ public class ServerPlayer implements Runnable {
             updateWindow();
             updateTokens();
         } catch (Exception e) {
-            LogFile.addLog("(" + user + ") Impossible to communicate to client");
+            log.addLog("(" + user + ") Impossible to communicate to client");
             exit = false;
         }
         return exit;
@@ -531,9 +533,9 @@ public class ServerPlayer implements Runnable {
 
             user = u;
             adapter.setUser(u);
-            LogFile.addLog("User: " + user + " Added");
+            log.addLog("User: " + user + " Added");
         } catch (Exception e) {
-            LogFile.addLog("Failed to add user");
+            log.addLog("Failed to add user");
             throw new ClientOutOfReachException();
         }
         System.out.println("new login ok");
@@ -564,7 +566,8 @@ public class ServerPlayer implements Runnable {
             new Thread(this).start();
             token.addPlayer(user);
         }
-        System.out.println("user " + user + " riconnesso");
+        log.addLog("User " + user + " back in match");
+        //System.out.println("user " + user + " riconnesso");
     }
 
     public ServerModelAdapter getAdapter() {
