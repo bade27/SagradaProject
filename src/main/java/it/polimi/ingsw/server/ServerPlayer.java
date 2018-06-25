@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.concurrent.*;
 
 public class ServerPlayer implements Runnable {
     //game parameters
@@ -51,6 +52,8 @@ public class ServerPlayer implements Runnable {
 
     //turn phase
     private boolean turnInterrupted = false;
+
+    private ExecutorService executor = Executors.newCachedThreadPool();
 
     public LogFile log;
 
@@ -224,11 +227,20 @@ public class ServerPlayer implements Runnable {
      */
     private void initializeWindow() throws ClientOutOfReachException, ModelException {
         String s1;
-        try {
-            //s1 = stopTask(() -> communicator.chooseWindow(windowCard1, windowCard2), INIT_TIMEOUT, executor);//To change with ACTION when implement user choice
-            s1 = communicator.chooseWindow(windowCard1, windowCard2);
-        } catch (RemoteException e) {
-            log.addLog("(User:" + user + ")" + e.getMessage(), e.getStackTrace());
+            s1 = stopTask(() -> communicator.chooseWindow(windowCard1, windowCard2), 20, executor);
+            //s1 = communicator.chooseWindow(windowCard1, windowCard2);
+        if(s1 == null) {
+            s1 = windowCard1[0];
+            initialized = true;
+            log.addLog("(User:" + user + ") unable to choose the window.\n" +
+                    " The game chooses for him this window: " + s1);
+            try {
+                adapter.initializeWindow(s1);
+                log.addLog("User: " + user + " Window initialized ");
+            } catch (ModelException ex) {
+                log.addLog("Impossible to set Window from XML", ex.getStackTrace());
+                throw new ModelException();
+            }
             throw new ClientOutOfReachException();
         }
 
@@ -576,4 +588,24 @@ public class ServerPlayer implements Runnable {
         return adapter;
     }
     //</editor-fold>
+
+
+    private <T> T stopTask(Callable<T> task, int executionTime, ExecutorService executor) {
+        Object o = null;
+        Future future = executor.submit(task);
+        try {
+            o = future.get(executionTime, TimeUnit.SECONDS);
+            } catch (TimeoutException te) {
+            //System.out.println(te.getMessage());
+            System.out.println("too late to reply");
+            } catch (InterruptedException ie) {
+            //System.out.println(ie.getMessage());
+            Thread.currentThread().interrupt();
+            } catch (ExecutionException ee) {
+            //System.out.println(ee.getMessage());
+        } finally {
+            future.cancel(true);
+        }
+        return (T)o;
+    }
 }

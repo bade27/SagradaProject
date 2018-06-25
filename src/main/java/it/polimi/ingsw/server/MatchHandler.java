@@ -390,54 +390,6 @@ public class MatchHandler implements Runnable
     }
     //</editor-fold>
 
-    //<editor-fold desc="Reconnector object">
-
-    /**
-     * This object handles the reconnection procedure
-     */
-    private class Reconnector implements Runnable {
-        ServerPlayer pl;
-
-        public Reconnector(ServerPlayer pl) {
-            this.pl = pl;
-        }
-
-        public void run() {
-            synchronized (reconnLock) {
-                //Login is performed
-                try {
-                    pl.justLogin();
-                } catch (ClientOutOfReachException e) {
-                    log.addLog("(User : " + pl.getUser() + " ) unable to perform reconnection login\n"
-                            + e.getStackTrace().toString());
-                    return;
-                }
-                ServerPlayer newSP = null;
-                //search for the server player corresponding to the client that wants to reconnect
-                for (int i = 0; i < player.size(); i++)
-                    if (!player.get(i).isInGame() && player.get(i).getUser().equals(pl.getUser()))
-                        newSP = player.get(i);
-                if (newSP != null) {
-                    //set the new communicator
-                    newSP.setCommunicator(pl.getCommunicator());
-                    try {
-                        //set the old adapter on the old communicator
-                        newSP.getCommunicator().setAdapter(newSP.getAdapter());
-                    } catch (RemoteException e) {
-                        log.addLog("Impossible to set the adapter on the new Communicator\n"
-                                + e.getStackTrace().toString());
-                        return;
-                    }
-                    newSP.setInGame(true);
-                    player.remove(pl);
-                    decDisconnCounter();
-                    newSP.reconnected();
-                }
-            }
-        }
-    }
-    //</editor-fold>
-
     //<editor-fold desc="nConn management">
     public int getnConn() {
         synchronized (lockOnnConn) {
@@ -697,7 +649,8 @@ public class MatchHandler implements Runnable
                     ArrayList<Pair[][]> pairs = new ArrayList<>();
                     for (int j = 0; j < player.size(); j++)
                     {
-                        if (!player.get(j).getUser().equals(player.get(i).getUser()))
+                        if (!player.get(j).getUser().equals(player.get(i).getUser())
+                                && player.get(j).isInGame())
                         {
                             users.add(player.get(j).getUser());
                             pairs.add( player.get(j).getGrid());
