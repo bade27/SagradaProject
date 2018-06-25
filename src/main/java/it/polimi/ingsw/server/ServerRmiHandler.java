@@ -253,4 +253,10 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
         this.match = match;
     }
     //</editor-fold>
+
+
+    @Override
+    public String getName() throws RemoteException {
+        return client.getName();
+    }
 }

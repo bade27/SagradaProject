@@ -541,7 +541,6 @@ public class ServerPlayer implements Runnable {
             log.addLog("Failed to add user");
             throw new ClientOutOfReachException();
         }
-        System.out.println("new login ok");
     }
 
 
