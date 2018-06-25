@@ -37,4 +37,5 @@ public interface ClientRemoteInterface extends Remote
     public void reconnect() throws RemoteException;
     public void setAdapter(ServerModelAdapter sma) throws RemoteException;
     public void setMatchHandler(MatchHandler match) throws RemoteException;
+    public String getName() throws RemoteException;
 }

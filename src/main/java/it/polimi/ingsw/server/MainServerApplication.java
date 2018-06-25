@@ -93,7 +93,7 @@ public class MainServerApplication
         matches.remove(m);
     }
 
-    private void dynamicMathChoosing (ClientRemoteInterface cli)
+    private synchronized void dynamicMatchChoosing(ClientRemoteInterface cli)
     {
         for (int i = 0 ; i < matches.size() ; i++)
             if (matches.get(i).clientRegistration(cli))
@@ -109,8 +109,7 @@ public class MainServerApplication
         }catch (InterruptedException ex){
             ex.printStackTrace();
         }
-
-        dynamicMathChoosing(cli);
+        matches.get(matches.size() - 1).clientRegistration(cli);
     }
 
     /**
@@ -138,7 +137,12 @@ public class MainServerApplication
             mainLog.addLog("RMI Bind failed" , e.getStackTrace());
         }
 
-        dynamicMathChoosing(cli);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                dynamicMatchChoosing(cli);
+            }
+        }).start();
     }
 
     /**
@@ -197,7 +201,7 @@ public class MainServerApplication
                     if (socketCon.isConnected()) {
                         mainLog.addLog("Client accepted with Socket connection");
                     }
-                    dynamicMathChoosing(socketCon);
+                    dynamicMatchChoosing(socketCon);
                 }
                 catch (ClientOutOfReachException e) {
                     mainLog.addLog(e.getMessage() , e.getStackTrace());

@@ -11,18 +11,10 @@ import it.polimi.ingsw.server.MatchHandler;
 import it.polimi.ingsw.server.ServerModelAdapter;
 import it.polimi.ingsw.utilities.FileLocator;
 import it.polimi.ingsw.utilities.ParserXML;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.IOException;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
-
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
@@ -54,6 +46,8 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     private boolean connected;
     private boolean inTurn;
 
+    private boolean cannotLogIn = false;
+
     //<editor-fold desc="Initialization Phase">
 
     public ClientPlayer (int t, UI g, String serverIP) throws RemoteException
@@ -63,6 +57,11 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             HOSTNAME = serverIP;
         typeOfCOnnection = t;
         this.graph = g;
+    }
+    //</editor-fold>
+
+
+    public void connect() {
         try
         {
             //since the parameters are static, the initialization is performed once
@@ -76,7 +75,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             if (typeOfCOnnection == 0)
                 server = new ClientSocketHandler(this, HOSTNAME, SOCKET_PORT);
 
-            //if connection is RMI, creates RMI lookup of stub
+                //if connection is RMI, creates RMI lookup of stub
             else if (typeOfCOnnection == 1)
             {
                 String remote = "rmi://" + HOSTNAME + ":" + RMI_REGISTRY_PORT;
@@ -128,7 +127,6 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         connected = true;
         inTurn = false;
     }
-    //</editor-fold>
 
     //<editor-fold desc="Setup Phase">
     /**
@@ -137,14 +135,14 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
      */
     public String login() throws ClientOutOfReachException
     {
-        if (clientName == null)
+        if (cannotLogIn)
         {
             graph.login("nome già esistente");
 
             try {
                 synchronized (synclogin)
                 {
-                    while (clientName == null)
+                    while (cannotLogIn)
                         synclogin.wait();
                 }
             } catch (InterruptedException e) {
@@ -153,7 +151,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         }
 
         String ret = clientName;
-        clientName = null;
+        cannotLogIn = true;
         return ret;
     }
 
@@ -163,6 +161,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
      */
     public void setClientName(String clientName)
     {
+        this.cannotLogIn = false;
         this.clientName = clientName;
         synchronized (synclogin) {
             synclogin.notifyAll();
@@ -491,4 +490,10 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         }
     }
     //</editor-fold>
+
+
+    @Override
+    public String getName() throws RemoteException {
+        return clientName;
+    }
 }

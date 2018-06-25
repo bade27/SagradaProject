@@ -2,13 +2,15 @@ package it.polimi.ingsw.client;
 
 
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
-import it.polimi.ingsw.remoteInterface.*;
+import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
+import it.polimi.ingsw.remoteInterface.Coordinates;
+import it.polimi.ingsw.remoteInterface.Pair;
+import it.polimi.ingsw.remoteInterface.ServerRemoteInterface;
 import it.polimi.ingsw.utilities.JSONFacilities;
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.io.*;
-import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -131,6 +133,9 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
                         continue;
                     case "reconnect":
                         player.reconnect();
+                        break;
+                    case "get_name":
+                        task = executor.submit(() -> sendName());
                         break;
                     default:
                         synchronized (syncronator) {
@@ -580,5 +585,17 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
     @Override
     public String serverStatus() {
         return null;
+    }
+
+    private void sendName() {
+        StringBuilder s = null;
+        try {
+            s = new StringBuilder(player.getName());
+        } catch (RemoteException e) {
+            return;
+        }
+        s.append("\n");
+        outSocket.write(s.toString());
+        outSocket.flush();
     }
 }

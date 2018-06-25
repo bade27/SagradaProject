@@ -324,20 +324,17 @@ public class MatchHandler implements Runnable
             log.addLog("Client Rejected cause too many client connected");
             return false;
         }
-
-        //Initialization of ServerPlayer for each player
-        ServerModelAdapter adp = new ServerModelAdapter(dices, roundTrace, token);
-        try {
-            cli.setAdapter(adp);
-            cli.setMatchHandler(this);
-        }catch (RemoteException e){
-            return false;
-        }
-        ServerPlayer pl = new ServerPlayer(token,adp,userList,cli, this);
-
-
-        //During a reconnection these operation mustn't to be performed
         if(getDisconnCounter() == 0) {
+            //Initialization of ServerPlayer for each player
+            ServerModelAdapter adp = new ServerModelAdapter(dices, roundTrace, token);
+            try {
+                cli.setAdapter(adp);
+                cli.setMatchHandler(this);
+            } catch (RemoteException e) {
+                return false;
+            }
+            ServerPlayer pl = new ServerPlayer(token, adp, userList, cli, this);
+
             player.add(pl);
             addTonConn(1);
             int n = checkClientAlive();
@@ -359,8 +356,33 @@ public class MatchHandler implements Runnable
             }
         } else {
             //If is some clients want to reconnect this thread handles the procedure
-            reconnection = new Thread(new Reconnector(pl));
-            reconnection.start();
+            String user = "";
+            try {
+                user = cli.getName();
+            } catch (RemoteException e) {
+                //e.printStackTrace();
+                return false;
+            }
+            ServerPlayer newSP = null;
+            //search for the server player corresponding to the client that wants to reconnect
+            for (int i = 0; i < player.size(); i++)
+                if (!player.get(i).isInGame() && player.get(i).getUser().equals(user))
+                    newSP = player.get(i);
+            if (newSP != null) {
+                //set the new communicator
+                newSP.setCommunicator(cli);
+                try {
+                    //set the old adapter on the old communicator
+                    newSP.getCommunicator().setAdapter(newSP.getAdapter());
+                } catch (RemoteException e) {
+                    log.addLog("Impossible to set the adapter on the new Communicator\n"
+                            + e.getStackTrace().toString());
+                    return false;
+                }
+                newSP.setInGame(true);
+                decDisconnCounter();
+                newSP.reconnected();
+            } else return false;
         }
 
         return true;

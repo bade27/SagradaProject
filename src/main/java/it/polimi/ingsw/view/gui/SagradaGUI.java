@@ -4,13 +4,7 @@ import it.polimi.ingsw.UI;
 import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.client.ToolAction;
 import it.polimi.ingsw.remoteInterface.Pair;
-import it.polimi.ingsw.view.gui.DadieraGUI;
-import it.polimi.ingsw.view.gui.DimWindows;
 import javafx.application.Application;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.VBox;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -21,15 +15,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+
 import java.rmi.RemoteException;
 import java.util.*;
-import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -56,36 +51,6 @@ public class SagradaGUI extends Application implements UI {
         toolPhase = false;
         //initailizeComunication();
     }
-
-
-    private void initailizeComunication ()
-    {
-        try {
-            //1:RMI     0:Socket
-            Scanner cli = new Scanner(System.in);
-            String serverIP;
-            do {
-                System.out.println("Insert server address");
-                serverIP = cli.nextLine();
-            } while (!isIPAddressValid(serverIP));
-            String typeOfConnection;
-            System.out.println("Select connection mode: 0=Socket ; 1=RMI");
-            do{
-                typeOfConnection = cli.nextLine();
-            }while (!typeOfConnection.equals("1") && !typeOfConnection.equals("0"));
-            clientPlayer = new ClientPlayer(Integer.parseInt(typeOfConnection),this, serverIP);
-        }
-        catch (RemoteException e){
-            Thread.currentThread().interrupt();
-        }
-        stage.setOnCloseRequest(e -> {
-            if (clientPlayer != null)
-                clientPlayer.disconnect();
-            Platform.exit();
-            System.exit(0);
-        });
-    }
-
 
     @Override
     public void start(Stage welcomeStage){
@@ -191,7 +156,7 @@ public class SagradaGUI extends Application implements UI {
                         if (clientPlayer == null)
                             clientPlayer = new ClientPlayer(typeOfConnection,sagradaGUI, p);
                         if (!clientPlayer.isConnected())
-                            clientPlayer = new ClientPlayer(typeOfConnection,sagradaGUI, p);
+                            clientPlayer.connect();
 
                         clientPlayer.setClientName(n);
                         t.setFill(Color.FORESTGREEN);

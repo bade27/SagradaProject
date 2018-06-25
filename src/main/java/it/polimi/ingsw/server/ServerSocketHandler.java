@@ -2,7 +2,6 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.exceptions.ClientOutOfReachException;
 import it.polimi.ingsw.exceptions.ModelException;
-import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.model.Dice;
 import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
 import it.polimi.ingsw.remoteInterface.Coordinates;
@@ -754,5 +753,18 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
 
     public void assertstuff() {
         assert !client.isClosed();
+    }
+
+    @Override
+    public String getName() throws RemoteException {
+        String name = "";
+        outSocket.write("get_name\n");
+        outSocket.flush();
+        try {
+            name = inSocket.readLine();
+        } catch (IOException e) {
+            return null;
+        }
+        return name;
     }
 }
