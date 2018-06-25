@@ -53,6 +53,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
     private boolean connected;
     private boolean inTurn;
+    private String username;
 
     //<editor-fold desc="Initialization Phase">
 
@@ -127,6 +128,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         System.out.println("Client connected");
         connected = true;
         inTurn = false;
+        username = "";
     }
     //</editor-fold>
 
@@ -153,6 +155,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         }
 
         String ret = clientName;
+        username = clientName;
         clientName = null;
         return ret;
     }
@@ -285,8 +288,10 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     }
 
     @Override
-    public String updateOpponents (String user, Pair[][] grids) {
-        graph.updateOpponents(grids, user);
+    public String updateOpponents (String user, Pair[][] grids)
+    {
+        if (!user.equals(username))
+            graph.updateOpponents(grids, user);
         return "ok";
     }
     //</editor-fold>
@@ -349,11 +354,9 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
     public synchronized void disconnect ()
     {
-        System.out.println("disconnectionz");
         if (inTurn)
         {
             try {
-                System.out.println("disconnectionz");
                 server.disconnection();
             } catch (RemoteException e) {
                 e.printStackTrace();

@@ -388,7 +388,7 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
     }
 
     @Override
-    public String updateOpponents(String user, Pair[][] grid) throws ClientOutOfReachException, RemoteException
+    public String updateOpponents(String user, Pair[][] grid/*, boolean active*/) throws ClientOutOfReachException, RemoteException
     {
         try
         {
