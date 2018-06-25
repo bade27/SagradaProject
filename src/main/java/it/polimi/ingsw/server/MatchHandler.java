@@ -359,6 +359,7 @@ public class MatchHandler implements Runnable
             String user = "";
             try {
                 user = cli.getName();
+                cli.setMatchHandler(this);
             } catch (RemoteException e) {
                 //e.printStackTrace();
                 return false;
