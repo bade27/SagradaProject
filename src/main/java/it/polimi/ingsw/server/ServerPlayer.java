@@ -11,14 +11,7 @@ import it.polimi.ingsw.utilities.FileLocator;
 import it.polimi.ingsw.utilities.LogFile;
 import it.polimi.ingsw.utilities.ParserXML;
 import it.polimi.ingsw.utilities.UsersEntry;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
-import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,6 +34,9 @@ public class ServerPlayer implements Runnable {
     private UsersEntry possibleUsers;
     private boolean inGame;
     private boolean initialized;
+    private ExecutorService executor = Executors.newCachedThreadPool();
+    private Future<?> task = null;
+    private Thread setupTimer;
 
     //passed parameters
     private String[] windowCard1, windowCard2;
@@ -51,25 +47,10 @@ public class ServerPlayer implements Runnable {
     private PublicObjective[] publicObjectives;
 
     //turn phase
+    private final Object interruptionLock = new Object();
     private boolean turnInterrupted = false;
 
-    private ExecutorService executor = Executors.newCachedThreadPool();
-    private Future<?> task = null;
-    private Thread setupTimer;
-
-    private class SetupTimer implements Runnable {
-        @Override
-        public void run() {
-            try {
-                TimeUnit.SECONDS.sleep(20);
-            } catch (InterruptedException e) {
-                return;
-            }
-            do {
-                task.cancel(true);
-            } while(!task.isCancelled());
-        }
-    }
+    private Object lockAdapter = new Object();
 
     public LogFile log;
 
@@ -106,7 +87,7 @@ public class ServerPlayer implements Runnable {
 
                 //Initialization of client
                 try {
-                    setupTimer = new Thread(new SetupTimer());
+                    setupTimer = new Thread(new SetUpTimer());
                     setupTimer.start();
                     login();
                     token.addPlayer(user);
@@ -150,6 +131,7 @@ public class ServerPlayer implements Runnable {
         //////GAME PHASE//////
         while (inGame)//Da cambiare con la condizione di fine partita
         {
+            turnInterrupted = false;
             synchronized (token.getSynchronator()) {
                 try {
                     //Wait his turn
@@ -170,6 +152,8 @@ public class ServerPlayer implements Runnable {
                         adapter.setCanMove(true);
                         clientTurn();
                     } catch (ClientOutOfReachException e) {
+                        //closeConnection("Timeout Expired");
+                        communicator = null;
                         log.addLog("(User: " + user + ")" + "player disconnected cause client unreachable");
                         token.deletePlayer(user);
                         possibleUsers.setUserGameStatus(user, false);
@@ -188,7 +172,9 @@ public class ServerPlayer implements Runnable {
                         adapter.wait();
                     }
 
-                    if (turnInterrupted) {
+                    if (isTurnInterrupted()) {
+                        //closeConnection("Timeout Expired");
+                        communicator = null;
                         log.addLog("(User: " + user + ")" + "player disconnected cause client late in response");
                         token.deletePlayer(user);
                         possibleUsers.setUserGameStatus(user, false);
@@ -214,29 +200,31 @@ public class ServerPlayer implements Runnable {
     //<editor-fold desc="Setup Phase">
 
     /**
+     * This is the timer for the connection phase
+     */
+    private class SetUpTimer implements Runnable {
+        @Override
+        public void run() {
+            try {
+                TimeUnit.SECONDS.sleep(SETUP_TIMEOUT);
+            } catch (InterruptedException e) {
+                return;
+            }
+
+            //if time expires ongoing task (login or window choice) must be cancelled
+            do {
+                task.cancel(true);
+            } while(!task.isCancelled());
+        }
+    }
+
+    /**
      * Initialize username through login phase
      *
      * @throws ClientOutOfReachException client is out of reach
      */
     private void login() throws ClientOutOfReachException {
         String u = "";
-        /*try {
-            do {
-                //u = stopTask(() -> communicator.login(), INIT_TIMEOUT, executor);
-                u = communicator.login();
-                if (u == null) {
-                    log.addLog("Failed to add user");
-                    throw new ClientOutOfReachException();
-                }
-            } while (!possibleUsers.loginCheck(u));
-            user = u;
-            adapter.setUser(u);
-            log.addLog("User: " + user + " Added");
-        } catch (Exception e) {
-            log.addLog("Failed to add user");
-            throw new ClientOutOfReachException();
-        }*/
-
         try {
             do {
                 task = executor.submit(() -> communicator.login());
@@ -277,6 +265,11 @@ public class ServerPlayer implements Runnable {
         windowCreation(s1);
     }
 
+    /**
+     * this class performs the actual creation of the window
+     * @param s1 window path
+     * @throws ModelException
+     */
     private void windowCreation(String s1) throws ModelException {
         try {
             adapter.initializeWindow(s1);
@@ -294,9 +287,10 @@ public class ServerPlayer implements Runnable {
     private void initializeCards() throws ClientOutOfReachException, ModelException {
         try {
             boolean performed;
-            String[] toolnames = Arrays.stream(toolCards).map(t -> t.getName()).toArray(String[]::new);
-            String[] publicObjNames = Arrays.stream(publicObjectives).map(obj -> obj.getPath()).toArray(String[]::new);
-            //performed = stopTask(() -> communicator.sendCards(publicObjNames,toolnames,new String[] {privateObjCard}), INIT_TIMEOUT, executor);
+            String[] toolnames = Arrays.stream(toolCards)
+                    .map(t -> t.getName()).toArray(String[]::new);
+            String[] publicObjNames = Arrays.stream(publicObjectives)
+                    .map(obj -> obj.getPath()).toArray(String[]::new);
             performed = communicator.sendCards(publicObjNames, toolnames, new String[]{privateObjCard});
             if (!performed) {
                 log.addLog("(User:" + user + ") Failed to initialize cards");
@@ -431,7 +425,6 @@ public class ServerPlayer implements Runnable {
     //<editor-fold desc="Utilities">
     public boolean isClientAlive() {
         try {
-            //performed = stopTask(() -> communicator.ping(), PING_TIMEOUT, executor);
             alive = communicator.ping();
         } catch (RemoteException e) {
             alive = false;
@@ -442,7 +435,6 @@ public class ServerPlayer implements Runnable {
     public void sendMessage(String s) {
         try {
             boolean performed;
-            //performed = stopTask(() -> communicator.sendMessage(s), PING_TIMEOUT, executor);
             performed = communicator.sendMessage(s);
             if (!performed)
                 log.addLog("(" + user + ")end message to client failed");
@@ -454,10 +446,10 @@ public class ServerPlayer implements Runnable {
     public void closeConnection(String s) {
         try {
             boolean performed;
-            //performed = stopTask(() -> communicator.closeCommunication(s), PING_TIMEOUT, executor);
             performed = communicator.closeCommunication(s);
             if (!performed)
                 log.addLog("Impossible to communicate to client (" + user + ") cause closed connection");
+            communicator = null;
         } catch (RemoteException | ClientOutOfReachException e) {
             log.addLog("Impossible to communicate to client (" + user + ") cause closed connection");
         }
@@ -548,11 +540,15 @@ public class ServerPlayer implements Runnable {
     }
 
     public void setTurnInterrupted() {
-        this.turnInterrupted = true;
+        synchronized (interruptionLock) {
+            this.turnInterrupted = true;
+        }
     }
 
     public boolean isTurnInterrupted() {
-        return turnInterrupted;
+        synchronized (interruptionLock) {
+            return turnInterrupted;
+        }
     }
 
     //</editor-fold>
@@ -569,26 +565,6 @@ public class ServerPlayer implements Runnable {
     public void setInGame(boolean inGame) {
         this.inGame = inGame;
     }
-
-    /**
-     * login, without username check
-     *
-     * @throws ClientOutOfReachException
-     */
-    public void justLogin() throws ClientOutOfReachException {
-        String u;
-        try {
-            u = communicator.login();
-
-            user = u;
-            adapter.setUser(u);
-            log.addLog("User: " + user + " Added");
-        } catch (Exception e) {
-            log.addLog("Failed to add user");
-            throw new ClientOutOfReachException();
-        }
-    }
-
 
     /**
      * Sends to the client all the information it needs, once it's reconnected
@@ -622,24 +598,4 @@ public class ServerPlayer implements Runnable {
         return adapter;
     }
     //</editor-fold>
-
-
-    private <T> T stopTask(Callable<T> task, int executionTime, ExecutorService executor) {
-        Object o = null;
-        Future future = executor.submit(task);
-        try {
-            o = future.get(executionTime, TimeUnit.SECONDS);
-            } catch (TimeoutException te) {
-            //System.out.println(te.getMessage());
-            System.out.println("too late to reply");
-            } catch (InterruptedException ie) {
-            //System.out.println(ie.getMessage());
-            Thread.currentThread().interrupt();
-            } catch (ExecutionException ee) {
-            //System.out.println(ee.getMessage());
-        } finally {
-            future.cancel(true);
-        }
-        return (T)o;
-    }
 }

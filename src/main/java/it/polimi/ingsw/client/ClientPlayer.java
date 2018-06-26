@@ -48,6 +48,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
     private boolean cannotLogIn = false;
 
+
     //<editor-fold desc="Initialization Phase">
 
     public ClientPlayer (int t, UI g, String serverIP) throws RemoteException
@@ -58,9 +59,11 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         typeOfCOnnection = t;
         this.graph = g;
     }
-    //</editor-fold>
 
 
+    /**
+     * establishes the connection with the server
+     */
     public void connect() {
         try
         {
@@ -127,6 +130,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         connected = true;
         inTurn = false;
     }
+    //</editor-fold>
 
     //<editor-fold desc="Setup Phase">
     /**
@@ -146,7 +150,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
                         synclogin.wait();
                 }
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                return null;
             }
         }
 
@@ -196,7 +200,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
                         syncmap.wait();
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                return null;
             }
         }
 

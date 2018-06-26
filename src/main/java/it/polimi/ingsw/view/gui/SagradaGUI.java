@@ -373,6 +373,7 @@ public class SagradaGUI extends Application implements UI {
 
         b.setOnAction(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
+                clientPlayer = null;
                 login("Ritorna in partita!");
             } });
         discRoot.setAlignment(Pos.CENTER);
