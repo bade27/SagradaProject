@@ -106,6 +106,16 @@ public class MatchHandler implements Runnable
         //Setup Phase
         waitInitialition();
 
+        //removes players that didn't log in
+        boolean last = false;
+        int  k = 0;
+        while(!last) {
+            if(player.get(k).getUser() == null)
+                player.remove(k);
+            last = k == player.size() ? true : false;
+            k++;
+        }
+
         //Game Phase
         startGame();
     }

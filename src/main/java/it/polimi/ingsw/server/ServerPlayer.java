@@ -54,6 +54,22 @@ public class ServerPlayer implements Runnable {
     private boolean turnInterrupted = false;
 
     private ExecutorService executor = Executors.newCachedThreadPool();
+    private Future<?> task = null;
+    private Thread setupTimer;
+
+    private class SetupTimer implements Runnable {
+        @Override
+        public void run() {
+            try {
+                TimeUnit.SECONDS.sleep(20);
+            } catch (InterruptedException e) {
+                return;
+            }
+            do {
+                task.cancel(true);
+            } while(!task.isCancelled());
+        }
+    }
 
     public LogFile log;
 
@@ -90,10 +106,13 @@ public class ServerPlayer implements Runnable {
 
                 //Initialization of client
                 try {
+                    setupTimer = new Thread(new SetupTimer());
+                    setupTimer.start();
                     login();
                     token.addPlayer(user);
                     initializeWindow();
                     initializeCards();
+                    setupTimer.interrupt();
                 } catch (ClientOutOfReachException | ModelException ex) {
                     log.addLog("(User: " + user + ") cannot complete setup" + "\n"
                             + ex.getStackTrace().toString());
@@ -200,8 +219,8 @@ public class ServerPlayer implements Runnable {
      * @throws ClientOutOfReachException client is out of reach
      */
     private void login() throws ClientOutOfReachException {
-        String u;
-        try {
+        String u = "";
+        /*try {
             do {
                 //u = stopTask(() -> communicator.login(), INIT_TIMEOUT, executor);
                 u = communicator.login();
@@ -216,7 +235,23 @@ public class ServerPlayer implements Runnable {
         } catch (Exception e) {
             log.addLog("Failed to add user");
             throw new ClientOutOfReachException();
+        }*/
+
+        try {
+            do {
+                task = executor.submit(() -> communicator.login());
+                u = task.get().toString();
+            } while (!possibleUsers.loginCheck(u));
+        } catch (InterruptedException|ExecutionException|CancellationException e) {
+            log.addLog("Failed to add user");
+            throw new ClientOutOfReachException();
+        } catch (ParserXMLException e) {
+            log.addLog("Unable to read list of players");
+            throw new ClientOutOfReachException();
         }
+        user = u;
+        adapter.setUser(u);
+        log.addLog("User: " + user + " Added");
     }
 
     /**
@@ -227,23 +262,22 @@ public class ServerPlayer implements Runnable {
      */
     private void initializeWindow() throws ClientOutOfReachException, ModelException {
         String s1;
-            s1 = stopTask(() -> communicator.chooseWindow(windowCard1, windowCard2), 20, executor);
-            //s1 = communicator.chooseWindow(windowCard1, windowCard2);
-        if(s1 == null) {
+        task = executor.submit(() -> communicator.chooseWindow(windowCard1, windowCard2));
+        try {
+            s1 = task.get().toString();
+        } catch (InterruptedException|ExecutionException|CancellationException e) {
             s1 = windowCard1[0];
             initialized = true;
             log.addLog("(User:" + user + ") unable to choose the window.\n" +
                     " The game chooses for him this window: " + s1);
-            try {
-                adapter.initializeWindow(s1);
-                log.addLog("User: " + user + " Window initialized ");
-            } catch (ModelException ex) {
-                log.addLog("Impossible to set Window from XML", ex.getStackTrace());
-                throw new ModelException();
-            }
+            windowCreation(s1);
             throw new ClientOutOfReachException();
         }
 
+        windowCreation(s1);
+    }
+
+    private void windowCreation(String s1) throws ModelException {
         try {
             adapter.initializeWindow(s1);
             log.addLog("User: " + user + " Window initialized ");

@@ -137,12 +137,7 @@ public class MainServerApplication
             mainLog.addLog("RMI Bind failed" , e.getStackTrace());
         }
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                dynamicMatchChoosing(cli);
-            }
-        }).start();
+        new Thread(() -> dynamicMatchChoosing(cli)).start();
     }
 
     /**
