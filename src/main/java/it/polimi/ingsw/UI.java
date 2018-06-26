@@ -24,7 +24,7 @@ public interface UI {
     public void login(String s);
     public void maps(String[] s1,String[]s2);
     public void updateTools(String[] toolNames);
-    public void updateOpponents(Pair[][] pair, String user);
+    public void updateOpponents(Pair[][] pair, String user,boolean b);
     public void updateTokens(int n);
     public void updatePublicTarget(String [] s);
     public void updatePrivateTarget(String [] s);

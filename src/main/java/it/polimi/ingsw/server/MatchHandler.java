@@ -746,15 +746,11 @@ public class MatchHandler implements Runnable
 
         for (int i = 0; i < player.size(); i++)
         {
-            //Update user's window,dadiera,round trace and markers
-            if (player.get(i).isInGame())
-            {
-                try {
-                    //Update others users with user's window,dadiera,roundttrace and markers
-                    player.get(i).updateOpponents(users,pairs);
-                } catch (ClientOutOfReachException e) {
-                    log.addLog("Client  temporarily unreachable");
-                }
+            try {
+                //Update others users with user's window,dadiera,roundttrace and markers
+                player.get(i).updateOpponents(users,pairs,actives);
+            } catch (ClientOutOfReachException e) {
+                log.addLog("Client  temporarily unreachable");
             }
         }
 

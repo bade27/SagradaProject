@@ -232,7 +232,7 @@ public class SagradaCLI extends Thread implements UI{
     }
 
     @Override
-    public void updateOpponents(Pair[][] pair, String user) {
+    public void updateOpponents(Pair[][] pair, String user,boolean b) {
         Color color=Color.ANSI_NOCOLOR;
         printbyFile("resources/titleCli/Avversari.txt",color);
         for(int i=0;i<((cellWidth*5)-user.length()+4)/2;i++)

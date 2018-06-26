@@ -288,6 +288,7 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
         {
             String user = JSONFacilities.decodeStringInMatrixPair(json);
             ArrayList<ArrayList<Pair>> list = JSONFacilities.decodeMatrixPairWithString(json);
+            Boolean active = JSONFacilities.decodeBooleanInMatrixPair(json);
             Pair[][] board = new Pair[list.size()][];
             for (int i = 0; i < list.size(); i++)
             {
@@ -295,7 +296,7 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
                 for (int j = 0; j < list.get(i).size(); j++)
                     board[i][j] = list.get(i).get(j);
             }
-            player.updateOpponents(user, board);
+            player.updateOpponents(user, board,active);
             outSocket.write("ok\n");
             outSocket.flush();
             return outSocket.checkError();

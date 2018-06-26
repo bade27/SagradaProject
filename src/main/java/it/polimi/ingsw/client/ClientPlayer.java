@@ -284,10 +284,13 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     }
 
     @Override
-    public String updateOpponents (String user, Pair[][] grids)
+    public String updateOpponents (String user, Pair[][] grids,boolean active)
     {
         if (!user.equals(clientName))
-            graph.updateOpponents(grids, user);
+        {
+            //System.out.println(active);
+            graph.updateOpponents(grids, user,active);
+        }
         return "ok";
     }
     //</editor-fold>

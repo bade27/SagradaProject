@@ -49,7 +49,7 @@ public class PlayersGUI extends GridPane {
     //        |________________|________________|________________|
 
 
-    public void updateGraphic(Pair[][] pair, String n) {
+    public void updateGraphic(Pair[][] pair, String n,boolean active) {
         Platform.runLater(() -> {
             GridPane onePlayer = new GridPane();
 
@@ -59,12 +59,17 @@ public class PlayersGUI extends GridPane {
                 if((name.get(index)).equals(n))
                     break;
             }
-            if (exist==false){ name.add(n); }
+            if (exist==false){
+                name.add(n);
+            }
 
             players.add(onePlayer, index, 0);
             onePlayer.setOpacity(255);
             //creazione e aggiunta Label con nome
-            onePlayer.add(new Label(n), 0, 0);
+            if (active)
+                onePlayer.add(new Label(n), 0, 0);
+            else
+                onePlayer.add(new Label(n + " (non in partita)"), 0, 0);
             //creazione e aggiunta griglia dato Pair[][]
             GridPane grid = new GridPane();
             grid.setOpacity(255);
