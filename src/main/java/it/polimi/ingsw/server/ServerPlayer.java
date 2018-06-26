@@ -402,18 +402,18 @@ public class ServerPlayer implements Runnable {
 
     }
 
-    public void updateOpponents(ArrayList<String> users, ArrayList<Pair[][]> grids) throws ClientOutOfReachException {
+    public void updateOpponents(ArrayList<String> users, ArrayList<Pair[][]> grids,ArrayList<Boolean> active) throws ClientOutOfReachException {
         for (int i = 0; i < users.size(); i++)
-            updateOpponents(users.get(i), grids.get(i));
+            updateOpponents(users.get(i), grids.get(i),active.get(i));
     }
 
     /**
      * Update opponent's situation on client's side
      */
-    public void updateOpponents(String user, Pair[][] grids) throws ClientOutOfReachException {
+    public void updateOpponents(String user, Pair[][] grids,Boolean active) throws ClientOutOfReachException {
 
         try {
-            String r = communicator.updateOpponents(user, grids);
+            String r = communicator.updateOpponents(user, grids,active);
             //System.out.println(r);
         } catch (Exception e) {
             log.addLog("", e.getStackTrace());

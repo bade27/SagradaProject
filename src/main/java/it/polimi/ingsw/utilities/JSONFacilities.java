@@ -126,9 +126,10 @@ public class JSONFacilities
      * @param toEncode matrix of Pair
      * @return json
      */
-    public static JSONArray encodeMatrixPair (String str ,Pair[][] toEncode) throws JSONException {
+    public static JSONArray encodeMatrixPair (String str ,Pair[][] toEncode, Boolean b) throws JSONException {
         JSONArray msg = new JSONArray();
         msg.put(str);
+        msg.put(b);
         for (int i = 0; i < toEncode.length; i++)
         {
             JSONArray arr = encodeArrayPair(toEncode[i]);
@@ -193,7 +194,7 @@ public class JSONFacilities
     {
         ArrayList<ArrayList<Pair>> list = new ArrayList<>();
         JSONArray matrix = new JSONArray(message);
-        for (int i = 1; i < matrix.length(); i++)
+        for (int i = 2; i < matrix.length(); i++)
         {
             JSONArray row = (JSONArray)matrix.get(i);
             list.add(decodeArrayPair(row));
@@ -205,6 +206,12 @@ public class JSONFacilities
     {
         JSONArray matrix = new JSONArray(message);
         return matrix.get(0).toString();
+    }
+
+    public static Boolean decodeBooleanInMatrixPair (String message) throws JSONException
+    {
+        JSONArray matrix = new JSONArray(message);
+        return (Boolean)matrix.get(1);
     }
 
     //</editor-fold>

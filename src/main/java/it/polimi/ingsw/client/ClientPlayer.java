@@ -288,8 +288,13 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     }
 
     @Override
-    public String updateOpponents (String user, Pair[][] grids) {
-        graph.updateOpponents(grids, user);
+    public String updateOpponents (String user, Pair[][] grids,boolean active)
+    {
+        if (!user.equals(clientName))
+        {
+            //System.out.println(active);
+            graph.updateOpponents(grids, user,active);
+        }
         return "ok";
     }
     //</editor-fold>
@@ -352,11 +357,9 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
     public synchronized void disconnect ()
     {
-        System.out.println("disconnectionz");
         if (inTurn)
         {
             try {
-                System.out.println("disconnectionz");
                 server.disconnection();
             } catch (RemoteException e) {
                 e.printStackTrace();

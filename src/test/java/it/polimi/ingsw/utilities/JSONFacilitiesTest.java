@@ -106,11 +106,14 @@ class JSONFacilitiesTest
     {
         String user = "KIMOSABE";
         Pair[][] original = w.getPairMatrix();
-        JSONArray arr = JSONFacilities.encodeMatrixPair(user, original);
+        Boolean originalActive = false;
+        JSONArray arr = JSONFacilities.encodeMatrixPair(user, original,originalActive);
+
         StringBuilder windows = new StringBuilder(arr.toString());
         windows.append("\n");
 
         String recived = JSONFacilities.decodeStringInMatrixPair(windows.toString());
+        Boolean active = JSONFacilities.decodeBooleanInMatrixPair(windows.toString());
         ArrayList<ArrayList<Pair>> list = JSONFacilities.decodeMatrixPairWithString(windows.toString());
 
         Pair[][] board = new Pair[list.size()][];
@@ -129,6 +132,7 @@ class JSONFacilitiesTest
                 assertEquals(board[i][j].getValue(), original[i][j].getValue());
             }
         }
+        assertEquals(active, originalActive);
         assertEquals(recived, user);
     }
 

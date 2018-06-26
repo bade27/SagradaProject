@@ -505,8 +505,8 @@ public class SagradaGUI extends Application implements UI {
         toolsG.updateTools(toolNames);
     }
 
-    public void updateOpponents(Pair[][] pair, String user) {
-        plaG.updateGraphic(pair, user);
+    public void updateOpponents(Pair[][] pair, String user , boolean b) {
+        plaG.updateGraphic(pair, user,b);
     }
 
     public void updateRoundTrace(ArrayList<Pair>[] trace) {

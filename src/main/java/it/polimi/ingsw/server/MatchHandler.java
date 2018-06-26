@@ -647,7 +647,7 @@ public class MatchHandler implements Runnable
     /**
      * Update all client's graphic
      */
-    public void updateClient ()
+    /*public void updateClient ()
     {
         for (int i = 0; i < player.size(); i++)
         {
@@ -675,6 +675,46 @@ public class MatchHandler implements Runnable
                     }
 
                 }
+            }
+        }
+
+    }*/
+
+    public void updateClient ()
+    {
+        ArrayList<String> users = new ArrayList<>();
+        ArrayList<Pair[][]> pairs = new ArrayList<>();
+        ArrayList<Boolean> actives = new ArrayList<>();
+        for (int j = 0; j < player.size(); j++)
+        {
+            users.add(player.get(j).getUser());
+            pairs.add( player.get(j).getGrid());
+            actives.add(player.get(j).isInGame());
+        }
+
+        for (int i = 0; i < player.size(); i++)
+        {
+            //Update user's window,dadiera,round trace and markers
+            if (player.get(i).isInGame())
+            {
+                if (!player.get(i).updateClient())
+                {
+                    for (int j = 0 ; j < users.size() ; j++)
+                    {
+                        if (users.get(j).equals(player.get(i).getUser()))
+                            actives.set(j,false);
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < player.size(); i++)
+        {
+            try {
+                //Update others users with user's window,dadiera,roundttrace and markers
+                player.get(i).updateOpponents(users,pairs,actives);
+            } catch (ClientOutOfReachException e) {
+                log.addLog("Client  temporarily unreachable");
             }
         }
 

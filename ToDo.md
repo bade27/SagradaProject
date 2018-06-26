@@ -16,8 +16,8 @@
 	    - [ ] Partite multiple (testata)
 	
 	- Varie
-	    - [ ] La disconnessione durante il proprio turno da una notifica immediata al server
-		- [ ] Notifica ai client che ci sono state disconnessioni (non mandando più up_opponents)
+	    - [X] La disconnessione durante il proprio turno da una notifica immediata al server
+		- [X] Notifica ai client che ci sono state disconnessioni (non mandando più up_opponents)
 		- [X] Timer setup
 		- [X] Passa turno finisce tutte le mosse a metà
 		- [X] Registrazione dei giocatori in riconnessione
@@ -25,6 +25,7 @@
 		- [X] Punteggio negativo se ti disconnetti
 		- [X] Un log per ogni Match Handler
 		- [X] Setup vetrata anche se ti scolleghi durante il setup (aggiuntivo)
+		- [ ] Finita la partita rimuovere gli username usati (così quei nomi possono essere riutilizzati)
 		- [ ] Test
             - [X] Obbiettivi
         	- [ ] Tools

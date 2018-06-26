@@ -387,11 +387,11 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
     }
 
     @Override
-    public String updateOpponents(String user, Pair[][] grid) throws ClientOutOfReachException, RemoteException
+    public String updateOpponents(String user, Pair[][] grid, boolean active) throws ClientOutOfReachException, RemoteException
     {
         try
         {
-            JSONArray jsonArray = JSONFacilities.encodeMatrixPair(user, grid);
+            JSONArray jsonArray = JSONFacilities.encodeMatrixPair(user, grid,active);
             return updateClient(jsonArray.toString(), "up_opponents\n");
         } catch (ClientOutOfReachException e)
         {
