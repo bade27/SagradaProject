@@ -17,8 +17,8 @@
 	
 	- Varie
 	    - [X] La disconnessione durante il proprio turno da una notifica immediata al server
-		- [ ] Notifica ai client che ci sono state disconnessioni (non mandando più up_opponents)
-		- [ ] Timer setup e timer update (con excecutor?)
+		- [X] Notifica ai client che ci sono state disconnessioni (non mandando più up_opponents)
+		- [ ] Timer setup
 		- [X] Passa turno finisce tutte le mosse a metà
 		- [ ] Registrazione dei giocatori in riconnessione
 		- [ ] Check server su client tramite ping 
