@@ -26,6 +26,9 @@
 		- [X] Un log per ogni Match Handler
 		- [X] Setup vetrata anche se ti scolleghi durante il setup (aggiuntivo)
 		- [ ] Finita la partita rimuovere gli username usati (così quei nomi possono essere riutilizzati)
+		- [X] Pass turn da bloccare
+		- [ ] I riconnessi in update opponents non sono aggiornati
+		- [ ] Tasto riconnetti da mettere a posto
 		- [ ] Test
             - [X] Obbiettivi
         	- [ ] Tools
