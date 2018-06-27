@@ -291,7 +291,7 @@ public class ServerModelAdapter
         return user;
     }
 
-    public void setTurnDone(boolean turnDone) {
+    public synchronized void setTurnDone(boolean turnDone) {
         this.turnDone = turnDone;
     }
 
@@ -320,7 +320,6 @@ public class ServerModelAdapter
     private class TimerTurn implements Runnable {
 
         private int period;
-        private double actualTime;
         private ServerModelAdapter adapter;
         private boolean clientDisconnection;
 
@@ -348,28 +347,26 @@ public class ServerModelAdapter
                 }
             });
 
-            long initialTime = System.nanoTime();
             timer.start();
-            while(!adapter.isTurnDone() && !serverPlayer.isTurnInterrupted() && !clientDisconnection)
+            while(!adapter.isTurnDone() && !serverPlayer.isTurnInterrupted()
+                    && !isClientDisconnection())
                 continue;
             if (clientDisconnection)
                 serverPlayer.setTurnInterrupted();
             if(timer.isAlive())
                 timer.interrupt();
-            if(!serverPlayer.isTurnInterrupted())
-                actualTime = ((System.nanoTime() - initialTime) / 1000000);
 
             synchronized (adapter) {
                 adapter.notifyAll();
             }
         }
 
-        public double getActualTime() {
-            return actualTime;
-        }
-
         private synchronized void setClientDisconnection (boolean b) {
             clientDisconnection = b;
+        }
+
+        public synchronized boolean isClientDisconnection() {
+            return clientDisconnection;
         }
     }
     //</editor-fold>
