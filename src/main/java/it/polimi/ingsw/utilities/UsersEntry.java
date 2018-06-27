@@ -35,13 +35,20 @@ public class UsersEntry
 
     public synchronized boolean setUserGameStatus(String user, boolean status) {
         boolean exit = false;
-        for(int i = 0; i < userList.size(); i++) {
+        for(int i = 0; i < userList.size(); i++)
+        {
             if(userList.get(i).username.equals(user))
+            {
                 if(status)
-                userList.get(i).setInGame();
-            else userList.get(i).setNotInGame();
-            exit = true;
-            break;
+                    userList.get(i).setInGame();
+                else
+                {
+                    System.out.println("Set not " + userList.get(i).getUsername());
+                    userList.get(i).setNotInGame();
+                }
+            }
+//            exit = true; ???why bade???
+  //          break;
         }
         return exit;
     }

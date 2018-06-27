@@ -66,6 +66,7 @@ public class PlayersGUI extends GridPane {
             players.add(onePlayer, index, 0);
             onePlayer.setOpacity(255);
             //creazione e aggiunta Label con nome
+
             if (active)
                 onePlayer.add(new Label(n), 0, 0);
             else

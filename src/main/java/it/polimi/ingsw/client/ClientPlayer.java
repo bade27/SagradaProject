@@ -298,7 +298,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     {
         if (!user.equals(clientName))
         {
-            //System.out.println(active);
+            //System.out.println(user + " " + active);
             graph.updateOpponents(grids, user,active);
         }
         return "ok";

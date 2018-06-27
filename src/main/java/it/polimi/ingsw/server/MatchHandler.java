@@ -240,11 +240,11 @@ public class MatchHandler implements Runnable
             }
         }
 
-        for (int i = 0 ; i < users.length ; i++)
-            userList.setUserGameStatus(users[i],false);
-
         for (int i = 0 ; i < player.size() ; i++)
             player.get(i).endGameCommunication(users,pointsList);
+
+        for (int i = 0 ; i < player.size() ; i++)
+            userList.setUserGameStatus(player.get(i).getUser(),false);
 
         token.setEndGame();
         token.getSynchronator().notifyAll();

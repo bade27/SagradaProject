@@ -527,7 +527,7 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
     {
         try
         {
-            System.out.println("pass?");
+            //System.out.println("pass?");
             outSocket.write("Turn passed\n");
             outSocket.flush();
             notifyServer();
