@@ -641,39 +641,6 @@ public class MatchHandler implements Runnable
     /**
      * Update all client's graphic
      */
-    /*public void updateClient ()
-    {
-        for (int i = 0; i < player.size(); i++)
-        {
-            //Update user's window,dadiera,round trace and markers
-            if (player.get(i).isInGame())
-            {
-                if (player.get(i).updateClient())
-                {
-                    ArrayList<String> users = new ArrayList<>();
-                    ArrayList<Pair[][]> pairs = new ArrayList<>();
-                    for (int j = 0; j < player.size(); j++)
-                    {
-                        if (!player.get(j).getUser().equals(player.get(i).getUser())
-                                && player.get(j).isInGame())
-                        {
-                            users.add(player.get(j).getUser());
-                            pairs.add( player.get(j).getGrid());
-                        }
-                    }
-                    try {
-                        //Update others users with user's window,dadiera,roundttrace and markers
-                        player.get(i).updateOpponents(users,pairs);
-                    } catch (ClientOutOfReachException e) {
-                        log.addLog("Client  temporarily unreachable");
-                    }
-
-                }
-            }
-        }
-
-    }*/
-
     public void updateClient ()
     {
         ArrayList<String> users = new ArrayList<>();
