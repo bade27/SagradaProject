@@ -45,6 +45,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
     private boolean connected;
     private boolean inTurn;
+    private Object lockInTurn = new Object();
 
     private boolean cannotLogIn = false;
 
@@ -111,30 +112,31 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         }
 
         //this timertask is needed to keep trak of server status with RMI
-        if(typeOfCOnnection == 1) {
-            connectionStatusRMITimer = new Timer();
-            connectionStatusRMITimer.schedule(new TimerTask() {
-                @Override
-                public void run() {
+        connectionStatusRMITimer = new Timer();
+        connectionStatusRMITimer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if(!isInTurn()) {
                     ExecutorService executor = Executors.newSingleThreadExecutor();
                     Future<?> task;
                     String response = "";
                     try {
                         task = executor.submit(() -> server.serverStatus());
                         response = task.get(1000, TimeUnit.MILLISECONDS).toString();
-                        if(response == null)
+                        if (response == null)
                             throw new NullPointerException();
-                    } catch (InterruptedException|ExecutionException |CancellationException|TimeoutException|NullPointerException e) {
+                    } catch (InterruptedException | ExecutionException | CancellationException | TimeoutException | NullPointerException e) {
                         //e.printStackTrace();
                         closeCommunication("Il server ha interrotto la comunicazione");
                     }
                 }
+            }
             }, 0,5000);
-        }
 
         System.out.println("Client connected");
         connected = true;
-        inTurn = false;
+        setInTurn(false);
+        //inTurn = false;
     }
     //</editor-fold>
 
@@ -318,7 +320,8 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             stopTimerTurn();
             e.printStackTrace();
         }
-        inTurn = true;
+        //inTurn = true;
+        setInTurn(true);
         return "ok";
     }
 
@@ -355,7 +358,9 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
                 ToolAction.clearTool();
                 MoveAction.clearMove();
 
-                inTurn = false;
+                //inTurn = false;
+                setInTurn(false);
+
                 graph.updateMessage(s);
             }
         } catch (RemoteException e) {
@@ -365,7 +370,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
     public synchronized void disconnect ()
     {
-        if (inTurn)
+        if (isInTurn())
         {
             try {
                 server.disconnection();
@@ -506,6 +511,18 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     }
     //</editor-fold>
 
+
+    public boolean isInTurn() {
+        synchronized (lockInTurn) {
+            return inTurn;
+        }
+    }
+
+    public void setInTurn(boolean inTurn) {
+        synchronized (lockInTurn) {
+            this.inTurn = inTurn;
+        }
+    }
 
     @Override
     public String getName() throws RemoteException {
