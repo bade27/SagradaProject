@@ -67,10 +67,13 @@ public class PlayersGUI extends GridPane {
             onePlayer.setOpacity(255);
             //creazione e aggiunta Label con nome
 
+            //onePlayer.getChildren().clear();
+
             if (active)
                 onePlayer.add(new Label(n), 0, 0);
             else
                 onePlayer.add(new Label(n + " (non in partita)"), 0, 0);
+
             //creazione e aggiunta griglia dato Pair[][]
             GridPane grid = new GridPane();
             grid.setOpacity(255);
