@@ -146,7 +146,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
                         synclogin.wait();
                 }
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                return null;
             }
         }
 
