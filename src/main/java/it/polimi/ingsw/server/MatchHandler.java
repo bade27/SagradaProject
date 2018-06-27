@@ -107,15 +107,9 @@ public class MatchHandler implements Runnable
         waitInitialition();
 
         //removes players that didn't log in
-        int  k = 0;
-        while(true) {
-            if(k == player.size())
-                break;
-            if(player.get(k).getUser() == null)
-                player.remove(k);
-            k++;
-
-        }
+        for(int i = 0; i < player.size(); i++)
+            if(player.get(i).getUser() == null)
+                player.remove(i);
 
         //Game Phase
         startGame();

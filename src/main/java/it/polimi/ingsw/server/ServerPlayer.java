@@ -50,8 +50,6 @@ public class ServerPlayer implements Runnable {
     private final Object interruptionLock = new Object();
     private boolean turnInterrupted = false;
 
-    private Object lockAdapter = new Object();
-
     public LogFile log;
 
 
@@ -354,9 +352,8 @@ public class ServerPlayer implements Runnable {
         String s;
         try {
             s = communicator.updateGraphic(adapter.getDadieraPair());
-            if (s == null)
-                throw new ClientOutOfReachException();
-        } catch (Exception e) {
+        } catch (RemoteException e) {
+            e.printStackTrace();
             log.addLog("(" + user + ") Dadiera update timeout expired");
             throw new ClientOutOfReachException();
         }
@@ -369,9 +366,7 @@ public class ServerPlayer implements Runnable {
         String s;
         try {
             s = communicator.updateGraphic(adapter.getWindowPair());
-            if (s == null)
-                throw new ClientOutOfReachException();
-        } catch (Exception e) {
+        } catch (RemoteException e) {
             log.addLog("(" + user + ")Window update timeout expired");
             throw new ClientOutOfReachException();
         }
@@ -381,9 +376,7 @@ public class ServerPlayer implements Runnable {
         String s;
         try {
             s = communicator.updateTokens(adapter.getMarker());
-            if (s == null)
-                throw new ClientOutOfReachException();
-        } catch (Exception e) {
+        } catch (RemoteException e) {
             log.addLog("(" + user + ") Token update timeout expired");
             throw new ClientOutOfReachException();
         }
@@ -393,9 +386,7 @@ public class ServerPlayer implements Runnable {
         String s;
         try {
             s = communicator.updateRoundTrace(adapter.getRoundTracePair());
-            if (s == null)
-                throw new ClientOutOfReachException();
-        } catch (Exception e) {
+        } catch (RemoteException e) {
             log.addLog("(" + user + ") Round Trace update timeout expired");
             throw new ClientOutOfReachException();
         }
