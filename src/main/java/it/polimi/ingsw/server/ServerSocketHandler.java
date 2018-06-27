@@ -107,7 +107,7 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
                     System.out.println("Problem");
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            clientDisconnection();
         }
     }
 

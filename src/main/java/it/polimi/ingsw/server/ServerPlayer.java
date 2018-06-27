@@ -28,7 +28,7 @@ public class ServerPlayer implements Runnable {
     private ServerModelAdapter adapter;
     private MatchHandler mymatch;
     private String user;
-    private boolean alive;
+    private Boolean alive;
 
     //Setup Phase
     private UsersEntry possibleUsers;
@@ -336,7 +336,7 @@ public class ServerPlayer implements Runnable {
     private void clientTurn() throws ClientOutOfReachException {
         String u;
         try {
-            u = communicator.doTurn();
+            u = stopTask(() -> communicator.doTurn(), PING_TIMEOUT, executor);
             if (u == null)
                 throw new ClientOutOfReachException();
         } catch (Exception e) {
@@ -351,9 +351,11 @@ public class ServerPlayer implements Runnable {
     private void updateDadiera() throws ClientOutOfReachException {
         String s;
         try {
-            s = communicator.updateGraphic(adapter.getDadieraPair());
-        } catch (RemoteException e) {
-            e.printStackTrace();
+            s = stopTask(() -> communicator.updateGraphic(adapter.getDadieraPair()), PING_TIMEOUT, executor);
+            if(s == null) {
+                throw new ClientOutOfReachException();
+            }
+        } catch (Exception e) {
             log.addLog("(" + user + ") Dadiera update timeout expired");
             throw new ClientOutOfReachException();
         }
@@ -365,8 +367,11 @@ public class ServerPlayer implements Runnable {
     private void updateWindow() throws ClientOutOfReachException {
         String s;
         try {
-            s = communicator.updateGraphic(adapter.getWindowPair());
-        } catch (RemoteException e) {
+            s = stopTask(() -> communicator.updateGraphic(adapter.getWindowPair()), PING_TIMEOUT, executor);
+            if(s == null) {
+                throw new ClientOutOfReachException();
+            }
+        } catch (Exception e) {
             log.addLog("(" + user + ")Window update timeout expired");
             throw new ClientOutOfReachException();
         }
@@ -375,8 +380,10 @@ public class ServerPlayer implements Runnable {
     private void updateTokens() throws ClientOutOfReachException {
         String s;
         try {
-            s = communicator.updateTokens(adapter.getMarker());
-        } catch (RemoteException e) {
+            s = stopTask(() -> communicator.updateTokens(adapter.getMarker()), PING_TIMEOUT, executor);
+            if(s == null)
+                throw new ClientOutOfReachException();
+        } catch (Exception e) {
             log.addLog("(" + user + ") Token update timeout expired");
             throw new ClientOutOfReachException();
         }
@@ -385,8 +392,10 @@ public class ServerPlayer implements Runnable {
     private void updateRoundTrace() throws ClientOutOfReachException {
         String s;
         try {
-            s = communicator.updateRoundTrace(adapter.getRoundTracePair());
-        } catch (RemoteException e) {
+            s = stopTask(() -> communicator.updateRoundTrace(adapter.getRoundTracePair()), PING_TIMEOUT, executor);
+            if(s == null)
+                throw new ClientOutOfReachException();
+        } catch (Exception e) {
             log.addLog("(" + user + ") Round Trace update timeout expired");
             throw new ClientOutOfReachException();
         }
@@ -404,8 +413,9 @@ public class ServerPlayer implements Runnable {
     public void updateOpponents(String user, Pair[][] grids,Boolean active) throws ClientOutOfReachException {
 
         try {
-            String r = communicator.updateOpponents(user, grids,active);
-            //System.out.println(r);
+            String r = stopTask(() -> communicator.updateOpponents(user, grids,active), PING_TIMEOUT, executor);
+            if(r == null)
+                throw new ClientOutOfReachException();
         } catch (Exception e) {
             log.addLog("", e.getStackTrace());
             throw new ClientOutOfReachException();
@@ -415,9 +425,9 @@ public class ServerPlayer implements Runnable {
 
     //<editor-fold desc="Utilities">
     public boolean isClientAlive() {
-        try {
-            alive = communicator.ping();
-        } catch (RemoteException e) {
+        alive = stopTask(() -> communicator.ping(), PING_TIMEOUT, executor);
+        //alive = communicator.ping();
+        if(alive == null) {
             alive = false;
         }
         return alive;
@@ -589,4 +599,24 @@ public class ServerPlayer implements Runnable {
         return adapter;
     }
     //</editor-fold>
+
+    private <T> T stopTask(Callable<T> task, int executionTime, ExecutorService executor) {
+        Object o = null;
+        Future future = executor.submit(task);
+        try {
+            o = future.get(executionTime, TimeUnit.MILLISECONDS);
+        } catch (TimeoutException te) {
+            //System.out.println(te.getMessage());
+            //LogFile.addLog("Client too late to reply");
+            //System.out.println("too late to reply");
+        } catch (InterruptedException ie) {
+            //System.out.println(ie.getMessage());
+            Thread.currentThread().interrupt();
+        } catch (ExecutionException ee) {
+            //System.out.println(ee.getMessage());
+        } finally {
+            future.cancel(true);
+        }
+        return (T) o;
+    }
 }

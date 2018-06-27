@@ -16,7 +16,7 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 import java.util.stream.Stream;
 
 public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInterface
@@ -116,9 +116,15 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             connectionStatusRMITimer.schedule(new TimerTask() {
                 @Override
                 public void run() {
+                    ExecutorService executor = Executors.newSingleThreadExecutor();
+                    Future<?> task;
+                    String response = "";
                     try {
-                        server.serverStatus();
-                    } catch (RemoteException e) {
+                        task = executor.submit(() -> server.serverStatus());
+                        response = task.get(1000, TimeUnit.MILLISECONDS).toString();
+                        if(response == null)
+                            throw new NullPointerException();
+                    } catch (InterruptedException|ExecutionException |CancellationException|TimeoutException|NullPointerException e) {
                         //e.printStackTrace();
                         closeCommunication("Il server ha interrotto la comunicazione");
                     }
@@ -341,15 +347,17 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
     public synchronized void pass() {
         try {
-            String s = server.passTurn();
-            stopTimerTurn();
-            graph.setEnableBoard(false);
-            graph.setToolPhase(false);
-            ToolAction.clearTool();
-            MoveAction.clearMove();
+            if(timerTurn != null && timerTurn.isAlive()) {
+                String s = server.passTurn();
+                stopTimerTurn();
+                graph.setEnableBoard(false);
+                graph.setToolPhase(false);
+                ToolAction.clearTool();
+                MoveAction.clearMove();
 
-            inTurn = false;
-            graph.updateMessage(s);
+                inTurn = false;
+                graph.updateMessage(s);
+            }
         } catch (RemoteException e) {
             //e.printStackTrace();
         }

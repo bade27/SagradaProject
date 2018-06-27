@@ -10,7 +10,7 @@
 	
 	<time_intervals>
 		<threshold_time_laps>100</threshold_time_laps>	<!-- value in seconds  -->
-		<setup_time_laps>10</setup_time_laps>	<!-- value in seconds  -->
+		<setup_time_laps>30</setup_time_laps>	<!-- value in seconds  -->
 		<ping_time_laps>500</ping_time_laps>	<!-- value in milliseconds  -->
 		<turn_time_laps>30</turn_time_laps>	<!-- value in seconds  -->
 	</time_intervals>
