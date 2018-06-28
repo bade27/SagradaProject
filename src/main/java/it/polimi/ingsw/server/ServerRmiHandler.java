@@ -233,11 +233,6 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
     }
 
     @Override
-    public String serverStatus() {
-        return "alive";
-    }
-
-    @Override
     public void disconnection() throws RemoteException {
         adapter.notifyClientExited();
     }

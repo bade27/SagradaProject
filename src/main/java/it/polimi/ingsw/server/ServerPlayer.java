@@ -351,11 +351,13 @@ public class ServerPlayer implements Runnable {
     private void updateDadiera() throws ClientOutOfReachException {
         String s;
         try {
-            s = stopTask(() -> communicator.updateGraphic(adapter.getDadieraPair()), PING_TIMEOUT, executor);
+            s = stopTask(() -> communicator.updateGraphic(adapter.getDadieraPair()), PING_TIMEOUT + 10000, executor);
             if(s == null) {
+               System.out.println("excecutor");
                 throw new ClientOutOfReachException();
             }
         } catch (Exception e) {
+            System.out.println("non excecutor");
             log.addLog("(" + user + ") Dadiera update timeout expired");
             throw new ClientOutOfReachException();
         }

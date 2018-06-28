@@ -31,7 +31,7 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
     private Thread deamon;
 
     private ClientPlayer player;
-    private final Integer syncronator = 5;
+    private final Object syncronator = new Object();
     private String action;
 
     public ClientSocketHandler(ClientPlayer cli, String host, int port) throws ClientOutOfReachException
@@ -526,6 +526,18 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
     //</editor-fold>
 
     //<editor-fold desc="Utilities">
+    private void sendName() {
+        StringBuilder s = null;
+        try {
+            s = new StringBuilder(player.getName());
+        } catch (RemoteException e) {
+            return;
+        }
+        s.append("\n");
+        outSocket.write(s.toString());
+        outSocket.flush();
+    }
+
     private void close(Future<?> task)
     {
         String msg = "";
@@ -580,23 +592,4 @@ public class ClientSocketHandler implements Runnable, ServerRemoteInterface
 
     }
     //</editor-fold>
-
-
-    //it is only called with RMI, so it has no function here with sockets
-    @Override
-    public String serverStatus() {
-        return null;
-    }
-
-    private void sendName() {
-        StringBuilder s = null;
-        try {
-            s = new StringBuilder(player.getName());
-        } catch (RemoteException e) {
-            return;
-        }
-        s.append("\n");
-        outSocket.write(s.toString());
-        outSocket.flush();
-    }
 }

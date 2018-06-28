@@ -29,10 +29,6 @@ public interface ServerRemoteInterface extends Remote
     //Tool nr.9
     public String useTool (Pair p , Coordinates endCoord) throws RemoteException;
 
-
-    //to check RMI server status
-    public String serverStatus() throws RemoteException;
-
     //Disconnection message
     public void disconnection () throws  RemoteException;
 }

@@ -383,9 +383,9 @@ public class MatchHandler implements Runnable
                     //set the old adapter on the old communicator
                     newSP.getCommunicator().setAdapter(newSP.getAdapter());
                 } catch (RemoteException e) {
-                    log.addLog("Impossible to set the adapter on the new Communicator\n"
-                            + e.getStackTrace().toString());
+                    log.addLog("Impossible to set the adapter on the new Communicator\n",e.getStackTrace());
                     System.out.println(u + "not accepted");
+
                     return false;
                 }
                 newSP.setInGame(true);
