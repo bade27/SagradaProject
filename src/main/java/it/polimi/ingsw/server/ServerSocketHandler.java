@@ -532,7 +532,6 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
             outSocket.flush();
             notifyServer();
         } catch (Exception e) {
-            e.printStackTrace();
             log.addLog("Impossible to notify end turn");
         }
     }
@@ -749,7 +748,7 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
         outSocket.write("reconnect\n");
         outSocket.flush();
     }
-    //</editor-fold>
+
 
     public void assertstuff() {
         assert !client.isClosed();
@@ -767,4 +766,5 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
         }
         return name;
     }
+    //</editor-fold>
 }

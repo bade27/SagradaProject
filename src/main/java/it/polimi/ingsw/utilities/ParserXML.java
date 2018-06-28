@@ -314,6 +314,11 @@ public class ParserXML
             return Integer.parseInt(retrieveSetting(path,"num_turns"));
         }
 
+        public static int getStatusTimeLaps (String path) throws ParserXMLException
+        {
+            return Integer.parseInt(retrieveSetting(path,"server_status_time_laps"));
+        }
+
         private static String retrieveSetting (String path, String setting) throws ParserXMLException
         {
             try
