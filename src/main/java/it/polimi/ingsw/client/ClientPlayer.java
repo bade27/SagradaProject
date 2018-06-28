@@ -26,6 +26,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     private static int TURN_TIMEOUT;
     private static String HOSTNAME;
     private static int SOCKET_PORT;
+    private static int STATUS_TIMEOUT;
 
     private static boolean initialized = false;
     private int typeOfCOnnection; //1 rmi , 0 Socket
@@ -45,9 +46,10 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
     private boolean connected;
     private boolean inTurn;
-    private Object lockInTurn = new Object();
+    private final Object lockInTurn = new Object();
 
     private boolean cannotLogIn = false;
+    private boolean serverAlive;
 
 
     //<editor-fold desc="Initialization Phase">
@@ -59,6 +61,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             HOSTNAME = serverIP;
         typeOfCOnnection = t;
         this.graph = g;
+        setServerAlive(true);
     }
 
 
@@ -111,32 +114,23 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             return;
         }
 
-        //this timertask is needed to keep trak of server status with RMI
+        System.out.println("Client connected");
+        connected = true;
+        setInTurn(false);
+
+
         connectionStatusRMITimer = new Timer();
         connectionStatusRMITimer.schedule(new TimerTask() {
             @Override
             public void run() {
-                if(!isInTurn()) {
-                    ExecutorService executor = Executors.newSingleThreadExecutor();
-                    Future<?> task;
-                    String response = "";
-                    try {
-                        task = executor.submit(() -> server.serverStatus());
-                        response = task.get(1000, TimeUnit.MILLISECONDS).toString();
-                        if (response == null)
-                            throw new NullPointerException();
-                    } catch (InterruptedException | ExecutionException | CancellationException | TimeoutException | NullPointerException e) {
-                        //e.printStackTrace();
-                        closeCommunication("Il server ha interrotto la comunicazione");
-                    }
+                if (!isServerAlive() && !isInTurn())
+                {
+                    closeCommunication("Il server non risponde");
+                    //System.exit(0);
                 }
+                setServerAlive(false);
             }
-            }, 0,5000);
-
-        System.out.println("Client connected");
-        connected = true;
-        setInTurn(false);
-        //inTurn = false;
+        }, 0,STATUS_TIMEOUT * 1000);
     }
     //</editor-fold>
 
@@ -147,6 +141,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
      */
     public String login() throws ClientOutOfReachException
     {
+        setServerAlive(true);
         if (cannotLogIn)
         {
             graph.login("nome già esistente");
@@ -266,29 +261,37 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     //<editor-fold desc="Update graphic turn">
     @Override
     public String updateGraphic(Pair[] dadiera) throws ClientOutOfReachException, RemoteException {
+        System.out.println("entra");
+        setServerAlive(true);
+        System.out.println("esce");
         graph.updateDadiera(dadiera);
+
         return "ok";
     }
 
     @Override
     public String updateGraphic(Pair[][] grid) throws ClientOutOfReachException, RemoteException {
+        setServerAlive(true);
         graph.updateWindow(grid);
         return "ok";
     }
 
     public String updateTokens(int n) throws ClientOutOfReachException, RemoteException {
+        setServerAlive(true);
         graph.updateTokens(n);
         return "ok";
     }
 
     @Override
     public String updateRoundTrace(ArrayList<Pair>[] dice) throws RemoteException {
+        setServerAlive(true);
         graph.updateRoundTrace(dice);
         return "ok";
     }
 
     @Override
     public void sendResults(String [] user, int [] point) throws RemoteException {
+        setServerAlive(true);
         System.out.println("End game results:");
         for (int i = 0 ; i < user.length ; i++)
             System.out.println("Utente: " + user[i] + "\t Punti totalizzati: " + point[i]);
@@ -298,6 +301,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     @Override
     public String updateOpponents (String user, Pair[][] grids,boolean active)
     {
+        setServerAlive(true);
         if (!user.equals(clientName))
         {
             //System.out.println(user + " " + active);
@@ -310,6 +314,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     //<editor-fold desc="Turn communication">
     public String doTurn ()
     {
+        setServerAlive(true);
         MoveAction.clearMove();
         ToolAction.clearTool();
         graph.updateMessage("My turn");
@@ -325,7 +330,8 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         return "ok";
     }
 
-    public synchronized void myMove() {
+    public synchronized void myMove()
+    {
 
         if (MoveAction.canMove())
             finishedMove = true;
@@ -373,6 +379,10 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         if (isInTurn())
         {
             try {
+                if(connectionStatusRMITimer != null) {
+                    connectionStatusRMITimer.cancel();
+                    connectionStatusRMITimer.purge();
+                }
                 server.disconnection();
             } catch (RemoteException e) {
                 e.printStackTrace();
@@ -435,6 +445,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         RMI_REGISTRY_PORT = ParserXML.SetupParserXML.getRmiPort(FileLocator.getClientSettingsPath());
         SOCKET_PORT = ParserXML.SetupParserXML.getSocketPort(FileLocator.getClientSettingsPath());
         TURN_TIMEOUT = ParserXML.SetupParserXML.getTurnTimeLaps(FileLocator.getGameSettingsPath());
+        STATUS_TIMEOUT = ParserXML.SetupParserXML.getStatusTimeLaps(FileLocator.getGameSettingsPath());
     }
 
     /**
@@ -442,18 +453,19 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
      */
     public boolean ping ()
     {
+        setServerAlive(true);
         return true;
     }
 
     public boolean sendMessage (String s)
     {
+        setServerAlive(true);
         System.out.println(s);
         return true;
     }
 
     public boolean closeCommunication (String cause)
     {
-        //System.out.println("Game ended because " + cause);
         if(connectionStatusRMITimer != null) {
             connectionStatusRMITimer.cancel();
             connectionStatusRMITimer.purge();
@@ -476,6 +488,27 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     @Override
     public void setMatchHandler(MatchHandler match) throws RemoteException {
         //unused
+    }
+
+    private boolean isInTurn() {
+        synchronized (lockInTurn) {
+            return inTurn;
+        }
+    }
+
+    private void setInTurn(boolean inTurn) {
+        synchronized (lockInTurn) {
+            this.inTurn = inTurn;
+        }
+    }
+
+    private /*synchronized*/ boolean isServerAlive (){ return serverAlive;}
+
+    private /*synchronized*/ void setServerAlive (boolean b){ serverAlive = b;}
+
+    @Override
+    public String getName() throws RemoteException {
+        return clientName;
     }
     //</editor-fold>
 
@@ -511,21 +544,4 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     }
     //</editor-fold>
 
-
-    public boolean isInTurn() {
-        synchronized (lockInTurn) {
-            return inTurn;
-        }
-    }
-
-    public void setInTurn(boolean inTurn) {
-        synchronized (lockInTurn) {
-            this.inTurn = inTurn;
-        }
-    }
-
-    @Override
-    public String getName() throws RemoteException {
-        return clientName;
-    }
 }
