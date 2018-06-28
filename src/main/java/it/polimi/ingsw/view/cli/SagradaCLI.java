@@ -210,6 +210,7 @@ public class SagradaCLI extends Thread implements UI {
     @Override
     public void updateDadiera(Pair[] dadiera) {
         this.dadiera = dadiera;
+        viewDadiera();
     }
 
     private void viewDadiera() {
@@ -221,6 +222,7 @@ public class SagradaCLI extends Thread implements UI {
     @Override
     public void updateWindow(Pair[][] window) {
         this.window = window;
+        viewWindow();
     }
 
     private void viewWindow() {
@@ -347,6 +349,15 @@ public class SagradaCLI extends Thread implements UI {
     @Override
     public void updateMessage (String msg){
         this.msg = msg;
+        Thread t=new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if("redyellowgreenbluepurple".contains(msg)) {
+                    String col = msg;
+                    popUPMessage(11, col);
+                }
+            }
+        });
     }
 
     private void viewMessage ()
@@ -418,7 +429,6 @@ public class SagradaCLI extends Thread implements UI {
     private void doMovement () {
 
         String mossa;
-
         String[] vecmove;
         int[] cell = new int[2];
         System.out.println("MOSSA:\n");
@@ -430,40 +440,55 @@ public class SagradaCLI extends Thread implements UI {
             System.out.println("Seleziona un dado della dadiera: \n[esempio: 1 RED]");
             mossa = readbyConsole();
             vecmove = mossa.split("\\ ");
-            value = Integer.parseInt(vecmove[0]);
+            try {
+                value = Integer.parseInt(vecmove[0]);
 
-            switch (vecmove[1].toUpperCase()) {
-                case "RED":
-                    color = ColorEnum.RED;
-                    break;
-                case "GREEN":
-                    color = ColorEnum.GREEN;
-                    break;
-                case "YELLOW":
-                    color = ColorEnum.YELLOW;
-                    break;
-                case "BLUE":
-                    color = ColorEnum.BLUE;
-                    break;
-                case "PURPLE":
-                    color = ColorEnum.PURPLE;
-                    break;
-                default:
-                    break;
+                switch (vecmove[1].toUpperCase()) {
+                    case "RED":
+                        color = ColorEnum.RED;
+                        break;
+                    case "GREEN":
+                        color = ColorEnum.GREEN;
+                        break;
+                    case "YELLOW":
+                        color = ColorEnum.YELLOW;
+                        break;
+                    case "BLUE":
+                        color = ColorEnum.BLUE;
+                        break;
+                    case "PURPLE":
+                        color = ColorEnum.PURPLE;
+                        break;
+                    default:
+                        break;
+                }
+            }catch (NumberFormatException nfe){
+                value=-1;
+                color=null;
+            }catch (ArrayIndexOutOfBoundsException ofb){
+                value=-1;
+                color=null;
             }
-
         } while (!pairExist(new Pair(value, color), dadiera));
 
         MoveAction.setPair(new Pair(value, color));
         System.out.println("Seleziona una cella della griglia: \n");
         do {
             System.out.println("ascissa: [crescente da sinistra verso destra]");
-            cell[1] = Integer.parseInt(readbyConsole());
+            try {
+                cell[1] = Integer.parseInt(readbyConsole());
+            }catch(NumberFormatException nfe){
+                cell[1]=-1;
+            }
         } while (cell[1] < 1 || cell[1] > 5);
 
         do {
             System.out.println("ordinata: [crescente dall' alto verso il basso]");
-            cell[0] = Integer.parseInt(readbyConsole());
+            try {
+                cell[0] = Integer.parseInt(readbyConsole());
+            }catch (NumberFormatException nfe){
+                cell[0]=-1;
+            }
         } while (cell[0] < 1 || cell[0] > 4);
 
         System.out.println("");
@@ -472,6 +497,7 @@ public class SagradaCLI extends Thread implements UI {
         makeMove();
         viewDadiera();
         viewWindow();
+        viewMessage();
     }
 
     private void doTool () {
@@ -501,111 +527,151 @@ public class SagradaCLI extends Thread implements UI {
             e.getStackTrace();
         }
         toolPermission(numtool);
-
-        //setto i parametri necessari per il tool scelto
-        System.out.println("Settare i parametri necessari per utilizzare " + tools[Integer.parseInt(t) - 1] + ":\n - Se si ha finito digitare 'invio'");
-        do {
+        if(toolPhase==true) {
+            //setto i parametri necessari per il tool scelto
+            System.out.println("Settare i parametri necessari per utilizzare " + tools[Integer.parseInt(t) - 1] + ":\n - Se si ha finito digitare 'fine'");
             do {
-                System.out.println("\n Cosa vuoi settare?");
-                System.out.println("1. dado dalla dadiera\n2. cella dalla griglia\n3. dado dal tracciato round");
-                element = readbyConsole();
-            }
-            while (!element.equals("1") && !element.equals("2") && !element.equals("3") && !element.equals("invio"));
-            if (element.equals("1")) {
-
-                viewDadiera();
                 do {
-                    System.out.println("Seleziona un dado della dadiera: \n[esempio: 1 RED]");
-                    dad = readbyConsole();
-                    vecmove = dad.split("\\ ");
-                    value = Integer.parseInt(vecmove[0]);
-                    switch (vecmove[1].toUpperCase()) {
-                        case "RED":
-                            color = ColorEnum.RED;
-                            break;
-                        case "GREEN":
-                            color = ColorEnum.GREEN;
-                            break;
-                        case "YELLOW":
-                            color = ColorEnum.YELLOW;
-                            break;
-                        case "BLUE":
-                            color = ColorEnum.BLUE;
-                            break;
-                        case "PURPLE":
-                            color = ColorEnum.PURPLE;
-                            break;
-                        default:
-                            break;
-                    }
-                } while (!pairExist(new Pair(value, color), dadiera));
-                ToolAction.setDadieraPair(new Pair(value, color));
-
-            } else if (element.equals("2")) {
-                viewWindow();
-                System.out.println("Seleziona una cella della griglia: \n");
-                do {
-                    System.out.println("ascissa: [crescente da sinistra verso destra]");
-                    cell[1] = Integer.parseInt(readbyConsole());
-                } while (cell[1] < 1 || cell[1] > 5);
-
-                do {
-                    System.out.println("ordinata: [crescente dall' alto verso il basso]");
-                    cell[0] = Integer.parseInt(readbyConsole());
-                } while (cell[0] < 1 || cell[0] > 4);
-                ToolAction.setPosition(new Coordinates(cell[0] - 1, cell[1] - 1));
-
-            } else if (element.equals("3")) {
-                viewRoundTrace();
-                do {
-                    System.out.println("Selezionare il round del tracciato (che non sia vuoto) dal quale estrarre il dado");
-                    String result = readbyConsole();
-                    round = Integer.parseInt(result);
-                } while ((round) < 1 || round > 9 || trace[round - 1].size() == 0);
-                System.out.println("");
-                do {
-                    System.out.println("Selezionare un dado appartenente al round scelto");
-                    dad = readbyConsole();
-                    vecmove = dad.split("\\ ");
-                    value = Integer.parseInt(vecmove[0]);
-                    switch (vecmove[1].toUpperCase()) {
-                        case "RED":
-                            color = ColorEnum.RED;
-                            break;
-                        case "GREEN":
-                            color = ColorEnum.GREEN;
-                            break;
-                        case "YELLOW":
-                            color = ColorEnum.YELLOW;
-                            break;
-                        case "BLUE":
-                            color = ColorEnum.BLUE;
-                            break;
-                        case "PURPLE":
-                            color = ColorEnum.PURPLE;
-                            break;
-                        default:
-                            break;
-                    }
-                    vecTrace = new Pair[trace[round - 1].size()];
-                    for (int i = 0; i < trace[round - 1].size(); i++) {
-                        vecTrace[i] = trace[round - 1].get(i);
-                    }
-                } while (!pairExist(new Pair(value, color), vecTrace));
-                ToolAction.setTracePair(new Pair(value, color));
-                ToolAction.setTracePosition(round);
-
-            } else if (element.equals("invio")) {
-                if (enableBoard == true) {
-                    makeToolMove();
-                    viewRoundTrace();
-                    viewDadiera();
-                    viewWindow();
-                    System.out.println("\n");
-                    viewMessage();
+                    System.out.println("\n Cosa vuoi settare?");
+                    System.out.println("1. dado dalla dadiera\n2. cella dalla griglia\n3. dado dal tracciato round");
+                    element = readbyConsole();
                 }
-            }
-        } while (!element.equals("invio"));
+                while (!element.equals("1") && !element.equals("2") && !element.equals("3") && !element.equals("fine"));
+                if (element.equals("1")) {
+
+                    viewDadiera();
+                    do {
+                        System.out.println("Seleziona un dado della dadiera: \n[esempio: 1 RED]");
+                        dad = readbyConsole();
+                        vecmove = dad.split("\\ ");
+                        try {
+                            value = Integer.parseInt(vecmove[0]);
+                            switch (vecmove[1].toUpperCase()) {
+                                case "RED":
+                                    color = ColorEnum.RED;
+                                    break;
+                                case "GREEN":
+                                    color = ColorEnum.GREEN;
+                                    break;
+                                case "YELLOW":
+                                    color = ColorEnum.YELLOW;
+                                    break;
+                                case "BLUE":
+                                    color = ColorEnum.BLUE;
+                                    break;
+                                case "PURPLE":
+                                    color = ColorEnum.PURPLE;
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }catch(NumberFormatException nfe){
+                            value=-1;
+                            color=null;
+                        }catch (ArrayIndexOutOfBoundsException ofb){
+                            value=-1;
+                            color=null;
+                        }
+                    } while (!pairExist(new Pair(value, color), dadiera));
+                    ToolAction.setDadieraPair(new Pair(value, color));
+
+                } else if (element.equals("2")) {
+                    viewWindow();
+                    System.out.println("Seleziona una cella della griglia: \n");
+                    do {
+                        System.out.println("ascissa: [crescente da sinistra verso destra]");
+                        try {
+                            cell[1] = Integer.parseInt(readbyConsole());
+                        }catch (NumberFormatException nfe) {
+                            cell[1]=-1;
+                        }
+                    } while (cell[1] < 1 || cell[1] > 5);
+
+                    do {
+                        System.out.println("ordinata: [crescente dall' alto verso il basso]");
+                        try{
+                            cell[0] = Integer.parseInt(readbyConsole());
+                        }catch(NumberFormatException nfe){
+                            cell[0]=-1;
+                        }
+                    } while (cell[0] < 1 || cell[0] > 4);
+                    ToolAction.setPosition(new Coordinates(cell[0] - 1, cell[1] - 1));
+
+                } else if (element.equals("3")) {
+                    viewRoundTrace();
+                    do {
+                        System.out.println("Selezionare il round del tracciato (che non sia vuoto) dal quale estrarre il dado");
+                        String result = readbyConsole();
+                        try {
+                            round = Integer.parseInt(result);
+                        }catch(NumberFormatException nfe){
+                            round=-1;
+                        }
+                    } while ((round) < 1 || round > 9 || trace[round - 1].size() == 0);
+                    System.out.println("");
+                    do {
+                            System.out.println("Selezionare un dado appartenente al round scelto");
+                            dad = readbyConsole();
+                            vecmove = dad.split("\\ ");
+                        try {
+                            value = Integer.parseInt(vecmove[0]);
+                            switch (vecmove[1].toUpperCase()) {
+                                case "RED":
+                                    color = ColorEnum.RED;
+                                    break;
+                                case "GREEN":
+                                    color = ColorEnum.GREEN;
+                                    break;
+                                case "YELLOW":
+                                    color = ColorEnum.YELLOW;
+                                    break;
+                                case "BLUE":
+                                    color = ColorEnum.BLUE;
+                                    break;
+                                case "PURPLE":
+                                    color = ColorEnum.PURPLE;
+                                    break;
+                                default:
+                                    break;
+                            }
+                            vecTrace = new Pair[trace[round - 1].size()];
+                            for (int i = 0; i < trace[round - 1].size(); i++) {
+                                vecTrace[i] = trace[round - 1].get(i);
+                            }
+                        }catch (NumberFormatException nfe){
+                            value=-1;
+                            vecTrace=null;
+                        }catch (ArrayIndexOutOfBoundsException ofb){
+                            value=-1;
+                            vecTrace=null;
+                        }
+                    } while (!pairExist(new Pair(value, color), vecTrace));
+                    ToolAction.setTracePair(new Pair(value, color));
+                    ToolAction.setTracePosition(round);
+
+                } else if (element.equals("fine")) {
+
+
+                    if (enableBoard) {
+
+                        makeToolMove();
+
+                    } else{
+                        System.out.println("il tool non è stato utilizzato\n");
+                    }
+                        viewRoundTrace();
+                        viewDadiera();
+                        viewWindow();
+                        System.out.println("\n");
+                        viewMessage();
+
+                }
+
+            } while (!element.equals("fine"));
+        } else
+        {
+            System.out.println("Richiesta utilizzo strumento respinta");
+        }
     }
 
     private void viewElements () {
@@ -657,9 +723,11 @@ public class SagradaCLI extends Thread implements UI {
             } while (!response.equals("S") && !response.equals("n"));
         } while (response.equals("S"));
     }
+
     @Override
     public void passTurn () {
         clientPlayer.pass();
+        System.out.println("\n\n\n\n\nAttendere il proprio turno\n\n\n\n");
     }
 
     @Override
@@ -858,6 +926,7 @@ public class SagradaCLI extends Thread implements UI {
 
     public void popUPMessage ( int toolID, String str){
         String result;
+        ColorEnum color=null;
         switch (toolID) {
             case 1:
                 System.out.println("\n Cambia il valore:\n");
@@ -878,7 +947,27 @@ public class SagradaCLI extends Thread implements UI {
                     System.out.println("Seleziona il numero del dado!");
                     result = readbyConsole();
                 } while (Integer.parseInt(result) > 6 || Integer.parseInt(result) < 1);
-                ToolAction.setDadieraPair(new Pair(Integer.parseInt(result)));
+
+                switch (str.toUpperCase()) {
+                    case "RED":
+                        color = ColorEnum.RED;
+                        break;
+                    case "GREEN":
+                        color = ColorEnum.GREEN;
+                        break;
+                    case "YELLOW":
+                        color = ColorEnum.YELLOW;
+                        break;
+                    case "BLUE":
+                        color = ColorEnum.BLUE;
+                        break;
+                    case "PURPLE":
+                        color = ColorEnum.PURPLE;
+                        break;
+                    default:
+                        break;
+                }
+                ToolAction.setDadieraPair(new Pair(Integer.parseInt(result),color));
                 makeToolMove();
                 break;
         }
