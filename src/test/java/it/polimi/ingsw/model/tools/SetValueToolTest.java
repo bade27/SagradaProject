@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class SetValueToolTest {
 
@@ -49,8 +50,8 @@ class SetValueToolTest {
         adapter = new ServerModelAdapter(new Dadiera(), new RoundTrace(), new TokenTurn());
     }
 
-    //positive test for the 1st tool
-    @Test
+
+    @Test   //test for the 1st tool
     void useToolTest() throws ParserXMLException, IllegalStepException, IllegalDiceException, NotEnoughDiceException {
 
         tool = ToolsFactory.getTools(toolNames[0].toString());
@@ -61,14 +62,39 @@ class SetValueToolTest {
         adapter.getDadiera().mix(0);
         for(int i = 0; i < dadieraDice.length; i++)
             adapter.getDadiera().addDice(dadieraDice[i]);
-
-        new Wrapper<>(new Dice(3, ColorEnum.WHITE)).myFunction();
-        new Wrapper<>("inc").myFunction();
+        //test the absence of parameters (the test fails)
         new Wrapper<>(adapter).myFunction();
+        assertThrows(IllegalStepException.class, () -> tool.use());
 
-        int oldPrice = tool.getPrice();
+        Tools.setAllToNull();
+
+        //tests what happens if I decrement a 1
+        new Wrapper<>(adapter).myFunction();
+        new Wrapper<>("dec").myFunction();
+        new Wrapper<>(new Dice(1, ColorEnum.WHITE)).myFunction();
+        assertThrows(IllegalStepException.class, () -> tool.use());
+        assertEquals(1, tool.getPrice());
+
+        Tools.setAllToNull();
+
+        //tests what happens if I increment a 6
+        new Wrapper<>(adapter).myFunction();
+        new Wrapper<>("inc").myFunction();
+        new Wrapper<>(new Dice(6, ColorEnum.WHITE)).myFunction();
+        assertThrows(IllegalStepException.class, () -> tool.use());
+        assertEquals(1, tool.getPrice());
+
+        Tools.setAllToNull();
+
+
+        //now test the correct use and set up of the tool
+        new Wrapper<>(adapter).myFunction();
+        new Wrapper<>("inc").myFunction();
+        new Wrapper<>(new Dice(3, ColorEnum.WHITE)).myFunction();
+
         tool.use();
         assertEquals(2, tool.getPrice());
+        Tools.setAllToNull();
     }
 
 

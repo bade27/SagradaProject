@@ -1,130 +1,99 @@
 package it.polimi.ingsw.model.tools;
 
-import it.polimi.ingsw.exceptions.IllegalDiceException;
-import it.polimi.ingsw.exceptions.ParserXMLException;
+import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.ColorEnum;
+import it.polimi.ingsw.model.Dadiera;
 import it.polimi.ingsw.model.Dice;
-import it.polimi.ingsw.model.Window;
+import it.polimi.ingsw.model.RoundTrace;
+import it.polimi.ingsw.remoteInterface.Coordinates;
+import it.polimi.ingsw.server.MatchHandler;
+import it.polimi.ingsw.server.ServerModelAdapter;
+import it.polimi.ingsw.server.TokenTurn;
+import it.polimi.ingsw.utilities.FileLocator;
+import it.polimi.ingsw.utilities.LogFile;
+import it.polimi.ingsw.utilities.ParserXML;
+import it.polimi.ingsw.utilities.Wrapper;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.opentest4j.TestAbortedException;
 
-import java.util.Random;
+import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class MoveGridGridToolTest {
-/*
-    private Window window;
-    private MoveGridGridTool mggt;
+
+    private ServerModelAdapter adapter;
+    private Tools tool;
+    private int nGioc;
+    private static String[] toolNames;
+    private static ArrayList<String []> cards;
+    private static MatchHandler matchHandler;
+
+    @BeforeAll
+    static void setUpTools() throws ParserXMLException {
+        ArrayList<Integer> validIndices = new ArrayList<>();
+        validIndices.add(1);
+        validIndices.add(2);
+        validIndices.add(3);
+        validIndices.add(11);
+        ArrayList<String> toolNamesTmp;
+        toolNamesTmp = ParserXML.readToolsNames(FileLocator.getToolsListPath());
+        for(int i = 0; i < toolNamesTmp.size(); i++)
+            if(!validIndices.contains(i))
+                toolNamesTmp.remove(i);
+        toolNames = toolNamesTmp.toArray(new String[toolNamesTmp.size()]);
+        cards = ParserXML.readWindowsName(FileLocator.getWindowListPath());
+    }
 
     @BeforeEach
-    void setUp() {
-        try {
-            window = new Window("resources/vetrate/xml/kaleidoscopic_dream.xml");
-        }catch (ParserXMLException ex) {
-            throw new TestAbortedException();
-        }
+    void setup() {
+        adapter = new ServerModelAdapter(new Dadiera(), new RoundTrace(), new TokenTurn());
+        LogFile logFile = new LogFile();
+        logFile.createLogFile("tooltest");
+        adapter.setLog(logFile);
     }
 
-    @Test
-    void moveOneDieToollevel1() throws IllegalDiceException {
-        mggt = new MoveGridGridTool(2, "Pennello per Eglomise");
-        Random col=new Random();
-        Random num=new Random();
-        int value=num.nextInt(6)+1;
-        ColorEnum color=null;
-        switch (col.nextInt(5))
-        {case 0:
-            color = ColorEnum.RED;
-            break;
-            case 1:
-                color = ColorEnum.GREEN;
-                break;
-            case 2:
-                color = ColorEnum.BLUE;
-                break;
-            case 3:
-                color = ColorEnum.YELLOW;
-                break;
-            case 4:
-                color = ColorEnum.PURPLE;
-                break;
+    @Test   //test for 2nd tool
+    void useToolTest() throws ParserXMLException, ModelException, IllegalStepException,
+            IllegalDiceException, NotEnoughDiceException {
+        //setting up the "environment"
+        tool = ToolsFactory.getTools(toolNames[0].toString());
+        Tools[] ts = new Tools[]{tool, ToolsFactory.getTools(toolNames[0].toString()),
+                ToolsFactory.getTools(toolNames[0].toString())};
+        adapter.setToolCards(ts);
+        adapter.getDadiera().mix(0);
+        adapter.getDadiera().addDice(new Dice(1, ColorEnum.YELLOW));
+        adapter.getDadiera().addDice(new Dice(2, ColorEnum.GREEN));
+        //the window used for this test is kaleidoscopic dream
+        //it'll attempt to move the green dice from cell (0, 1) into the blue-expecting cell (1, 0)
+        adapter.initializeWindow(cards.get(0)[0]);
+        adapter.setCanMove(true);
+        //i row, j col
+        Dice d1 = adapter.getDadiera().getDice(1);
+        Dice d2 = adapter.getDadiera().getDice(2);
+        adapter.addDiceToBoard(0, 0, d1);
+        adapter.setCanMove(true);
+        adapter.addDiceToBoard(1, 0, d2);
 
-            default:
-                break;
-        }
-        Dice dice=new Dice(value,color);
+        adapter.toolRequest(2);
+        //end of the setup
 
-        Dice d = new Dice(value, color);
-        int i1=new Random().nextInt(4);
-        int j1=new Random().nextInt(5);
+        new Wrapper<>(adapter).myFunction();
+        //invalid tool setup
+        assertThrows(IllegalStepException.class, () -> tool.use());
+        assertEquals(1, tool.getPrice());
 
-        while(i1!=0&&i1!=4&&j1!=0&&j1!=3) {
-            i1 = new Random().nextInt(4);
-            j1 = new Random().nextInt(5);
-        }
-        int [] pos_in={i1,j1};
-        window.addDice(i1,j1,dice,-1);
+        Tools.setAllToNull();
 
-        int i2=new Random().nextInt(4);
-        int j2=new Random().nextInt(5);
+        //proper setup and use of the tool
+        new Wrapper<>(new Coordinates(1, 0)).myFunction();
+        new Wrapper<>(new Coordinates(0, 1)).myFunction();
 
-        while(i2!=0&&i2!=4&&j2!=0&&j2!=3) {
-            i2 = new Random().nextInt(4);
-            j2 = new Random().nextInt(5);
-        }
-        int [] pos_fin={i2,j2};
-
-        Dice di1=window.getCell(i1,j1).getFrontDice();
-        Dice di2=window.getCell(i2,j2).getFrontDice();
-
+        tool.use();
+        assertEquals(2, tool.getPrice());
+        Tools.setAllToNull();
     }
 
-    @Test
-    void moveOneDieToollevel2() {
-        mggt = new MoveGridGridTool(2, "Pennello per Eglomise");
-        Random col=new Random();
-        Random num=new Random();
-        int number=num.nextInt(6)+1;
-        ColorEnum color=null;
-        switch (col.nextInt(5))
-        {case 0:
-            color = ColorEnum.RED;
-            break;
-            case 1:
-                color = ColorEnum.GREEN;
-                break;
-            case 2:
-                color = ColorEnum.BLUE;
-                break;
-            case 3:
-                color = ColorEnum.YELLOW;
-                break;
-            case 4:
-                color = ColorEnum.PURPLE;
-                break;
-
-            default:
-                break;
-        }
-        Dice dice=new Dice(number,color);
-    }
-
-    @Test
-    void moveTwoDieTool() {
-    }
-
-    @Test
-    void setPrice() {
-    }
-
-    @Test
-    void getPrice() {
-    }
-
-    @Test
-    void canPlaceDie() {
-    }
-    */
 }

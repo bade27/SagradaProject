@@ -4,9 +4,8 @@ import it.polimi.ingsw.exceptions.IllegalDiceException;
 import it.polimi.ingsw.exceptions.IllegalStepException;
 import it.polimi.ingsw.model.Dice;
 import it.polimi.ingsw.model.Window;
-import it.polimi.ingsw.remoteInterface.Coordinates;
 
-//Tool nr. 2-3-4
+//Tool nr. 2-3-4-12
 
 
 public class MoveGridGridTool extends Tools {
@@ -70,8 +69,8 @@ public class MoveGridGridTool extends Tools {
     }
 
     /**
-     * Sposta un dado presente nella griglia di gioco da una cella ad un'altra ignorando le restrizioni in base al valore di level
-     *
+     * Function of tools 2 and 3 (the difference between the two lies in the level value, aka restrictions control)
+     * @throws IllegalStepException if the tool is used incorrectly
      */
     private void moveOneDieTool() throws IllegalStepException {
         if(pos_iniz1 == null || pos_fin1 == null)
@@ -123,10 +122,7 @@ public class MoveGridGridTool extends Tools {
             price++;
     }
 
-    /**
-     * Ritorna il costo del tool
-     * @return *il prezzo del tool*
-     */
+
     public int getPrice(){
         return price;
     }

@@ -372,4 +372,7 @@ public class ServerModelAdapter
     //</editor-fold>
 
 
+    public void setLog(LogFile log) {
+        this.log = log;
+    }
 }
