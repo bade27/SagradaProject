@@ -323,6 +323,7 @@ public class MatchHandler implements Runnable
      */
     public boolean clientRegistration (ClientRemoteInterface cli)
     {
+        //subFromnConn(checkClientAlive());
         //If max number of connection is reached communicate the client he is one too many
         if (getnConn() == MAXGIOC || (isGameStarted() && getDisconnCounter() == 0))
         {
@@ -361,18 +362,19 @@ public class MatchHandler implements Runnable
             }
         } else {
             //If is some clients want to reconnect this thread handles the procedure
-            String user = "";
+            String u = "";
             try {
-                user = cli.getName();
+                u = cli.getName();
                 cli.setMatchHandler(this);
             } catch (RemoteException e) {
-                //e.printStackTrace();
+                e.printStackTrace();
+                System.out.println(u + "not accepted");
                 return false;
             }
             ServerPlayer newSP = null;
             //search for the server player corresponding to the client that wants to reconnect
             for (int i = 0; i < player.size(); i++)
-                if (!player.get(i).isInGame() && player.get(i).getUser().equals(user))
+                if (!player.get(i).isInGame() && player.get(i).getUser().equals(u))
                     newSP = player.get(i);
             if (newSP != null) {
                 //set the new communicator
@@ -382,14 +384,20 @@ public class MatchHandler implements Runnable
                     newSP.getCommunicator().setAdapter(newSP.getAdapter());
                 } catch (RemoteException e) {
                     log.addLog("Impossible to set the adapter on the new Communicator\n",e.getStackTrace());
+                    System.out.println(u + "not accepted");
+
                     return false;
                 }
                 newSP.setInGame(true);
                 decDisconnCounter();
                 newSP.reconnected();
-            } else return false;
+            } else {
+                System.out.println(u + " not accepted");
+                return false;
+            }
+            System.out.println(u + " accepted");
+            addTonConn(1);
         }
-
         return true;
     }
     //</editor-fold>
