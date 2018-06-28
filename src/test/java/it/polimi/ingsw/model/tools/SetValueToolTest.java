@@ -52,7 +52,7 @@ class SetValueToolTest {
 
 
     @Test   //test for the 1st tool
-    void useToolTest() throws ParserXMLException, IllegalStepException, IllegalDiceException, NotEnoughDiceException {
+    void useTool2Test() throws ParserXMLException, IllegalStepException, IllegalDiceException, NotEnoughDiceException {
 
         tool = ToolsFactory.getTools(toolNames[0].toString());
 

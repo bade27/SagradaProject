@@ -32,6 +32,7 @@ public class MoveGridGridTool extends Tools {
 
         switch (id)
         {
+            //case 2 and 3 call the same function, what changes is the behaviour
             case 2:
                 //...
             case 3:
@@ -49,6 +50,11 @@ public class MoveGridGridTool extends Tools {
         }
     }
 
+    /**
+     * Moves one die according to the restrictions of level
+     * @param lev level of control performed by the model
+     * @throws IllegalStepException if is impossible to move the die
+     */
     private void moveFirstDieWindow (int lev) throws IllegalStepException
     {
         try {
@@ -58,6 +64,12 @@ public class MoveGridGridTool extends Tools {
         }
     }
 
+    /**
+     * Moves one die according to the restrictions of level
+     * @param lev level of control performed by the model
+     * @throws IllegalStepException if is impossible to move the dices
+     * @throws IllegalDiceException if the dices are invalid
+     */
     private void moveSecondDieWindow (int lev) throws IllegalStepException , IllegalDiceException
     {
         try {
@@ -81,10 +93,9 @@ public class MoveGridGridTool extends Tools {
     }
 
     /**
-     * Sposto esattamente 2 dadi presenti nella griglia di gioco dalle rispettive celle iniziali a quelle finali
-     *
-     * @throws IllegalStepException
-     * @throws IllegalDiceException
+     * Function of tool 4
+     * @throws IllegalStepException if the tool is used incorrectly
+     * @throws IllegalDiceException if an invalid die is used
      */
     private void moveTwoDieTool() throws IllegalStepException, IllegalDiceException
     {
@@ -92,6 +103,7 @@ public class MoveGridGridTool extends Tools {
             throw new IllegalStepException("Riprova selezionando tutti i parametri del tool");
         moveFirstDieWindow(0);
         moveSecondDieWindow(0);
+        setPrice();
     }
 
     //tool 12

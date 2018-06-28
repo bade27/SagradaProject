@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.tools;
 
-//Tool nr.5 - 9 - 11
+//Tool nr.5 - 9
 
 import it.polimi.ingsw.exceptions.IllegalStepException;
 import it.polimi.ingsw.model.Dadiera;
@@ -24,7 +24,7 @@ public class MoveDadieraTool extends Tools {
     {
         dadiera = adapter.getDadiera();
         switch (id)
-        {   //case 2 e case 3 si chiamano la stessa funzione, che si comporta in modo diverso a seconda del id
+        {
             case 5:
                 exchangeDice();
                 break;
