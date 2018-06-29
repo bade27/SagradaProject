@@ -4,6 +4,7 @@ import it.polimi.ingsw.exceptions.ParserXMLException;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.model.Placement;
+import javafx.scene.image.Image;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
 
@@ -357,4 +358,49 @@ public class ParserXML
         }
     }
     //</editor-fold>
+
+    public static class LoadImageXMLAtRequest
+    {
+        public static Image getImageFromPath (String path)
+        {
+            try {
+                File file = new File(path);
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                Document document = documentBuilder.parse(file);
+
+                String imgPath = document.getElementsByTagName("image").item(0).getTextContent();
+                return new Image(imgPath);
+
+            }catch (Exception e){
+
+                return new Image("file:resources/carte/obbiettivi/sfondo_obbiettivi.png");
+
+            }
+        }
+
+        public static Image getPublicIntestation ()
+        {
+            try {
+                return new Image("file:resources/carte/obbiettivi/obbiettiviPubblici/Images/obbiettivi_pubblici.png");
+            }catch (Exception e){
+                return new Image("file:resources/carte/obbiettivi/sfondo_obbiettivi.png");
+            }
+        }
+
+        public static Image getPrivateIntestation ()
+        {
+            try {
+                return new Image("file:resources/carte/obbiettivi/obbiettiviPubblici/Images/obbiettivi_privati.png");
+            }catch (Exception e){
+                return new Image("file:resources/carte/obbiettivi/sfondo_obbiettivi.png");
+            }
+        }
+
+        public static Image getObjectivesBackground ()
+        {
+            return new Image("file:resources/carte/obbiettivi/sfondo_obbiettivi.png");
+        }
+
+    }
 }

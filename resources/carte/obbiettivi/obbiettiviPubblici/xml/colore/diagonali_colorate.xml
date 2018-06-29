@@ -8,4 +8,5 @@
 		<tag>color</tag>
 	</pattern>
   <description>Numero di dadi dello stesso color diagonalmente adiacenti</description>
+  <image>file:resources/carte/obbiettivi/obbiettiviPubblici/Images/diagonali_colorate.png</image>
 </card>
