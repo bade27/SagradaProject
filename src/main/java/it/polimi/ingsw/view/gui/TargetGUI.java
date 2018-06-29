@@ -1,32 +1,31 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.UI;
+import it.polimi.ingsw.utilities.ParserXML;
 import javafx.application.Platform;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
+
 
 public class TargetGUI extends GridPane{
     UI game;
-    GridPane t;
-    Button intPrivate;
-    Button bprivate;
+    private GridPane gridPane;
 
-    Button intPublic;
-    Button bpublic1;
-    Button bpublic2;
-    Button bpublic3;
+    private VBox privateGeneralBox;
+    private VBox publicGeneralBox;
+
+
+
     public TargetGUI(GridPane p, UI game){
         this.game=game;
 
-        bprivate=new Button();
-        intPrivate=new Button();
-        intPublic=new Button();
-        bpublic1 =new Button();
-        bpublic2 =new Button();
-        bpublic3 =new Button();
-        t=new GridPane();
+        privateGeneralBox = new VBox();
+        publicGeneralBox = new VBox();
+
+        gridPane =new GridPane();
 
         String [] sprivate={"Obiettivo privato"};
         String [] spublic={"Obiettivo pubblico 1","Obiettivo pubblico 2","Obiettivo pubblico 3"};
@@ -42,73 +41,69 @@ public class TargetGUI extends GridPane{
             e1.printStackTrace();
         }
 
+        BackgroundImage myBI= new BackgroundImage(ParserXML.LoadImageXMLAtRequest.getObjectivesBackground(),
+                BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT);
+        gridPane.setBackground(new Background(myBI));
 
-        t.add(intPrivate,0,0);
-        t.add(bprivate,0,1);
-        t.add(intPublic,0,2);
-        t.add(bpublic1,0,3);
-        t.add(bpublic2,0,4);
-        t.add(bpublic3,0,5);
-        p.add(t,2,0);
-        DimWindows.dimWidth(t,250);
+        gridPane.add(privateGeneralBox,0,0);
+        gridPane.add(publicGeneralBox,0,1);
+
+        gridPane.setPadding(new Insets(10,5,20,5));
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+
+        p.add(gridPane,2,0);
+        DimWindows.dimWidth(gridPane,250);
     }
 
 
     public void updatePrivateTarget(String []s)
     {
-        Platform.runLater(() -> {
-            String[] vecname0 = s[0].split("\\/");
-            String name0 = (vecname0[vecname0.length - 1].split("\\."))[0];
+        Platform.runLater(() ->
+        {
+            privateGeneralBox.getChildren().clear();
+            VBox intestationBox = new VBox();
+            VBox privateObjBox = new VBox();
 
-            Image intest = new Image("file:resources/carte/obbiettivi/obbiettiviPubblici/Images/obbiettivi_privati.png");
-            intPrivate.setGraphic(new ImageView(intest));
+            //Set images
+            intestationBox.getChildren().add(new ImageView(ParserXML.LoadImageXMLAtRequest.getPrivateIntestation()));
+            privateObjBox.getChildren().add(new ImageView(ParserXML.LoadImageXMLAtRequest.getImageFromXMLPath(s[0])));
+            intestationBox.setPadding(new Insets(0,5,10,5));
+            privateObjBox.setPadding(new Insets(0,5,10,5));
 
-            Image image = new Image("file:resources/carte/obbiettivi/obbiettiviPubblici/Images/diagonali_colorate.png");
-            bprivate.setGraphic(new ImageView(image));
-
-            //bprivate.setText(name0);
-            bprivate.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+            //Add images
+            privateGeneralBox.getChildren().add(intestationBox);
+            privateGeneralBox.getChildren().add(privateObjBox);
         });
     }
 
 
     public void updatePublicTarget(String []s){
-        Platform.runLater(() -> {
-            Image intest = new Image("file:resources/carte/obbiettivi/obbiettiviPubblici/Images/obbiettivi_pubblici.png");
-            intPublic.setGraphic(new ImageView(intest));
+        Platform.runLater(() ->
+        {
+            publicGeneralBox.getChildren().clear();
+            VBox intestationBox = new VBox();
+            VBox publicObjBox1 = new VBox();
+            VBox publicObjBox2 = new VBox();
+            VBox publicObjBox3 = new VBox();
 
+            //Set images
+            intestationBox.getChildren().add(new ImageView(ParserXML.LoadImageXMLAtRequest.getPublicIntestation()));
+            publicObjBox1.getChildren().add(new ImageView(ParserXML.LoadImageXMLAtRequest.getImageFromXMLPath(s[0])));
+            publicObjBox2.getChildren().add(new ImageView(ParserXML.LoadImageXMLAtRequest.getImageFromXMLPath(s[1])));
+            publicObjBox3.getChildren().add(new ImageView(ParserXML.LoadImageXMLAtRequest.getImageFromXMLPath(s[2])));
 
-            String[] vecname1 = s[0].split("\\/");
-            String name1 = (vecname1[vecname1.length - 1].split("\\."))[0];
+            intestationBox.setPadding(new Insets(0,5,10,5));
+            publicObjBox1.setPadding(new Insets(0,5,10,5));
+            publicObjBox2.setPadding(new Insets(0,5,10,5));
+            publicObjBox3.setPadding(new Insets(0,5,10,5));
 
-            Image image1 = new Image("file:resources/carte/obbiettivi/obbiettiviPubblici/Images/diagonali_colorate.png");
-            bpublic1.setGraphic(new ImageView(image1));
-            //bpublic1.setBackground(image1);
-
-            //bpublic1.setText(name1);
-            bpublic1.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-
-
-
-            String[] vecname2 = s[1].split("\\/");
-            String name2 = (vecname2[vecname2.length - 1].split("\\."))[0];
-
-            Image image2 = new Image("file:resources/carte/obbiettivi/obbiettiviPubblici/Images/diagonali_colorate.png");
-            bpublic2.setGraphic(new ImageView(image2));
-
-            //bpublic2.setText(name2);
-            bpublic2.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-
-
-
-            String[] vecname3 = s[02].split("\\/");
-            String name3 = (vecname3[vecname3.length - 1].split("\\."))[0];
-
-            Image image3 = new Image("file:resources/carte/obbiettivi/obbiettiviPubblici/Images/diagonali_colorate.png");
-            bpublic3.setGraphic(new ImageView(image3));
-
-            //bpublic3.setText(name3);
-            bpublic3.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+            //Add images
+            publicGeneralBox.getChildren().add(intestationBox);
+            publicGeneralBox.getChildren().add(publicObjBox1);
+            publicGeneralBox.getChildren().add(publicObjBox2);
+            publicGeneralBox.getChildren().add(publicObjBox3);
         });
     }
 

@@ -9,6 +9,8 @@ import it.polimi.ingsw.remoteInterface.Pair;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -47,11 +49,21 @@ public class GridGUI extends GridPane{
             for (int i = 0; i < 4; i++) {
                 for (int j = 0; j < 5; j++) {
                     CellButton b = new CellButton(i, j,pair[i][j].getColor(),pair[i][j].getValue());
-                    b.setPrefSize(100, 80);
-                    b.setText("" + pair[i][j].getValue());
+
+                    //Da commentare per giocare temporaneo
+                    ImageView imageView = new ImageView(GraphicDieHandler.getImageDie(pair[i][j]));
+                    imageView.setFitWidth(75);
+                    imageView.setFitHeight(75);
+                    b.setGraphic(imageView);
+
+                    //Da decommentare per giocare temporaneo
+                    /*b.setText("" + pair[i][j].getValue());
                     b.setStyle("-fx-background-color: " + pair[i][j].getColor());
+
+
                     if(pair[i][j].getColor() != null && pair[i][j].getValue() != 0)
-                        b.setFont(Font.font("ComicSans", FontWeight.EXTRA_BOLD,30));
+                        b.setFont(Font.font("ComicSans", FontWeight.EXTRA_BOLD,30));*/
+
                     b.setOnAction(event -> {
                         if (enable) {
                             if(tool) {

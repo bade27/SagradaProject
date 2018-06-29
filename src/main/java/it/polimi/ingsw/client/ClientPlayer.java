@@ -209,7 +209,14 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
         String m = chooseMap;
         chooseMap = null;
-        graph.game();
+
+        try
+        {
+            graph.game();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         return m;
     }
 
