@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model.tools;
 
-//Tool nr. 1-6-10-11
+//Tool nr. 1-6-7-10-11
 
 import it.polimi.ingsw.exceptions.IllegalDiceException;
 import it.polimi.ingsw.exceptions.IllegalStepException;

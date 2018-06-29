@@ -35,6 +35,7 @@ class SetValueToolTest {
         ArrayList<Integer> validIndices = new ArrayList<>();
         validIndices.add(0);
         validIndices.add(5);
+        validIndices.add(6);
         validIndices.add(9);
         validIndices.add(10);
         ArrayList<String> toolNamesTmp;

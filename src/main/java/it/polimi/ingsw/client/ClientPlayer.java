@@ -196,6 +196,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
                 graph.maps(s1, s2);
             } catch (Exception e) {
                 e.printStackTrace();
+                return null;
             }
             try {
                 synchronized (syncmap) {
