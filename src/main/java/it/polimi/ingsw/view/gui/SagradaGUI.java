@@ -700,6 +700,7 @@ public class SagradaGUI extends Application implements UI {
     //</editor-fold>
 
     public static void main(String[] args) {
+        GraphicDieHandler.loadDieImages();
         launch(args);
     }
 
