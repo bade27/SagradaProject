@@ -287,7 +287,7 @@ public class SagradaCLI extends Thread implements UI {
     }
 
     private void viewToken () {
-        System.out.println("Tocken:\t" + token);
+        System.out.println("Token:\t" + token);
     }
 
     @Override
