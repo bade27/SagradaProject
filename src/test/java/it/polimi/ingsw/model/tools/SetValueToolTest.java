@@ -32,17 +32,10 @@ class SetValueToolTest {
 
     @BeforeAll
     static void setUpTools() throws ParserXMLException {
-        ArrayList<Integer> validIndices = new ArrayList<>();
-        validIndices.add(0);
-        validIndices.add(5);
-        validIndices.add(6);
-        validIndices.add(9);
-        validIndices.add(10);
         ArrayList<String> toolNamesTmp;
         toolNamesTmp = ParserXML.readToolsNames(FileLocator.getToolsListPath());
-        for(int i = 0; i < toolNamesTmp.size(); i++)
-            if(!validIndices.contains(i))
-                toolNamesTmp.remove(i);
+        toolNames = new String[] {toolNamesTmp.get(0), toolNamesTmp.get(5)
+                , toolNamesTmp.get(6), toolNamesTmp.get(9), toolNamesTmp.get(10)};
         toolNames = toolNamesTmp.toArray(new String[toolNamesTmp.size()]);
     }
 
@@ -53,7 +46,7 @@ class SetValueToolTest {
 
 
     @Test   //test for the 1st tool
-    void useTool2Test() throws ParserXMLException, IllegalStepException, IllegalDiceException, NotEnoughDiceException {
+    void useTool1Test() throws ParserXMLException, IllegalStepException, IllegalDiceException, NotEnoughDiceException {
 
         tool = ToolsFactory.getTools(toolNames[0].toString());
 
