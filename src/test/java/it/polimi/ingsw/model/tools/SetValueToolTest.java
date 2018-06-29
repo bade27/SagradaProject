@@ -2,21 +2,103 @@ package it.polimi.ingsw.model.tools;
 
 import it.polimi.ingsw.exceptions.IllegalDiceException;
 import it.polimi.ingsw.exceptions.IllegalStepException;
+import it.polimi.ingsw.exceptions.NotEnoughDiceException;
+import it.polimi.ingsw.exceptions.ParserXMLException;
 import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.model.Dadiera;
 import it.polimi.ingsw.model.Dice;
+import it.polimi.ingsw.model.RoundTrace;
+import it.polimi.ingsw.server.ServerModelAdapter;
+import it.polimi.ingsw.server.TokenTurn;
+import it.polimi.ingsw.utilities.FileLocator;
+import it.polimi.ingsw.utilities.ParserXML;
+import it.polimi.ingsw.utilities.Wrapper;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
 import java.util.ArrayList;
-import java.util.Random;
+import java.util.stream.IntStream;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class SetValueToolTest {
+
+    private ServerModelAdapter adapter;
+    private Tools tool;
+    private int nGioc;
+    private static String[] toolNames;
+
+    @BeforeAll
+    static void setUpTools() throws ParserXMLException {
+        ArrayList<Integer> validIndices = new ArrayList<>();
+        validIndices.add(0);
+        validIndices.add(5);
+        validIndices.add(6);
+        validIndices.add(9);
+        validIndices.add(10);
+        ArrayList<String> toolNamesTmp;
+        toolNamesTmp = ParserXML.readToolsNames(FileLocator.getToolsListPath());
+        for(int i = 0; i < toolNamesTmp.size(); i++)
+            if(!validIndices.contains(i))
+                toolNamesTmp.remove(i);
+        toolNames = toolNamesTmp.toArray(new String[toolNamesTmp.size()]);
+    }
+
+    @BeforeEach
+    void setup() {
+        adapter = new ServerModelAdapter(new Dadiera(), new RoundTrace(), new TokenTurn());
+    }
+
+
+    @Test   //test for the 1st tool
+    void useTool2Test() throws ParserXMLException, IllegalStepException, IllegalDiceException, NotEnoughDiceException {
+
+        tool = ToolsFactory.getTools(toolNames[0].toString());
+
+        Dice[] dadieraDice = IntStream.range(1, 7)
+                .mapToObj(n -> new Dice(n, ColorEnum.WHITE))
+                .toArray(Dice[]::new);
+        adapter.getDadiera().mix(0);
+        for(int i = 0; i < dadieraDice.length; i++)
+            adapter.getDadiera().addDice(dadieraDice[i]);
+        //test the absence of parameters (the test fails)
+        new Wrapper<>(adapter).myFunction();
+        assertThrows(IllegalStepException.class, () -> tool.use());
+
+        Tools.setAllToNull();
+
+        //tests what happens if I decrement a 1
+        new Wrapper<>(adapter).myFunction();
+        new Wrapper<>("dec").myFunction();
+        new Wrapper<>(new Dice(1, ColorEnum.WHITE)).myFunction();
+        assertThrows(IllegalStepException.class, () -> tool.use());
+        assertEquals(1, tool.getPrice());
+
+        Tools.setAllToNull();
+
+        //tests what happens if I increment a 6
+        new Wrapper<>(adapter).myFunction();
+        new Wrapper<>("inc").myFunction();
+        new Wrapper<>(new Dice(6, ColorEnum.WHITE)).myFunction();
+        assertThrows(IllegalStepException.class, () -> tool.use());
+        assertEquals(1, tool.getPrice());
+
+        Tools.setAllToNull();
+
+
+        //now test the correct use and set up of the tool
+        new Wrapper<>(adapter).myFunction();
+        new Wrapper<>("inc").myFunction();
+        new Wrapper<>(new Dice(3, ColorEnum.WHITE)).myFunction();
+
+        tool.use();
+        assertEquals(2, tool.getPrice());
+        Tools.setAllToNull();
+    }
+
+
 /*
     private Dadiera d;
     private int n;

@@ -4,9 +4,8 @@ import it.polimi.ingsw.exceptions.IllegalDiceException;
 import it.polimi.ingsw.exceptions.IllegalStepException;
 import it.polimi.ingsw.model.Dice;
 import it.polimi.ingsw.model.Window;
-import it.polimi.ingsw.remoteInterface.Coordinates;
 
-//Tool nr. 2-3-4
+//Tool nr. 2-3-4-12
 
 
 public class MoveGridGridTool extends Tools {
@@ -33,6 +32,7 @@ public class MoveGridGridTool extends Tools {
 
         switch (id)
         {
+            //case 2 and 3 call the same function, what changes is the behaviour
             case 2:
                 //...
             case 3:
@@ -50,6 +50,11 @@ public class MoveGridGridTool extends Tools {
         }
     }
 
+    /**
+     * Moves one die according to the restrictions of level
+     * @param lev level of control performed by the model
+     * @throws IllegalStepException if is impossible to move the die
+     */
     private void moveFirstDieWindow (int lev) throws IllegalStepException
     {
         try {
@@ -59,6 +64,12 @@ public class MoveGridGridTool extends Tools {
         }
     }
 
+    /**
+     * Moves one die according to the restrictions of level
+     * @param lev level of control performed by the model
+     * @throws IllegalStepException if is impossible to move the dices
+     * @throws IllegalDiceException if the dices are invalid
+     */
     private void moveSecondDieWindow (int lev) throws IllegalStepException , IllegalDiceException
     {
         try {
@@ -70,8 +81,8 @@ public class MoveGridGridTool extends Tools {
     }
 
     /**
-     * Sposta un dado presente nella griglia di gioco da una cella ad un'altra ignorando le restrizioni in base al valore di level
-     *
+     * Function of tools 2 and 3 (the difference between the two lies in the level value, aka restrictions control)
+     * @throws IllegalStepException if the tool is used incorrectly
      */
     private void moveOneDieTool() throws IllegalStepException {
         if(pos_iniz1 == null || pos_fin1 == null)
@@ -82,10 +93,9 @@ public class MoveGridGridTool extends Tools {
     }
 
     /**
-     * Sposto esattamente 2 dadi presenti nella griglia di gioco dalle rispettive celle iniziali a quelle finali
-     *
-     * @throws IllegalStepException
-     * @throws IllegalDiceException
+     * Function of tool 4
+     * @throws IllegalStepException if the tool is used incorrectly
+     * @throws IllegalDiceException if an invalid die is used
      */
     private void moveTwoDieTool() throws IllegalStepException, IllegalDiceException
     {
@@ -93,6 +103,7 @@ public class MoveGridGridTool extends Tools {
             throw new IllegalStepException("Riprova selezionando tutti i parametri del tool");
         moveFirstDieWindow(0);
         moveSecondDieWindow(0);
+        setPrice();
     }
 
     //tool 12
@@ -123,10 +134,7 @@ public class MoveGridGridTool extends Tools {
             price++;
     }
 
-    /**
-     * Ritorna il costo del tool
-     * @return *il prezzo del tool*
-     */
+
     public int getPrice(){
         return price;
     }
