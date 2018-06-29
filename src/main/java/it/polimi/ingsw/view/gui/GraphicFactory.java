@@ -25,8 +25,10 @@ public class GraphicFactory {
                 String s = "tool" + (i + 1);
                 int numtool = Integer.parseInt(document.getElementsByTagName(s).item(0).getAttributes().getNamedItem("num").getTextContent());
                 String nm = document.getElementsByTagName("name").item(numtool-1).getTextContent();
+                String img = document.getElementsByTagName("image").item(numtool-1).getTextContent();
+                //System.out.println(img);
                 if (nm.equals(name))
-                    return new GraphButton(nm,numtool,"n/d");//n/d andrà sostiutito dal path immagine
+                    return new GraphButton(nm,numtool,img);
             }
             throw new ParserXMLException("Name: " + name + " Not founded in path: " + path);
         }
