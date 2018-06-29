@@ -320,7 +320,7 @@ public class SagradaGUI extends Application implements UI {
 
         stage.getScene().setRoot(gameRoot);
         stage.getScene().getWindow().setWidth(1000);
-        stage.getScene().getWindow().setHeight(650);
+        stage.getScene().getWindow().setHeight(600);
         stage.setResizable(false);
 
         closeWindow();

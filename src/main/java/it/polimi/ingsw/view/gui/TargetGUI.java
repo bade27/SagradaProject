@@ -10,7 +10,10 @@ import javafx.scene.layout.GridPane;
 public class TargetGUI extends GridPane{
     UI game;
     GridPane t;
+    Button intPrivate;
     Button bprivate;
+
+    Button intPublic;
     Button bpublic1;
     Button bpublic2;
     Button bpublic3;
@@ -18,6 +21,8 @@ public class TargetGUI extends GridPane{
         this.game=game;
 
         bprivate=new Button();
+        intPrivate=new Button();
+        intPublic=new Button();
         bpublic1 =new Button();
         bpublic2 =new Button();
         bpublic3 =new Button();
@@ -36,12 +41,16 @@ public class TargetGUI extends GridPane{
         }catch (Exception e1) {
             e1.printStackTrace();
         }
-        t.add(bprivate,0,0);
-        t.add(bpublic1,0,1);
-        t.add(bpublic2,0,2);
-        t.add(bpublic3,0,3);
+
+
+        t.add(intPrivate,0,0);
+        t.add(bprivate,0,1);
+        t.add(intPublic,0,2);
+        t.add(bpublic1,0,3);
+        t.add(bpublic2,0,4);
+        t.add(bpublic3,0,5);
         p.add(t,2,0);
-        DimWindows.dimWidth(t,300);
+        DimWindows.dimWidth(t,250);
     }
 
 
@@ -51,10 +60,13 @@ public class TargetGUI extends GridPane{
             String[] vecname0 = s[0].split("\\/");
             String name0 = (vecname0[vecname0.length - 1].split("\\."))[0];
 
+            Image intest = new Image("file:resources\\carte\\obbiettivi\\obbiettiviPubblici\\Images\\obbiettivi_privati.png");
+            intPrivate.setGraphic(new ImageView(intest));
+
             Image image = new Image("file:resources\\carte\\obbiettivi\\obbiettiviPubblici\\Images\\diagonali_colorate.png");
             bprivate.setGraphic(new ImageView(image));
 
-            bprivate.setText(name0);
+            //bprivate.setText(name0);
             bprivate.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         });
     }
@@ -62,11 +74,16 @@ public class TargetGUI extends GridPane{
 
     public void updatePublicTarget(String []s){
         Platform.runLater(() -> {
+            Image intest = new Image("file:resources\\carte\\obbiettivi\\obbiettiviPubblici\\Images\\obbiettivi_pubblici.png");
+            intPublic.setGraphic(new ImageView(intest));
+
+
             String[] vecname1 = s[0].split("\\/");
             String name1 = (vecname1[vecname1.length - 1].split("\\."))[0];
 
             Image image1 = new Image("file:resources\\carte\\obbiettivi\\obbiettiviPubblici\\Images\\diagonali_colorate.png");
             bpublic1.setGraphic(new ImageView(image1));
+            //bpublic1.setBackground(image1);
 
             //bpublic1.setText(name1);
             bpublic1.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
