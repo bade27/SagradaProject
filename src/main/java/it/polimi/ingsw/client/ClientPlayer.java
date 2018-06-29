@@ -195,7 +195,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             try {
                 graph.maps(s1, s2);
             } catch (Exception e) {
-                e.printStackTrace();
+                graph.fatalDisconnection("Errore interno");
             }
             try {
                 synchronized (syncmap) {
@@ -229,7 +229,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
                 try {
                     graph.updatePublicTarget(s[i]);
                 }catch (Exception e1){
-                    e1.printStackTrace();
+                    graph.fatalDisconnection("Errore interno");
                 }
             }
             else if (i == 1) {
@@ -237,7 +237,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
                 try {
                     graph.updateTools(s[i]);
                 }catch (Exception e2){
-                    e2.printStackTrace();
+                    graph.fatalDisconnection("Errore interno");
                 }
             }
             else if (i == 2)
@@ -246,7 +246,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
                 try {
                     graph.updatePrivateTarget(s[i]);
                 }catch (Exception e3){
-                    e3.printStackTrace();
+                    graph.fatalDisconnection("Errore interno");
                 }
             }
             //for (int j = 0; j< s[i].length ; j++)
@@ -383,7 +383,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
                 }
                 server.disconnection();
             } catch (RemoteException e) {
-                e.printStackTrace();
+                closeCommunication("Impossibile contattare il server");
             }
         }
 
