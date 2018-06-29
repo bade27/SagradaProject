@@ -91,7 +91,7 @@ public class RoundsGUI extends GridPane {
 
             /*Button indexround = (Button) round.getChildren().get(i);
 
-                Button b = new Button(indexround.getText() + "\t");
+                Button b = new Button(indexround.getText() + "\gridPane");
                 b.setDisable(true);
                 b.setOpacity(255);
                 diceInRound.add(b, 0, 0);
