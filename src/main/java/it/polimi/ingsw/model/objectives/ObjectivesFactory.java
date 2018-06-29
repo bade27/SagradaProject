@@ -34,6 +34,12 @@ public class ObjectivesFactory {
         map.put("diag", new DiagonalScore());
     }
 
+    /**
+     * creates the private objective from the relative path
+     * @param path
+     * @return
+     * @throws ModelException
+     */
     public static PrivateObjective getPrivateObjective(String path) throws ModelException
     {
 
@@ -57,6 +63,12 @@ public class ObjectivesFactory {
 
     }
 
+    /**
+     * creates the private objective from the relative path
+     * @param path
+     * @return
+     * @throws ModelException
+     */
     public static PublicObjective getPublicObjective(String path) throws ModelException {
 
         initMap();

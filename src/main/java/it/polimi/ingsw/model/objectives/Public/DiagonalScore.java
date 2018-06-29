@@ -9,11 +9,11 @@ public class DiagonalScore extends Score {
 
     /**
      *
-     * @param valore
+     * @param value
      * @param grid
      * @return the total score for this objective
      */
-    public int calcScore(int valore, Cell[][] grid) {
+    public int calcScore(int value, Cell[][] grid) {
 
         Map<Integer, ColorEnum> colors = new HashMap<>();
         colors.put(0, ColorEnum.RED);

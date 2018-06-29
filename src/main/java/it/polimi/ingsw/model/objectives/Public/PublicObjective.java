@@ -21,19 +21,15 @@ public class PublicObjective {
     }
 
     /**
-     *
-     * @param vetrata
-     *@return *restituisce il score (relativo all'obbiettivo) che il giocatore ha totalizzato*
+     *  calculate the player's score
+     * @param window of the player
+     *@return gets the player's score
      */
-    public int getScore(Window vetrata) {
-        Cell[][] grid = vetrata.getGrid();
+    public int getScore(Window window) {
+        Cell[][] grid = window.getGrid();
         return score.calcScore(value, grid);
     }
 
-    /**
-     *
-     * i getter seguenti restituiscono i campi privati della classe (score escluso)
-     */
     public String getName() {
         return name;
     }
@@ -43,7 +39,6 @@ public class PublicObjective {
     }
 
     public int getValue() {
-        //score diagonale non ha un value predefinito, ma varia da partita a partita
         return score.getClass().getSimpleName().equals("DiagonalScore") ?
                 0 : value;
 
