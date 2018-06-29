@@ -261,9 +261,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     //<editor-fold desc="Update graphic turn">
     @Override
     public String updateGraphic(Pair[] dadiera) throws ClientOutOfReachException, RemoteException {
-        System.out.println("entra");
         setServerAlive(true);
-        System.out.println("esce");
         graph.updateDadiera(dadiera);
 
         return "ok";

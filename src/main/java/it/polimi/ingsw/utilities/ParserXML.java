@@ -134,6 +134,25 @@ public class ParserXML
             throw new ParserXMLException("Impossible to read difficult from XML " + path);
         }
     }
+
+    /**
+     * Read and return from xml the name about board passed in path
+     * @param path XML file location
+     * @return name of board
+     */
+    public static String readWindowName (String path) throws ParserXMLException
+    {
+        try {
+            File file = new File(path);
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document document = documentBuilder.parse(file);
+
+            return document.getElementsByTagName("name").item(0).getTextContent();
+        }catch (Exception e){
+            throw new ParserXMLException("Impossible to read difficult from XML " + path);
+        }
+    }
     //</editor-fold>
 
     //<editor-fold desc="Objective XML">
@@ -166,6 +185,7 @@ public class ParserXML
             throw new ParserXMLException("Impossible to read file: " + path);
         }
     }
+
     //</editor-fold>
 
     //<editor-fold desc="Tool XML">
@@ -200,6 +220,8 @@ public class ParserXML
             throw new ParserXMLException("Impossible to read file: " + path);
         }
     }
+
+
 
     //</editor-fold>
 

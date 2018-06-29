@@ -3,7 +3,9 @@ package it.polimi.ingsw.view.gui;
 import it.polimi.ingsw.UI;
 import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.client.ToolAction;
+import it.polimi.ingsw.exceptions.ParserXMLException;
 import it.polimi.ingsw.remoteInterface.Pair;
+import it.polimi.ingsw.utilities.ParserXML;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -13,9 +15,9 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -59,7 +61,9 @@ public class SagradaGUI extends Application implements UI {
         Label l=new Label("Benvenuto!");
         l.setFont(Font.font("verdana",  FontWeight.BOLD, FontPosture.REGULAR,30));
         Button b=new Button("gioca");
-        b.setPrefSize(100,50);
+
+
+        b.setPrefSize(120,50);
         welcomeRoot.getChildren().add(l);
         welcomeRoot.getChildren().add(b);
         b.setOnAction(new EventHandler<ActionEvent>() {
@@ -165,11 +169,6 @@ public class SagradaGUI extends Application implements UI {
                         e.printStackTrace();
                         Thread.currentThread().interrupt();
                     }
-                    /*try {
-                        //game();
-                    }catch (Exception e){
-                        e.printStackTrace();
-                    }*/
                 }else{
                     t.setFill(Color.INDIANRED);
                     t.setText("valori in input non validi!");
@@ -187,6 +186,7 @@ public class SagradaGUI extends Application implements UI {
         stage.getScene().setRoot(loginRoot);
         //stage.show();
         stage.setResizable(false);
+        closeWindow();
     }
 
     @Override
@@ -198,21 +198,27 @@ public class SagradaGUI extends Application implements UI {
         GridPane mapsgrid=new GridPane();
         mapsRoot.getChildren().add(mapsgrid);
 
-        String [] vecname1=s1[0].split("\\/");
-        String [] vecname2=s1[1].split("\\/");
-        String [] vecname3=s2[0].split("\\/");
-        String [] vecname4=s2[1].split("\\/");
 
+        String n1 = "",n2 = "",n3 = "",n4 = "";
+        int d1 = 0,d2 = 0,d3 = 0,d4 = 0;
+        try
+        {
+            n1= ParserXML.readWindowName(s1[0]);
+            d1 = ParserXML.readBoardDifficult(s1[0]);
+            n2 = ParserXML.readWindowName(s1[1]);
+            d2 = ParserXML.readBoardDifficult(s1[1]);
+            n3 = ParserXML.readWindowName(s2[0]);
+            d3 = ParserXML.readBoardDifficult(s2[0]);
+            n4 = ParserXML.readWindowName(s2[1]);
+            d4 = ParserXML.readBoardDifficult(s2[1]);
+        }catch (ParserXMLException e){
+            e.printStackTrace();
+        }
 
-        String name1=(vecname1[vecname1.length-1].split("\\."))[0];
-        String name2=(vecname2[vecname2.length-1].split("\\."))[0];
-        String name3=(vecname3[vecname3.length-1].split("\\."))[0];
-        String name4=(vecname4[vecname4.length-1].split("\\."))[0];
-
-        Button map1f=new Button(name1);
-        Button map1r=new Button(name2);
-        Button map2f=new Button(name3);
-        Button map2r=new Button(name4);
+        Button map1f=new Button(n1 + "\n\nDifficoltà: " + d1);
+        Button map1r=new Button(n2 + "\n\nDifficoltà: " + d2);
+        Button map2f=new Button(n3 + "\n\nDifficoltà: " + d3);
+        Button map2r=new Button(n4 + "\n\nDifficoltà: " + d4);
 
         mapsgrid.add(map1f,0,0);
         mapsgrid.add(map1r,0,1);
@@ -261,6 +267,7 @@ public class SagradaGUI extends Application implements UI {
         stage.getScene().setRoot(mapsRoot);
         //stage.show();
         stage.setResizable(false);
+        closeWindow();
     }
     @Override
     public void game() {
@@ -312,16 +319,11 @@ public class SagradaGUI extends Application implements UI {
         gameRoot.setBottom(bottom);
 
         stage.getScene().setRoot(gameRoot);
-        stage.getScene().getWindow().setWidth(800);
-        stage.getScene().getWindow().setHeight(500);
+        stage.getScene().getWindow().setWidth(1000);
+        stage.getScene().getWindow().setHeight(650);
         stage.setResizable(false);
 
-        stage.setOnCloseRequest(e -> {
-            if (clientPlayer != null)
-                clientPlayer.disconnect();
-            Platform.exit();
-            System.exit(0);
-        });
+        closeWindow();
     }
 
     @Override
@@ -346,12 +348,7 @@ public class SagradaGUI extends Application implements UI {
         //stage.show();
         stage.getScene().setRoot(loadingRoot);
         stage.setResizable(false);
-        stage.setOnCloseRequest(e -> {
-            if (clientPlayer != null)
-                clientPlayer.disconnect();
-            Platform.exit();
-            System.exit(0);
-        });
+        closeWindow();
     }
 
     @Override
@@ -383,12 +380,7 @@ public class SagradaGUI extends Application implements UI {
 
         stage.getScene().setRoot(discRoot);
         stage.setResizable(false);
-        stage.setOnCloseRequest(e -> {
-            if (clientPlayer != null)
-                clientPlayer.disconnect();
-            Platform.exit();
-            System.exit(0);
-        });
+        closeWindow();
     }
 
     @Override
@@ -407,8 +399,10 @@ public class SagradaGUI extends Application implements UI {
         fatDicRoot.setSpacing(10);
         stage.getScene().setRoot(fatDicRoot);
         stage.setResizable(false);
+        closeWindow();
     }
 
+    @Override
     public void endGame(String [] name, int [] record){
         int max=0;
         String tempName;
@@ -465,8 +459,60 @@ public class SagradaGUI extends Application implements UI {
         resultsRoot.setSpacing(40);
         stage.getScene().setRoot(resultsRoot);
         stage.setResizable(false);
+        closeWindow();
     }
 
+
+    //<editor-fold desc="Popup">
+    /**
+     * retrieve necessary information for tools 1 and 11
+     * @param toolID
+     * @param str
+     */
+    public void popUPMessage(int toolID, String str) {
+        switch (toolID) {
+            case 1:
+                Platform.runLater(() -> {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setHeaderText("Cambia il valore");
+                    alert.setContentText("Come desideri cambiare il valore del dado?");
+
+                    ButtonType buttonType1 = new ButtonType("Incrementa");
+                    ButtonType buttonType2 = new ButtonType("Decrementa");
+
+                    alert.getButtonTypes().setAll(buttonType1, buttonType2, ButtonType.CLOSE);
+                    Optional<ButtonType> result = alert.showAndWait();
+
+                    if (result.get() == buttonType1)
+                        ToolAction.setInstruction("inc");
+                    else if (result.get() == buttonType2)
+                        ToolAction.setInstruction("dec");
+                });
+                break;
+            case 11:
+                Platform.runLater(() -> {
+                    dadieraG.setEnable(false);
+                    gridG.setEnable(false);
+                    List<Integer> choices = new ArrayList<>();
+                    choices.addAll(IntStream.range(1, 7).mapToObj(n -> (Integer) n).collect(Collectors.toList()));
+                    ChoiceDialog<Integer> dialog = new ChoiceDialog<>(1, choices);
+                    dialog.setTitle("Selezione valore");
+                    dialog.setHeaderText("Seleziona il numero del dado!");
+                    dialog.setContentText("Il tuo dado è " + str);
+                    Optional<Integer> result = dialog.showAndWait();
+                    if(result.isPresent())
+                        ToolAction.setDadieraPair(new Pair(result.get()));
+                    else ToolAction.setDadieraPair(null);
+                    makeToolMove();
+                    dadieraG.setEnable(true);
+                    gridG.setEnable(true);
+                });
+                break;
+        }
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="Update Client">
     /**
      * updates the dice displayed on dadiera
      * @param p
@@ -524,6 +570,64 @@ public class SagradaGUI extends Application implements UI {
     public void updateTokens(int n) {
         System.out.println("num of remaining tokens: " + n);
         tokenG.updateTockens(n);
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="Utilities">
+    /**
+     * translates color names to italian
+     * @return the map with the translation
+     */
+    private Map<String, String> tranlsateColors() {
+        Map<String, String> map = new HashMap<>();
+        map.put("red", "rosso");
+        map.put("green", "verde");
+        map.put("yellow", "giallo");
+        map.put("blue", "blu");
+        map.put("purple", "viola");
+        return map;
+    }
+
+    /**
+     * checks if the ip address given by the user is valid.
+     * if the user doesn't insert an address, a default one is loaded from the setting file
+     * @param ip server address
+     * @return weather the address is valid or not
+     */
+    private boolean isIPAddressValid(String ip) {
+        if(ip.isEmpty())
+            return true;
+
+        try{
+            String[] parts = ip.split("\\.");
+
+            if(parts.length != 4)
+                return false;
+
+            for (String s : parts) {
+                int i = Integer.parseInt(s);
+                if(i < 0 || i > 255)
+                    return false;
+            }
+
+            if(ip.endsWith("."))
+                return false;
+
+            return true;
+        } catch (NumberFormatException nfe) {
+            return false;
+        }
+    }
+    private boolean isNameValid(String name){
+        if(name.isEmpty())
+            return false;
+        /*if(nome esiste gia)
+            return false;*/
+        return true;
+    }
+
+    public void deletePlayer() {
+        clientPlayer = null;
     }
 
     /**
@@ -584,108 +688,16 @@ public class SagradaGUI extends Application implements UI {
         clientPlayer.pass();
     }
 
-    /**
-     * retrieve necessary information for tools 1 and 11
-     * @param toolID
-     * @param str
-     */
-    public void popUPMessage(int toolID, String str) {
-        switch (toolID) {
-            case 1:
-                Platform.runLater(() -> {
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setHeaderText("Cambia il valore");
-                    alert.setContentText("Come desideri cambiare il valore del dado?");
-
-                    ButtonType buttonType1 = new ButtonType("Incrementa");
-                    ButtonType buttonType2 = new ButtonType("Decrementa");
-
-                    alert.getButtonTypes().setAll(buttonType1, buttonType2, ButtonType.CLOSE);
-                    Optional<ButtonType> result = alert.showAndWait();
-
-                    if (result.get() == buttonType1)
-                        ToolAction.setInstruction("inc");
-                    else if (result.get() == buttonType2)
-                        ToolAction.setInstruction("dec");
-                });
-                break;
-            case 11:
-                Platform.runLater(() -> {
-                    dadieraG.setEnable(false);
-                    gridG.setEnable(false);
-                    List<Integer> choices = new ArrayList<>();
-                    choices.addAll(IntStream.range(1, 7).mapToObj(n -> (Integer) n).collect(Collectors.toList()));
-                    ChoiceDialog<Integer> dialog = new ChoiceDialog<>(1, choices);
-                    dialog.setTitle("Selezione valore");
-                    dialog.setHeaderText("Seleziona il numero del dado!");
-                    dialog.setContentText("Il tuo dado è " + str);
-                    Optional<Integer> result = dialog.showAndWait();
-                    if(result.isPresent())
-                        ToolAction.setDadieraPair(new Pair(result.get()));
-                    else ToolAction.setDadieraPair(null);
-                    makeToolMove();
-                    dadieraG.setEnable(true);
-                    gridG.setEnable(true);
-                });
-                break;
-        }
+    private void closeWindow ()
+    {
+        stage.setOnCloseRequest(e -> {
+            if (clientPlayer != null)
+                clientPlayer.disconnect();
+            Platform.exit();
+            System.exit(0);
+        });
     }
-
-    /**
-     * translates color names to italian
-     * @return the map with the translation
-     */
-    private Map<String, String> tranlsateColors() {
-        Map<String, String> map = new HashMap<>();
-        map.put("red", "rosso");
-        map.put("green", "verde");
-        map.put("yellow", "giallo");
-        map.put("blue", "blu");
-        map.put("purple", "viola");
-        return map;
-    }
-
-    /**
-     * checks if the ip address given by the user is valid.
-     * if the user doesn't insert an address, a default one is loaded from the setting file
-     * @param ip server address
-     * @return weather the address is valid or not
-     */
-    private boolean isIPAddressValid(String ip) {
-        if(ip.isEmpty())
-            return true;
-
-        try{
-            String[] parts = ip.split("\\.");
-
-            if(parts.length != 4)
-                return false;
-
-            for (String s : parts) {
-                int i = Integer.parseInt(s);
-                if(i < 0 || i > 255)
-                    return false;
-            }
-
-            if(ip.endsWith("."))
-                return false;
-
-            return true;
-        } catch (NumberFormatException nfe) {
-            return false;
-        }
-    }
-    private boolean isNameValid(String name){
-        if(name.isEmpty())
-            return false;
-        /*if(nome esiste gia)
-            return false;*/
-        return true;
-    }
-
-    public void deletePlayer() {
-        clientPlayer = null;
-    }
+    //</editor-fold>
 
     public static void main(String[] args) {
         launch(args);

@@ -3,6 +3,8 @@ package it.polimi.ingsw.view.gui;
 import it.polimi.ingsw.UI;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
 public class TargetGUI extends GridPane{
@@ -15,7 +17,7 @@ public class TargetGUI extends GridPane{
     public TargetGUI(GridPane p, UI game){
         this.game=game;
 
-        bprivate =new Button();
+        bprivate=new Button();
         bpublic1 =new Button();
         bpublic2 =new Button();
         bpublic3 =new Button();
@@ -43,32 +45,56 @@ public class TargetGUI extends GridPane{
     }
 
 
-    public void updatePrivateTarget(String []s){
+    public void updatePrivateTarget(String []s)
+    {
         Platform.runLater(() -> {
             String[] vecname0 = s[0].split("\\/");
             String name0 = (vecname0[vecname0.length - 1].split("\\."))[0];
+
+            Image image = new Image("file:resources\\carte\\obbiettivi\\obbiettiviPubblici\\Images\\diagonali_colorate.png");
+            bprivate.setGraphic(new ImageView(image));
+
             bprivate.setText(name0);
             bprivate.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         });
     }
 
+
     public void updatePublicTarget(String []s){
         Platform.runLater(() -> {
             String[] vecname1 = s[0].split("\\/");
             String name1 = (vecname1[vecname1.length - 1].split("\\."))[0];
-            bpublic1.setText(name1);
+
+            Image image1 = new Image("file:resources\\carte\\obbiettivi\\obbiettiviPubblici\\Images\\diagonali_colorate.png");
+            bpublic1.setGraphic(new ImageView(image1));
+
+            //bpublic1.setText(name1);
             bpublic1.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+
+
 
             String[] vecname2 = s[1].split("\\/");
             String name2 = (vecname2[vecname2.length - 1].split("\\."))[0];
-            bpublic2.setText(name2);
+
+            Image image2 = new Image("file:resources\\carte\\obbiettivi\\obbiettiviPubblici\\Images\\diagonali_colorate.png");
+            bpublic2.setGraphic(new ImageView(image2));
+
+            //bpublic2.setText(name2);
             bpublic2.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+
+
 
             String[] vecname3 = s[02].split("\\/");
             String name3 = (vecname3[vecname3.length - 1].split("\\."))[0];
-            bpublic3.setText(name3);
+
+            Image image3 = new Image("file:resources\\carte\\obbiettivi\\obbiettiviPubblici\\Images\\diagonali_colorate.png");
+            bpublic3.setGraphic(new ImageView(image3));
+
+            //bpublic3.setText(name3);
             bpublic3.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         });
     }
+
+
 
 }
