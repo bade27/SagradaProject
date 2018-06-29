@@ -361,7 +361,7 @@ public class ParserXML
 
     public static class LoadImageXMLAtRequest
     {
-        public static Image getImageFromPath (String path)
+        public static Image getImageFromXMLPath (String path)
         {
             try {
                 File file = new File(path);
@@ -400,6 +400,11 @@ public class ParserXML
         public static Image getObjectivesBackground ()
         {
             return new Image("file:resources/carte/obbiettivi/sfondo_obbiettivi.png");
+        }
+
+        public static Image getToolsBackground ()
+        {
+            return new Image("file:resources/carte/tools/Images/sfondo_tool.png");
         }
 
     }

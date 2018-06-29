@@ -68,7 +68,7 @@ public class TargetGUI extends GridPane{
 
             //Set images
             intestationBox.getChildren().add(new ImageView(ParserXML.LoadImageXMLAtRequest.getPrivateIntestation()));
-            privateObjBox.getChildren().add(new ImageView(ParserXML.LoadImageXMLAtRequest.getImageFromPath(s[0])));
+            privateObjBox.getChildren().add(new ImageView(ParserXML.LoadImageXMLAtRequest.getImageFromXMLPath(s[0])));
             intestationBox.setPadding(new Insets(0,5,10,5));
             privateObjBox.setPadding(new Insets(0,5,10,5));
 
@@ -90,9 +90,9 @@ public class TargetGUI extends GridPane{
 
             //Set images
             intestationBox.getChildren().add(new ImageView(ParserXML.LoadImageXMLAtRequest.getPublicIntestation()));
-            publicObjBox1.getChildren().add(new ImageView(ParserXML.LoadImageXMLAtRequest.getImageFromPath(s[0])));
-            publicObjBox2.getChildren().add(new ImageView(ParserXML.LoadImageXMLAtRequest.getImageFromPath(s[1])));
-            publicObjBox3.getChildren().add(new ImageView(ParserXML.LoadImageXMLAtRequest.getImageFromPath(s[2])));
+            publicObjBox1.getChildren().add(new ImageView(ParserXML.LoadImageXMLAtRequest.getImageFromXMLPath(s[0])));
+            publicObjBox2.getChildren().add(new ImageView(ParserXML.LoadImageXMLAtRequest.getImageFromXMLPath(s[1])));
+            publicObjBox3.getChildren().add(new ImageView(ParserXML.LoadImageXMLAtRequest.getImageFromXMLPath(s[2])));
 
             intestationBox.setPadding(new Insets(0,5,10,5));
             publicObjBox1.setPadding(new Insets(0,5,10,5));

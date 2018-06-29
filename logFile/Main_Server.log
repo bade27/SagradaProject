@@ -1,18 +1,32 @@
-2018/06/29 19:32:46 >>>New Match Handler0 Created
-2018/06/29 19:32:46 Server RMI waiting for client on port  5000
-2018/06/29 19:32:46 
+2018/06/29 20:48:59 >>>New Match Handler0 Created
+2018/06/29 20:49:00 Server RMI waiting for client on port  5000
+2018/06/29 20:49:00 
 it.polimi.ingsw.server socket waiting for client on port 6000
-2018/06/29 19:32:51 Client accepted with RMI connection
-2018/06/29 19:32:51 Server RMI waiting for client on port  5000
-2018/06/29 19:32:51 >>>Match Handler0 client added
-2018/06/29 19:32:55 Client accepted with RMI connection
-2018/06/29 19:32:55 Server RMI waiting for client on port  5000
-2018/06/29 19:32:55 >>>Match Handler0 client added
-2018/06/29 19:33:10 >>>Match Handler0 Removed
-2018/06/29 19:33:28 Client accepted with RMI connection
-2018/06/29 19:33:28 Server RMI waiting for client on port  5000
-2018/06/29 19:33:28 >>>New Match Handler1 Created
-2018/06/29 19:33:32 Client accepted with RMI connection
-2018/06/29 19:33:32 Server RMI waiting for client on port  5000
-2018/06/29 19:33:32 >>>Match Handler1 client added
-2018/06/29 19:33:40 >>>Match Handler1 Removed
+2018/06/29 20:49:04 Client accepted with RMI connection
+2018/06/29 20:49:04 Server RMI waiting for client on port  5000
+2018/06/29 20:49:04 >>>Match Handler0 client added
+2018/06/29 20:49:09 Client accepted with RMI connection
+2018/06/29 20:49:09 Server RMI waiting for client on port  5000
+2018/06/29 20:49:09 >>>Match Handler0 client added
+2018/06/29 20:49:26 >>>Match Handler0 Removed
+2018/06/29 20:51:20 Client accepted with RMI connection
+2018/06/29 20:51:20 Server RMI waiting for client on port  5000
+2018/06/29 20:51:20 >>>New Match Handler1 Created
+2018/06/29 20:51:24 Client accepted with RMI connection
+2018/06/29 20:51:24 Server RMI waiting for client on port  5000
+2018/06/29 20:51:24 >>>Match Handler1 client added
+2018/06/29 20:51:40 >>>Match Handler1 Removed
+2018/06/29 20:53:28 Client accepted with RMI connection
+2018/06/29 20:53:28 Server RMI waiting for client on port  5000
+2018/06/29 20:53:28 >>>New Match Handler2 Created
+2018/06/29 20:53:33 Client accepted with RMI connection
+2018/06/29 20:53:33 Server RMI waiting for client on port  5000
+2018/06/29 20:53:33 >>>Match Handler2 client added
+2018/06/29 20:53:58 >>>Match Handler2 Removed
+2018/06/29 20:56:29 Client accepted with RMI connection
+2018/06/29 20:56:29 Server RMI waiting for client on port  5000
+2018/06/29 20:56:29 >>>New Match Handler3 Created
+2018/06/29 20:56:34 Client accepted with RMI connection
+2018/06/29 20:56:34 Server RMI waiting for client on port  5000
+2018/06/29 20:56:34 >>>Match Handler3 client added
+2018/06/29 20:56:54 >>>Match Handler3 Removed
