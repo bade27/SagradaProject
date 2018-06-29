@@ -590,7 +590,7 @@ public class SagradaGUI extends Application implements UI {
 
     /**
      * checks if the ip address given by the user is valid.
-     * if the user doesn't insert an address, a default one is loaded from the setting file
+     * if the user doesn'gridPane insert an address, a default one is loaded from the setting file
      * @param ip server address
      * @return weather the address is valid or not
      */
