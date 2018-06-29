@@ -52,6 +52,8 @@ public class ServerPlayer implements Runnable {
 
     public LogFile log;
 
+    private boolean inTurn;
+
 
     public ServerPlayer(TokenTurn tok, ServerModelAdapter adp, UsersEntry ps, ClientRemoteInterface cli, MatchHandler match)
     {
@@ -130,16 +132,23 @@ public class ServerPlayer implements Runnable {
         while (inGame)//Da cambiare con la condizione di fine partita
         {
             turnInterrupted = false;
+            inTurn = false;
             synchronized (token.getSynchronator()) {
                 try {
                     //Wait his turn
                     while (!token.isMyTurn(user))
                         token.getSynchronator().wait();
 
+                    if(!inGame) {
+                        token.deletePlayer(user);
+                        break;
+                    }
+
                     adapter.setTurnDone(false);
 
                     if (token.isEndGame()) {
-                        log.addLog("(User:" + user + ")" + " End communication with client and close connection");
+                        log.addLog("(User:" + user + ")"
+                                + " End communication with client and close connection");
                         token.getSynchronator().notifyAll();
                         return;
                     }
@@ -150,18 +159,13 @@ public class ServerPlayer implements Runnable {
                         adapter.setCanMove(true);
                         clientTurn();
                     } catch (ClientOutOfReachException e) {
-                        //closeConnection("Timeout Expired");
-                        communicator = null;
-                        log.addLog("(User: " + user + ")" + "player disconnected cause client unreachable");
+                        setPlayerAsOffline();
                         token.deletePlayer(user);
-                        possibleUsers.setUserGameStatus(user, false);
-                        mymatch.incDisconnCounter();
-                        mymatch.subFromnConn(1);
-                        inGame = false;
                         token.getSynchronator().notifyAll();
                         break;
                     }
 
+                    inTurn = true;
                     adapter.setTimer(TURN_TIMEOUT);
                     adapter.startTimer();
 
@@ -171,17 +175,11 @@ public class ServerPlayer implements Runnable {
                     }
 
                     if (isTurnInterrupted()) {
-                        //closeConnection("Timeout Expired");
-                        communicator = null;
-                        log.addLog("(User: " + user + ")" + "player disconnected cause client late in response");
+                        setPlayerAsOffline();
                         token.deletePlayer(user);
-                        possibleUsers.setUserGameStatus(user, false);
-                        mymatch.incDisconnCounter();
-                        mymatch.subFromnConn(1);
-                        inGame = false;
                         token.getSynchronator().notifyAll();
                         break;
-                    } //else System.out.println("turn ended well");
+                    }
 
                     token.getSynchronator().notifyAll();
                     token.getSynchronator().wait();
@@ -193,6 +191,21 @@ public class ServerPlayer implements Runnable {
                 }
             }
         }
+    }
+
+    public void setPlayerAsOffline() {
+        try {
+            communicator.close();
+        } catch (RemoteException e) {
+            closeConnection("Problemi di rete");
+        }
+        communicator = null;
+        log.addLog("(User: " + user + ")" +
+                "player disconnected cause client late in response");
+        possibleUsers.setUserGameStatus(user, false);
+        mymatch.incDisconnCounter();
+        mymatch.subFromnConn(1);
+        inGame = false;
     }
 
     //<editor-fold desc="Setup Phase">
@@ -452,6 +465,7 @@ public class ServerPlayer implements Runnable {
             performed = communicator.closeCommunication(s);
             if (!performed)
                 log.addLog("Impossible to communicate to client (" + user + ") cause closed connection");
+            communicator.close();
             communicator = null;
         } catch (RemoteException | ClientOutOfReachException e) {
             log.addLog("Impossible to communicate to client (" + user + ") cause closed connection");
@@ -591,7 +605,8 @@ public class ServerPlayer implements Runnable {
         assert inGame;
         if (inGame == true) {
             new Thread(this).start();
-            token.addPlayer(user);
+            if(!token.getPlayers().contains(user))
+                token.addPlayer(user);
         }
         log.addLog("User " + user + " back in match");
         //System.out.println("user " + user + " riconnesso");
@@ -620,5 +635,9 @@ public class ServerPlayer implements Runnable {
             future.cancel(true);
         }
         return (T) o;
+    }
+
+    public boolean isInTurn() {
+        return inTurn;
     }
 }

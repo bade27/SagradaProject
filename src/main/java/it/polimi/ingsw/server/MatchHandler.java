@@ -162,6 +162,7 @@ public class MatchHandler implements Runnable
 
                     //Increment total of turn
                     turnsPlayed++;
+                    log.addLog("turn " + turnsPlayed);
 
                     //Update Round Trace
                     while(dices.getDiceList().size() > 0)
@@ -323,7 +324,22 @@ public class MatchHandler implements Runnable
      */
     public boolean clientRegistration (ClientRemoteInterface cli)
     {
-        //subFromnConn(checkClientAlive());
+        //preventive check of the in-game players
+        for(int i = 0; i < player.size(); i++) {
+            if(!player.get(i).isInTurn()) {
+                if(!player.get(i).isClientAlive()) {
+                    player.get(i).setPlayerAsOffline();
+                }
+            }
+        }
+
+        //waits for all the parameters to be correctly set
+        try {
+            TimeUnit.MILLISECONDS.sleep(500);
+        } catch (InterruptedException e) {
+            return false;
+        }
+
         //If max number of connection is reached communicate the client he is one too many
         if (getnConn() == MAXGIOC || (isGameStarted() && getDisconnCounter() == 0))
         {
