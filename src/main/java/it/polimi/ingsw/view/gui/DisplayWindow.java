@@ -67,7 +67,7 @@ public class DisplayWindow extends Application {
             Platform.runLater(() -> {
                 Pair board[][] = new Pair[4][5];
                 try {
-                    File file = new File(list.get(4)[0]);
+                    File file = new File(list.get(7)[1]);
                     DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
                     DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
                     Document document = documentBuilder.parse(file);

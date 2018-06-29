@@ -2,7 +2,7 @@
 
 <list>
 
-  <numberOfCards>8</numberOfCards>
+  <numberOfCards>12</numberOfCards>
 
   <!--1-->
   <card n = "1">resources/vetrate/xml/kaleidoscopic_dream.xml</card>
@@ -36,20 +36,20 @@
   <card n = "15">resources/vetrate/xml/gravitas.xml</card>
   <card n = "16">resources/vetrate/xml/water_of_life.xml</card>
 
-<!--  5
+  <!--5-->
   <card n = "17">resources/vetrate/xml/sun_catcher.xml</card>
   <card n = "18">resources/vetrate/xml/shadow_thief.xml</card>
 
-      8
+  <!--8-->
   <card n = "19">resources/vetrate/xml/firelight.xml</card>
   <card n = "20">resources/vetrate/xml/suns_glory.xml</card>
 
-      10
+  <!--10-->
   <card n = "21">resources/vetrate/xml/fulgor_del_cielo.xml</card>
   <card n = "22">resources/vetrate/xml/luz_celestial.xml</card>
 
 
-      11
+  <!--11-->
   <card n = "23">resources/vetrate/xml/chromatic_splendor.xml</card>
   <card n = "24">resources/vetrate/xml/comitas.xml</card>
 
