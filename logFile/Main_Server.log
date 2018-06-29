@@ -1,11 +1,11 @@
-2018/06/29 14:43:04 >>>New Match Handler0 Created
-2018/06/29 14:43:04 Server RMI waiting for client on port  5000
-2018/06/29 14:43:04 
+2018/06/29 17:33:53 >>>New Match Handler0 Created
+2018/06/29 17:33:53 Server RMI waiting for client on port  5000
+2018/06/29 17:33:53 
 it.polimi.ingsw.server socket waiting for client on port 6000
-2018/06/29 14:43:14 Client accepted with RMI connection
-2018/06/29 14:43:14 Server RMI waiting for client on port  5000
-2018/06/29 14:43:14 >>>Match Handler0 client added
-2018/06/29 14:43:19 Client accepted with RMI connection
-2018/06/29 14:43:19 Server RMI waiting for client on port  5000
-2018/06/29 14:43:19 >>>Match Handler0 client added
-2018/06/29 14:43:47 >>>Match Handler0 Removed
+2018/06/29 17:34:00 Client accepted with RMI connection
+2018/06/29 17:34:00 Server RMI waiting for client on port  5000
+2018/06/29 17:34:00 >>>Match Handler0 client added
+2018/06/29 17:34:06 Client accepted with RMI connection
+2018/06/29 17:34:06 Server RMI waiting for client on port  5000
+2018/06/29 17:34:06 >>>Match Handler0 client added
+2018/06/29 17:34:15 >>>Match Handler0 Removed

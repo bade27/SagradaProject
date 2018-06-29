@@ -37,7 +37,7 @@ public class ToolsGUI {
                 b1 = GraphicFactory.getToolButtonFromName(FileLocator.getToolsListPath(),name[0]);
 
                 //b1.setText(name[0] + "\nTool nr." + b1.getIdTool() );
-                Image image1 = new Image("file:resources\\carte\\tools\\Images\\tool_1.png");
+                Image image1 = new Image("file:resources/carte/tools/Images/tool_1.png");
                 b1.setGraphic(new ImageView(image1));
 
                 b1.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
@@ -51,7 +51,7 @@ public class ToolsGUI {
                 b2 = GraphicFactory.getToolButtonFromName(FileLocator.getToolsListPath(),name[1]);
 
                 //b2.setText(name[1]  + "\nTool nr." + b2.getIdTool() );
-                Image image2 = new Image("file:resources\\carte\\tools\\Images\\tool_1.png");
+                Image image2 = new Image("file:resources/carte/tools/Images/tool_1.png");
                 b2.setGraphic(new ImageView(image2));
 
                 b2.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
@@ -65,7 +65,7 @@ public class ToolsGUI {
 
                 b3 = GraphicFactory.getToolButtonFromName(FileLocator.getToolsListPath(),name[2]);
                 //b3.setText(name[2]  + "\nTool nr." + b3.getIdTool() );
-                Image image3 = new Image("file:resources\\carte\\tools\\Images\\tool_1.png");
+                Image image3 = new Image("file:resources/carte/tools/Images/tool_1.png");
                 b3.setGraphic(new ImageView(image3));
 
                 b3.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);

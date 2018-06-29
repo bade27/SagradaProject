@@ -60,10 +60,10 @@ public class TargetGUI extends GridPane{
             String[] vecname0 = s[0].split("\\/");
             String name0 = (vecname0[vecname0.length - 1].split("\\."))[0];
 
-            Image intest = new Image("file:resources\\carte\\obbiettivi\\obbiettiviPubblici\\Images\\obbiettivi_privati.png");
+            Image intest = new Image("file:resources/carte/obbiettivi/obbiettiviPubblici/Images/obbiettivi_privati.png");
             intPrivate.setGraphic(new ImageView(intest));
 
-            Image image = new Image("file:resources\\carte\\obbiettivi\\obbiettiviPubblici\\Images\\diagonali_colorate.png");
+            Image image = new Image("file:resources/carte/obbiettivi/obbiettiviPubblici/Images/diagonali_colorate.png");
             bprivate.setGraphic(new ImageView(image));
 
             //bprivate.setText(name0);
@@ -74,14 +74,14 @@ public class TargetGUI extends GridPane{
 
     public void updatePublicTarget(String []s){
         Platform.runLater(() -> {
-            Image intest = new Image("file:resources\\carte\\obbiettivi\\obbiettiviPubblici\\Images\\obbiettivi_pubblici.png");
+            Image intest = new Image("file:resources/carte/obbiettivi/obbiettiviPubblici/Images/obbiettivi_pubblici.png");
             intPublic.setGraphic(new ImageView(intest));
 
 
             String[] vecname1 = s[0].split("\\/");
             String name1 = (vecname1[vecname1.length - 1].split("\\."))[0];
 
-            Image image1 = new Image("file:resources\\carte\\obbiettivi\\obbiettiviPubblici\\Images\\diagonali_colorate.png");
+            Image image1 = new Image("file:resources/carte/obbiettivi/obbiettiviPubblici/Images/diagonali_colorate.png");
             bpublic1.setGraphic(new ImageView(image1));
             //bpublic1.setBackground(image1);
 
@@ -93,7 +93,7 @@ public class TargetGUI extends GridPane{
             String[] vecname2 = s[1].split("\\/");
             String name2 = (vecname2[vecname2.length - 1].split("\\."))[0];
 
-            Image image2 = new Image("file:resources\\carte\\obbiettivi\\obbiettiviPubblici\\Images\\diagonali_colorate.png");
+            Image image2 = new Image("file:resources/carte/obbiettivi/obbiettiviPubblici/Images/diagonali_colorate.png");
             bpublic2.setGraphic(new ImageView(image2));
 
             //bpublic2.setText(name2);
@@ -104,7 +104,7 @@ public class TargetGUI extends GridPane{
             String[] vecname3 = s[02].split("\\/");
             String name3 = (vecname3[vecname3.length - 1].split("\\."))[0];
 
-            Image image3 = new Image("file:resources\\carte\\obbiettivi\\obbiettiviPubblici\\Images\\diagonali_colorate.png");
+            Image image3 = new Image("file:resources/carte/obbiettivi/obbiettiviPubblici/Images/diagonali_colorate.png");
             bpublic3.setGraphic(new ImageView(image3));
 
             //bpublic3.setText(name3);
