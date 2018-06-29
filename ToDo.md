@@ -21,7 +21,7 @@
 		- [X] Timer setup
 		- [X] Passa turno finisce tutte le mosse a metà
 		- [X] Registrazione dei giocatori in riconnessione
-		- [ ] Check server su client tramite ping 
+		- [X] Check server su client tramite ping 
 		- [X] Punteggio negativo se ti disconnetti
 		- [X] Un log per ogni Match Handler
 		- [X] Setup vetrata anche se ti scolleghi durante il setup (aggiuntivo)
