@@ -254,7 +254,7 @@ public class SagradaCLI extends Thread implements UI {
     @Override
     public void updateOpponents(Pair[][] pair, String user, boolean b) {
         boolean exist = false;
-        for (int i = 0; i < opponents.size() && exist == false; i++) {
+        for (int i = 0; i < opponents.size() && !exist; i++) {
             if (((opponents.get(i)).getName()).equals(user)) {
                 exist = true;
                 (opponents.get(i)).setGrid(pair);
@@ -274,8 +274,8 @@ public class SagradaCLI extends Thread implements UI {
         Color color = Color.ANSI_NOCOLOR;
         printbyFile("resources/titleCli/Avversari.txt", color);
         for (int k = 0; k < opponents.size(); k++) {
-            user = (String) (opponents.get(k)).getName();
-            pair = (Pair[][]) (opponents.get(k)).getGrid();
+            user = (opponents.get(k)).getName();
+            pair = (opponents.get(k)).getGrid();
             for (int i = 0; i < ((cellWidth * 5) - (user.length()) + 4) / 2; i++)
                 System.out.print("-");
             System.out.print(user);
