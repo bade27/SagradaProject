@@ -254,4 +254,9 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
     public String getName() throws RemoteException {
         return client.getName();
     }
+
+    @Override
+    public void close() throws RemoteException {
+        //unused
+    }
 }

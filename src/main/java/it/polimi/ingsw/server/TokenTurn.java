@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class TokenTurn
 {
@@ -496,5 +497,10 @@ public class TokenTurn
 
     public synchronized void setJustDeleting(boolean justDeleting) {
         this.justDeleting = justDeleting;
+    }
+
+    public synchronized ArrayList<String> getPlayers() {
+        String[] names = players.stream().map(p -> p.getName()).toArray(String[]::new);
+        return new ArrayList<>(Arrays.asList(names));
     }
 }

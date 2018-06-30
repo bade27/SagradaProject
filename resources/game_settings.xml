@@ -3,16 +3,16 @@
 <game>
 
 	<general_info>
-		<max_players>2</max_players> <!-- number of max players in game  -->
+		<max_players>3</max_players> <!-- number of max players in game  -->
 		<threshold_players>2</threshold_players> <!-- number of min players in game  -->
 		<num_turns>10</num_turns>
 	</general_info>
 	
 	<time_intervals>
 		<threshold_time_laps>100</threshold_time_laps>	<!-- value in seconds  -->
-		<setup_time_laps>300</setup_time_laps>	<!-- value in seconds  -->
+		<setup_time_laps>30</setup_time_laps>	<!-- value in seconds  -->
 		<ping_time_laps>500</ping_time_laps>	<!-- value in milliseconds  -->
-		<turn_time_laps>300</turn_time_laps>		<!-- value in seconds  -->
+		<turn_time_laps>60</turn_time_laps>		<!-- value in seconds  -->
 		<server_status_time_laps>1200</server_status_time_laps>		<!-- value in seconds (it must be turn_time*4)  -->
 	</time_intervals>
 	
