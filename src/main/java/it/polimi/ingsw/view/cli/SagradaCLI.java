@@ -889,6 +889,7 @@ public class SagradaCLI extends Thread implements UI {
     }
 
     private void printbyFile (String s, Color color){
+        System.out.println("\n\n");
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(s));
             String line = bufferedReader.readLine();
