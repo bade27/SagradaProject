@@ -20,10 +20,10 @@ public class ColRowScore extends Score {
     }
 
     /**
-     *
+     *  calculates the player's score
      * @param value
      * @param grid
-     * @return *il score totalizzato dal giocatore*
+     * @return *the player's score*
      */
     public int calcScore(int value, Cell[][] grid) {
         int valid_cols = 0;
