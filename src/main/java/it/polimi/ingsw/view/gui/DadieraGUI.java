@@ -8,6 +8,7 @@ import it.polimi.ingsw.remoteInterface.Pair;
 import javafx.application.Platform;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
 public class DadieraGUI extends GridPane {
@@ -34,7 +35,7 @@ public class DadieraGUI extends GridPane {
     {
         Pair [] pair = new Pair[9];
         for (int i = 0; i < pair.length; i++)
-            pair[i] = new Pair(0, ColorEnum.WHITE);
+            pair[i] = new Pair(0, null);
         updateGraphic(pair);
     }
 
@@ -43,43 +44,39 @@ public class DadieraGUI extends GridPane {
         Platform.runLater(() -> {
             grid.getChildren().clear();
             for (int i = 0; i < p.length; i++) {
-                Button b = new Button("  ");
-                b.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-                Pair current = p[i];
-                b.setText("" + current.getValue());
-                b.setStyle("-fx-background-color: " + current.getColor());
-                b.setOnAction(event -> {
-                    if(enable) {
-                        String tok = b.getStyle().split(" ")[1];
-                        int val = Integer.parseInt(b.getText());
-                        ColorEnum color = ColorEnum.WHITE;
-                        switch (tok.toLowerCase()) {
-                            case "red":
-                                color = ColorEnum.RED;
-                                break;
-                            case "green":
-                                color = ColorEnum.GREEN;
-                                break;
-                            case "yellow":
-                                color = ColorEnum.YELLOW;
-                                break;
-                            case "blue":
-                                color = ColorEnum.BLUE;
-                                break;
-                            case "purple":
-                                color = ColorEnum.PURPLE;
-                                break;
-                            default:
-                                break;
-                        }
+                DieButton button = new DieButton(p[i].getColor(),p[i].getValue());
+                ImageView imageView = new ImageView(GraphicDieHandler.getImageDie(button.getPair()));
+                imageView.setFitWidth(30);
+                imageView.setFitHeight(30);
+                button.setGraphic(imageView);
+                button.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);" +
+                                "-fx-background-color: transparent;" +
+                                "-fx-background-radius: 5;");
+
+                button.setOnMouseEntered(actionEvent -> {
+                    button.setStyle("-fx-effect: dropshadow(three-pass-box, white, 20, 0, 0, 0);" +
+                            "-fx-background-color: transparent;" +
+                            "-fx-background-radius: 5;");
+                });
+
+                button.setOnMouseExited(actionEvent -> {
+                    button.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);" +
+                            "-fx-background-color: transparent;" +
+                            "-fx-background-radius: 5;");
+                });
+
+
+                button.setOnAction(event -> {
+                    if(enable)
+                    {
                         if (tool) {
-                            ToolAction.setDadieraPair(new Pair(val, color));
+                            ToolAction.setDadieraPair(button.getPair());
                         } else {
-                            MoveAction.setPair(new Pair(val, color));
+                            MoveAction.setPair(button.getPair());
                         }
                     }
                 });
-                grid.add(b, i, 0);
+                grid.add(button, i, 0);
             }
         });
     }
@@ -90,6 +87,23 @@ public class DadieraGUI extends GridPane {
 
     public void setTool(boolean tool) {
         this.tool = tool;
+    }
+
+    private class DieButton extends Button
+    {
+        private ColorEnum color;
+        private int value;
+
+        private DieButton (ColorEnum c,int v)
+        {
+            color = c;
+            value = v;
+        }
+
+        private Pair getPair()
+        {
+            return new Pair(value,color);
+        }
     }
 
 }
