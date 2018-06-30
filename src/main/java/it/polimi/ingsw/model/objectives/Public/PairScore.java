@@ -20,12 +20,12 @@ public class PairScore extends Score {
     }
 
     /**
-     *
-     * @param valore
-     * @param grid
-     * @return *il numero delle coppie trovate moltiplicato per il valore della carta*
+     * calculates the player's score
+     * @param value of the objective
+     * @param grid of the player
+     * @return the number of the pairs found time the value of the objective
      */
-    public int calcScore(int valore, Cell[][] grid) {
+    public int calcScore(int value, Cell[][] grid) {
         int[] frequency = new int[2];
 
         for (int column = 0; column < grid[0].length; column++) {
@@ -41,7 +41,7 @@ public class PairScore extends Score {
             }
         }
         OptionalInt min = Arrays.stream(frequency).min();
-        return min.getAsInt() * valore;
+        return min.getAsInt() * value;
     }
 
     @Override

@@ -26,24 +26,16 @@ class MoveGridGridToolTest {
 
     private ServerModelAdapter adapter;
     private Tools tool;
-    private int nGioc;
     private static String[] toolNames;
     private static ArrayList<String []> cards;
     private static MatchHandler matchHandler;
 
     @BeforeAll
     static void setUpTools() throws ParserXMLException {
-        ArrayList<Integer> validIndices = new ArrayList<>();
-        validIndices.add(1);
-        validIndices.add(2);
-        validIndices.add(3);
-        validIndices.add(11);
         ArrayList<String> toolNamesTmp;
         toolNamesTmp = ParserXML.readToolsNames(FileLocator.getToolsListPath());
-        for(int i = 0; i < toolNamesTmp.size(); i++)
-            if(!validIndices.contains(i))
-                toolNamesTmp.remove(i);
-        toolNames = toolNamesTmp.toArray(new String[toolNamesTmp.size()]);
+        toolNames = new String[] {toolNamesTmp.get(1), toolNamesTmp.get(2)
+                , toolNamesTmp.get(3), toolNamesTmp.get(11)};
         cards = ParserXML.readWindowsName(FileLocator.getWindowListPath());
     }
 

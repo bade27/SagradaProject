@@ -17,12 +17,12 @@ public class VarietyScore extends Score {
     }
 
     /**
-     *
-     * @param valore
+     * calculates the player's score
+     * @param value
      * @param grid
-     * @return *il score totalizzato dal giocatore*
+     * @return the player's score
      */
-    public int calcScore(int valore, Cell[][] grid) {
+    public int calcScore(int value, Cell[][] grid) {
         int[] frequency = tag.equals("color") ? new int[5]
                 : new int[6];
 
@@ -38,13 +38,12 @@ public class VarietyScore extends Score {
             }
         }
         OptionalInt min = Arrays.stream(frequency).min();
-        return min.getAsInt() * valore;
+        return min.getAsInt() * value;
     }
 
     /**
-     *
      * @param d
-     * @return *la sfumatura o il colore del dado corrente a seconda dell'obbiettivo*
+     * @return the shade or the color of the element
      */
     private String getElement(Dice d) {
         return tag.equals("shade") ? String.valueOf(d.getValue())
@@ -52,10 +51,9 @@ public class VarietyScore extends Score {
     }
 
     /**
-     *
+     * increments the shades' frequency
      * @param value
      * @param f
-     * se l'obbiettivo è relativo alle sfumature, incrementa la frequenza della sfumatura corrente
      */
     private void incrementShade(String value, int[] f) {
         for(int i = 0; i < f.length; i++)
@@ -64,10 +62,9 @@ public class VarietyScore extends Score {
     }
 
     /**
-     *
+     * increments the colors' frequency
      * @param value
      * @param f
-     * se l'obbiettivo è relativo ai colori, incrementa la frequenza del colore corrente
      */
     private void incrementColor(String value, int[] f) {
 
