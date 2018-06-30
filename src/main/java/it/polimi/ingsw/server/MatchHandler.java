@@ -642,8 +642,8 @@ public class MatchHandler implements Runnable
 
             //Used to test tools, do not delete
             tools[0] = ToolsFactory.getTools(toolNames[1]);
-            /*tools[1] = ToolsFactory.getTools(toolNames[10]);
-            tools[2] = ToolsFactory.getTools(toolNames[11]);*/
+            tools[1] = ToolsFactory.getTools(toolNames[2]);
+            tools[2] = ToolsFactory.getTools(toolNames[3]);
 
             //For each players initialize tool cards already selected
             int n = getnConn();
