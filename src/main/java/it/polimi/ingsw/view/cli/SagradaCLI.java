@@ -173,7 +173,11 @@ public class SagradaCLI extends Thread implements UI {
             }
         }
         for (int k = 0; k < name.length; k++) {
-            System.out.println(name[k] + ":\t" + record[k] + "\n");
+            if(record[k]!=-1) {
+                System.out.println(name[k] + ":\t" + record[k] + "\n");
+            }else{
+                System.out.println(name[k] + ":\t" + Color.ANSI_RED.escape() + "RITIRATO" + Color.ANSI_NOCOLOR.escape() + "\n");
+            }
         }
 
         color = Color.ANSI_GREEN;
