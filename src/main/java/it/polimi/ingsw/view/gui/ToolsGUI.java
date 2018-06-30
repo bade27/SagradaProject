@@ -35,6 +35,7 @@ public class ToolsGUI {
         Platform.runLater(() -> {
             try
             {
+                System.out.println(name[0] + " " + name[1] + " " + name[2]);
                 //First Tool
                 b1 = GraphicFactory.getToolButtonFromName(FileLocator.getToolsListPath(),name[0]);
                 b1.setBackground(new Background(new BackgroundImage(ParserXML.LoadImageXMLAtRequest.getToolsBackground(),

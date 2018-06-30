@@ -549,4 +549,9 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     }
     //</editor-fold>
 
+
+    @Override
+    public void close() throws RemoteException {
+        //unused
+    }
 }

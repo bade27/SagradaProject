@@ -26,7 +26,7 @@ public class SagradaCLI extends Thread implements UI {
     private Pair[][] window;
     private ArrayList<Pair>[] trace;
     private String[] tools;
-    private ArrayList<ArrayList<Object>> opponents;
+    private ArrayList<Player> opponents;
     private int token;
     private String[] privateTarget;
     private String[] publicTarget;
@@ -41,7 +41,7 @@ public class SagradaCLI extends Thread implements UI {
         hashMap.put(ColorEnum.GREEN, Color.ANSI_BACK_GREEN);
         hashMap.put(ColorEnum.WHITE, Color.ANSI_NOCOLOR);
         hashMap.put(null, Color.ANSI_NOCOLOR);
-        opponents = new ArrayList<ArrayList<Object>>();
+        opponents = new ArrayList<Player>();
         startGame();
     }
 
@@ -173,7 +173,11 @@ public class SagradaCLI extends Thread implements UI {
             }
         }
         for (int k = 0; k < name.length; k++) {
-            System.out.println(name[k] + ":\t" + record[k] + "\n");
+            if(record[k]!=-1) {
+                System.out.println(name[k] + ":\t" + record[k] + "\n");
+            }else{
+                System.out.println(name[k] + ":\t" + Color.ANSI_RED.escape() + "RITIRATO" + Color.ANSI_NOCOLOR.escape() + "\n");
+            }
         }
 
         color = Color.ANSI_GREEN;
@@ -204,7 +208,9 @@ public class SagradaCLI extends Thread implements UI {
 
     @Override
     public void loading() {
-
+        Color color = Color.ANSI_BLUE;
+        printbyFile("resources/titleCli/Attendere.txt", color);
+        System.out.println("\n\nAttendere l'arrivo di altri giocatori");
     }
 
     @Override
@@ -249,15 +255,15 @@ public class SagradaCLI extends Thread implements UI {
     public void updateOpponents(Pair[][] pair, String user, boolean b) {
         boolean exist = false;
         for (int i = 0; i < opponents.size() && exist == false; i++) {
-            if (((opponents.get(i)).get(0)).equals(user)) {
+            if (((opponents.get(i)).getName()).equals(user)) {
                 exist = true;
-                (opponents.get(i)).set(1, pair);
+                (opponents.get(i)).setGrid(pair);
             }
         }
         if (exist == false) {
-            ArrayList<Object> newOpponent = new ArrayList();
-            newOpponent.add(0, user);
-            newOpponent.add(1, pair);
+            Player newOpponent = new Player();
+            newOpponent.setName(user);
+            newOpponent.setGrid(pair);
             opponents.add(newOpponent);
         }
     }
@@ -268,8 +274,8 @@ public class SagradaCLI extends Thread implements UI {
         Color color = Color.ANSI_NOCOLOR;
         printbyFile("resources/titleCli/Avversari.txt", color);
         for (int k = 0; k < opponents.size(); k++) {
-            user = (String) (opponents.get(k)).get(0);
-            pair = (Pair[][]) (opponents.get(k)).get(1);
+            user = (String) (opponents.get(k)).getName();
+            pair = (Pair[][]) (opponents.get(k)).getGrid();
             for (int i = 0; i < ((cellWidth * 5) - (user.length()) + 4) / 2; i++)
                 System.out.print("-");
             System.out.print(user);
@@ -982,6 +988,29 @@ public class SagradaCLI extends Thread implements UI {
         new SagradaCLI();
     }
 
+
+
+
+    private class Player{
+        String name;
+        Pair[][] grid;
+
+        public void setName(String name){
+            this.name=name;
+        }
+
+        public void setGrid(Pair[][] grid){
+            this.grid=grid;
+        }
+
+        public Pair[][] getGrid() {
+            return grid;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
 }
 
 

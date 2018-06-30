@@ -14,21 +14,21 @@
   		<name>Pennello per Eglomise</name>
 		<effect>Muovi un qualsiasi dado nella tua griglia ignorando le restrizioni di colore [Devi rispettare tutte le altre restrizioni di piazzamento]</effect>
 		<class>MoveGridGrid</class>
-		<image>file:resources/carte/tools/Images/tool_1.png</image>
+		<image>file:resources/carte/tools/Images/tool_2.png</image>
 	</tool2>
 
 	<tool3 num="3">
 		<name>Alesatore per lamina di rame</name>
 		<effect>Muovi un qualsiasi dado nella tua griglia ignorando le restrizioni di value [Devi rispettare tutte le altre restrizioni di piazzamento]</effect>
 		<class>MoveGridGrid</class>
-		<image>file:resources/carte/tools/Images/tool_1.png</image>
+		<image>file:resources/carte/tools/Images/tool_3.png</image>
 	</tool3>
 
 	<tool4 num="4">
 		<name>Lathekin</name>
 		<effect>Muovi esattamente due dadi, rispettando tutte le restrizioni di piazzamento</effect>
 		<class>MoveGridGrid</class>
-		<image>file:resources/carte/tools/Images/tool_1.png</image>
+		<image>file:resources/carte/tools/Images/tool_4.png</image>
 	</tool4>
 
 	<tool5 num="5">

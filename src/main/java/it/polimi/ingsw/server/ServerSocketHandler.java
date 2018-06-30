@@ -767,4 +767,14 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
         return name;
     }
     //</editor-fold>
+
+
+    @Override
+    public void close() throws RemoteException {
+        try {
+            client.close();
+        } catch (IOException e) {
+            return;
+        }
+    }
 }
