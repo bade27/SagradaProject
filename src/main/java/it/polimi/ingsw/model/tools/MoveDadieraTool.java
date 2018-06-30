@@ -75,6 +75,8 @@ public class MoveDadieraTool extends Tools {
         }catch (Exception e){
             throw new IllegalStepException("Impossibile eseguire il tool coi parametri selezionati");
         }
+
+        setPrice();
     }
 
 

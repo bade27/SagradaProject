@@ -17,10 +17,12 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class SetValueToolTest {
 
@@ -148,32 +150,37 @@ class SetValueToolTest {
         ArrayList<String[]> cards = ParserXML.readWindowsName(FileLocator.getWindowListPath());
         adapter.initializeWindow(cards.get(4)[0]);
 
-        adapter.getDadiera().mix(0);
-        Dice d = new Dice(3, ColorEnum.PURPLE);
-        adapter.getDadiera().deleteDice(adapter.getDadiera().getDice(0));
-        adapter.getDadiera().addDice(d);
-
-        adapter.setCanMove(true);
-
-        adapter.toolRequest(6);
+        adapter.getDadiera().mix(3);
         new Wrapper<>(adapter).myFunction();
+
+        //setting up the players inside the token turn
+        adapter.setUser("A");
+        adapter.getToken().addPlayer("A");
+        adapter.getToken().addPlayer("B");
+        adapter.getToken().addPlayer("C");
+
+        adapter.getToken().nextTurn(); //1st turn of A
 
         assertThrows(IllegalStepException.class, () -> tool.use());
         assertEquals(1, tool.getPrice());
-        Tools.setAllToNull();
 
-        new Wrapper<>(d).myFunction();
+        adapter.getToken().nextTurn(); //1st turn of B
+        adapter.getToken().nextTurn(); //1st turn of C
+
+        adapter.getToken().nextTurn(); //2nd turn of C
+        adapter.getToken().nextTurn(); //2nd turn of B
+
+        adapter.getToken().nextTurn(); //2nd turn of A
+
+        ArrayList<ColorEnum> dadieraDiceColors = adapter.getDadiera().getDiceList().stream()
+                .map(d -> d.getColor()).collect(Collectors.toCollection(ArrayList::new));
+
+        int nDice = adapter.getDadiera().getDiceList().size();
+
         tool.use();
-        assertEquals(2, tool.getPrice());
+        adapter.getDadiera().getDiceList().forEach(dice -> assertTrue(dadieraDiceColors.contains(dice.getColor())));
+        assertEquals(nDice, adapter.getDadiera().getDiceList().size());
+        assertEquals(2, tool.price);
 
-        Optional<Dice> maybeD = adapter.getDadiera().getDiceList().stream()
-                .filter(die -> die.getColor().equals(ColorEnum.PURPLE)).findFirst();
-        Dice toPut = maybeD.get();
-
-        //add the wrong die
-        assertThrows(ModelException.class, () -> adapter.addDiceToBoard(1, 4, new Dice(4, ColorEnum.GREEN)));
-
-        //add the correct die
-        adapter.addDiceToBoard(1, 4, toPut);
     }
 }
