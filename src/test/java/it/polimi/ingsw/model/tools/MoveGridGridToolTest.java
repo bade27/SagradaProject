@@ -26,7 +26,6 @@ class MoveGridGridToolTest {
 
     private ServerModelAdapter adapter;
     private Tools tool;
-    private int nGioc;
     private static String[] toolNames;
     private static ArrayList<String []> cards;
     private static MatchHandler matchHandler;
