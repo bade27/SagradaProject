@@ -14,7 +14,7 @@
   		<name>Pennello per Eglomise</name>
 		<effect>Muovi un qualsiasi dado nella tua griglia ignorando le restrizioni di colore [Devi rispettare tutte le altre restrizioni di piazzamento]</effect>
 		<class>MoveGridGrid</class>
-		<image>file:resources/carte/tools/Images/tool_1.png</image>
+		<image>file:resources/carte/tools/Images/tool_2.png</image>
 	</tool2>
 
 	<tool3 num="3">

@@ -391,7 +391,7 @@ public class ParserXML
         public static Image getPrivateIntestation ()
         {
             try {
-                return new Image("file:resources/carte/obbiettivi/obbiettiviPubblici/Images/obbiettivi_privati.png");
+                return new Image("file:resources/carte/obbiettivi/obbiettiviPrivati/Images/obbiettivi_privati.png");
             }catch (Exception e){
                 return new Image("file:resources/carte/obbiettivi/sfondo_obbiettivi.png");
             }
