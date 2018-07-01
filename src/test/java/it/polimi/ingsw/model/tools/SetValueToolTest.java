@@ -19,10 +19,9 @@ import java.util.ArrayList;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 class SetValueToolTest {
 
@@ -182,5 +181,75 @@ class SetValueToolTest {
         assertEquals(nDice, adapter.getDadiera().getDiceList().size());
         assertEquals(2, tool.price);
 
+    }
+
+    @Test   //test for 10th tool
+    public void useToll10Test() throws ParserXMLException, NotEnoughDiceException,
+            IllegalStepException, IllegalDiceException {
+        tool = ToolsFactory.getTools(toolNames[3].toString());
+        adapter.getDadiera().mix(0);
+
+        //test the absence of parameters (the test fails)
+        new Wrapper<>(adapter).myFunction();
+        assertThrows(IllegalStepException.class, () -> tool.use());
+        assertEquals(1, tool.getPrice());
+        Tools.setAllToNull();
+
+        Dice d = adapter.getDadiera().getDice(0);
+        int oldValue = d.getValue();
+
+        //now test the correct use and set up of the tool
+        new Wrapper<>(adapter).myFunction();
+        new Wrapper<>(d).myFunction();
+
+        tool.use();
+        assertEquals(2, tool.getPrice());
+        d = adapter.getDadiera().getDice(0);
+        int newValue = d.getValue();
+        assertEquals(7 - oldValue, newValue);
+        Tools.setAllToNull();
+    }
+
+    @Test   //test for 11th tool
+    void useTool11Test() throws ParserXMLException, ModelException, IllegalStepException,
+            IllegalDiceException, NotEnoughDiceException {
+        //setting up the "environment"
+        tool = ToolsFactory.getTools(toolNames[4].toString());
+        Tools[] ts = new Tools[]{tool, ToolsFactory.getTools(toolNames[0].toString()),
+                ToolsFactory.getTools(toolNames[0].toString())};
+        adapter.setToolCards(ts);
+
+        LogFile logFile = new LogFile();
+        logFile.createLogFile("tooltest");
+        adapter.setLog(logFile);
+
+        adapter.getDadiera().mix(0);
+
+        //the window used for this test is kaleidoscopic dream
+        ArrayList<String[]> cards = cards = ParserXML.readWindowsName(FileLocator.getWindowListPath());
+        adapter.initializeWindow(cards.get(0)[0]);
+
+        adapter.setCanMove(true);
+
+        adapter.toolRequest(11);
+        //end of the setup
+
+        new Wrapper<>(adapter).myFunction();
+        //invalid tool setup
+        assertThrows(IllegalStepException.class, () -> tool.use());
+        assertEquals(1, tool.getPrice());
+
+        Tools.setAllToNull();
+
+        String msg = adapter.useTool(new Wrapper(adapter.getDadiera().getDice(0)));
+        assertEquals(1, tool.getPrice());
+
+        Optional<ColorEnum> colorEnums = Stream.of(ColorEnum.values())
+                .filter(c -> c.toString().equals(msg.toUpperCase()))
+                .findFirst();
+        Dice d = new Dice(5, colorEnums.get());
+        adapter.useTool(new Wrapper(d));
+        assertEquals(2, tool.getPrice());
+        adapter.addDiceToBoard(0, 3, d);
     }
 }
