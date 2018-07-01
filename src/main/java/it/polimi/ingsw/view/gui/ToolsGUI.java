@@ -17,11 +17,13 @@ public class ToolsGUI {
     private GraphButton b1;
     private GraphButton b2;
     private GraphButton b3;
+    boolean enable;
 
     public ToolsGUI(GridPane pane,UI game){
 
         this.game = game;
         this.pane=pane;
+        this.enable = false;
 
         t = new GridPane();
         String [] name={"tool 1","tool 2","tool3"};
@@ -53,7 +55,8 @@ public class ToolsGUI {
                     b1.setStyle("");
                 });
                 b1.setOnAction(actionEvent -> {
-                    game.toolPermission(b1.getIdTool());
+                    if(enable)
+                        game.toolPermission(b1.getIdTool());
                 });
                 t.add(b1, 0, 0);
 
@@ -77,7 +80,8 @@ public class ToolsGUI {
                     b2.setStyle("");
                 });
                 b2.setOnAction(actionEvent -> {
-                    game.toolPermission(b2.getIdTool());
+                    if(enable)
+                        game.toolPermission(b2.getIdTool());
                 });
                 t.add(b2, 0, 1);
 
@@ -101,7 +105,8 @@ public class ToolsGUI {
                     b3.setStyle("");
                 });
                 b3.setOnAction(actionEvent -> {
-                    game.toolPermission(b3.getIdTool());
+                    if(enable)
+                        game.toolPermission(b3.getIdTool());
                 });
                 t.add(b3, 0, 2);
 
@@ -109,5 +114,9 @@ public class ToolsGUI {
                 e.getStackTrace();
             }
         });
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
     }
 }

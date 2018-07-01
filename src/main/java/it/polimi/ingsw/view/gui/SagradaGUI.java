@@ -645,6 +645,7 @@ public class SagradaGUI extends Application implements UI {
         this.enableBoard = enableBoard;
         dadieraG.setEnable(enableBoard);
         gridG.setEnable(enableBoard);
+        toolsG.setEnable(enableBoard);
     }
 
     /**
