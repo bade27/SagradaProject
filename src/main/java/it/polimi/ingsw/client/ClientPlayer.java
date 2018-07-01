@@ -41,7 +41,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     private final Object syncmap = new Object();
 
     //to keep trak of server status. used ONLY with RMI
-    private Timer connectionStatusRMITimer;
+    private Timer connectionStatusTimer;
     private Thread timerTurn;
 
     private boolean connected;
@@ -119,8 +119,8 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         setInTurn(false);
 
 
-        connectionStatusRMITimer = new Timer();
-        connectionStatusRMITimer.schedule(new TimerTask() {
+        connectionStatusTimer = new Timer();
+        connectionStatusTimer.schedule(new TimerTask() {
             @Override
             public void run() {
                 if (!isServerAlive() && !isInTurn())
@@ -384,16 +384,23 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         if (isInTurn())
         {
             try {
-                if(connectionStatusRMITimer != null) {
-                    connectionStatusRMITimer.cancel();
-                    connectionStatusRMITimer.purge();
-                }
+                cancelStatusTimer();
                 server.disconnection();
             } catch (RemoteException e) {
                 closeCommunication("Impossibile contattare il server");
             }
         }
 
+    }
+
+    /**
+     * Cancels and purges the status timer
+     */
+    private void cancelStatusTimer() {
+        if(connectionStatusTimer != null) {
+            connectionStatusTimer.cancel();
+            connectionStatusTimer.purge();
+        }
     }
     //</editor-fold>
 
@@ -471,10 +478,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
     public boolean closeCommunication (String cause)
     {
-        if(connectionStatusRMITimer != null) {
-            connectionStatusRMITimer.cancel();
-            connectionStatusRMITimer.purge();
-        }
+        cancelStatusTimer();
         graph.disconnection(cause);
         graph = null;
         return true;

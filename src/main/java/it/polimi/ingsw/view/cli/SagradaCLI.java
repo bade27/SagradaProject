@@ -447,7 +447,6 @@ public class SagradaCLI extends Thread implements UI {
             vecmove = mossa.split("\\ ");
             try {
                 value = Integer.parseInt(vecmove[0]);
-
                 switch (vecmove[1].toUpperCase()) {
                     case "RED":
                         color = ColorEnum.RED;
@@ -570,7 +569,7 @@ public class SagradaCLI extends Thread implements UI {
                                 default:
                                     break;
                             }
-                        }catch(NumberFormatException nfe){
+                        }catch (NumberFormatException nfe){
                             value=-1;
                             color=null;
                         }catch (ArrayIndexOutOfBoundsException ofb){
@@ -809,18 +808,10 @@ public class SagradaCLI extends Thread implements UI {
         return true;
     }
 
+    //print pair array
     private void printPair (Pair[]p){
         //parte superione
-        for (int i = 0; i < cellHeight / 2; i++) {
-            for (int j = 0; j < p.length; j++) {
-                System.out.print(hashMap.get(p[j].getColor()).escape() + "");
-                for (int k = 0; k < cellWidth; k++) {
-                    System.out.print(" ");
-                }
-                System.out.print(Color.ANSI_NOCOLOR.escape() + "  ");
-            }
-            System.out.println("" + Color.ANSI_NOCOLOR.escape());
-        }
+        printPariArray(p);
 
         //parte centrale
         for (int j = 0; j < p.length; j++) {
@@ -838,6 +829,16 @@ public class SagradaCLI extends Thread implements UI {
         System.out.println("" + Color.ANSI_NOCOLOR.escape());
 
         //parte inferiore
+        printPariArray(p);
+        System.out.println("\n");
+        for (int i = 0; i < p.length; i++) {
+            System.out.print("" + p[i].getValue() + " " + p[i].getColor() + "\t");
+        }
+        System.out.println("\n");
+
+    }
+
+    private void printPariArray(Pair[] p) {
         for (int i = 0; i < cellHeight / 2; i++) {
             for (int j = 0; j < p.length; j++) {
                 System.out.print(hashMap.get(p[j].getColor()).escape() + "");
@@ -848,27 +849,13 @@ public class SagradaCLI extends Thread implements UI {
             }
             System.out.println("" + Color.ANSI_NOCOLOR.escape());
         }
-        System.out.println("\n");
-        for (int i = 0; i < p.length; i++) {
-            System.out.print("" + p[i].getValue() + " " + p[i].getColor() + "\t");
-        }
-        System.out.println("\n");
-
     }
 
+    //print pair matrix
     private void printPair (Pair[][]mp){
         for (int w = 0; w < mp.length; w++) {
             //parte superione
-            for (int i = 0; i < cellHeight / 2; i++) {
-                for (int j = 0; j < mp[0].length; j++) {
-                    System.out.print(hashMap.get(mp[w][j].getColor()).escape() + "");
-                    for (int k = 0; k < cellWidth; k++) {
-                        System.out.print(" ");
-                    }
-                    System.out.print(Color.ANSI_NOCOLOR.escape() + "  ");
-                }
-                System.out.println("" + Color.ANSI_NOCOLOR.escape());
-            }
+            printPairMatrix(mp, w);
 
             //parte centrale
             for (int j = 0; j < mp[0].length; j++) {
@@ -886,20 +873,24 @@ public class SagradaCLI extends Thread implements UI {
             System.out.println("" + Color.ANSI_NOCOLOR.escape());
 
             //parte inferiore
-            for (int i = 0; i < cellHeight / 2; i++) {
-                for (int j = 0; j < mp[0].length; j++) {
-                    System.out.print(hashMap.get(mp[w][j].getColor()).escape() + "");
-                    for (int k = 0; k < cellWidth; k++) {
-                        System.out.print(" ");
-                    }
-                    System.out.print(Color.ANSI_NOCOLOR.escape() + "  ");
-                }
-                System.out.println("" + Color.ANSI_NOCOLOR.escape());
-            }
+            printPairMatrix(mp, w);
             System.out.println("");
         }
 
         System.out.println("");
+    }
+
+    private void printPairMatrix(Pair[][] mp, int w) {
+        for (int i = 0; i < cellHeight / 2; i++) {
+            for (int j = 0; j < mp[0].length; j++) {
+                System.out.print(hashMap.get(mp[w][j].getColor()).escape() + "");
+                for (int k = 0; k < cellWidth; k++) {
+                    System.out.print(" ");
+                }
+                System.out.print(Color.ANSI_NOCOLOR.escape() + "  ");
+            }
+            System.out.println("" + Color.ANSI_NOCOLOR.escape());
+        }
     }
 
     private void printbyFile (String s, Color color){

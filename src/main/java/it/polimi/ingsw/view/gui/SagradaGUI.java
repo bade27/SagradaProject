@@ -500,7 +500,7 @@ public class SagradaGUI extends Application implements UI {
                     dadieraG.setEnable(false);
                     gridG.setEnable(false);
                     List<Integer> choices = new ArrayList<>();
-                    choices.addAll(IntStream.range(1, 7).mapToObj(n -> (Integer) n).collect(Collectors.toList()));
+                    choices.addAll(IntStream.range(1, 7).mapToObj(n -> n).collect(Collectors.toList()));
                     ChoiceDialog<Integer> dialog = new ChoiceDialog<>(1, choices);
                     dialog.setTitle("Selezione valore");
                     dialog.setHeaderText("Seleziona il numero del dado!");
@@ -616,20 +616,13 @@ public class SagradaGUI extends Application implements UI {
                     return false;
             }
 
-            if(ip.endsWith("."))
-                return false;
-
-            return true;
+            return !ip.endsWith(".");
         } catch (NumberFormatException nfe) {
             return false;
         }
     }
     private boolean isNameValid(String name){
-        if(name.isEmpty())
-            return false;
-        /*if(nome esiste gia)
-            return false;*/
-        return true;
+        return !name.isEmpty();
     }
 
     public void deletePlayer() {

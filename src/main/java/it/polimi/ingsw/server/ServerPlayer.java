@@ -298,10 +298,8 @@ public class ServerPlayer implements Runnable {
     private void initializeCards() throws ClientOutOfReachException, ModelException {
         try {
             boolean performed;
-            String[] toolnames = Arrays.stream(toolCards)
-                    .map(t -> t.getName()).toArray(String[]::new);
-            String[] publicObjNames = Arrays.stream(publicObjectives)
-                    .map(obj -> obj.getPath()).toArray(String[]::new);
+            String[] toolnames = Arrays.stream(toolCards).map(t -> t.getName()).toArray(String[]::new);
+            String[] publicObjNames = Arrays.stream(publicObjectives).map(obj -> obj.getPath()).toArray(String[]::new);
             performed = communicator.sendCards(publicObjNames, toolnames, new String[]{privateObjCard});
             if (!performed) {
                 log.addLog("(User:" + user + ") Failed to initialize cards");

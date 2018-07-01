@@ -13,10 +13,7 @@ public class PairScore extends Score {
     }
 
     public PairScore(String tag) {
-        couple = new int[2];
-        String[] result = tag.split("\\s");
-        couple[0] = Integer.parseInt(result[0]);
-        couple[1] = Integer.parseInt(result[1]);
+        setTag(tag);
     }
 
     /**
