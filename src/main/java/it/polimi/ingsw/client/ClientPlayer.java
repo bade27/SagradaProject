@@ -517,7 +517,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
     @Override
     public String getName() throws RemoteException {
-        return clientName;
+        return new String(clientName);
     }
     //</editor-fold>
 
