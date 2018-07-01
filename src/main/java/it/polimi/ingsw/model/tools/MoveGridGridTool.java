@@ -127,6 +127,8 @@ public class MoveGridGridTool extends Tools {
         }
         else
             throw new IllegalStepException("I colori dei dadi devono essere compatibili");
+
+        setPrice();
     }
 
     void setPrice(){
