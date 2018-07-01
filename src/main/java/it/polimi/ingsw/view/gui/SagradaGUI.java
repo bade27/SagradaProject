@@ -82,6 +82,7 @@ public class SagradaGUI extends Application implements UI {
         stage.setScene(scene);
         stage.show();
         stage.setResizable(false);
+        closeWindow();
     }
 
     @Override

@@ -4,8 +4,10 @@ import it.polimi.ingsw.UI;
 import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.remoteInterface.Pair;
 import javafx.application.Platform;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
 import javafx.scene.control.*;
@@ -23,7 +25,7 @@ public class PlayersGUI extends GridPane {
         this.game = game;
         name = new ArrayList<String>();
         players = new GridPane();
-        players.setOpacity(255);
+        //players.setOpacity(255);
         players.setHgap(20);
 
         Pair[][] pair = new Pair[4][5];                                             //matrice di pair
@@ -64,7 +66,7 @@ public class PlayersGUI extends GridPane {
             }
 
             players.add(onePlayer, index, 0);
-            onePlayer.setOpacity(255);
+            //onePlayer.setOpacity(255);
             //creazione e aggiunta Label con nome
 
             //onePlayer.getChildren().clear();
@@ -76,16 +78,16 @@ public class PlayersGUI extends GridPane {
 
             //creazione e aggiunta griglia dato Pair[][]
             GridPane grid = new GridPane();
-            grid.setOpacity(255);
-            grid.setDisable(true);
+            //grid.setDisable(true);
             for (int i = 0; i < 4; i++) {
                 for (int j = 0; j < 5; j++) {
-                    Button cell = new Button();
-                    cell.setOpacity(255);
-                    grid.add(cell,j,i);
-                    cell.setText("" + pair[i][j].getValue());
-                    cell.setStyle("-fx-background-color: " + pair[i][j].getColor());
-                    grid.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
+                    ImageView imageView = new ImageView(GraphicDieHandler.getImageDie(pair[i][j]));
+                    imageView.setFitWidth(20);
+                    imageView.setFitHeight(20);
+
+                    grid.setMargin(imageView, new Insets(2, 2, 2, 2));
+
+                    grid.add(imageView,j,i);
                 }
             }
             grid.setAlignment(Pos.CENTER);

@@ -45,24 +45,32 @@ public class GridGUI extends GridPane{
     {
         Platform.runLater(() -> {
             grid.getChildren().clear();
-            //grid = new GridPane();
             for (int i = 0; i < 4; i++) {
                 for (int j = 0; j < 5; j++) {
                     CellButton b = new CellButton(i, j,pair[i][j].getColor(),pair[i][j].getValue());
 
-                    //Da commentare per giocare temporaneo
                     ImageView imageView = new ImageView(GraphicDieHandler.getImageDie(pair[i][j]));
                     imageView.setFitWidth(75);
                     imageView.setFitHeight(75);
                     b.setGraphic(imageView);
 
-                    //Da decommentare per giocare temporaneo
-                    /*b.setText("" + pair[i][j].getValue());
-                    b.setStyle("-fx-background-color: " + pair[i][j].getColor());
 
+                    b.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);" +
+                            "-fx-background-color: transparent;" +
+                            "-fx-background-radius: 5;");
 
-                    if(pair[i][j].getColor() != null && pair[i][j].getValue() != 0)
-                        b.setFont(Font.font("ComicSans", FontWeight.EXTRA_BOLD,30));*/
+                    b.setOnMouseEntered(actionEvent -> {
+                        b.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(255,219,163,0.8), 10, 0, 0, 0);" +
+                                "-fx-background-color: transparent;" +
+                                        "-fx-background-radius: 5;");
+                    });
+
+                    b.setOnMouseExited(actionEvent -> {
+                        b.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);" +
+                                "-fx-background-color: transparent;" +
+                                "-fx-background-radius: 5;");
+                    });
+
 
                     b.setOnAction(event -> {
                         if (enable) {

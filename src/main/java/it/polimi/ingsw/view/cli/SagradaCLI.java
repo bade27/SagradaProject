@@ -34,14 +34,8 @@ public class SagradaCLI extends Thread implements UI {
     public SagradaCLI() {
         enableBoard = false;
         toolPhase = false;
-        hashMap.put(ColorEnum.RED, Color.ANSI_BACK_RED);
-        hashMap.put(ColorEnum.BLUE, Color.ANSI_BACK_BLUE);
-        hashMap.put(ColorEnum.PURPLE, Color.ANSI_BACK_PURPLE);
-        hashMap.put(ColorEnum.YELLOW, Color.ANSI_BACK_YELLOW);
-        hashMap.put(ColorEnum.GREEN, Color.ANSI_BACK_GREEN);
-        hashMap.put(ColorEnum.WHITE, Color.ANSI_NOCOLOR);
-        hashMap.put(null, Color.ANSI_NOCOLOR);
         opponents = new ArrayList<Player>();
+        createMap();
         startGame();
     }
 
@@ -252,15 +246,19 @@ public class SagradaCLI extends Thread implements UI {
     }
 
     @Override
-    public void updateOpponents(Pair[][] pair, String user, boolean b) {
+    public void updateOpponents(Pair[][] pair, String user, boolean active) {
         boolean exist = false;
-        for (int i = 0; i < opponents.size() && exist == false; i++) {
+        if(!active)
+            user=user+Color.ANSI_RED.escape()+" (non in partita)"+Color.ANSI_NOCOLOR.escape();
+
+        for (int i = 0; i < opponents.size() && !exist; i++) {
+
             if (((opponents.get(i)).getName()).equals(user)) {
                 exist = true;
                 (opponents.get(i)).setGrid(pair);
             }
         }
-        if (exist == false) {
+        if (!exist) {
             Player newOpponent = new Player();
             newOpponent.setName(user);
             newOpponent.setGrid(pair);
@@ -274,8 +272,8 @@ public class SagradaCLI extends Thread implements UI {
         Color color = Color.ANSI_NOCOLOR;
         printbyFile("resources/titleCli/Avversari.txt", color);
         for (int k = 0; k < opponents.size(); k++) {
-            user = (String) (opponents.get(k)).getName();
-            pair = (Pair[][]) (opponents.get(k)).getGrid();
+            user = (opponents.get(k)).getName();
+            pair = (opponents.get(k)).getGrid();
             for (int i = 0; i < ((cellWidth * 5) - (user.length()) + 4) / 2; i++)
                 System.out.print("-");
             System.out.print(user);
@@ -397,6 +395,7 @@ public class SagradaCLI extends Thread implements UI {
             viewDadiera();
             viewWindow();
             viewToken();
+            printTurn();
             do {
                 do {
                     System.out.println("Vuoi fare una mossa [m], usare una carta strumento [c], vedere gli elementi del gioco [e] o passare il turno [p]?");
@@ -762,6 +761,21 @@ public class SagradaCLI extends Thread implements UI {
         this.toolPhase = toolPhase;
     }
 
+    private void printTurn(){
+        Color color=Color.ANSI_RED;
+        if(numTurn()!=-1){
+            printbyFile("resources/titleCli/Round"+(numTurn()+1)+".txt",color);
+        }
+    }
+
+    private int numTurn(){
+        for(int i=0;i<trace.length;i++)
+            if (trace[i].size()==0) {
+                return i;
+            }
+        return -1;
+    }
+
     private boolean isIPAddressValid (String ip){
         if (ip.isEmpty())
             return true;
@@ -889,6 +903,7 @@ public class SagradaCLI extends Thread implements UI {
     }
 
     private void printbyFile (String s, Color color){
+        System.out.println("\n\n");
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(s));
             String line = bufferedReader.readLine();
@@ -988,7 +1003,15 @@ public class SagradaCLI extends Thread implements UI {
         new SagradaCLI();
     }
 
-
+    private void createMap(){
+        hashMap.put(ColorEnum.RED, Color.ANSI_BACK_RED);
+        hashMap.put(ColorEnum.BLUE, Color.ANSI_BACK_BLUE);
+        hashMap.put(ColorEnum.PURPLE, Color.ANSI_BACK_PURPLE);
+        hashMap.put(ColorEnum.YELLOW, Color.ANSI_BACK_YELLOW);
+        hashMap.put(ColorEnum.GREEN, Color.ANSI_BACK_GREEN);
+        hashMap.put(ColorEnum.WHITE, Color.ANSI_NOCOLOR);
+        hashMap.put(null, Color.ANSI_NOCOLOR);
+    }
 
 
     private class Player{
