@@ -5,7 +5,7 @@
 	<general_info>
 		<max_players>3</max_players> <!-- number of max players in game  -->
 		<threshold_players>2</threshold_players> <!-- number of min players in game  -->
-		<num_turns>10</num_turns>
+		<num_turns>5</num_turns>
 	</general_info>
 	
 	<time_intervals>
