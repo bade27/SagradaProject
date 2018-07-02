@@ -922,8 +922,9 @@ public class SagradaCLI extends Thread implements UI {
 
     private void printbyFile (String s, Color color){
         System.out.println("\n\n");
+        BufferedReader reader = null;
         try {
-            BufferedReader reader = new BufferedReader(new FileReader(s));
+            reader = new BufferedReader(new FileReader(s));
             String line = reader.readLine();
             while (line != null) {
                 System.out.println(color.escape() + "" + line + Color.ANSI_NOCOLOR.escape());
@@ -932,6 +933,12 @@ public class SagradaCLI extends Thread implements UI {
         } catch (IOException e) {
             e.printStackTrace();
             System.err.println("errore nel caricamento del file di testo");
+        } finally {
+            try {
+                reader.close();
+            } catch (IOException e) {
+                return;
+            }
         }
     }
 
