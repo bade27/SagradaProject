@@ -73,7 +73,7 @@ public class PlayersGUI extends GridPane {
             if (active)
                 onePlayer.add(new Label(n), 0, 0);
             else
-                onePlayer.add(new Label(n+" (non più in partita)"), 0, 0);
+                onePlayer.add(new Label(n+" (uscito)"), 0, 0);
 
             exist = false;
             for (int k = 0 ; k < upponents.size() ; k++)

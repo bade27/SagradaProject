@@ -35,55 +35,55 @@
 		<name>Taglierina circolare</name>
 		<effect>Dopo aver scelto un dado, scambia quel dado con un dado sul Tracciato dei Round</effect>
 		<class>MoveDadiera</class>
-		<image>file:resources/carte/tools/Images/tool_1.png</image>
+		<image>file:resources/carte/tools/Images/tool_5.png</image>
 	</tool5>
 
 	<tool6 num="6">
 		<name>Pennello per Pasta Salda</name>
 		<effect>Dopo aver scelto un dado, tira nuovamente quel dado [Se non puoi piazzarlo, riponilo nella Riserva]</effect>
 		<class>SetDiceValue</class>
-		<image>file:resources/carte/tools/Images/tool_1.png</image>
+		<image>file:resources/carte/tools/Images/tool_6.png</image>
 	</tool6>
 	
 	<tool7 num="7">
 		<name>Martelletto</name>
 		<effect>Tira nuovamente tutti i dadi della Riserva [Questa carta può essere usata solo durante il tuo secondo turno, prima di scegliera il seconda dado]</effect>
 		<class>SetDiceValue</class>
-		<image>file:resources/carte/tools/Images/tool_1.png</image>
+		<image>file:resources/carte/tools/Images/tool_7.png</image>
 	</tool7>
 
 	<tool8 num="8">
 		<name>Tenaglia a Rotelle</name>
 		<effect>Dopo il tuo primo turno scegli immediatamente un altro dado [Salta il tuo secondo turno in questo round]</effect>
 		<class>ChangeRound</class>
-		<image>file:resources/carte/tools/Images/tool_1.png</image>
+		<image>file:resources/carte/tools/Images/tool_8.png</image>
 	</tool8>
 
 	<tool9 num="9">
 		<name>Riga in Sughero</name>
 		<effect>Dopo aver scelto un dado, piazzalo in una casella che non sia adiacente a un altro dado [Devi rispettare tutte le restrizioni di piazzamento]</effect>
 		<class>MoveDadiera</class>
-		<image>file:resources/carte/tools/Images/tool_1.png</image>
+		<image>file:resources/carte/tools/Images/tool_9.png</image>
 	</tool9>
 
 	<tool10 num="10">
 		<name>Tampone Diamantato</name>
 		<effect>Dopo aver scelto un dado, giralo sulla faccia opposta [6 diventa 1, 5 diventa 2, 4 diventa 3 ecc.]</effect>
 		<class>SetDiceValue</class>
-		<image>file:resources/carte/tools/Images/tool_1.png</image>
+		<image>file:resources/carte/tools/Images/tool_10.png</image>
 	</tool10>
 
 	<tool11 num="11">
 		<name>Diluente per Pasta Salda</name>
 		<effect>Dopo aver scelto un dado, riponilo nel Sacchetto, poi pescane uno dal Saccheto [Scegli il value del nuovo dado e piazzalo, rispettando tutte le restrizioni di piazzamento]</effect>
 		<class>SetDiceValue</class>
-		<image>file:resources/carte/tools/Images/tool_1.png</image>
+		<image>file:resources/carte/tools/Images/tool_11.png</image>
 	</tool11>
 
 	<tool12 num="12">
 		<name>Taglierina Manuale</name>
 		<effect>Muovi fino a due dadi dello stesso colore di un solo dado sul Tracciato dei Round</effect>
 		<class>MoveGridGrid</class>
-		<image>file:resources/carte/tools/Images/tool_1.png</image>
+		<image>file:resources/carte/tools/Images/tool_12.png</image>
 	</tool12>
 </root>
