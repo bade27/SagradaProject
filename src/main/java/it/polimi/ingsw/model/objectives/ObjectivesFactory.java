@@ -4,10 +4,13 @@ import it.polimi.ingsw.exceptions.ModelException;
 import it.polimi.ingsw.model.objectives.Private.PrivateObjective;
 import it.polimi.ingsw.model.objectives.Public.*;
 import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,12 +48,7 @@ public class ObjectivesFactory {
 
         try {
 
-            pathF = new File(path);
-            documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            card = documentBuilder.parse(pathF);
-
-            name = card.getElementsByTagName("name").item(0).getTextContent();
+            extractCardAndGenerateNameNodesList(path);
             target = card.getElementsByTagName("target").item(0).getTextContent();
             description = card.getElementsByTagName("description").item(0).getTextContent();
 
@@ -61,6 +59,15 @@ public class ObjectivesFactory {
             throw new ModelException("Impossible to read Private Objectives XML");
         }
 
+    }
+
+    private static void extractCardAndGenerateNameNodesList(String path) throws ParserConfigurationException, SAXException, IOException {
+        pathF = new File(path);
+        documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        card = documentBuilder.parse(pathF);
+
+        name = card.getElementsByTagName("name").item(0).getTextContent();
     }
 
     /**
@@ -76,12 +83,7 @@ public class ObjectivesFactory {
         PublicObjective publicObjective;
         try {
 
-            pathF = new File(path);
-            documentBuilderFactory = DocumentBuilderFactory.newInstance();
-            documentBuilder = documentBuilderFactory.newDocumentBuilder();
-            card = documentBuilder.parse(pathF);
-
-            name = card.getElementsByTagName("name").item(0).getTextContent();
+            extractCardAndGenerateNameNodesList(path);
             value = Integer.parseInt(card.getElementsByTagName("value").item(0).getTextContent());
             patterns = card.getElementsByTagName("pattern").item(0).getAttributes()
                     .getNamedItem("p").getNodeValue();

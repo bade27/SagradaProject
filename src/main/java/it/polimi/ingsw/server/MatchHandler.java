@@ -328,7 +328,8 @@ public class MatchHandler implements Runnable
         for(int i = 0; i < player.size(); i++) {
             if(!player.get(i).isInTurn()) {
                 if(!player.get(i).isClientAlive()) {
-                    player.get(i).setPlayerAsOffline();
+                    if(player.get(i).getCommunicator() != null)
+                        player.get(i).setPlayerAsOffline();
                 }
             }
         }

@@ -1,18 +1,17 @@
 package it.polimi.ingsw.model.tools;
 
-import it.polimi.ingsw.exceptions.IllegalDiceException;
-import it.polimi.ingsw.exceptions.IllegalStepException;
-import it.polimi.ingsw.exceptions.NotEnoughDiceException;
-import it.polimi.ingsw.exceptions.ParserXMLException;
+import it.polimi.ingsw.exceptions.*;
 import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.model.Dadiera;
 import it.polimi.ingsw.model.Dice;
 import it.polimi.ingsw.model.RoundTrace;
+import it.polimi.ingsw.remoteInterface.Coordinates;
 import it.polimi.ingsw.remoteInterface.Pair;
 import it.polimi.ingsw.server.MatchHandler;
 import it.polimi.ingsw.server.ServerModelAdapter;
 import it.polimi.ingsw.server.TokenTurn;
 import it.polimi.ingsw.utilities.FileLocator;
+import it.polimi.ingsw.utilities.LogFile;
 import it.polimi.ingsw.utilities.ParserXML;
 import it.polimi.ingsw.utilities.Wrapper;
 import org.junit.jupiter.api.BeforeAll;
@@ -45,9 +44,6 @@ class MoveDadieraToolTest {
     @BeforeEach
     void setup() {
         adapter = new ServerModelAdapter(new Dadiera(), new RoundTrace(), new TokenTurn());
-        //LogFile logFile = new LogFile();
-        //logFile.createLogFile("tooltest");
-        //adapter.setLog(logFile);
     }
 
     @Test   //test for the 5th tool
@@ -97,29 +93,41 @@ class MoveDadieraToolTest {
         Tools.setAllToNull();
     }
 
-   /* @Test
-        //test for 5th tool
-    void useTool5Test() throws ParserXMLException, ModelException, IllegalStepException,
+   @Test    //test for 9th tool
+    void useTool9Test() throws ParserXMLException, ModelException, IllegalStepException,
             IllegalDiceException, NotEnoughDiceException {
+
         //setting up the "environment"
-        tool = ToolsFactory.getTools(toolNames[0].toString());
+        tool = ToolsFactory.getTools(toolNames[1].toString());  //actual tool
         Tools[] ts = new Tools[]{tool, ToolsFactory.getTools(toolNames[0].toString()),
                 ToolsFactory.getTools(toolNames[0].toString())};
         adapter.setToolCards(ts);
-        adapter.getDadiera().mix(0);
-        adapter.getDadiera().addDice(new Dice(1, ColorEnum.YELLOW));
-        adapter.getDadiera().addDice(new Dice(2, ColorEnum.GREEN));
-        //the window used for this test is kaleidoscopic dream
-        //it'll attempt to move the green dice from cell (0, 1) into the blue-expecting cell (1, 0)
-        adapter.initializeWindow(cards.get(0)[0]);
-        //i row, j col
-        Dice d1 = adapter.getDadiera().getDice(1);
-        Dice d2 = adapter.getDadiera().getDice(2);
-        adapter.setCanMove(true);
-        adapter.addDiceToBoard(0, 0, d1);
-        adapter.setCanMove(true);
-        adapter.addDiceToBoard(1, 0, d2);
 
+        LogFile logFile = new LogFile();
+        logFile.createLogFile("tooltest");
+        adapter.setLog(logFile);
+
+        //fill dadiera
+        Dice d1 = new Dice(1, ColorEnum.RED);
+        Dice d2 = new Dice(2, ColorEnum.YELLOW);
+        Dice d3 = new Dice(3, ColorEnum.RED);
+        adapter.getDadiera().mix(0);
+        adapter.getDadiera().deleteDice(adapter.getDadiera().getDice(0));
+        adapter.getDadiera().addDice(d1);
+        adapter.getDadiera().addDice(d2);
+        adapter.getDadiera().addDice(d3);
+
+        //the window used for this test is shadow thief
+        adapter.initializeWindow(cards.get(8)[1]);
+        //i row, j col
+        adapter.setCanMove(true);
+        adapter.addDiceToBoard(2, 0, d1);
+        adapter.setCanMove(true);
+        adapter.addDiceToBoard(3, 0, d2);
+        adapter.setCanMove(true);
+        adapter.addDiceToBoard(3, 1, d3);
+
+        adapter.setCanMove(true);
         adapter.toolRequest(2);
         //end of the setup
 
@@ -131,13 +139,12 @@ class MoveDadieraToolTest {
         Tools.setAllToNull();
 
         //proper setup and use of the tool
-        new Wrapper<>(new Coordinates(1, 0)).myFunction();
-        new Wrapper<>(new Coordinates(0, 1)).myFunction();
+        new Wrapper<>(new Dice(5, ColorEnum.BLUE)).myFunction();
+        new Wrapper<>(new Coordinates(0, 4)).myFunction();
 
         tool.use();
         assertEquals(2, tool.getPrice());
         Tools.setAllToNull();
     }
-    */
 
 }

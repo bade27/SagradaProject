@@ -22,6 +22,7 @@ public class RoundsGUI extends GridPane {
     GridPane round;
     GridPane diceInRound;
     GridPane roundTrace;
+
     public RoundsGUI(GridPane p, UI game) {
         this.game=game;
         ArrayList<Pair> listpair = new ArrayList<>();
@@ -88,23 +89,20 @@ public class RoundsGUI extends GridPane {
                     roundTrace.add(diceInRound,0,1);
                 });
             }
-
-            /*Button indexround = (Button) round.getChildren().get(i);
-
-                Button b = new Button(indexround.getText() + "\gridPane");
-                b.setDisable(true);
-                b.setOpacity(255);
-                diceInRound.add(b, 0, 0);
-                for (int j = 0; j < pair.length; j++) {
-                    b = new Button();
-                    b.setDisable(true);
-                    b.setStyle("-fx-background-color: " + pair[j].getColor());
-                    b.setText("" + pair[j].getValue());
-                    b.setOpacity(255);
-                    diceInRound.add(b, j + 1, 0);
+            if(numRound()!=-1) {
+                round.getChildren().get(numRound()).setStyle("-fx-background-color: Yellow");
+                if(numRound()!=0){
+                    round.getChildren().get(numRound()-1).setStyle("");
                 }
-            });*/
+            }
         });
     }
+    private int numRound(){
 
+        for(int i=0;i<alldice.length;i++)
+            if (alldice[i].size()==0) {
+                return i;
+            }
+        return -1;
+    }
 }
