@@ -13,7 +13,8 @@ public enum Color {
     ANSI_BACK_YELLOW("\u001B[43m"),
     ANSI_BACK_BLUE("\u001B[44m"),
     ANSI_BACK_PURPLE("\u001B[45m"),
-    ANSI_BACK_WHITE("\u001B[47m");
+    ANSI_BACK_WHITE("\u001B[47m"),
+    ANSI_WHITE("\u001B[37m");
 
 
     //static final String RESET ="\u001B[0m";
