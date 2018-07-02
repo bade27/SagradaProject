@@ -62,6 +62,7 @@ public class TargetGUI extends GridPane{
     {
         Platform.runLater(() ->
         {
+            //System.out.println(s[0]);
             privateGeneralBox.getChildren().clear();
             VBox intestationBox = new VBox();
             VBox privateObjBox = new VBox();
@@ -79,7 +80,9 @@ public class TargetGUI extends GridPane{
     }
 
 
-    public void updatePublicTarget(String []s){
+    public void updatePublicTarget(String []s)
+    {
+        //System.out.println(s[0] + " " + s[1] + " "+ s[2]);
         Platform.runLater(() ->
         {
             publicGeneralBox.getChildren().clear();
