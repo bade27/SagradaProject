@@ -21,7 +21,6 @@ public class PlayersGUI extends GridPane {
     private ArrayList<String> name;
     GridPane onePlayer=new GridPane();
 
-    ArrayList<PairPlayer> upponents;
 
 
 
@@ -31,7 +30,6 @@ public class PlayersGUI extends GridPane {
         name = new ArrayList<String>();
         players = new GridPane();
         players.setHgap(20);
-        upponents = new ArrayList<>();
 
         players.setAlignment(Pos.CENTER);
         root.add(players, 0, 3);
@@ -63,7 +61,7 @@ public class PlayersGUI extends GridPane {
                 name.add(n);
             }
             try{
-                //players.getChildren().get(index).setOpacity(0);
+                players.getChildren().get(index).setOpacity(0);
             }catch (IndexOutOfBoundsException e){
             }
 
@@ -75,99 +73,21 @@ public class PlayersGUI extends GridPane {
             else
                 onePlayer.add(new Label(n+" (uscito)"), 0, 0);
 
-            exist = false;
-            for (int k = 0 ; k < upponents.size() ; k++)
-            {
-                if (upponents.get(k).getUser().equals(n))
-                {
+            GridPane grid = new GridPane();
+            for (int i = 0; i < 4; i++) {
+                for (int j = 0; j < 5; j++) {
+                    ImageView imageView = new ImageView(GraphicDieHandler.getImageDie(pair[i][j]));
+                    imageView.setFitWidth(20);
+                    imageView.setFitHeight(20);
 
-                    GridPane grid = upponents.get(k).getGrid();
-                    Pair[][] precPairs = upponents.get(k).getPair();
-                    for (int i = 0; i < 4; i++)
-                    {
-                        for (int j = 0; j < 5; j++)
-                        {
-                            if (precPairs[i][j].getColor() != pair[i][j].getColor() || !precPairs[i][j].getValue().equals(pair[i][j].getValue()))
-                            {
-                                ImageView imageView = new ImageView(GraphicDieHandler.getImageDie(pair[i][j]));
-                                imageView.setFitWidth(20);
-                                imageView.setFitHeight(20);
-
-                                grid.setMargin(imageView, new Insets(2, 2, 2, 2));
-                                grid.add(imageView, j, i);
-                            }
-                        }
-                    }
-                    grid.setAlignment(Pos.CENTER);
-                    onePlayer.add(grid, 0, 1);
-                    upponents.get(k).setPair(pair);
-                    upponents.get(k).setGrid(grid);
-
-                    exist = true;
-                    break;
-                }
-                else
-                {
-                    exist = false;
-                    break;
+                    grid.setMargin(imageView, new Insets(2, 2, 2, 2));
+                    grid.add(imageView, j, i);
                 }
             }
-
-            if (!exist)
-            {
-                System.out.println("created");
-                GridPane grid = new GridPane();
-                for (int i = 0; i < 4; i++) {
-                    for (int j = 0; j < 5; j++) {
-                        ImageView imageView = new ImageView(GraphicDieHandler.getImageDie(pair[i][j]));
-                        imageView.setFitWidth(20);
-                        imageView.setFitHeight(20);
-
-                        grid.setMargin(imageView, new Insets(2, 2, 2, 2));
-                        grid.add(imageView,j,i);
-                    }
-                }
-                grid.setAlignment(Pos.CENTER);
-                onePlayer.add(grid, 0, 1);
-
-                upponents.add(new PairPlayer(n,pair,grid));
-            }
+            grid.setAlignment(Pos.CENTER);
+            onePlayer.add(grid, 0, 1);
 
         });
-    }
-
-    private class PairPlayer
-    {
-        private String user;
-        private Pair [][] pair;
-        private GridPane grid;
-
-        private PairPlayer (String u,Pair [][] p,GridPane gr)
-        {
-            user = u;
-            pair = p;
-            grid = gr;
-        }
-
-        public String getUser() {
-            return user;
-        }
-
-        public Pair[][] getPair() {
-            return pair;
-        }
-
-        public void setPair (Pair[][] p){
-            pair = p;
-        }
-
-        public GridPane getGrid() {
-            return grid;
-        }
-
-        public void setGrid(GridPane grid) {
-            this.grid = grid;
-        }
     }
 
 }

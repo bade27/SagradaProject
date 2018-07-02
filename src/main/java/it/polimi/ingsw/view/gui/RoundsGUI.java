@@ -89,6 +89,7 @@ public class RoundsGUI extends GridPane {
                     roundTrace.add(diceInRound,0,1);
                 });
             }
+            //illuminazione da togliere
             if(numRound()!=-1) {
                 round.getChildren().get(numRound()).setStyle("-fx-background-color: Yellow");
                 if(numRound()!=0){
