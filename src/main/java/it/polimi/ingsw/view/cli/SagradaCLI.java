@@ -13,7 +13,7 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class SagradaCLI extends Thread implements UI {
+public class SagradaCLI implements UI {
 
     final int cellHeight = 3;
     final int cellWidth = 7;
@@ -404,12 +404,15 @@ public class SagradaCLI extends Thread implements UI {
     @Override
     public void setEnableBoard ( boolean enableBoard){
         this.enableBoard = enableBoard;
-        new Thread(new Runnable() {
+        if(task.isAlive())
+            task.interrupt();
+        task = new Thread(new Runnable() {
             @Override
             public void run() {
                 turn();
             }
-        }).start();
+        });
+        task.start();
     }
 
     private void turn () {
@@ -432,7 +435,11 @@ public class SagradaCLI extends Thread implements UI {
             do {
                 do {
                     System.out.println("Vuoi fare una mossa [m], usare una carta strumento [c], vedere gli elementi del gioco [e] o passare il turno [p]?");
+
                     action = readFromConsole();
+                    if(action == null)
+                        return;
+
                     System.out.println();
                     if (action.equals("m")) {
                         doMovement();
