@@ -22,10 +22,12 @@ public class RoundsGUI extends GridPane {
     private GridPane round;
     private GridPane diceInRound;
     private GridPane roundTrace;
+    private int currentTurn;
 
     public RoundsGUI(GridPane p, UI game)
     {
         alldice = new ArrayList[10];
+        currentTurn = 1;
 
         for(int i=0;i<alldice.length;i++)
             alldice[i]=new ArrayList<Pair>();
@@ -34,6 +36,7 @@ public class RoundsGUI extends GridPane {
         diceInRound=new GridPane();
         round = new GridPane();
 
+        //Da togliere possibilmente se riesco a centrarlo
         ImageView rd = new ImageView("file:resources/round_trace/Images/round.png");
         round.add(rd, 0, 0);
 
@@ -46,12 +49,12 @@ public class RoundsGUI extends GridPane {
             imageView.setFitWidth(45);
             imageView.setFitHeight(45);
             indexround.setGraphic(imageView);
-            setButtonStyle(indexround);
+            setButtonStyle(indexround,i);
 
             GridPane.setMargin(indexround,new Insets(0,0,0,0));
 
 
-            round.add(indexround, i+1, 0);
+            round.add(indexround, indexround.getRound()+1, 0);
             indexround.setActive(false);
 
             indexround.setOnAction(event1 ->
@@ -63,6 +66,7 @@ public class RoundsGUI extends GridPane {
                     if (arr.size() == 0)
                         return;
 
+                    //Da togliere possibilmente se riesco a centrarlo
                     ImageView rd1 = new ImageView("file:resources/round_trace/Images/round.png");
                     diceInRound.add(rd1, 0, 0);
                     for (int j = 0 ; j < arr.size() ; j++)
@@ -114,9 +118,22 @@ public class RoundsGUI extends GridPane {
 
             alldice = allpair;
             diceInRound.getChildren().clear();
+
+            for (int i=0 ; i < allpair.length ; i++)
+            {
+                if (allpair[i].size() == 0)
+                {
+                    currentTurn = i+1;
+                    break;
+                }
+            }
+            for (int i = 1 ; i < 11 ; i++)
+                setButtonStyle((RoundButton)round.getChildren().get(i),i);
+
         });
     }
 
+    //<editor-fold desc="Button class">
     private class RoundButton extends Button
     {
         private int round;
@@ -172,11 +189,15 @@ public class RoundsGUI extends GridPane {
             this.round = round;
         }
     }
+    //</editor-fold>
 
-
-    private void setButtonStyle (Button b)
+    private void setButtonStyle (Button b,int turn)
     {
-        b.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);" +
+        if (turn == currentTurn)
+            b.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,255,255,0.8), 30, 0, 0, 0);" +
+                    "-fx-background-color: transparent;");
+        else
+            b.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);" +
                 "-fx-background-color: transparent;");
 
         b.setOnMouseEntered(actionEvent -> {
@@ -185,8 +206,28 @@ public class RoundsGUI extends GridPane {
         });
 
         b.setOnMouseExited(actionEvent -> {
-            b.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);" +
+            if (turn == currentTurn)
+                b.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,255,255,0.8), 30, 0, 0, 0);" +
+                        "-fx-background-color: transparent;");
+            else
+                b.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);" +
+                        "-fx-background-color: transparent;");
+        });
+    }
+
+    private void setButtonStyle (Button b)
+    {
+        b.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);" +
                     "-fx-background-color: transparent;");
+
+        b.setOnMouseEntered(actionEvent -> {
+            b.setStyle("-fx-effect: dropshadow(three-pass-box, white, 20, 0, 0, 0);" +
+                    "-fx-background-color: transparent;");
+        });
+
+        b.setOnMouseExited(actionEvent -> {
+                b.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);" +
+                        "-fx-background-color: transparent;");
         });
     }
 }

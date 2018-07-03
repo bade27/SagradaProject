@@ -285,7 +285,7 @@ public class SagradaGUI extends Application implements UI {
         GridPane pright=new GridPane();
         GridPane roundContent = new GridPane();
 
-        pright.setMinSize(400,400);
+        //pright.setMinSize(400,400);
 
         mainContent.setGridLinesVisible(true);
 
@@ -302,7 +302,8 @@ public class SagradaGUI extends Application implements UI {
         pcenter.setAlignment(Pos.CENTER);
         //roundContent.setAlignment(Pos.CENTER);
 
-
+        pleft.setMaxWidth(220);
+        pright.setMaxWidth(220);
 
         //placing the different gui components
         toolsG = new ToolsGUI(mainContent, this);
