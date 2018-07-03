@@ -5,6 +5,7 @@ import it.polimi.ingsw.utilities.FileLocator;
 import it.polimi.ingsw.utilities.ParserXML;
 import it.polimi.ingsw.view.gui.GraphButton;
 import javafx.application.Platform;
+import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -37,6 +38,10 @@ public class ToolsGUI {
         Platform.runLater(() -> {
             try
             {
+                t.setBackground(new Background(new BackgroundImage(ParserXML.LoadImageXMLAtRequest.getToolsBackground(),
+                        BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
+                        BackgroundSize.DEFAULT)));
+
                 //First Tool
                 b1 = GraphicFactory.getToolButtonFromName(FileLocator.getToolsListPath(),name[0]);
                 b1.setBackground(new Background(new BackgroundImage(ParserXML.LoadImageXMLAtRequest.getToolsBackground(),
@@ -44,7 +49,8 @@ public class ToolsGUI {
                         BackgroundSize.DEFAULT)));
                 b1.setGraphic(new ImageView(new Image(b1.getImgPath())));
                 b1.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-                b1.setPrefSize(300,200);
+
+
                 b1.setOnMouseEntered(actionEvent -> {
                     b1.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);" +
                             "-fx-background-color: transparent;" +
@@ -54,6 +60,7 @@ public class ToolsGUI {
                 b1.setOnMouseExited(actionEvent -> {
                     b1.setStyle("");
                 });
+
                 b1.setOnAction(actionEvent -> {
                     if(enable)
                         game.toolPermission(b1.getIdTool());
@@ -69,7 +76,6 @@ public class ToolsGUI {
                         BackgroundSize.DEFAULT)));
                 b2.setGraphic(new ImageView(new Image(b2.getImgPath())));
                 b2.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-                b2.setPrefSize(300,200);
                 b2.setOnMouseEntered(actionEvent -> {
                     b2.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);" +
                             "-fx-background-color: transparent;" +
@@ -94,7 +100,6 @@ public class ToolsGUI {
                         BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
                         BackgroundSize.DEFAULT)));
                 b3.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
-                b3.setPrefSize(300,200);
                 b3.setOnMouseEntered(actionEvent -> {
                     b3.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);" +
                             "-fx-background-color: transparent;" +
@@ -109,6 +114,10 @@ public class ToolsGUI {
                         game.toolPermission(b3.getIdTool());
                 });
                 t.add(b3, 0, 2);
+
+                GridPane.setMargin(b1,new Insets(40,0,0,0));
+                GridPane.setMargin(b2,new Insets(40,0,0,0));
+                GridPane.setMargin(b3,new Insets(40,0,0,0));
 
             }catch (Exception e){
                 e.getStackTrace();

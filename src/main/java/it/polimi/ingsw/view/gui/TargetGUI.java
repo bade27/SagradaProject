@@ -49,12 +49,17 @@ public class TargetGUI extends GridPane{
         gridPane.add(privateGeneralBox,0,0);
         gridPane.add(publicGeneralBox,0,1);
 
+        //Da sistemare
+        EndButton pass = new EndButton(game);
+        gridPane.add(pass,0,2);
+        //Da sistemare
+
         gridPane.setPadding(new Insets(10,5,20,5));
         gridPane.setHgap(10);
         gridPane.setVgap(10);
 
         p.add(gridPane,2,0);
-        DimWindows.dimWidth(gridPane,250);
+        //DimWindows.dimWidth(gridPane,250);
     }
 
 

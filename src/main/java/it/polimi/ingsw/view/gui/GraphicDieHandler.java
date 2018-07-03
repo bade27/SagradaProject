@@ -14,6 +14,8 @@ public class GraphicDieHandler
 
     private static Map<ColorEnum,Map<Integer,Image>> dieMap = new HashMap<ColorEnum,Map<Integer,Image>>();
 
+    private static Map<Integer, Image> roundMap = new HashMap<Integer, Image>();
+
     public static void loadDieImages ()
     {
         placementNumberMap.put(1 , new Image("file:resources/vetrate/Images/Placement/quad_1.jpg"));
@@ -75,6 +77,22 @@ public class GraphicDieHandler
         blueDie.put(6,new Image("file:resources/vetrate/Images/Die/6_blu.jpg"));
         dieMap.put(ColorEnum.BLUE,blueDie);
 
+        roundMap.put(1,new Image("file:resources/round_trace/Images/round_1.png"));
+        roundMap.put(2,new Image("file:resources/round_trace/Images/round_2.png"));
+        roundMap.put(3,new Image("file:resources/round_trace/Images/round_3.png"));
+        roundMap.put(4,new Image("file:resources/round_trace/Images/round_4.png"));
+        roundMap.put(5,new Image("file:resources/round_trace/Images/round_5.png"));
+        roundMap.put(6,new Image("file:resources/round_trace/Images/round_6.png"));
+        roundMap.put(7,new Image("file:resources/round_trace/Images/round_7.png"));
+        roundMap.put(8,new Image("file:resources/round_trace/Images/round_8.png"));
+        roundMap.put(9,new Image("file:resources/round_trace/Images/round_9.png"));
+        roundMap.put(10,new Image("file:resources/round_trace/Images/round_10.png"));
+
+    }
+
+    public static Image getImageRound (int nr)
+    {
+        return roundMap.get(nr);
     }
 
     public static Image getImageDie (Pair p)
