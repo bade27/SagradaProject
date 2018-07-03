@@ -163,8 +163,6 @@ public class SagradaCLI implements UI {
 
 
                 do {
-                    System.out.println("\nSono state estratte queste mappe! Scegline una digitando il norrispettivo numero:");
-
                     System.out.println("\n\n1.\t" + name1+"\n");
                     printPair(grid1);
                     System.out.println("\n\t" + "prezzo: "+ price1 + "\n");
@@ -181,7 +179,8 @@ public class SagradaCLI implements UI {
                     printPair(grid4);
                     System.out.println("\n\t" + "prezzo: "+ price4 + "\n");
 
-                        map = readFromConsole();
+                    System.out.println("\nSono state estratte queste mappe! Scegline una digitando il norrispettivo numero:");
+                    map = readFromConsole();
                         if(map==null){
                             return;
                         }
