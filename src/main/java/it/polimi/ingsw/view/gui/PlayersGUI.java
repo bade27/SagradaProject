@@ -19,7 +19,7 @@ public class PlayersGUI extends GridPane {
     private UI game;
     private GridPane players;
     private ArrayList<String> name;
-    GridPane onePlayer=new GridPane();
+    //GridPane onePlayer=new GridPane();
 
 
 
@@ -60,12 +60,12 @@ public class PlayersGUI extends GridPane {
             if (exist==false){
                 name.add(n);
             }
-            try{
-                players.getChildren().get(index).setOpacity(0);
-            }catch (IndexOutOfBoundsException e){
-            }
 
-            onePlayer = new GridPane();
+            for (int i = 0; i < players.getChildren().size() ; i++)
+                if (((GridPanePlayer)players.getChildren().get(i)).getUser().equals(n))
+                    players.getChildren().get(i).setOpacity(0);
+
+            GridPanePlayer onePlayer = new GridPanePlayer(n);
             players.add(onePlayer, index, 0);
 
             if (active)
@@ -88,6 +88,26 @@ public class PlayersGUI extends GridPane {
             onePlayer.add(grid, 0, 1);
 
         });
+    }
+
+    private class GridPanePlayer extends GridPane
+    {
+        private String user;
+
+        private GridPanePlayer (String u)
+        {
+            super();
+            user = u;
+        }
+
+
+        public String getUser() {
+            return user;
+        }
+
+        public void setUser(String user) {
+            this.user = user;
+        }
     }
 
 }

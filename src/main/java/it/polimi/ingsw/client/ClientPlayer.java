@@ -322,7 +322,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         setServerAlive(true);
         MoveAction.clearMove();
         ToolAction.clearTool();
-        graph.updateMessage("My turn");
+        graph.updateMessage("E' il tuo turno");
         startTimerTurn();
         try {
             graph.setEnableBoard(true);
