@@ -4,6 +4,7 @@ import it.polimi.ingsw.exceptions.ParserXMLException;
 import it.polimi.ingsw.model.Cell;
 import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.model.Placement;
+import it.polimi.ingsw.remoteInterface.Pair;
 import javafx.scene.image.Image;
 import org.w3c.dom.*;
 import org.xml.sax.SAXException;
@@ -70,6 +71,58 @@ public class ParserXML
                             board[i][j] = new Cell(new Placement(currentValue,ColorEnum.BLUE));
                         if (currentColor.equals("purple"))
                             board[i][j] = new Cell(new Placement(currentValue,ColorEnum.PURPLE));
+                    }
+                    k++;
+                }
+            }
+        }
+        catch (Exception e) {
+            throw new ParserXMLException("Impossible to read file: " + path);
+        }
+        return board;
+    }
+
+    public static Pair[][] readWindowFromPath (String path, Pair[][] b) throws ParserXMLException
+    {
+        Pair board [][] = b;
+        try
+        {
+            File file = new File(path);
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document document = documentBuilder.parse(file);
+
+            //ora è un po' più efficiente anche qui (prendo solo i tag che mi servono, senza fare la lista di tutti
+            String name = document.getElementsByTagName("name").item(0).getTextContent();
+            int difficult = Integer.parseInt(document.getElementsByTagName("difficulty").item(0).getTextContent());
+
+            //sono due liste che contengono l'elenco dei tag del file (hanno stessa lunghezza)
+            //in questo modo posso leggere in parallelo i valori delle celle
+            NodeList values = document.getElementsByTagName("value");
+            NodeList colors = document.getElementsByTagName("color");
+            //NodeList imgs = document.getElementsByTagName("img_source");
+
+            //il parametro k mi serve come indice delle due liste valori e colori
+            for(int i = 0, k = 0; i < board.length; i++)
+            {
+                for(int j = 0; j < board[i].length; j++)
+                {
+                    int currentValue = Integer.parseInt(values.item(k).getTextContent());
+                    String currentColor = colors.item(k).getTextContent();
+                    if (currentColor.equals("dc"))
+                        board[i][j] = new Pair(currentValue,null);
+                    else
+                    {
+                        if (currentColor.equals("red"))
+                            board[i][j] = new Pair(currentValue, ColorEnum.RED);
+                        if (currentColor.equals("green"))
+                            board[i][j] = new Pair(currentValue,ColorEnum.GREEN);
+                        if (currentColor.equals("yellow"))
+                            board[i][j] = new Pair(currentValue,ColorEnum.YELLOW);
+                        if (currentColor.equals("blue"))
+                            board[i][j] = new Pair(currentValue,ColorEnum.BLUE);
+                        if (currentColor.equals("purple"))
+                            board[i][j] = new Pair(currentValue,ColorEnum.PURPLE);
                     }
                     k++;
                 }

@@ -3,20 +3,23 @@ package it.polimi.ingsw.view.cli;
 import it.polimi.ingsw.UI;
 import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.client.MoveAction;
+import it.polimi.ingsw.exceptions.ParserXMLException;
 import it.polimi.ingsw.utilities.FileLocator;
 import it.polimi.ingsw.client.ToolAction;
 import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.remoteInterface.Coordinates;
 import it.polimi.ingsw.remoteInterface.Pair;
-
+import it.polimi.ingsw.utilities.ParserXML;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class SagradaCLI extends Thread implements UI {
+public class SagradaCLI implements UI {
 
     final int cellHeight = 3;
     final int cellWidth = 7;
+    public final int rows = 4;
+    public final int cols = 5;
     private boolean enableBoard;
     private boolean toolPhase;
     private ClientPlayer clientPlayer;
@@ -109,38 +112,78 @@ public class SagradaCLI extends Thread implements UI {
                 Color color = Color.ANSI_GREEN;
                 String map;
                 printbyFile("resources/titleCli/Scegli_la_mappa.txt", color);
-                String[] vecname;
-                String name1, name2, name3, name4;
 
-                vecname = s1[0].split("\\/");
-                name1 = (vecname[vecname.length - 1].split("\\."))[0];
+                String name1="";
+                Integer price1=null;
+                Pair[][] grid1=new Pair[rows][cols];
+                String name2="";
+                Integer price2=null;
+                Pair[][] grid2=new Pair[rows][cols];
+                String name3="";
+                Integer price3=null;
+                Pair[][] grid3=new Pair[rows][cols];
+                String name4="";
+                Integer price4=null;
+                Pair[][] grid4=new Pair[rows][cols];
 
-                vecname = s1[1].split("\\/");
-                name2 = (vecname[vecname.length - 1].split("\\."))[0];
+                try {
+                    name1 = ParserXML.readWindowName(s1[0]);
+                    price1= ParserXML.readBoardDifficult(s1[0]);
+                    grid1=ParserXML.readWindowFromPath(s1[0],grid1);
+                } catch (ParserXMLException e) {
+                    e.printStackTrace();
+                }
 
-                vecname = s2[0].split("\\/");
-                name3 = (vecname[vecname.length - 1].split("\\."))[0];
+                try {
+                    name2 = ParserXML.readWindowName(s1[1]);
+                    price2= ParserXML.readBoardDifficult(s1[1]);
+                    grid2=ParserXML.readWindowFromPath(s1[1],grid2);
 
-                vecname = s2[1].split("\\/");
-                name4 = (vecname[vecname.length - 1].split("\\."))[0];
+                } catch (ParserXMLException e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    name3 = ParserXML.readWindowName(s2[0]);
+                    price3= ParserXML.readBoardDifficult(s2[0]);
+                    grid3=ParserXML.readWindowFromPath(s2[0],grid3);
+                } catch (ParserXMLException e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    name4 = ParserXML.readWindowName(s2[1]);
+                    price4= ParserXML.readBoardDifficult(s2[1]);
+                    grid4=ParserXML.readWindowFromPath(s2[1],grid4);
+                } catch (ParserXMLException e) {
+                    e.printStackTrace();
+                }
 
 
                 do {
                     System.out.println("\nSono state estratte queste mappe! Scegline una digitando il norrispettivo numero:");
-                    System.out.println("\n\n1.\t" + name1 + "\n");
-                    //printGrid();
-                    System.out.println("\n\n2.\t" + name2 + "\n");
-                    //printGrid();
-                    System.out.println("\n\n3.\t" + name3 + "\n");
-                    //printGrid();
-                    System.out.println("\n\n4.\t" + name4 + "\n");
-                    //printGrid();
+
+                    System.out.println("\n\n1.\t" + name1+"\n");
+                    printPair(grid1);
+                    System.out.println("\n\t" + "prezzo: "+ price1 + "\n");
+
+                    System.out.println("\n\n2.\t" + name2+"\n");
+                    printPair(grid2);
+                    System.out.println("\n\t" + "prezzo: "+ price2 + "\n");
+
+                    System.out.println("\n\n3.\t" + name3+"\n");
+                    printPair(grid3);
+                    System.out.println("\n\t" + "prezzo: "+ price3 + "\n");
+
+                    System.out.println("\n\n4.\t" + name4+"\n");
+                    printPair(grid4);
+                    System.out.println("\n\t" + "prezzo: "+ price4 + "\n");
+
                         map = readFromConsole();
                         if(map==null){
-                            break;
+                            return;
                         }
                 } while (!(map.equals("1") || map.equals("2") || map.equals("3") || map.equals("4")));
-                try {
                     switch (map) {
                         case "1":
                             clientPlayer.setChooseMap(s1[0]);
@@ -155,9 +198,6 @@ public class SagradaCLI extends Thread implements UI {
                             clientPlayer.setChooseMap(s2[1]);
                             break;
                     }
-                }catch (NullPointerException ex){
-                    System.out.println("bubusettete");
-                }
             }
         });
         task.start();
@@ -844,7 +884,7 @@ public class SagradaCLI extends Thread implements UI {
     //print pair array
     private void printPair (Pair[]p){
         //parte superione
-        printPariArray(p);
+        printPairArray(p);
 
         //parte centrale
         for (int j = 0; j < p.length; j++) {
@@ -862,7 +902,7 @@ public class SagradaCLI extends Thread implements UI {
         System.out.println("" + Color.ANSI_NOCOLOR.escape());
 
         //parte inferiore
-        printPariArray(p);
+        printPairArray(p);
         System.out.println("\n");
         for (int i = 0; i < p.length; i++) {
             System.out.print("" + p[i].getValue() + " " + p[i].getColor() + "\t");
@@ -871,7 +911,7 @@ public class SagradaCLI extends Thread implements UI {
 
     }
 
-    private void printPariArray(Pair[] p) {
+    private void printPairArray(Pair[] p) {
         for (int i = 0; i < cellHeight / 2; i++) {
             for (int j = 0; j < p.length; j++) {
                 System.out.print(hashMap.get(p[j].getColor()).escape() + "");

@@ -81,7 +81,7 @@ public class SagradaGUI extends Application implements UI {
         stage.setTitle("Sagrada");
         stage.setScene(scene);
         stage.show();
-        stage.setResizable(false);
+        stage.setResizable(true);
         closeWindow();
     }
 
@@ -186,7 +186,7 @@ public class SagradaGUI extends Application implements UI {
         stage.getScene().getWindow().setHeight(450);
         stage.getScene().setRoot(loginRoot);
         //stage.show();
-        stage.setResizable(false);
+        stage.setResizable(true);
         closeWindow();
     }
 
@@ -267,7 +267,7 @@ public class SagradaGUI extends Application implements UI {
         //scene=new Scene(root,700,500);
         stage.getScene().setRoot(mapsRoot);
         //stage.show();
-        stage.setResizable(false);
+        stage.setResizable(true);
         closeWindow();
     }
     @Override
@@ -322,7 +322,7 @@ public class SagradaGUI extends Application implements UI {
         stage.getScene().setRoot(gameRoot);
         stage.getScene().getWindow().setWidth(1000);
         stage.getScene().getWindow().setHeight(650);
-        stage.setResizable(false);
+        stage.setResizable(true);
 
         closeWindow();
     }
@@ -348,7 +348,7 @@ public class SagradaGUI extends Application implements UI {
         //scene=new Scene(root,500,500);
         //stage.show();
         stage.getScene().setRoot(loadingRoot);
-        stage.setResizable(false);
+        stage.setResizable(true);
         closeWindow();
     }
 
@@ -380,7 +380,7 @@ public class SagradaGUI extends Application implements UI {
         text.setSpacing(10);
 
         stage.getScene().setRoot(discRoot);
-        stage.setResizable(false);
+        stage.setResizable(true);
         closeWindow();
     }
 
@@ -399,7 +399,7 @@ public class SagradaGUI extends Application implements UI {
         fatDicRoot.setAlignment(Pos.CENTER);
         fatDicRoot.setSpacing(10);
         stage.getScene().setRoot(fatDicRoot);
-        stage.setResizable(false);
+        stage.setResizable(true);
         closeWindow();
     }
 
@@ -464,7 +464,7 @@ public class SagradaGUI extends Application implements UI {
         players.setVgap(10);
         resultsRoot.setSpacing(40);
         stage.getScene().setRoot(resultsRoot);
-        stage.setResizable(false);
+        stage.setResizable(true);
         closeWindow();
     }
 
