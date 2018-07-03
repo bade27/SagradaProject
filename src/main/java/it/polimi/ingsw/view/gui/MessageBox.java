@@ -22,24 +22,14 @@ public class MessageBox extends Text {
      * @param msg
      */
     public void updateGraphic(String msg) {
-        Platform.runLater(() -> {
-            switch (msg) {
-                case "Move ok":
-                    this.setFill(Color.FORESTGREEN);
-                    break;
-                case "My turn":
-                    this.setFill(Color.STEELBLUE);
-                    break;
-                case "Turn passed":
-                    this.setFill(Color.ORANGERED);
-                    break;
-                case "Using a tool":
-                    this.setFill(Color.BROWN);
-                    break;
-                default:
-                    this.setFill(Color.INDIANRED);
-                    break;
-            }
+        Platform.runLater(() ->
+        {
+            if (msg.equals("Richiesta utilizzo tool accolta") || msg.equals("E' il tuo turno")
+                    || msg.equals("Uso tool eseguito corretamente") || msg.equals("Mossa applicata correttamente"))
+                this.setFill(Color.STEELBLUE);
+            else
+                this.setFill(Color.INDIANRED);
+
             this.setText(msg);
         });
     }

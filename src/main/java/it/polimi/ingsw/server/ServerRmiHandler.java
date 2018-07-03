@@ -202,7 +202,7 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
     @Override
     public String passTurn() throws RemoteException {
         notifyServer();
-        return "Turn passed";
+        return "Turno concluso";
     }
 
     //</editor-fold>
