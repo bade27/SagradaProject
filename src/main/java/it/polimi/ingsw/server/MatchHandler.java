@@ -160,10 +160,6 @@ public class MatchHandler implements Runnable
                         return;
                     }
 
-                    //Increment total of turn
-                    turnsPlayed++;
-                    log.addLog("turn " + turnsPlayed);
-
                     //Update Round Trace
                     while(dices.getDiceList().size() > 0)
                     {
@@ -173,9 +169,13 @@ public class MatchHandler implements Runnable
                         } catch (IllegalDiceException e) {
                             e.printStackTrace();
                         }
-                        roundTrace.addDice(turnsPlayed, tmp);
+                        roundTrace.addDice(turnsPlayed + 1, tmp);
                         dices.deleteDice(tmp);
                     }
+
+                    //Increment total of turn
+                    turnsPlayed++;
+                    log.addLog("turn " + turnsPlayed);
 
                     //and..Mix dadiera
                     try{
