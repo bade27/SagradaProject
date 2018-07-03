@@ -82,6 +82,12 @@ public class ParserXML
         return board;
     }
 
+    /**
+     * Read from xml window's pattern and initialize an empty board
+     * @param path XML file location
+     * @param b Board to initialize
+     * @return Board initialized
+     */
     public static Pair[][] readWindowFromPath (String path, Pair[][] b) throws ParserXMLException
     {
         Pair board [][] = b;
@@ -240,6 +246,42 @@ public class ParserXML
         }
     }
 
+    /**
+     * Read from xml one objective's name and return this
+     * @param path XML file location
+     * @return name
+     */
+    public static String readObjectiveName (String path) throws ParserXMLException{
+        try {
+            File file = new File(path);
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document document = documentBuilder.parse(file);
+
+            return document.getElementsByTagName("name").item(0).getTextContent();
+        }catch (Exception e){
+            throw new ParserXMLException("Impossible to read objective name from XML " + path);
+        }
+    }
+
+    /**
+     * Read from xml one objective's description and return this
+     * @param path XML file location
+     * @return description
+     */
+    public static String readObjectiveDescription (String path) throws ParserXMLException
+    {
+        try {
+            File file = new File(path);
+            DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document document = documentBuilder.parse(file);
+
+            return document.getElementsByTagName("description").item(0).getTextContent();
+        }catch (Exception e){
+            throw new ParserXMLException("Impossible to read objective description from XML " + path);
+        }
+    }
     //</editor-fold>
 
     //<editor-fold desc="Tool XML">

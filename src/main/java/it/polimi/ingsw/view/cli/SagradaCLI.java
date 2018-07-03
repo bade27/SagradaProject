@@ -379,11 +379,34 @@ public class SagradaCLI implements UI {
 
     private void viewTarget () {
         String name;
+        String description;
         String[] vecname;
         Color color = Color.ANSI_NOCOLOR;
         printbyFile("resources/titleCli/Obiettivi.txt", color);
 
-        System.out.println("\nObiettivo privato:");
+        System.out.println("\nObiettivo privato:\n");
+        for (int i=0;i<privateTarget.length;i++) {
+            try {
+                name = ParserXML.readObjectiveName(privateTarget[i]);
+                description = ParserXML.readObjectiveDescription(privateTarget[i]);
+                System.out.println("- "+name+": "+description);
+            }catch (ParserXMLException ex){
+                ex.printStackTrace();
+            }
+        }
+
+        System.out.println("\n\nObiettivi pubblici:");
+        for (int i=0;i<publicTarget.length;i++) {
+            try {
+                name = ParserXML.readObjectiveName(publicTarget[i]);
+                description = ParserXML.readObjectiveDescription(publicTarget[i]);
+                System.out.println(name+": "+description);
+            }catch (ParserXMLException ex){
+                ex.printStackTrace();
+            }
+        }
+
+        /*System.out.println("\nObiettivo privato:");
         for (int i = 0; i < privateTarget.length; i++) {
             vecname = privateTarget[i].split("\\/");
             name = (vecname[vecname.length - 1].split("\\."))[0];
@@ -395,7 +418,7 @@ public class SagradaCLI implements UI {
             name = (vecname[vecname.length - 1].split("\\."))[0];
             System.out.println(name);
         }
-
+*/
     }
 
     @Override
