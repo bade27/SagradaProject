@@ -36,11 +36,6 @@ public class RoundsGUI extends GridPane {
         diceInRound=new GridPane();
         round = new GridPane();
 
-        //Da togliere possibilmente se riesco a centrarlo
-        ImageView rd = new ImageView("file:resources/round_trace/Images/round.png");
-        round.add(rd, 0, 0);
-
-
         for (int i = 0; i < 10; i++)
         {
             RoundButton indexround = new RoundButton(i);
@@ -66,9 +61,6 @@ public class RoundsGUI extends GridPane {
                     if (arr.size() == 0)
                         return;
 
-                    //Da togliere possibilmente se riesco a centrarlo
-                    ImageView rd1 = new ImageView("file:resources/round_trace/Images/round.png");
-                    diceInRound.add(rd1, 0, 0);
                     for (int j = 0 ; j < arr.size() ; j++)
                     {
                         DieButton b = new DieButton(arr.get(j).getColor(),arr.get(j).getValue(),indexround.getRound());
@@ -127,7 +119,7 @@ public class RoundsGUI extends GridPane {
                     break;
                 }
             }
-            for (int i = 1 ; i < 11 ; i++)
+            for (int i = 1 ; i < 10 ; i++)
                 setButtonStyle((RoundButton)round.getChildren().get(i),i);
 
         });
