@@ -344,7 +344,10 @@ public class MatchHandler implements Runnable
         //If max number of connection is reached communicate the client he is one too many
         if (getnConn() == MAXGIOC || (isGameStarted() && getDisconnCounter() == 0))
         {
-            log.addLog("Client Rejected cause too many client connected");
+            log.addLog("Client Rejected cause too many client connected\n");
+            log.addLog("getnConn() == MAXGIOC: " + (getnConn() == MAXGIOC)
+                    + "\n(isGameStarted() && getDisconnCounter() == 0): "
+                    + (isGameStarted() && getDisconnCounter() == 0) + "\n");
             return false;
         }
         if(getDisconnCounter() == 0) {

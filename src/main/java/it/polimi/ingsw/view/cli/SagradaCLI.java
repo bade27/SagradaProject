@@ -38,6 +38,7 @@ public class SagradaCLI implements UI {
     private Thread readOperation;
     private String content;
     private Object contentLock = new Object();
+    private Reader reader;
 
     //all other operations
     private Thread task;
@@ -45,7 +46,8 @@ public class SagradaCLI implements UI {
     public SagradaCLI() {
         inputStream = new InputStreamReader(System.in);
         bufferedReader = new BufferedReader(inputStream);
-        readOperation = new Thread(new Reader(inputStream, bufferedReader));
+        reader = new Reader(inputStream, bufferedReader);
+        readOperation = new Thread(reader);
         readOperation.start();
         enableBoard = false;
         toolPhase = false;
@@ -230,6 +232,7 @@ public class SagradaCLI implements UI {
     public void fatalDisconnection(String s) {
         Color color = Color.ANSI_RED;
         printbyFile("resources/titleCli/Spiacenti.txt", color);
+        reader.setCondition(false);
         System.out.println("\n" + s);
     }
 
@@ -456,6 +459,10 @@ public class SagradaCLI implements UI {
                     do {
                         System.out.println("Vuoi fare dell'altro? [S/n]");
                         end_turn = readFromConsole();
+
+                        if(end_turn == null)
+                            return;
+
                         if (end_turn.equals("n")) {
                             pass = true;
                             passTurn();
@@ -484,6 +491,10 @@ public class SagradaCLI implements UI {
             viewWindow();
             System.out.println("Seleziona un dado della dadiera: \n[esempio: 1 RED]");
             mossa = readFromConsole();
+
+            if(mossa == null)
+                return;
+
             vecmove = mossa.split("\\ ");
             try {
                 value = Integer.parseInt(vecmove[0]);
@@ -523,6 +534,8 @@ public class SagradaCLI implements UI {
                 cell[1] = Integer.parseInt(readFromConsole());
             }catch(NumberFormatException nfe){
                 cell[1]=-1;
+            } catch (NullPointerException npe) {
+                return;
             }
         } while (cell[1] < 1 || cell[1] > 5);
 
@@ -532,6 +545,8 @@ public class SagradaCLI implements UI {
                 cell[0] = Integer.parseInt(readFromConsole());
             }catch (NumberFormatException nfe){
                 cell[0]=-1;
+            } catch (NullPointerException npe) {
+                return;
             }
         } while (cell[0] < 1 || cell[0] > 4);
 
@@ -563,6 +578,10 @@ public class SagradaCLI implements UI {
                 System.out.println((i + 1) + ". " + tools[i]);
             }
             t = readFromConsole();
+
+            if(t == null)
+                return;
+
         } while (!t.equals("1") && !t.equals("2") && !t.equals("3"));
         try {
             numtool = CLIFactory.getToolnumberFromName(FileLocator.getToolsListPath(), tools[Integer.parseInt(t) - 1]);
@@ -579,6 +598,10 @@ public class SagradaCLI implements UI {
                     System.out.println("\n Cosa vuoi settare?");
                     System.out.println("1. dado dalla dadiera\n2. cella dalla griglia\n3. dado dal tracciato round");
                     element = readFromConsole();
+
+                    if(element == null)
+                        return;
+
                 }
                 while (!element.equals("1") && !element.equals("2") && !element.equals("3") && !element.equals("fine"));
                 if (element.equals("1")) {
@@ -587,6 +610,10 @@ public class SagradaCLI implements UI {
                     do {
                         System.out.println("Seleziona un dado della dadiera: \n[esempio: 1 RED]");
                         dad = readFromConsole();
+
+                        if(dad == null)
+                            return;
+
                         vecmove = dad.split("\\ ");
                         try {
                             value = Integer.parseInt(vecmove[0]);
@@ -628,6 +655,8 @@ public class SagradaCLI implements UI {
                             cell[1] = Integer.parseInt(readFromConsole());
                         }catch (NumberFormatException nfe) {
                             cell[1]=-1;
+                        } catch (NullPointerException npe) {
+                            return;
                         }
                     } while (cell[1] < 1 || cell[1] > 5);
 
@@ -637,6 +666,8 @@ public class SagradaCLI implements UI {
                             cell[0] = Integer.parseInt(readFromConsole());
                         }catch(NumberFormatException nfe){
                             cell[0]=-1;
+                        } catch (NullPointerException npe) {
+                            return;
                         }
                     } while (cell[0] < 1 || cell[0] > 4);
                     ToolAction.setPosition(new Coordinates(cell[0] - 1, cell[1] - 1));
@@ -646,6 +677,10 @@ public class SagradaCLI implements UI {
                     do {
                         System.out.println("Selezionare il round del tracciato (che non sia vuoto) dal quale estrarre il dado");
                         String result = readFromConsole();
+
+                        if(result == null)
+                            return;
+
                         try {
                             round = Integer.parseInt(result);
                         }catch(NumberFormatException nfe){
@@ -656,6 +691,10 @@ public class SagradaCLI implements UI {
                     do {
                             System.out.println("Selezionare un dado appartenente al round scelto");
                             dad = readFromConsole();
+
+                            if(dad == null)
+                                return;
+
                             vecmove = dad.split("\\ ");
                         try {
                             value = Integer.parseInt(vecmove[0]);
@@ -725,6 +764,8 @@ public class SagradaCLI implements UI {
             do {
                 System.out.println("Quale elemento vuoi vedere?\n[d] dadiera\n[g] griglia\n[t] tracciato round\n[a] avversari\n[c] carte strumento\n[o] obiettivi\n[s] segnalini\n[tutto] tutti gli elementi\n[niente] nessuno degli elementi");
                 v = readFromConsole();
+                if(v == null)
+                    return;
             }
             while (!v.equals("d") && !v.equals("g") && !v.equals("t") && !v.equals("a") && !v.equals("s") && !v.equals("o") && !v.equals("c") && !v.equals("tutto") && !v.equals("niente"));
             switch (v) {
@@ -764,6 +805,8 @@ public class SagradaCLI implements UI {
             do {
                 System.out.println("\n\nVuoi vedere altri elementi? [S/n]");
                 response = readFromConsole();
+                if(response == null)
+                    return;
             } while (!response.equals("S") && !response.equals("n"));
         } while (response.equals("S"));
     }
@@ -955,6 +998,10 @@ public class SagradaCLI implements UI {
         }
     }
 
+    /**
+     * this method handles the read from console.
+     * @return the value of the global variable in which the input is stored
+     */
     private String readFromConsole() {
         String reply = "";
         synchronized (contentLock) {
@@ -996,6 +1043,8 @@ public class SagradaCLI implements UI {
                 do {
                     System.out.println("1. Incrementa\n2. Decrementa\n");
                     result = readFromConsole();
+                    if(result == null)
+                        return;
                 } while (!result.equals("1") && !result.equals("2"));
                 if (result.equals("1"))
                     ToolAction.setInstruction("inc");
@@ -1008,6 +1057,8 @@ public class SagradaCLI implements UI {
                 do {
                     System.out.println("Seleziona il numero del dado!");
                     result = readFromConsole();
+                    if(result == null)
+                        return;
                 } while (Integer.parseInt(result) > 6 || Integer.parseInt(result) < 1);
 
                 switch (str.toUpperCase()) {
@@ -1076,6 +1127,11 @@ public class SagradaCLI implements UI {
         }
     }
 
+
+    /**
+     * this thread constantly waits for an input from console
+     * and stores it in a global variable
+     */
     private class Reader implements Runnable {
 
         private InputStreamReader inputStream;
