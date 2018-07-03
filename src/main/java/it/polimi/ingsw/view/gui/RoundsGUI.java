@@ -27,7 +27,7 @@ public class RoundsGUI extends GridPane {
     public RoundsGUI(GridPane p, UI game)
     {
         alldice = new ArrayList[10];
-        currentTurn = 1;
+        currentTurn = 0;
 
         for(int i=0;i<alldice.length;i++)
             alldice[i]=new ArrayList<Pair>();
@@ -115,11 +115,11 @@ public class RoundsGUI extends GridPane {
             {
                 if (allpair[i].size() == 0)
                 {
-                    currentTurn = i+1;
+                    currentTurn = i;
                     break;
                 }
             }
-            for (int i = 1 ; i < 10 ; i++)
+            for (int i = 0 ; i < 10 ; i++)
                 setButtonStyle((RoundButton)round.getChildren().get(i),i);
 
         });

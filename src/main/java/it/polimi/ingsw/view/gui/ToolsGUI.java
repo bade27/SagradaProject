@@ -6,9 +6,12 @@ import it.polimi.ingsw.utilities.ParserXML;
 import it.polimi.ingsw.view.gui.GraphButton;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+
+import java.awt.*;
 
 public class ToolsGUI {
 
@@ -20,7 +23,7 @@ public class ToolsGUI {
     private GraphButton b3;
     boolean enable;
 
-    public ToolsGUI(GridPane pane,UI game){
+    public ToolsGUI(GridPane pane, UI game, Button b){
 
         this.game = game;
         this.pane=pane;
@@ -32,6 +35,7 @@ public class ToolsGUI {
         DimWindows.dimWidth(t,300);
         pane.add(t,0,0);
 
+        t.add(b,0,3);
     }
 
     public void updateTools(String[] name){
@@ -115,9 +119,11 @@ public class ToolsGUI {
                 });
                 t.add(b3, 0, 2);
 
-                GridPane.setMargin(b1,new Insets(40,0,0,0));
-                GridPane.setMargin(b2,new Insets(40,0,0,0));
-                GridPane.setMargin(b3,new Insets(40,0,0,0));
+                GridPane.setMargin(b1,new Insets(20,0,0,0));
+                GridPane.setMargin(b2,new Insets(20,0,0,0));
+                GridPane.setMargin(b3,new Insets(20,0,0,0));
+
+
 
             }catch (Exception e){
                 e.getStackTrace();

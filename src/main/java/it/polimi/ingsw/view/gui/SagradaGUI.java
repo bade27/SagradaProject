@@ -286,8 +286,6 @@ public class SagradaGUI extends Application implements UI {
         GridPane pright=new GridPane();
         GridPane roundContent = new GridPane();
 
-        //pright.setMinSize(400,400);
-
         mainContent.setGridLinesVisible(true);
 
         mainContent.add(pleft,0,0);
@@ -306,8 +304,10 @@ public class SagradaGUI extends Application implements UI {
         pleft.setMaxWidth(220);
         pright.setMaxWidth(220);
 
+        useTool = new UseToolButton("Usa il tool!", this);
+
         //placing the different gui components
-        toolsG = new ToolsGUI(mainContent, this);
+        toolsG = new ToolsGUI(mainContent, this,useTool);
         dadieraG =new DadieraGUI(pcenter, 5, this);
         gridG = new GridGUI(pcenter, this);
         plaG=new PlayersGUI(pcenter,this);
@@ -319,10 +319,8 @@ public class SagradaGUI extends Application implements UI {
         msgb = new MessageBox("Benvenuto!");
         bottom.setLeft(msgb);
 
-        useTool = new UseToolButton("Usa il tool!", this);
-        bottom.setCenter(useTool);
 
-        //roundContent.setAlignment(Pos.CENTER);
+
         //Automatic centering
         roundContent.setPadding(new Insets(0,0,0,200));
 
