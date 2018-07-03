@@ -243,7 +243,7 @@ public class TokenTurn
                     clockwise = false;
                 }
 
-                if (currentTurn == 1)
+                if (currentTurn == 1 && !clockwise)
                     closeRound();
 
                 turnDel = players.get(i).getIdTurn();
