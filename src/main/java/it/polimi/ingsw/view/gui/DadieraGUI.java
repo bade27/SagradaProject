@@ -6,6 +6,7 @@ import it.polimi.ingsw.client.ToolAction;
 import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.remoteInterface.Pair;
 import javafx.application.Platform;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
@@ -27,6 +28,7 @@ public class DadieraGUI extends GridPane {
         initGraphic();
         pane.add(grid, 0, 1);
         grid.setAlignment(Pos.CENTER);
+        grid.setPadding(new Insets(0,0,10,0));
     }
 
 

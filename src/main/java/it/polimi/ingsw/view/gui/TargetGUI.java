@@ -49,12 +49,32 @@ public class TargetGUI extends GridPane{
         gridPane.add(privateGeneralBox,0,0);
         gridPane.add(publicGeneralBox,0,1);
 
+
+        EndButton pass = new EndButton(game);
+        pass.setBackground(new Background(new BackgroundImage(ParserXML.LoadImageXMLAtRequest.getObjectivesBackground(),
+                BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT)));
+        pass.setGraphic(new ImageView(new Image("file:resources/carte/obbiettivi/pass_turn.png")));
+
+        pass.setOnMouseEntered(actionEvent -> {
+            pass.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);" +
+                    "-fx-background-color: transparent;" +
+                    "-fx-background-radius: 5;");
+        });
+
+        pass.setOnMouseExited(actionEvent -> {
+            pass.setStyle("");
+        });
+
+        gridPane.add(pass,0,2);
+
+
         gridPane.setPadding(new Insets(10,5,20,5));
         gridPane.setHgap(10);
         gridPane.setVgap(10);
 
         p.add(gridPane,2,0);
-        DimWindows.dimWidth(gridPane,250);
+        //DimWindows.dimWidth(gridPane,250);
     }
 
 

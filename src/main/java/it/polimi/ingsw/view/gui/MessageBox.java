@@ -14,7 +14,7 @@ public class MessageBox extends Text {
 
     public MessageBox(String text) {
         super(text);
-        this.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 15));
+        this.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 18));
     }
 
     /**

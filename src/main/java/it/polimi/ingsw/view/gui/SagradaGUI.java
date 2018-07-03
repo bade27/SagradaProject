@@ -12,6 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -278,10 +279,13 @@ public class SagradaGUI extends Application implements UI {
 
         //initialization of the main space
         //it's the main space, it contains everything except for the end turn button and the status message
+
         GridPane mainContent=new GridPane();
         GridPane pcenter=new GridPane();
         GridPane pleft=new GridPane();
         GridPane pright=new GridPane();
+        GridPane roundContent = new GridPane();
+
         mainContent.setGridLinesVisible(true);
 
         mainContent.add(pleft,0,0);
@@ -291,38 +295,49 @@ public class SagradaGUI extends Application implements UI {
         DimWindows.dim(mainContent);
         DimWindows.dim(pright);
         DimWindows.dim(pleft);
-        //pleft.prefWidth(Double.MAX_VALUE);
         DimWindows.dim(pcenter);
 
         mainContent.setAlignment(Pos.CENTER);
         pcenter.setAlignment(Pos.CENTER);
+        //roundContent.setAlignment(Pos.CENTER);
+
+        pleft.setMaxWidth(220);
+        pright.setMaxWidth(220);
+
+        useTool = new UseToolButton("Usa il tool!", this);
 
         //placing the different gui components
-        toolsG = new ToolsGUI(mainContent, this);
-        roundsG = new RoundsGUI(pcenter, this);
+        toolsG = new ToolsGUI(mainContent, this,useTool);
         dadieraG =new DadieraGUI(pcenter, 5, this);
         gridG = new GridGUI(pcenter, this);
         plaG=new PlayersGUI(pcenter,this);
         tokenG=new TokenGUI(pcenter,this);
         targetG = new TargetGUI(mainContent,this);
+        roundsG = new RoundsGUI(roundContent, this);
 
-        //status message and end of turn button
         BorderPane bottom = new BorderPane();
         msgb = new MessageBox("Benvenuto!");
-        bottom.setLeft(msgb);
-        EndButton pass = new EndButton(this);
-        bottom.setRight(pass);
-        useTool = new UseToolButton("Usa il tool!", this);
-        bottom.setCenter(useTool);
+        bottom.setCenter(msgb);
+
+
+
+        //Automatic centering
+        roundContent.setPadding(new Insets(0,0,0,200));
 
         //putting it all together
         gameRoot.setCenter(mainContent);
         gameRoot.setBottom(bottom);
+        gameRoot.setTop(roundContent);
 
         stage.getScene().setRoot(gameRoot);
         stage.getScene().getWindow().setWidth(1000);
+<<<<<<< HEAD
         stage.getScene().getWindow().setHeight(650);
         stage.setResizable(true);
+=======
+        stage.getScene().getWindow().setHeight(670);
+        stage.setResizable(false);
+>>>>>>> 6a05459370220ae809068c1137fc8d917f030d64
 
         closeWindow();
     }

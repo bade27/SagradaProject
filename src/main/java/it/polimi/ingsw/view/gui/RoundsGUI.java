@@ -9,6 +9,8 @@ import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 
 import java.awt.*;
@@ -20,10 +22,12 @@ public class RoundsGUI extends GridPane {
     private GridPane round;
     private GridPane diceInRound;
     private GridPane roundTrace;
+    private int currentTurn;
 
     public RoundsGUI(GridPane p, UI game)
     {
         alldice = new ArrayList[10];
+        currentTurn = 0;
 
         for(int i=0;i<alldice.length;i++)
             alldice[i]=new ArrayList<Pair>();
@@ -32,12 +36,20 @@ public class RoundsGUI extends GridPane {
         diceInRound=new GridPane();
         round = new GridPane();
 
-
         for (int i = 0; i < 10; i++)
         {
             RoundButton indexround = new RoundButton(i);
-            indexround.setText(""+(i+1)); //Da sostituire con immagine
-            round.add(indexround, i, 0);
+
+            ImageView imageView = new ImageView(GraphicDieHandler.getImageRound(i+1));
+            imageView.setFitWidth(45);
+            imageView.setFitHeight(45);
+            indexround.setGraphic(imageView);
+            setButtonStyle(indexround,i);
+
+            GridPane.setMargin(indexround,new Insets(0,0,0,0));
+
+
+            round.add(indexround, indexround.getRound()+1, 0);
             indexround.setActive(false);
 
             indexround.setOnAction(event1 ->
@@ -53,16 +65,19 @@ public class RoundsGUI extends GridPane {
                     {
                         DieButton b = new DieButton(arr.get(j).getColor(),arr.get(j).getValue(),indexround.getRound());
 
-                        b.setText(arr.get(j).getValue().toString()); //Da sostituire con immagine
-                        b.setStyle("-fx-background-color: " + arr.get(j).getColor());//Da sostituire con immagine
+                        ImageView imageView1 = new ImageView(GraphicDieHandler.getImageDie(b.getPair()));
+                        imageView1.setFitWidth(30);
+                        imageView1.setFitHeight(30);
+                        b.setGraphic(imageView1);
+
+                        setButtonStyle(b);
 
                         b.setOnAction(event2 -> {
                             ToolAction.setTracePair(b.getPair());
-                            //System.out.println(b.getRound()+1);
                             ToolAction.setTracePosition(b.getRound()+1);
                         });
 
-                        diceInRound.add(b,j,0);
+                        diceInRound.add(b,j+1,0);
                     }
                     indexround.setActive(true);
                 }
@@ -79,14 +94,12 @@ public class RoundsGUI extends GridPane {
         roundTrace.setAlignment(Pos.TOP_CENTER);
         roundTrace.add(round,0,0);
         roundTrace.add(diceInRound,0,1);
-
-        DimWindows.dimHeight(round,20);
         round.setAlignment(Pos.TOP_CENTER);
 
         p.add(roundTrace,0,0);
 
-        GridPane.setMargin(roundTrace,new Insets(0,0,10,0));
-        GridPane.setMargin(diceInRound,new Insets(0,0,10,0));
+        GridPane.setMargin(roundTrace,new Insets(5,0,10,0));
+        GridPane.setMargin(diceInRound,new Insets(0,0,0,0));
 
 
     }
@@ -97,9 +110,22 @@ public class RoundsGUI extends GridPane {
 
             alldice = allpair;
             diceInRound.getChildren().clear();
+
+            for (int i=0 ; i < allpair.length ; i++)
+            {
+                if (allpair[i].size() == 0)
+                {
+                    currentTurn = i;
+                    break;
+                }
+            }
+            for (int i = 0 ; i < 10 ; i++)
+                setButtonStyle((RoundButton)round.getChildren().get(i),i);
+
         });
     }
 
+    //<editor-fold desc="Button class">
     private class RoundButton extends Button
     {
         private int round;
@@ -154,6 +180,47 @@ public class RoundsGUI extends GridPane {
         public void setRound(int round) {
             this.round = round;
         }
+    }
+    //</editor-fold>
+
+    private void setButtonStyle (Button b,int turn)
+    {
+        if (turn == currentTurn)
+            b.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,255,255,0.8), 30, 0, 0, 0);" +
+                    "-fx-background-color: transparent;");
+        else
+            b.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);" +
+                "-fx-background-color: transparent;");
+
+        b.setOnMouseEntered(actionEvent -> {
+            b.setStyle("-fx-effect: dropshadow(three-pass-box, white, 20, 0, 0, 0);" +
+                    "-fx-background-color: transparent;");
+        });
+
+        b.setOnMouseExited(actionEvent -> {
+            if (turn == currentTurn)
+                b.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,255,255,0.8), 30, 0, 0, 0);" +
+                        "-fx-background-color: transparent;");
+            else
+                b.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);" +
+                        "-fx-background-color: transparent;");
+        });
+    }
+
+    private void setButtonStyle (Button b)
+    {
+        b.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);" +
+                    "-fx-background-color: transparent;");
+
+        b.setOnMouseEntered(actionEvent -> {
+            b.setStyle("-fx-effect: dropshadow(three-pass-box, white, 20, 0, 0, 0);" +
+                    "-fx-background-color: transparent;");
+        });
+
+        b.setOnMouseExited(actionEvent -> {
+                b.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);" +
+                        "-fx-background-color: transparent;");
+        });
     }
 }
 
