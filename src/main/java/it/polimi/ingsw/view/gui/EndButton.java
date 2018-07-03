@@ -8,7 +8,7 @@ public class EndButton extends Button {
     private UI game;
 
     public EndButton(UI game) {
-        super("Fine turno");
+        super();
         this.game = game;
         this.setOnAction(actionEvent -> {
             game.passTurn();

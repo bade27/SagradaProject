@@ -317,7 +317,7 @@ public class SagradaGUI extends Application implements UI {
 
         BorderPane bottom = new BorderPane();
         msgb = new MessageBox("Benvenuto!");
-        bottom.setLeft(msgb);
+        bottom.setCenter(msgb);
 
 
 

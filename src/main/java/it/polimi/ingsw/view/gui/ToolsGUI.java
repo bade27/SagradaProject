@@ -23,7 +23,7 @@ public class ToolsGUI {
     private GraphButton b3;
     boolean enable;
 
-    public ToolsGUI(GridPane pane, UI game, Button b){
+    public ToolsGUI(GridPane pane, UI game, Button useTool){
 
         this.game = game;
         this.pane=pane;
@@ -35,7 +35,8 @@ public class ToolsGUI {
         DimWindows.dimWidth(t,300);
         pane.add(t,0,0);
 
-        t.add(b,0,3);
+
+        t.add(useTool,0,3);
     }
 
     public void updateTools(String[] name){
