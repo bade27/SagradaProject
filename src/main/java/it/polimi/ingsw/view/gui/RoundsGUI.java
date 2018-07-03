@@ -44,6 +44,7 @@ public class RoundsGUI extends GridPane {
             {
                 if (!indexround.isActive())
                 {
+                    diceInRound.getChildren().clear();
                     ArrayList<Pair> arr = alldice[indexround.getRound()];
                     if (arr.size() == 0)
                         return;
