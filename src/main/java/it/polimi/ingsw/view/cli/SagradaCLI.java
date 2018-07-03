@@ -135,22 +135,28 @@ public class SagradaCLI extends Thread implements UI {
                     //printGrid();
                     System.out.println("\n\n4.\t" + name4 + "\n");
                     //printGrid();
-                    map = readFromConsole();
+                        map = readFromConsole();
+                        if(map==null){
+                            break;
+                        }
                 } while (!(map.equals("1") || map.equals("2") || map.equals("3") || map.equals("4")));
-
-                switch (map) {
-                    case "1":
-                        clientPlayer.setChooseMap(s1[0]);
-                        break;
-                    case "2":
-                        clientPlayer.setChooseMap(s1[1]);
-                        break;
-                    case "3":
-                        clientPlayer.setChooseMap(s2[0]);
-                        break;
-                    case "4":
-                        clientPlayer.setChooseMap(s2[1]);
-                        break;
+                try {
+                    switch (map) {
+                        case "1":
+                            clientPlayer.setChooseMap(s1[0]);
+                            break;
+                        case "2":
+                            clientPlayer.setChooseMap(s1[1]);
+                            break;
+                        case "3":
+                            clientPlayer.setChooseMap(s2[0]);
+                            break;
+                        case "4":
+                            clientPlayer.setChooseMap(s2[1]);
+                            break;
+                    }
+                }catch (NullPointerException ex){
+                    System.out.println("bubusettete");
                 }
             }
         });

@@ -3,8 +3,14 @@
 <graphic>
 
 	<game>
-		<width>1000</width>
-		<height>650</height>
+		<gui>
+			<width>1000</width>
+			<height>650</height>
+		</gui>
+		<cli>
+			<width>7</width>
+			<height>3</height>
+		</cli>
 	</game>
 	
 </graphic>
