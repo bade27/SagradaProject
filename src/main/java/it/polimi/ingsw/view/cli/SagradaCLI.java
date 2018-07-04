@@ -23,7 +23,7 @@ public class SagradaCLI implements UI {
     private boolean enableBoard;
     private boolean toolPhase;
     private ClientPlayer clientPlayer;
-    private HashMap<ColorEnum, Color> hashMap = new HashMap<>();
+    private HashMap<ColorEnum, Color> hashMapEc = new HashMap<>();
     private String msg = null;
     private Pair[] dadiera;
     private Pair[][] window;
@@ -65,12 +65,21 @@ public class SagradaCLI implements UI {
         startGame();
     }
 
+    /**
+     * Start Sagrada title and login screen
+     */
     public void startGame() {
         Color color = Color.ANSI_RED;
         printbyFile("resources/titleCli/Sagrada.txt", color);
         login("Inserire dati per inizializzazione della partita");
     }
 
+    /**
+     * Create login screen. Login accept name, ip and type of connection
+     * Default ip is uploaded from file and default type of connection is RMI
+     *
+     * @param message string that login print at the bottom
+     */
     @Override
     public void login(String message) {
         Color color = Color.ANSI_BLUE;
@@ -112,6 +121,11 @@ public class SagradaCLI implements UI {
         }
     }
 
+    /**
+     * Create choose map screen, it use 4 button fot choose the map
+     * @param s1 first pair of map (first card)
+     * @param s2 second pair of map (second card)
+     */
     @Override
     public void maps(String[] s1, String[] s2) {
         task = new Thread(new Runnable() {
@@ -210,6 +224,9 @@ public class SagradaCLI implements UI {
         task.start();
     }
 
+    /**
+     * Load "il gioco comincia" text
+     */
     @Override
     public void game() {
         Color color = Color.ANSI_PURPLE;
@@ -330,7 +347,7 @@ public class SagradaCLI implements UI {
                 String description = CLIFactory.getTooldescriptionFromName(FileLocator.getToolsListPath(), tools[i]);
                 printStream.println("- " + name + ": " + description);
             } catch (ParserXMLException e) {
-                System.out.println("Errore nel file dei tools");
+                printStream.println("Errore nel file dei tools");
                 e.getStackTrace();
             }
         }
@@ -554,34 +571,15 @@ public class SagradaCLI implements UI {
         do {
             viewDadiera();
             viewWindow();
-            printStream.println("Seleziona un dado della dadiera: \n[esempio: 1 RED]");
+            printStream.println("Seleziona un dado della dadiera: [esempio: 1 RED] \n[digitare 'annulla' per annullare l'operazione]");
             mossa = readFromConsole();
 
-            if (mossa == null)
+            if (mossa == null || mossa.equals("annulla"))
                 return;
-
             vecmove = mossa.split("\\ ");
             try {
                 value = Integer.parseInt(vecmove[0]);
-                switch (vecmove[1].toUpperCase()) {
-                    case "RED":
-                        color = ColorEnum.RED;
-                        break;
-                    case "GREEN":
-                        color = ColorEnum.GREEN;
-                        break;
-                    case "YELLOW":
-                        color = ColorEnum.YELLOW;
-                        break;
-                    case "BLUE":
-                        color = ColorEnum.BLUE;
-                        break;
-                    case "PURPLE":
-                        color = ColorEnum.PURPLE;
-                        break;
-                    default:
-                        break;
-                }
+                color=setColor(vecmove[1].toUpperCase());
             } catch (NumberFormatException nfe) {
                 value = -1;
                 color = null;
@@ -639,7 +637,7 @@ public class SagradaCLI implements UI {
         int round;
         //capisco quale tool vuole utilizzare
         do {
-            printStream.println("Quale strumento vuoi utilizzare? [digitare il numero corrispondente]");
+            printStream.println("Quale strumento vuoi utilizzare? [digitare il numero corrispondente]\n[digitare 'annulla' per annullare l'operazione]");
             for (int i = 0; i < tools.length; i++) {
                 try {
                     description = CLIFactory.getTooldescriptionFromName(FileLocator.getToolsListPath(), tools[i]);
@@ -650,7 +648,7 @@ public class SagradaCLI implements UI {
             }
             t = readFromConsole();
 
-            if (t == null)
+            if (t == null ||t.equals("annulla"))
                 return;
 
         } while (!t.equals("1") && !t.equals("2") && !t.equals("3"));
@@ -679,34 +677,16 @@ public class SagradaCLI implements UI {
 
                     viewDadiera();
                     do {
-                        printStream.println("Seleziona un dado della dadiera: \n[esempio: 1 RED]");
+                        printStream.println("Seleziona un dado della dadiera: [esempio: 1 RED]\n[digitare 'annulla' per annullare l'operazione]");
                         dad = readFromConsole();
 
-                        if (dad == null)
+                        if (dad == null|| dad.equals("annulla"))
                             return;
 
                         vecmove = dad.split("\\ ");
                         try {
                             value = Integer.parseInt(vecmove[0]);
-                            switch (vecmove[1].toUpperCase()) {
-                                case "RED":
-                                    color = ColorEnum.RED;
-                                    break;
-                                case "GREEN":
-                                    color = ColorEnum.GREEN;
-                                    break;
-                                case "YELLOW":
-                                    color = ColorEnum.YELLOW;
-                                    break;
-                                case "BLUE":
-                                    color = ColorEnum.BLUE;
-                                    break;
-                                case "PURPLE":
-                                    color = ColorEnum.PURPLE;
-                                    break;
-                                default:
-                                    break;
-                            }
+                            color=setColor(vecmove[1].toUpperCase());
                         } catch (NumberFormatException nfe) {
                             value = -1;
                             color = null;
@@ -746,10 +726,10 @@ public class SagradaCLI implements UI {
                 } else if (element.equals("3")) {
                     viewRoundTrace();
                     do {
-                        printStream.println("Selezionare il round del tracciato (che non sia vuoto) dal quale estrarre il dado");
+                        printStream.println("Selezionare il round del tracciato (che non sia vuoto) dal quale estrarre il dado\n[digitare 'annulla' per annullare l'operazione]");
                         String result = readFromConsole();
 
-                        if (result == null)
+                        if (result == null||result.equals("annulla"))
                             return;
 
                         try {
@@ -763,31 +743,13 @@ public class SagradaCLI implements UI {
                         printStream.println("Selezionare un dado appartenente al round scelto");
                         dad = readFromConsole();
 
-                        if (dad == null)
+                        if (dad == null||dad.equals("annulla"))
                             return;
 
                         vecmove = dad.split("\\ ");
                         try {
                             value = Integer.parseInt(vecmove[0]);
-                            switch (vecmove[1].toUpperCase()) {
-                                case "RED":
-                                    color = ColorEnum.RED;
-                                    break;
-                                case "GREEN":
-                                    color = ColorEnum.GREEN;
-                                    break;
-                                case "YELLOW":
-                                    color = ColorEnum.YELLOW;
-                                    break;
-                                case "BLUE":
-                                    color = ColorEnum.BLUE;
-                                    break;
-                                case "PURPLE":
-                                    color = ColorEnum.PURPLE;
-                                    break;
-                                default:
-                                    break;
-                            }
+                            color=setColor(vecmove[1].toUpperCase());
                             vecTrace = new Pair[trace[round - 1].size()];
                             for (int i = 0; i < trace[round - 1].size(); i++) {
                                 vecTrace[i] = trace[round - 1].get(i);
@@ -834,7 +796,7 @@ public class SagradaCLI implements UI {
             do {
                 printStream.println("Quale elemento vuoi vedere?\n[d] dadiera\n[g] griglia\n[t] tracciato round\n[a] avversari\n[c] carte strumento\n[o] obiettivi\n[s] segnalini\n[tutto] tutti gli elementi\n[niente] nessuno degli elementi");
                 v = readFromConsole();
-                if (v == null)
+                if (v == null||v.equals("niente"))
                     return;
             }
             while (!v.equals("d") && !v.equals("g") && !v.equals("t") && !v.equals("a") && !v.equals("s") && !v.equals("o") && !v.equals("c") && !v.equals("tutto") && !v.equals("niente"));
@@ -968,11 +930,11 @@ public class SagradaCLI implements UI {
 
         //parte centrale
         for (int j = 0; j < p.length; j++) {
-            System.out.print(hashMap.get(p[j].getColor()).escape() + "");
+            System.out.print(hashMapEc.get(p[j].getColor()).escape() + "");
             for (int k = 0; k < cellWidth / 2; k++) {
                 System.out.print(" ");
             }
-            System.out.print(Color.ANSI_BLACK.escape() + hashMap.get(p[j].getColor()).escape() + p[j].getValue());
+            System.out.print(Color.ANSI_BLACK.escape() + hashMapEc.get(p[j].getColor()).escape() + p[j].getValue());
 
             for (int k = 0; k < cellWidth / 2; k++) {
                 System.out.print(" ");
@@ -994,7 +956,7 @@ public class SagradaCLI implements UI {
     private void printPairArray(Pair[] p) {
         for (int i = 0; i < cellHeight / 2; i++) {
             for (int j = 0; j < p.length; j++) {
-                System.out.print(hashMap.get(p[j].getColor()).escape() + "");
+                System.out.print(hashMapEc.get(p[j].getColor()).escape() + "");
                 for (int k = 0; k < cellWidth; k++) {
                     System.out.print(" ");
                 }
@@ -1012,11 +974,11 @@ public class SagradaCLI implements UI {
 
             //parte centrale
             for (int j = 0; j < mp[0].length; j++) {
-                System.out.print(hashMap.get(mp[w][j].getColor()).escape() + "");
+                System.out.print(hashMapEc.get(mp[w][j].getColor()).escape() + "");
                 for (int k = 0; k < cellWidth / 2; k++) {
                     System.out.print(" ");
                 }
-                System.out.print(Color.ANSI_BLACK.escape() + hashMap.get(mp[w][j].getColor()).escape() + mp[w][j].getValue());
+                System.out.print(Color.ANSI_BLACK.escape() + hashMapEc.get(mp[w][j].getColor()).escape() + mp[w][j].getValue());
 
                 for (int k = 0; k < cellWidth / 2; k++) {
                     System.out.print(" ");
@@ -1036,7 +998,7 @@ public class SagradaCLI implements UI {
     private void printPairMatrix(Pair[][] mp, int w) {
         for (int i = 0; i < cellHeight / 2; i++) {
             for (int j = 0; j < mp[0].length; j++) {
-                System.out.print(hashMap.get(mp[w][j].getColor()).escape() + "");
+                System.out.print(hashMapEc.get(mp[w][j].getColor()).escape() + "");
                 for (int k = 0; k < cellWidth; k++) {
                     System.out.print(" ");
                 }
@@ -1131,26 +1093,7 @@ public class SagradaCLI implements UI {
                     if (result == null)
                         return;
                 } while (Integer.parseInt(result) > 6 || Integer.parseInt(result) < 1);
-
-                switch (str.toUpperCase()) {
-                    case "RED":
-                        color = ColorEnum.RED;
-                        break;
-                    case "GREEN":
-                        color = ColorEnum.GREEN;
-                        break;
-                    case "YELLOW":
-                        color = ColorEnum.YELLOW;
-                        break;
-                    case "BLUE":
-                        color = ColorEnum.BLUE;
-                        break;
-                    case "PURPLE":
-                        color = ColorEnum.PURPLE;
-                        break;
-                    default:
-                        break;
-                }
+                color=setColor(str.toUpperCase());
                 ToolAction.setDadieraPair(new Pair(Integer.parseInt(result), color));
                 makeToolMove();
                 break;
@@ -1167,15 +1110,32 @@ public class SagradaCLI implements UI {
     }
 
     private void createMap() {
-        hashMap.put(ColorEnum.RED, Color.ANSI_BACK_RED);
-        hashMap.put(ColorEnum.BLUE, Color.ANSI_BACK_BLUE);
-        hashMap.put(ColorEnum.PURPLE, Color.ANSI_BACK_PURPLE);
-        hashMap.put(ColorEnum.YELLOW, Color.ANSI_BACK_YELLOW);
-        hashMap.put(ColorEnum.GREEN, Color.ANSI_BACK_GREEN);
-        hashMap.put(ColorEnum.WHITE, Color.ANSI_NOCOLOR);
-        hashMap.put(null, Color.ANSI_NOCOLOR);
+        hashMapEc.put(ColorEnum.RED, Color.ANSI_BACK_RED);
+        hashMapEc.put(ColorEnum.BLUE, Color.ANSI_BACK_BLUE);
+        hashMapEc.put(ColorEnum.PURPLE, Color.ANSI_BACK_PURPLE);
+        hashMapEc.put(ColorEnum.YELLOW, Color.ANSI_BACK_YELLOW);
+        hashMapEc.put(ColorEnum.GREEN, Color.ANSI_BACK_GREEN);
+        hashMapEc.put(ColorEnum.WHITE, Color.ANSI_NOCOLOR);
+        hashMapEc.put(null, Color.ANSI_NOCOLOR);
     }
 
+
+    private ColorEnum setColor(String s){
+        switch (s.toUpperCase()) {
+            case "RED":
+                return ColorEnum.RED;
+            case "GREEN":
+                return ColorEnum.GREEN;
+            case "YELLOW":
+                return ColorEnum.YELLOW;
+            case "BLUE":
+                return ColorEnum.BLUE;
+            case "PURPLE":
+                return ColorEnum.PURPLE;
+            default:
+                return null;
+        }
+    }
 
     private class Player {
         String name;
