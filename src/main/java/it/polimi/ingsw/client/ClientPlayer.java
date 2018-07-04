@@ -49,7 +49,6 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     private boolean cannotLogIn = false;
     private boolean serverAlive;
 
-
     //<editor-fold desc="Initialization Phase">
 
     public ClientPlayer (int t, UI g, String serverIP) throws RemoteException

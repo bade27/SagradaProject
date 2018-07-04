@@ -75,7 +75,7 @@ public class SagradaCLI implements UI {
     }
 
     /**
-     * Create login screen. Login accept name, ip and type of connection
+     * Creates login screen. Login accept name, ip and type of connection
      * Default ip is uploaded from file and default type of connection is RMI
      *
      * @param message string that login print at the bottom
@@ -122,7 +122,7 @@ public class SagradaCLI implements UI {
     }
 
     /**
-     * Create choose map screen, it use 4 button fot choose the map
+     * Creates choose map screen, it use 4 button fot choose the map
      * @param s1 first pair of map (first card)
      * @param s2 second pair of map (second card)
      */
@@ -225,7 +225,7 @@ public class SagradaCLI implements UI {
     }
 
     /**
-     * Load "il gioco comincia" text
+     * Load"il gioco comincia" text
      */
     @Override
     public void game() {
@@ -234,6 +234,11 @@ public class SagradaCLI implements UI {
         printStream.println("\n\n\n Attendere il proprio turno");
     }
 
+    /**
+     *Creates end game screen with players, scores and winner. If a player is disconnected it write "ritirato"
+     * @param name  Vector with players name
+     * @param record Vector with scores
+     */
     @Override
     public void endGame(String[] name, int[] record) {
         String tempName;
@@ -269,6 +274,10 @@ public class SagradaCLI implements UI {
         printStream.println("\n" + name[0] + ":\t" + record[0] + "\n");
     }
 
+    /**
+     * Creates disconnection screen with reconnection button
+     * @param s string that disconnection print at the center
+     */
     @Override
     public void disconnection(String s) {
         task.interrupt();
@@ -290,6 +299,10 @@ public class SagradaCLI implements UI {
         task.start();
     }
 
+    /**
+     * Creates disconnection screen without reconnection button
+     * @param s string that fatalDisconnection print at the center
+     */
     @Override
     public void fatalDisconnection(String s) {
         Color color = Color.ANSI_RED;
@@ -298,6 +311,9 @@ public class SagradaCLI implements UI {
         printStream.println("\n" + s);
     }
 
+    /**
+     * Creates loading disconnection screen with waiting
+     */
     @Override
     public void loading() {
         Color color = Color.ANSI_BLUE;
@@ -305,36 +321,57 @@ public class SagradaCLI implements UI {
         printStream.println("\n\nAttendere l'arrivo di altri giocatori");
     }
 
+    /**
+     * set dadiera with new dadiera
+     * @param dadiera new dadiera
+     */
     @Override
     public void updateDadiera(Pair[] dadiera) {
         this.dadiera = dadiera;
         viewDadiera();
     }
 
+    /**
+     * view dadiera with its title
+     */
     private void viewDadiera() {
         Color color = Color.ANSI_NOCOLOR;
         printbyFile("resources/titleCli/Dadiera.txt", color);
         printPair(dadiera);
     }
 
+    /**
+     * set window with new grid
+     * @param window new grid
+     */
     @Override
     public void updateWindow(Pair[][] window) {
         this.window = window;
         viewWindow();
     }
 
+    /**
+     * view grid with its title
+     */
     private void viewWindow() {
         Color color = Color.ANSI_NOCOLOR;
         printbyFile("resources/titleCli/Griglia.txt", color);
         printPair(window);
     }
 
+    /**
+     * set toolNames with new tools names
+     * @param toolNames new tools names
+     */
     @Override
     public void updateTools(String[] toolNames) {
         tools = toolNames;
 
     }
 
+    /**
+     * view tools with its title
+     */
     private void viewTools() {
         Color color = Color.ANSI_NOCOLOR;
         printbyFile("resources/titleCli/Strumenti.txt", color);
@@ -353,6 +390,12 @@ public class SagradaCLI implements UI {
         }
     }
 
+    /**
+     * set one Player with new player's user and pair. if active is false his name become name+(non in partita)
+     * @param pair player grid
+     * @param user player user
+     * @param active if active is false the player is not in game
+     */
     @Override
     public void updateOpponents(Pair[][] pair, String user, boolean active) {
         boolean exist = false;
@@ -374,6 +417,9 @@ public class SagradaCLI implements UI {
         }
     }
 
+    /**
+     * view all opponents with its title
+     */
     public void viewOpponents() {
         String user;
         Pair[][] pair;
@@ -393,25 +439,43 @@ public class SagradaCLI implements UI {
         }
     }
 
+    /**
+     * set tokens with new tokens
+     * @param token new tokens
+     */
     @Override
     public void updateTokens(int token) {
         this.token = token;
     }
 
+    /**
+     * view tokens
+     */
     private void viewToken() {
         printStream.println("Token:\t" + token);
     }
 
+    /**
+     * set public targets with new public targets
+     * @param s new public targets
+     */
     @Override
     public void updatePublicTarget(String[] s) {
         this.publicTarget = s;
     }
 
+    /**
+     * set private target with new private target
+     * @param s new private target
+     */
     @Override
     public void updatePrivateTarget(String[] s) {
         this.privateTarget = s;
     }
 
+    /**
+     * view private target with its title and public targets with its title
+     */
     private void viewTarget() {
         String name;
         String description;
@@ -440,14 +504,20 @@ public class SagradaCLI implements UI {
                 ex.printStackTrace();
             }
         }
-
     }
 
+    /**
+     * set trace with new trace
+     * @param trace new trace
+     */
     @Override
     public void updateRoundTrace(ArrayList<Pair>[] trace) {
         this.trace = trace;
     }
 
+    /**
+     * view round trace with its title
+     */
     private void viewRoundTrace() {
         Color color = Color.ANSI_NOCOLOR;
         printbyFile("resources/titleCli/Tracciato_round.txt", color);
@@ -468,6 +538,10 @@ public class SagradaCLI implements UI {
         }
     }
 
+    /**
+     * set msg with new message. If message is one color it creates popUPMessage
+     * @param msg new message
+     */
     @Override
     public void updateMessage(String msg) {
         this.msg = msg;
@@ -482,10 +556,17 @@ public class SagradaCLI implements UI {
         });
     }
 
+    /**
+     * view message
+     */
     private void viewMessage() {
         printStream.println(msg + "\n");
     }
 
+    /**
+     * set enable or disable the board
+     * @param enableBoard boolean value, if true set enable the board else set disable
+     */
     @Override
     public void setEnableBoard(boolean enableBoard) {
         this.enableBoard = enableBoard;
