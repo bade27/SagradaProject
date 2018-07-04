@@ -126,8 +126,8 @@ public class MatchHandler implements Runnable
         setGameStarted(true);
         token.setOnGame(true);
 
-        turnsPlayed = 0;
-        log.addLog("\nturn " + ++turnsPlayed);
+        turnsPlayed = 1;
+        log.addLog("turn " + turnsPlayed);
 
         try{
             mixDadiera();
@@ -178,7 +178,7 @@ public class MatchHandler implements Runnable
 
                     //Increment total of turn
                     turnsPlayed++;
-                    log.addLog("\nturn " + turnsPlayed);
+                    log.addLog("turn " + turnsPlayed);
 
                     //and..Mix dadiera
                     try{
@@ -596,7 +596,7 @@ public class MatchHandler implements Runnable
                 pubObjs[i] = ObjectivesFactory.getPublicObjective(objStrings[i]);
             }
 
-            log.addLog("public objectives for this game:\n" + pubObjs[0].getName() + "\n"
+            log.addLog("\npublic objectives for this game:\n" + pubObjs[0].getName() + "\n"
                     + pubObjs[1].getName() + "\n" + pubObjs[2].getName() + "\n");
 
             //For each players initialize public objective already selected

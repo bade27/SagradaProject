@@ -489,6 +489,7 @@ public class ServerPlayer implements Runnable {
     }
 
     public String getUser() {
+        assert user != null;
         return user;
     }
 
