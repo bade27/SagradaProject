@@ -7,8 +7,6 @@ import it.polimi.ingsw.model.ColorEnum;
 import it.polimi.ingsw.remoteInterface.ClientRemoteInterface;
 import it.polimi.ingsw.remoteInterface.Pair;
 import it.polimi.ingsw.remoteInterface.ServerRemoteInterface;
-import it.polimi.ingsw.server.MatchHandler;
-import it.polimi.ingsw.server.ServerModelAdapter;
 import it.polimi.ingsw.utilities.FileLocator;
 import it.polimi.ingsw.utilities.ParserXML;
 
@@ -16,7 +14,7 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
-import java.util.concurrent.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInterface
@@ -490,16 +488,6 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
         graph.game();
     }
 
-    @Override
-    public void setAdapter(ServerModelAdapter sma) throws RemoteException {
-        //unused
-    }
-
-    @Override
-    public void setMatchHandler(MatchHandler match) throws RemoteException {
-        //unused
-    }
-
     private boolean isInTurn() {
         synchronized (lockInTurn) {
             return inTurn;
@@ -554,9 +542,4 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
     }
     //</editor-fold>
 
-
-    @Override
-    public void close() throws RemoteException {
-        //unused
-    }
 }

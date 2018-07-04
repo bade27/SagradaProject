@@ -2,7 +2,7 @@
 
 <list>
 
-  <numberOfCards>12</numberOfCards>
+  <numberOfCards>13</numberOfCards>
 
   <!--1-->
   <card n = "1">resources/vetrate/xml/kaleidoscopic_dream.xml</card>
@@ -52,4 +52,7 @@
   <card n = "23">resources/vetrate/xml/chromatic_splendor.xml</card>
   <card n = "24">resources/vetrate/xml/comitas.xml</card>
 
+  <!--13-->
+  <card n= "25">resources/vetrate/xml/a_new_beginning.xml</card>
+  <card n= "26">resources/vetrate/xml/the_end_of_time.xml</card>
 </list>
