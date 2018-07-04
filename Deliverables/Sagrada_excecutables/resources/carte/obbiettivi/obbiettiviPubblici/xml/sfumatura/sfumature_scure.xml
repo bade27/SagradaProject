@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<card>
+	<name>Sfumature Scure</name>
+	<value>2</value>
+	<pattern p = "pair">
+		<tag>5 6</tag>
+	</pattern>
+  <description>Set di 5 e 6 ovunque</description>
+  <image>file:resources/carte/obbiettivi/obbiettiviPubblici/Images/sfumature_scure.png</image>
+</card>

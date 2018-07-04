@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<card>
+	<name>Sfumature Diverse - Colonna</name>
+	<value>4</value>
+	<pattern p = "col">
+		<tag>shade</tag>
+	</pattern>
+  <description>Colonne senza sfumature ripetute</description>
+  <image>file:resources/carte/obbiettivi/obbiettiviPubblici/Images/sfumature_diversi_colonna.png</image>
+</card>

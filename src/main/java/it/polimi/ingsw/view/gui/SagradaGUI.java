@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.ClientPlayer;
 import it.polimi.ingsw.client.ToolAction;
 import it.polimi.ingsw.exceptions.ParserXMLException;
 import it.polimi.ingsw.remoteInterface.Pair;
+import it.polimi.ingsw.utilities.FileLocator;
 import it.polimi.ingsw.utilities.ParserXML;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -34,7 +35,6 @@ import java.util.stream.IntStream;
 
 public class SagradaGUI extends Application implements UI {
 
-
     private DadieraGUI dadieraG;
     private GridGUI gridG;
     private PlayersGUI plaG;
@@ -49,6 +49,12 @@ public class SagradaGUI extends Application implements UI {
     private ClientPlayer clientPlayer;
     private boolean enableBoard;
     private boolean toolPhase;
+
+
+    private static void graphic_parameters_setup() throws ParserXMLException
+    {
+
+    }
 
     public SagradaGUI() {
         enableBoard = false;
@@ -513,7 +519,7 @@ public class SagradaGUI extends Application implements UI {
         closeWindow();
     }
     //</editor-fold>
-    
+
     //<editor-fold desc="Loading Page">
     @Override
     /*

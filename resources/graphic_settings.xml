@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <graphic>
-
-	<game>
-		<gui>
+	<gui>
+		<start>
+			<width>500</width>
+			<height>450</height>
+		</start>
+			
+		<game>
 			<width>1000</width>
-			<height>650</height>
-		</gui>
-		<cli>
-			<width>7</width>
-			<height>3</height>
-		</cli>
-	</game>
-	
+			<height>670</height>
+		</game>	
+	</gui>
+		
+	<cli>
+		<width>7</width>
+		<height>3</height>
+	</cli>
 </graphic>
