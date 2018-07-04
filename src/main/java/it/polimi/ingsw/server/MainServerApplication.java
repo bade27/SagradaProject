@@ -78,6 +78,11 @@ public class MainServerApplication
     }
     //</editor-fold>
 
+    //<editor-fold desc="Match choice and set up client">
+
+    /**
+     * Creates a new match
+     */
     private void startNewMatchHandler()
     {
         MatchHandler m = new MatchHandler(this,userList,handlerProgressive);
@@ -93,6 +98,10 @@ public class MainServerApplication
         matches.remove(m);
     }
 
+    /**
+     * redirects the new user to the appropriate match
+     * @param cli
+     */
     private synchronized void dynamicMatchChoosing(ClientRemoteInterface cli)
     {
         for (int i = 0 ; i < matches.size() ; i++)
@@ -139,21 +148,7 @@ public class MainServerApplication
 
         new Thread(() -> dynamicMatchChoosing(cli)).start();
     }
-
-    /**
-     * Main method. It starts the server
-     * @param args arguments
-     */
-    public static void main(String[] args)
-    {
-        MainServerApplication main = new MainServerApplication();
-
-        if (main.initializeServer()) {
-            main.startNewMatchHandler();
-        }
-        else
-            System.out.println( "Impossible to start, server Aborted");
-    }
+    //</editor-fold>
 
 
     //<editor-fold desc="Initializer connection class">
@@ -206,4 +201,19 @@ public class MainServerApplication
     }
     //</editor-fold>
 
+
+    /**
+     * Main method. It starts the server
+     * @param args arguments
+     */
+    public static void main(String[] args)
+    {
+        MainServerApplication main = new MainServerApplication();
+
+        if (main.initializeServer()) {
+            main.startNewMatchHandler();
+        }
+        else
+            System.out.println( "Impossible to start, server Aborted");
+    }
 }

@@ -214,7 +214,6 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable, Ser
             throw new ClientOutOfReachException();
         }
 
-        assertstuff();
         return user;
 
     }
@@ -261,7 +260,7 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable, Ser
             isAlive = false;
             throw new ClientOutOfReachException();
         }
-        assertstuff();
+
         return response;
 
     }
@@ -308,7 +307,6 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable, Ser
             throw new ClientOutOfReachException();
         }
 
-        assertstuff();
         return isAlive;
     }
     //</editor-fold>
@@ -350,7 +348,6 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable, Ser
             throw new ClientOutOfReachException();
         }
 
-        assertstuff();
         return response;
     }
 
@@ -472,7 +469,6 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable, Ser
             //e.printStackTrace();
             throw new ClientOutOfReachException();
         }
-        assertstuff();
         return response;
     }
 
@@ -621,7 +617,7 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable, Ser
     }
     //</editor-fold>
 
-    //<editor-fold desc="Ping test">
+    //<editor-fold desc="Ping test and message facilities">
 
     /**
      * ping function to see if the client is reachable
@@ -645,7 +641,6 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable, Ser
             //ste.printStackTrace();
             return false;
         }
-        assertstuff();
         return reply;
     }
 
@@ -654,6 +649,12 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable, Ser
         return isConnected;
     }
 
+    /**
+     * sends a message to the client
+     * @param s
+     * @return
+     * @throws ClientOutOfReachException
+     */
     public boolean sendMessage(String s) throws ClientOutOfReachException
     {
         outSocket.write("msg\n");
@@ -667,7 +668,6 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable, Ser
 
         if (!isAlive)
             throw new ClientOutOfReachException();
-        assertstuff();
         return true;
     }
 
@@ -721,6 +721,18 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable, Ser
             Thread.currentThread().interrupt();
         }
     }
+
+    /**
+     * closes the socket
+     */
+    @Override
+    public void close() {
+        try {
+            client.close();
+        } catch (IOException e) {
+            return;
+        }
+    }
     //</editor-fold>
 
     //<editor-fold desc="Reconnection">
@@ -728,11 +740,6 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable, Ser
     public void reconnect() throws RemoteException {
         outSocket.write("reconnect\n");
         outSocket.flush();
-    }
-
-
-    public void assertstuff() {
-        assert !client.isClosed();
     }
 
     @Override
@@ -748,14 +755,4 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable, Ser
         return name;
     }
     //</editor-fold>
-
-
-    @Override
-    public void close() {
-        try {
-            client.close();
-        } catch (IOException e) {
-            return;
-        }
-    }
 }

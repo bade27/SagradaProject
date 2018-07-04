@@ -211,7 +211,7 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
 
     //<editor-fold desc="Utilities">
     /**
-     * Notify server the end of current turn
+     * Notifies server the end of current turn
      */
     private void notifyServer ()
     {
@@ -220,13 +220,9 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
             adapter.setTurnDone(true);
 
         }catch (Exception e){
-            System.out.println(e.getMessage());
-            //log.addLog("Fatal error on thread " + user  , e.getStackTrace());
-            //token.notifyFatalError();
             Thread.currentThread().interrupt();
         }
     }
-
 
     @Override
     public void reconnect() throws RemoteException {
@@ -248,13 +244,13 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
 
         this.match = match;
     }
-    //</editor-fold>
-
 
     @Override
     public String getName() throws RemoteException {
         return client.getName();
     }
+    //</editor-fold>
+
 
     @Override
     public void close() {

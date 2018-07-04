@@ -117,8 +117,8 @@ public class MatchHandler implements Runnable
 
     //<editor-fold desc="Game Phase">
     /**
-     * Manage the match: checks status, wakes and updates players, and manages match components
-     * */
+     * Manages the match: checks status, wakes and updates players, and manages match components
+     */
     private void startGame ()
     {
         int turnsPlayed;
@@ -136,7 +136,6 @@ public class MatchHandler implements Runnable
             return;
         }
 
-        //updateClient();
         while (true)
         {
             synchronized (token.getSynchronator())
@@ -202,7 +201,6 @@ public class MatchHandler implements Runnable
                 catch (InterruptedException ex)
                 {
                     log.addLog("Interrupted exception occurred", ex.getStackTrace());
-                    ex.printStackTrace();
                     Thread.currentThread().interrupt();
                     closeAllConnection();
                 }
@@ -224,11 +222,14 @@ public class MatchHandler implements Runnable
         }
     }
 
+    /**
+     * that's the routine to be execute once the game has come to an end
+     */
     private void endGame ()
     {
         log.addLog("The game is ended, count of players' point");
 
-        //Conteggio dei punti da parte degli obbiettivi
+        //here the score from the objectives is calculated
         String[] users = new String[MAXGIOC];
         int[] pointsList = new int[MAXGIOC];
 
@@ -762,6 +763,18 @@ public class MatchHandler implements Runnable
         for (int i = 0; i < player.size(); i++)
             player.get(i).sendMessage("Numero di client " + str + ": "+ player.size());
     }
+
+    public boolean isGameStarted() {
+        synchronized (startGameLock) {
+            return gameStarted;
+        }
+    }
+
+    public void setGameStarted(boolean gameStarted) {
+        synchronized (startGameLock) {
+            this.gameStarted = gameStarted;
+        }
+    }
     //</editor-fold>
 
     //<editor-fold desc="Initial timer">
@@ -799,7 +812,7 @@ public class MatchHandler implements Runnable
     }
     //</editor-fold>
 
-    //<editor-fold desc="Reconnection methods">
+    //<editor-fold desc="Disconnected clients methods">
 
     public int getDisconnCounter() {
         synchronized (disconnCounterLock) {
@@ -821,18 +834,6 @@ public class MatchHandler implements Runnable
 
     //</editor-fold>
 
-
-    public boolean isGameStarted() {
-        synchronized (startGameLock) {
-            return gameStarted;
-        }
-    }
-
-    public void setGameStarted(boolean gameStarted) {
-        synchronized (startGameLock) {
-            this.gameStarted = gameStarted;
-        }
-    }
 }
 
 
