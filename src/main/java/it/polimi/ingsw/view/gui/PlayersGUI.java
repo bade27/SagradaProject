@@ -80,6 +80,9 @@ public class PlayersGUI extends GridPane {
                     imageView.setFitWidth(20);
                     imageView.setFitHeight(20);
 
+                    imageView.setStyle("-fx-background-color: black;" +
+                            "-fx-background-radius: 1;");
+
                     grid.setMargin(imageView, new Insets(2, 2, 2, 2));
                     grid.add(imageView, j, i);
                 }
