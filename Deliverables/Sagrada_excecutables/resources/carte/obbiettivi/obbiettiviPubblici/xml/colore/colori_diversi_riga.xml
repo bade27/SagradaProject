@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<card>
+	<name>Colori diversi - Riga</name>
+	<value>6</value>
+	<pattern p = "row">
+		<tag>color</tag>
+	</pattern>
+	<description>Righe senza colori ripetuti</description>
+	<image>file:resources/carte/obbiettivi/obbiettiviPubblici/Images/colori_diversi_riga.png</image>
+</card>

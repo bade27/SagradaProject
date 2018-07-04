@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<card>
+	<name>Colori diversi - Colonna</name>
+	<value>5</value>
+	<pattern p = "col">
+		<tag>color</tag>
+	</pattern>
+	<description>Colonne senza colori ripetuti</description>
+	<image>file:resources/carte/obbiettivi/obbiettiviPubblici/Images/colori_diversi_colonna.png</image>
+</card>
