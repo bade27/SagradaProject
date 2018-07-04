@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <server>
-	<host_name>127.0.0.1</host_name>
+	<host_name>192.168.1.2</host_name>
 	
 	<socket>
         <socket_port>6000</socket_port>
