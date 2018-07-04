@@ -92,7 +92,6 @@ public class SagradaGUI extends Application implements UI {
     }
     //</editor-fold>
 
-
     //<editor-fold desc="Login Page">
     @Override
     /*
@@ -200,7 +199,6 @@ public class SagradaGUI extends Application implements UI {
     }
     //</editor-fold>
 
-
     //<editor-fold desc="Map Page">
     @Override
     /*
@@ -235,7 +233,12 @@ public class SagradaGUI extends Application implements UI {
         closeWindow();
     }
 
-
+    /**
+     * Build card choose
+     * @param maps card's path
+     * @param mapsgrid General grid pane
+     * @param level first or second card
+     */
     private void setGridGraphic (String [] maps,GridPane mapsgrid,int level) throws ParserXMLException
     {
         for (int i = 0 ; i < maps.length ; i++)
@@ -265,8 +268,6 @@ public class SagradaGUI extends Application implements UI {
                             + "-fx-border-width: 3;");
 
                     grid.setMargin(imageView, new Insets(4, 4, 4, 4));
-
-                    //grid.setBorder(new Border());
                     grid.add(imageView, j, k);
                 }
             }
@@ -310,7 +311,6 @@ public class SagradaGUI extends Application implements UI {
     }
 
     //</editor-fold>
-
 
     //<editor-fold desc="Game Page">
     @Override
@@ -386,7 +386,6 @@ public class SagradaGUI extends Application implements UI {
         closeWindow();
     }
     //</editor-fold>
-
 
     //<editor-fold desc="End Game Page">
     @Override
@@ -514,10 +513,7 @@ public class SagradaGUI extends Application implements UI {
         closeWindow();
     }
     //</editor-fold>
-
-
-
-
+    
     //<editor-fold desc="Loading Page">
     @Override
     /*
