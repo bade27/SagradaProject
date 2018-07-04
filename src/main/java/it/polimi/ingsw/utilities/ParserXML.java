@@ -501,6 +501,5 @@ public class ParserXML
         {
             return new Image("file:resources/carte/tools/Images/sfondo_tool.png");
         }
-
     }
 }

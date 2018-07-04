@@ -304,7 +304,7 @@ public class SagradaGUI extends Application implements UI {
         pleft.setMaxWidth(220);
         pright.setMaxWidth(220);
 
-        useTool = new UseToolButton("Usa il tool!", this);
+        useTool = new UseToolButton(this);
 
         //placing the different gui components
         toolsG = new ToolsGUI(mainContent, this,useTool);
