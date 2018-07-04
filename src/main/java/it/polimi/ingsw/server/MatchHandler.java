@@ -356,12 +356,8 @@ public class MatchHandler implements Runnable
         if(getDisconnCounter() == 0) {
             //Initialization of ServerPlayer for each player
             ServerModelAdapter adp = new ServerModelAdapter(dices, roundTrace, token);
-            try {
-                cli.setAdapter(adp);
-                cli.setMatchHandler(this);
-            } catch (RemoteException e) {
-                return false;
-            }
+            ((ServerCommunicator)cli).setAdapter(adp);
+            ((ServerCommunicator)cli).setMatchHandler(this);
             ServerPlayer pl = new ServerPlayer(token, adp, userList, cli, this);
 
             player.add(pl);
@@ -388,7 +384,7 @@ public class MatchHandler implements Runnable
             String u = "";
             try {
                 u = cli.getName();
-                cli.setMatchHandler(this);
+                ((ServerCommunicator)cli).setMatchHandler(this);
             } catch (RemoteException e) {
                 e.printStackTrace();
                 return false;
@@ -401,15 +397,8 @@ public class MatchHandler implements Runnable
             if (newSP != null) {
                 //set the new communicator
                 newSP.setCommunicator(cli);
-                try {
                     //set the old adapter on the old communicator
-                    newSP.getCommunicator().setAdapter(newSP.getAdapter());
-                } catch (RemoteException e) {
-                    log.addLog("Impossible to set the adapter on the new Communicator\n",e.getStackTrace());
-                    System.out.println(u + "not accepted");
-
-                    return false;
-                }
+                ((ServerCommunicator)newSP.getCommunicator()).setAdapter(newSP.getAdapter());
                 newSP.setInGame(true);
                 decDisconnCounter();
                 newSP.reconnected();

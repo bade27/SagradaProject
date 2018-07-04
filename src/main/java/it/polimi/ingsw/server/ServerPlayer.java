@@ -194,11 +194,7 @@ public class ServerPlayer implements Runnable {
     }
 
     public void setPlayerAsOffline() {
-        try {
-            communicator.close();
-        } catch (RemoteException e) {
-            closeConnection("Problemi di rete");
-        }
+        ((ServerCommunicator)communicator).close();
         communicator = null;
         log.addLog("(User: " + user + ")" +
                 "player disconnected cause client late in response");
@@ -462,7 +458,7 @@ public class ServerPlayer implements Runnable {
             performed = communicator.closeCommunication(s);
             if (!performed)
                 log.addLog("Impossible to communicate to client (" + user + ") cause closed connection");
-            communicator.close();
+            ((ServerCommunicator)communicator).close();
             communicator = null;
         } catch (RemoteException | ClientOutOfReachException e) {
             log.addLog("Impossible to communicate to client (" + user + ") cause closed connection");

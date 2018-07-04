@@ -19,7 +19,7 @@ import java.net.Socket;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-public class ServerSocketHandler implements ClientRemoteInterface, Runnable
+public class ServerSocketHandler implements ClientRemoteInterface, Runnable, ServerCommunicator
 {
     private int PORT;
     private Socket client;
@@ -619,28 +619,6 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
     {
         adapter.notifyClientExited();
     }
-    /*
-    public void close() {
-        outSocket.println("close");
-        try {
-            if (inSocket.readLine() == "ok") {
-                try {
-                    client.close();
-                } catch (Exception e) {
-                    System.out.println("Exception: e=" + e);
-                    e.printStackTrace();
-
-                    try {
-                        client.close();
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }*/
     //</editor-fold>
 
     //<editor-fold desc="Ping test">
@@ -719,13 +697,13 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
     }
 
     @Override
-    public void setAdapter(ServerModelAdapter adapter) throws RemoteException
+    public void setAdapter(ServerModelAdapter adapter)
     {
         this.adapter = adapter;
     }
 
     @Override
-    public void setMatchHandler(MatchHandler match) throws RemoteException {
+    public void setMatchHandler(MatchHandler match) {
         this.match = match;
         log = match.log;
     }
@@ -773,7 +751,7 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
 
 
     @Override
-    public void close() throws RemoteException {
+    public void close() {
         try {
             client.close();
         } catch (IOException e) {

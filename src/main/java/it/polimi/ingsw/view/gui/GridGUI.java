@@ -53,9 +53,9 @@ public class GridGUI extends GridPane{
     {
         Platform.runLater(() -> {
             //grid.getChildren().clear();
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < pair.length; i++)
             {
-                for (int j = 0; j < 5; j++)
+                for (int j = 0; j < pair[i].length; j++)
                 {
                     if (precPairs[i][j].getColor() != pair[i][j].getColor() || !precPairs[i][j].getValue().equals(pair[i][j].getValue()))
                     {
