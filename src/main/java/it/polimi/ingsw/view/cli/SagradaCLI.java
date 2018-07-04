@@ -34,6 +34,7 @@ public class SagradaCLI implements UI {
     private String[] privateTarget;
     private String[] publicTarget;
 
+    private PrintStream printStream;
     private InputStreamReader inputStream;
     private BufferedReader bufferedReader;
 
@@ -47,6 +48,11 @@ public class SagradaCLI implements UI {
     private Thread task;
 
     public SagradaCLI() {
+        try {
+            printStream = new PrintStream(System.out, true, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            return;
+        }
         inputStream = new InputStreamReader(System.in);
         bufferedReader = new BufferedReader(inputStream);
         reader = new Reader(inputStream, bufferedReader);
@@ -72,9 +78,9 @@ public class SagradaCLI implements UI {
         String ip;
         String name;
         printbyFile("resources/titleCli/Login.txt", color);
-        System.out.println("\n\n" + message + "\n");
+        printStream.println("\n\n" + message + "\n");
         do {
-            System.out.println("Come ti vuoi connettere? \n(se non sarà messo nulla verrà impostati di default RMI)\n0. Socket\n1. RMI");
+            printStream.println("Come ti vuoi connettere? \n(se non sarà messo nulla verrà impostati di default RMI)\n0. Socket\n1. RMI");
             connection = readFromConsole().trim();
             if (connection.equals("")) {
                 connection = "1";
@@ -82,15 +88,15 @@ public class SagradaCLI implements UI {
         } while (!(connection.equals("0")) && !(connection.equals("1")));
 
         do {
-            System.out.println("\nInserire l'indirizzo IP del server: \n(se non sarà messo nulla ne verrà messo uno di defauld)");
+            printStream.println("\nInserire l'indirizzo IP del server: \n(se non sarà messo nulla ne verrà messo uno di defauld)");
             ip = readFromConsole();
 
         } while (!(isIPAddressValid(ip)));
 
         do {
-            System.out.println("\nInserire un Nome:");
+            printStream.println("\nInserire un Nome:");
             name = readFromConsole().trim();
-            System.out.println("\n");
+            printStream.println("\n");
         } while (!(isNameValid(name)));
 
         SagradaCLI sagradaCLI = this;
@@ -163,23 +169,23 @@ public class SagradaCLI implements UI {
 
 
                 do {
-                    System.out.println("\n\n1.\t" + name1+"\n");
+                    printStream.println("\n\n1.\t" + name1+"\n");
                     printPair(grid1);
-                    System.out.println("\n\t" + "prezzo: "+ price1 + "\n");
+                    printStream.println("\n\t" + "prezzo: "+ price1 + "\n");
 
-                    System.out.println("\n\n2.\t" + name2+"\n");
+                    printStream.println("\n\n2.\t" + name2+"\n");
                     printPair(grid2);
-                    System.out.println("\n\t" + "prezzo: "+ price2 + "\n");
+                    printStream.println("\n\t" + "prezzo: "+ price2 + "\n");
 
-                    System.out.println("\n\n3.\t" + name3+"\n");
+                    printStream.println("\n\n3.\t" + name3+"\n");
                     printPair(grid3);
-                    System.out.println("\n\t" + "prezzo: "+ price3 + "\n");
+                    printStream.println("\n\t" + "prezzo: "+ price3 + "\n");
 
-                    System.out.println("\n\n4.\t" + name4+"\n");
+                    printStream.println("\n\n4.\t" + name4+"\n");
                     printPair(grid4);
-                    System.out.println("\n\t" + "prezzo: "+ price4 + "\n");
+                    printStream.println("\n\t" + "prezzo: "+ price4 + "\n");
 
-                    System.out.println("\nSono state estratte queste mappe! Scegline una digitando il norrispettivo numero:");
+                    printStream.println("\nSono state estratte queste mappe! Scegline una digitando il norrispettivo numero:");
                     map = readFromConsole();
                         if(map==null){
                             return;
@@ -208,7 +214,7 @@ public class SagradaCLI implements UI {
     public void game() {
         Color color = Color.ANSI_PURPLE;
         printbyFile("resources/titleCli/Il_gioco_comincia.txt", color);
-        System.out.println("\n\n\n Attendere il proprio turno");
+        printStream.println("\n\n\n Attendere il proprio turno");
     }
 
     @Override
@@ -217,7 +223,7 @@ public class SagradaCLI implements UI {
         int tempRecord;
         Color color = Color.ANSI_RED;
         printbyFile("resources/titleCli/finePartita.txt", color);
-        System.out.println("\n");
+        printStream.println("\n");
 
         for (int i = 0; i < name.length - 1; i++) {
             for (int j = i + 1; j < name.length; j++) {
@@ -235,15 +241,15 @@ public class SagradaCLI implements UI {
         }
         for (int k = 0; k < name.length; k++) {
             if(record[k]!=-1) {
-                System.out.println(name[k] + ":\t" + record[k] + "\n");
+                printStream.println(name[k] + ":\t" + record[k] + "\n");
             }else{
-                System.out.println(name[k] + ":\t" + Color.ANSI_RED.escape() + "RITIRATO" + Color.ANSI_NOCOLOR.escape() + "\n");
+                printStream.println(name[k] + ":\t" + Color.ANSI_RED.escape() + "RITIRATO" + Color.ANSI_NOCOLOR.escape() + "\n");
             }
         }
 
         color = Color.ANSI_GREEN;
         printbyFile("resources/titleCli/Vincitore.txt", color);
-        System.out.println("\n" + name[0] + ":\t" + record[0] + "\n");
+        printStream.println("\n" + name[0] + ":\t" + record[0] + "\n");
     }
 
     @Override
@@ -255,9 +261,9 @@ public class SagradaCLI implements UI {
                 String i;
                 Color color = Color.ANSI_RED;
                 printbyFile("resources/titleCli/Attenzione.txt", color);
-                System.out.println("\n" + s);
+                printStream.println("\n" + s);
                 do {
-                    System.out.println("Premi 'i' per riprovare a connetterti:");
+                    printStream.println("Premi 'i' per riprovare a connetterti:");
                     i = readFromConsole();
                 } while (!i.equals("i"));
                 clientPlayer = null;
@@ -272,14 +278,14 @@ public class SagradaCLI implements UI {
         Color color = Color.ANSI_RED;
         printbyFile("resources/titleCli/Spiacenti.txt", color);
         reader.setCondition(false);
-        System.out.println("\n" + s);
+        printStream.println("\n" + s);
     }
 
     @Override
     public void loading() {
         Color color = Color.ANSI_BLUE;
         printbyFile("resources/titleCli/Attendere.txt", color);
-        System.out.println("\n\nAttendere l'arrivo di altri giocatori");
+        printStream.println("\n\nAttendere l'arrivo di altri giocatori");
     }
 
     @Override
@@ -316,7 +322,7 @@ public class SagradaCLI implements UI {
         Color color = Color.ANSI_NOCOLOR;
         printbyFile("resources/titleCli/Strumenti.txt", color);
         for (int i = 0; i < tools.length; i++) {
-            System.out.println(tools[i]);
+            printStream.println(tools[i]);
         }
     }
 
@@ -354,9 +360,9 @@ public class SagradaCLI implements UI {
             System.out.print(user);
             for (int i = 0; i < ((cellWidth * 5) - (user.length()) + 4) / 2; i++)
                 System.out.print("-");
-            System.out.println("\n");
+            printStream.println("\n");
             printPair(pair);
-            System.out.println("\n\n");
+            printStream.println("\n\n");
         }
     }
 
@@ -366,7 +372,7 @@ public class SagradaCLI implements UI {
     }
 
     private void viewToken () {
-        System.out.println("Token:\t" + token);
+        printStream.println("Token:\t" + token);
     }
 
     @Override
@@ -386,41 +392,28 @@ public class SagradaCLI implements UI {
         Color color = Color.ANSI_NOCOLOR;
         printbyFile("resources/titleCli/Obiettivi.txt", color);
 
-        System.out.println("\nObiettivo privato:\n");
+        printStream.println("\nObiettivo privato:\n");
         for (int i=0;i<privateTarget.length;i++) {
             try {
                 name = ParserXML.readObjectiveName(privateTarget[i]);
                 description = ParserXML.readObjectiveDescription(privateTarget[i]);
-                System.out.println("- "+name+": "+description);
+                printStream.println("- "+name+": "+description);
             }catch (ParserXMLException ex){
                 ex.printStackTrace();
             }
         }
 
-        System.out.println("\n\nObiettivi pubblici:");
+        printStream.println("\n\nObiettivi pubblici:");
         for (int i=0;i<publicTarget.length;i++) {
             try {
                 name = ParserXML.readObjectiveName(publicTarget[i]);
                 description = ParserXML.readObjectiveDescription(publicTarget[i]);
-                System.out.println(name+": "+description);
+                printStream.println(name+": "+description);
             }catch (ParserXMLException ex){
                 ex.printStackTrace();
             }
         }
 
-        /*System.out.println("\nObiettivo privato:");
-        for (int i = 0; i < privateTarget.length; i++) {
-            vecname = privateTarget[i].split("\\/");
-            name = (vecname[vecname.length - 1].split("\\."))[0];
-            System.out.println(name);
-        }
-        System.out.println("\nObiettivi pubblici:");
-        for (int i = 0; i < publicTarget.length; i++) {
-            vecname = publicTarget[i].split("\\/");
-            name = (vecname[vecname.length - 1].split("\\."))[0];
-            System.out.println(name);
-        }
-*/
     }
 
     @Override
@@ -434,7 +427,7 @@ public class SagradaCLI implements UI {
         try {
             for (int i = 0; i < trace.length; i++) {
                 if (trace[i].size() != 0) {
-                    System.out.println("-----------------------Round" + (i + 1) + "-----------------------\n");
+                    printStream.println("-----------------------Round" + (i + 1) + "-----------------------\n");
                     Pair[] p = new Pair[trace[i].size()];
                     for (int j = 0; j < p.length; j++) {
                         p[j] = trace[i].get(j);
@@ -443,7 +436,7 @@ public class SagradaCLI implements UI {
                 }
             }
         } catch (Exception e) {
-            System.out.println("problemi con il tracciato round");
+            printStream.println("problemi con il tracciato round");
             e.printStackTrace();
         }
     }
@@ -464,7 +457,7 @@ public class SagradaCLI implements UI {
 
     private void viewMessage ()
     {
-        System.out.println(msg + "\n");
+        printStream.println(msg + "\n");
     }
     @Override
     public void setEnableBoard ( boolean enableBoard){
@@ -499,13 +492,13 @@ public class SagradaCLI implements UI {
             printTurn();
             do {
                 do {
-                    System.out.println("Vuoi fare una mossa [m], usare una carta strumento [c], vedere gli elementi del gioco [e] o passare il turno [p]?");
+                    printStream.println("Vuoi fare una mossa [m], usare una carta strumento [c], vedere gli elementi del gioco [e] o passare il turno [p]?");
 
                     action = readFromConsole();
                     if(action == null)
                         return;
 
-                    System.out.println();
+                    printStream.println();
                     if (action.equals("m")) {
                         doMovement();
                     } else if (action.equals("c")) {
@@ -519,7 +512,7 @@ public class SagradaCLI implements UI {
                 } while (!action.equals("m") && !action.equals("c") && !action.equals("p"));
                 if (!action.equals("p")) {
                     do {
-                        System.out.println("Vuoi fare dell'altro? [S/n]");
+                        printStream.println("Vuoi fare dell'altro? [S/n]");
                         end_turn = readFromConsole();
 
                         if(end_turn == null)
@@ -535,7 +528,7 @@ public class SagradaCLI implements UI {
                 }
             } while (!pass);
         } else {
-            System.out.println(msg);
+            printStream.println(msg);
         }
 
     }
@@ -545,13 +538,13 @@ public class SagradaCLI implements UI {
         String mossa;
         String[] vecmove;
         int[] cell = new int[2];
-        System.out.println("MOSSA:\n");
+        printStream.println("MOSSA:\n");
         ColorEnum color = null;
         int value = -1;
         do {
             viewDadiera();
             viewWindow();
-            System.out.println("Seleziona un dado della dadiera: \n[esempio: 1 RED]");
+            printStream.println("Seleziona un dado della dadiera: \n[esempio: 1 RED]");
             mossa = readFromConsole();
 
             if(mossa == null)
@@ -589,9 +582,9 @@ public class SagradaCLI implements UI {
         } while (!pairExist(new Pair(value, color), dadiera));
 
         MoveAction.setPair(new Pair(value, color));
-        System.out.println("Seleziona una cella della griglia: \n");
+        printStream.println("Seleziona una cella della griglia: \n");
         do {
-            System.out.println("ascissa: [crescente da sinistra verso destra]");
+            printStream.println("ascissa: [crescente da sinistra verso destra]");
             try {
                 cell[1] = Integer.parseInt(readFromConsole());
             }catch(NumberFormatException nfe){
@@ -602,7 +595,7 @@ public class SagradaCLI implements UI {
         } while (cell[1] < 1 || cell[1] > 5);
 
         do {
-            System.out.println("ordinata: [crescente dall' alto verso il basso]");
+            printStream.println("ordinata: [crescente dall' alto verso il basso]");
             try {
                 cell[0] = Integer.parseInt(readFromConsole());
             }catch (NumberFormatException nfe){
@@ -612,7 +605,7 @@ public class SagradaCLI implements UI {
             }
         } while (cell[0] < 1 || cell[0] > 4);
 
-        System.out.println("");
+        printStream.println("");
 
         MoveAction.setCoord(new Coordinates(cell[0] - 1, cell[1] - 1));
         makeMove();
@@ -622,7 +615,7 @@ public class SagradaCLI implements UI {
     }
 
     private void doTool () {
-        System.out.println("STRUMENTO:\n");
+        printStream.println("STRUMENTO:\n");
         String t;
         String element;
         String dad;
@@ -635,9 +628,9 @@ public class SagradaCLI implements UI {
         int round;
         //capisco quale tool vuole utilizzare
         do {
-            System.out.println("Quale strumento vuoi utilizzare? [digitare il numero corrispondente]");
+            printStream.println("Quale strumento vuoi utilizzare? [digitare il numero corrispondente]");
             for (int i = 0; i < tools.length; i++) {
-                System.out.println((i + 1) + ". " + tools[i]);
+                printStream.println((i + 1) + ". " + tools[i]);
             }
             t = readFromConsole();
 
@@ -648,17 +641,17 @@ public class SagradaCLI implements UI {
         try {
             numtool = CLIFactory.getToolnumberFromName(FileLocator.getToolsListPath(), tools[Integer.parseInt(t) - 1]);
         } catch (Exception e) {
-            System.out.println("Errore nel file degli strumenti");
+            printStream.println("Errore nel file degli strumenti");
             e.getStackTrace();
         }
         toolPermission(numtool);
         if(toolPhase==true) {
             //setto i parametri necessari per il tool scelto
-            System.out.println("Settare i parametri necessari per utilizzare " + tools[Integer.parseInt(t) - 1] + ":\n - Se si ha finito digitare 'fine'");
+            printStream.println("Settare i parametri necessari per utilizzare " + tools[Integer.parseInt(t) - 1] + ":\n - Se si ha finito digitare 'fine'");
             do {
                 do {
-                    System.out.println("\n Cosa vuoi settare?");
-                    System.out.println("1. dado dalla dadiera\n2. cella dalla griglia\n3. dado dal tracciato round");
+                    printStream.println("\n Cosa vuoi settare?");
+                    printStream.println("1. dado dalla dadiera\n2. cella dalla griglia\n3. dado dal tracciato round");
                     element = readFromConsole();
 
                     if(element == null)
@@ -670,7 +663,7 @@ public class SagradaCLI implements UI {
 
                     viewDadiera();
                     do {
-                        System.out.println("Seleziona un dado della dadiera: \n[esempio: 1 RED]");
+                        printStream.println("Seleziona un dado della dadiera: \n[esempio: 1 RED]");
                         dad = readFromConsole();
 
                         if(dad == null)
@@ -710,9 +703,9 @@ public class SagradaCLI implements UI {
 
                 } else if (element.equals("2")) {
                     viewWindow();
-                    System.out.println("Seleziona una cella della griglia: \n");
+                    printStream.println("Seleziona una cella della griglia: \n");
                     do {
-                        System.out.println("ascissa: [crescente da sinistra verso destra]");
+                        printStream.println("ascissa: [crescente da sinistra verso destra]");
                         try {
                             cell[1] = Integer.parseInt(readFromConsole());
                         }catch (NumberFormatException nfe) {
@@ -723,7 +716,7 @@ public class SagradaCLI implements UI {
                     } while (cell[1] < 1 || cell[1] > 5);
 
                     do {
-                        System.out.println("ordinata: [crescente dall' alto verso il basso]");
+                        printStream.println("ordinata: [crescente dall' alto verso il basso]");
                         try{
                             cell[0] = Integer.parseInt(readFromConsole());
                         }catch(NumberFormatException nfe){
@@ -737,7 +730,7 @@ public class SagradaCLI implements UI {
                 } else if (element.equals("3")) {
                     viewRoundTrace();
                     do {
-                        System.out.println("Selezionare il round del tracciato (che non sia vuoto) dal quale estrarre il dado");
+                        printStream.println("Selezionare il round del tracciato (che non sia vuoto) dal quale estrarre il dado");
                         String result = readFromConsole();
 
                         if(result == null)
@@ -749,9 +742,9 @@ public class SagradaCLI implements UI {
                             round=-1;
                         }
                     } while ((round) < 1 || round > 9 || trace[round - 1].size() == 0);
-                    System.out.println("");
+                    printStream.println("");
                     do {
-                            System.out.println("Selezionare un dado appartenente al round scelto");
+                            printStream.println("Selezionare un dado appartenente al round scelto");
                             dad = readFromConsole();
 
                             if(dad == null)
@@ -802,12 +795,12 @@ public class SagradaCLI implements UI {
                         makeToolMove();
 
                     } else{
-                        System.out.println("il tool non è stato utilizzato\n");
+                        printStream.println("il tool non è stato utilizzato\n");
                     }
                         viewRoundTrace();
                         viewDadiera();
                         viewWindow();
-                        System.out.println("\n");
+                        printStream.println("\n");
                         viewMessage();
 
                 }
@@ -815,7 +808,7 @@ public class SagradaCLI implements UI {
             } while (!element.equals("fine"));
         } else
         {
-            System.out.println("Richiesta utilizzo strumento respinta");
+            printStream.println("Richiesta utilizzo strumento respinta");
         }
     }
 
@@ -824,7 +817,7 @@ public class SagradaCLI implements UI {
         String response;
         do {
             do {
-                System.out.println("Quale elemento vuoi vedere?\n[d] dadiera\n[g] griglia\n[t] tracciato round\n[a] avversari\n[c] carte strumento\n[o] obiettivi\n[s] segnalini\n[tutto] tutti gli elementi\n[niente] nessuno degli elementi");
+                printStream.println("Quale elemento vuoi vedere?\n[d] dadiera\n[g] griglia\n[t] tracciato round\n[a] avversari\n[c] carte strumento\n[o] obiettivi\n[s] segnalini\n[tutto] tutti gli elementi\n[niente] nessuno degli elementi");
                 v = readFromConsole();
                 if(v == null)
                     return;
@@ -865,7 +858,7 @@ public class SagradaCLI implements UI {
                     break;
             }
             do {
-                System.out.println("\n\nVuoi vedere altri elementi? [S/n]");
+                printStream.println("\n\nVuoi vedere altri elementi? [S/n]");
                 response = readFromConsole();
                 if(response == null)
                     return;
@@ -876,7 +869,7 @@ public class SagradaCLI implements UI {
     @Override
     public void passTurn () {
         clientPlayer.pass();
-        System.out.println("\n\n\n\n\nAttendere il proprio turno\n\n\n\n");
+        printStream.println("\n\n\n\n\nAttendere il proprio turno\n\n\n\n");
     }
 
     @Override
@@ -971,15 +964,15 @@ public class SagradaCLI implements UI {
             }
             System.out.print(Color.ANSI_NOCOLOR.escape() + "  ");
         }
-        System.out.println("" + Color.ANSI_NOCOLOR.escape());
+        printStream.println("" + Color.ANSI_NOCOLOR.escape());
 
         //parte inferiore
         printPairArray(p);
-        System.out.println("\n");
+        printStream.println("\n");
         for (int i = 0; i < p.length; i++) {
             System.out.print("" + p[i].getValue() + " " + p[i].getColor() + "\t");
         }
-        System.out.println("\n");
+        printStream.println("\n");
 
     }
 
@@ -992,7 +985,7 @@ public class SagradaCLI implements UI {
                 }
                 System.out.print(Color.ANSI_NOCOLOR.escape() + "  ");
             }
-            System.out.println("" + Color.ANSI_NOCOLOR.escape());
+            printStream.println("" + Color.ANSI_NOCOLOR.escape());
         }
     }
 
@@ -1015,14 +1008,14 @@ public class SagradaCLI implements UI {
                 }
                 System.out.print(Color.ANSI_NOCOLOR.escape() + "  ");
             }
-            System.out.println("" + Color.ANSI_NOCOLOR.escape());
+            printStream.println("" + Color.ANSI_NOCOLOR.escape());
 
             //parte inferiore
             printPairMatrix(mp, w);
-            System.out.println("");
+            printStream.println("");
         }
 
-        System.out.println("");
+        printStream.println("");
     }
 
     private void printPairMatrix(Pair[][] mp, int w) {
@@ -1034,18 +1027,18 @@ public class SagradaCLI implements UI {
                 }
                 System.out.print(Color.ANSI_NOCOLOR.escape() + "  ");
             }
-            System.out.println("" + Color.ANSI_NOCOLOR.escape());
+            printStream.println("" + Color.ANSI_NOCOLOR.escape());
         }
     }
 
     private void printbyFile (String s, Color color){
-        System.out.println("\n\n");
+        printStream.println("\n\n");
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new FileReader(s));
             String line = reader.readLine();
             while (line != null) {
-                System.out.println(color.escape() + "" + line + Color.ANSI_NOCOLOR.escape());
+                printStream.println(color.escape() + "" + line + Color.ANSI_NOCOLOR.escape());
                 line = reader.readLine();
             }
         } catch (IOException e) {
@@ -1100,10 +1093,10 @@ public class SagradaCLI implements UI {
         ColorEnum color=null;
         switch (toolID) {
             case 1:
-                System.out.println("\n Cambia il valore:\n");
-                System.out.println("Come desideri cambiare il valore del dado?");
+                printStream.println("\n Cambia il valore:\n");
+                printStream.println("Come desideri cambiare il valore del dado?");
                 do {
-                    System.out.println("1. Incrementa\n2. Decrementa\n");
+                    printStream.println("1. Incrementa\n2. Decrementa\n");
                     result = readFromConsole();
                     if(result == null)
                         return;
@@ -1114,10 +1107,10 @@ public class SagradaCLI implements UI {
                     ToolAction.setInstruction("dec");
                 break;
             case 11:
-                System.out.println("Selezione valore\n");
-                System.out.println("Il tuo dado è " + str);
+                printStream.println("Selezione valore\n");
+                printStream.println("Il tuo dado è " + str);
                 do {
-                    System.out.println("Seleziona il numero del dado!");
+                    printStream.println("Seleziona il numero del dado!");
                     result = readFromConsole();
                     if(result == null)
                         return;
