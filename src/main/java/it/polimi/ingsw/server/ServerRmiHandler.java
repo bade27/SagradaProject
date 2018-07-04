@@ -10,7 +10,8 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
-public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemoteInterface,ServerRemoteInterface
+public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemoteInterface,
+        ServerRemoteInterface, ServerCommunicator
 {
     private ServerModelAdapter adapter;
     private ClientRemoteInterface client;
@@ -243,7 +244,7 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
     }
 
     @Override
-    public void setMatchHandler(MatchHandler match) throws RemoteException {
+    public void setMatchHandler(MatchHandler match) {
 
         this.match = match;
     }
@@ -256,7 +257,7 @@ public class ServerRmiHandler  extends UnicastRemoteObject implements ClientRemo
     }
 
     @Override
-    public void close() throws RemoteException {
+    public void close() {
         //unused
     }
 }
