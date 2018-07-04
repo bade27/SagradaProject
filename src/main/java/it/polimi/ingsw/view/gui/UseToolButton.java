@@ -8,8 +8,8 @@ public class UseToolButton extends Button {
     private UI game;
     private boolean enable;
 
-    public UseToolButton(String text, UI game) {
-        super(text);
+    public UseToolButton(UI game) {
+        super();
         this.setOnAction(actionEvent -> {
             if(enable)
                 game.makeToolMove();

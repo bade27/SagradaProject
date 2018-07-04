@@ -27,7 +27,7 @@ public class DadieraGUI extends GridPane {
         grid = new GridPane();
         initGraphic();
         pane.add(grid, 0, 1);
-        grid.setAlignment(Pos.CENTER);
+        grid.setAlignment(Pos.TOP_CENTER);
         grid.setPadding(new Insets(0,0,10,0));
     }
 

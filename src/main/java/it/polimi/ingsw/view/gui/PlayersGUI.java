@@ -9,9 +9,14 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.GridPane;
 
 import javafx.scene.control.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+
 import java.util.ArrayList;
 
 public class PlayersGUI extends GridPane {
@@ -68,10 +73,17 @@ public class PlayersGUI extends GridPane {
             GridPanePlayer onePlayer = new GridPanePlayer(n);
             players.add(onePlayer, index, 0);
 
+            Label l;
+
             if (active)
-                onePlayer.add(new Label(n), 0, 0);
+                l = new Label(n);
             else
-                onePlayer.add(new Label(n+" (uscito)"), 0, 0);
+                l = new Label(n+" (uscito)");
+
+            l.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 15));
+
+
+            onePlayer.add(l,0,0);
 
             GridPane grid = new GridPane();
             for (int i = 0; i < 4; i++) {
@@ -80,10 +92,16 @@ public class PlayersGUI extends GridPane {
                     imageView.setFitWidth(20);
                     imageView.setFitHeight(20);
 
+                    imageView.setStyle("-fx-border-color: black;"
+                                    + "-fx-border-width: 3;");
+
                     grid.setMargin(imageView, new Insets(2, 2, 2, 2));
+
+                    //grid.setBorder(new Border());
                     grid.add(imageView, j, i);
                 }
             }
+            grid.setStyle("-fx-background-color: white; -fx-grid-lines-visible: true");
             grid.setAlignment(Pos.CENTER);
             onePlayer.add(grid, 0, 1);
 

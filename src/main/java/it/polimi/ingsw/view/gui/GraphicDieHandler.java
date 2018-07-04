@@ -11,10 +11,11 @@ public class GraphicDieHandler
 {
     private static Map<Integer, Image> placementNumberMap = new HashMap<Integer, Image>();
     private static Map<ColorEnum, Image> placementColorMap = new HashMap<ColorEnum, Image>();
-
     private static Map<ColorEnum,Map<Integer,Image>> dieMap = new HashMap<ColorEnum,Map<Integer,Image>>();
-
     private static Map<Integer, Image> roundMap = new HashMap<Integer, Image>();
+
+    private static Image passButtonImage;
+    private static Image useToolButtonImage;
 
     public static void loadDieImages ()
     {
@@ -88,6 +89,8 @@ public class GraphicDieHandler
         roundMap.put(9,new Image("file:resources/round_trace/Images/round_9.png"));
         roundMap.put(10,new Image("file:resources/round_trace/Images/round_10.png"));
 
+        useToolButtonImage = new Image("file:resources/carte/tools/Images/use_tool.png");
+        passButtonImage =  new Image("file:resources/carte/obbiettivi/pass_turn.png");
     }
 
     public static Image getImageRound (int nr)
@@ -105,5 +108,13 @@ public class GraphicDieHandler
             return  dieMap.get(p.getColor()).get(p.getValue());
 
         return new Image("file:resources/vetrate/Images/Placement/quad_bianco.jpg");
+    }
+
+    public static Image getPassButtonImage() {
+        return passButtonImage;
+    }
+
+    public static Image getUseToolButtonImage() {
+        return useToolButtonImage;
     }
 }

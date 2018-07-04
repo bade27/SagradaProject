@@ -51,6 +51,7 @@ public class RoundsGUI extends GridPane {
 
             round.add(indexround, indexround.getRound()+1, 0);
             indexround.setActive(false);
+            indexround.setPadding(new Insets(0,15,0,0));
 
             indexround.setOnAction(event1 ->
             {
@@ -95,6 +96,7 @@ public class RoundsGUI extends GridPane {
         roundTrace.add(round,0,0);
         roundTrace.add(diceInRound,0,1);
         round.setAlignment(Pos.TOP_CENTER);
+
 
         p.add(roundTrace,0,0);
 
