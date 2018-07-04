@@ -195,6 +195,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             try {
                 graph.maps(s1, s2);
             } catch (Exception e) {
+                e.printStackTrace();
                 graph.fatalDisconnection("Errore interno");
             }
             try {

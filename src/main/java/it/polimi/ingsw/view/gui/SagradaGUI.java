@@ -18,6 +18,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -54,6 +55,8 @@ public class SagradaGUI extends Application implements UI {
         toolPhase = false;
     }
 
+
+    //<editor-fold desc="Start page">
     @Override
     /*
      * Set Welcome page
@@ -87,7 +90,10 @@ public class SagradaGUI extends Application implements UI {
         stage.setResizable(false);
         closeWindow();
     }
+    //</editor-fold>
 
+
+    //<editor-fold desc="Login Page">
     @Override
     /*
      * Set login page
@@ -192,7 +198,10 @@ public class SagradaGUI extends Application implements UI {
         stage.setResizable(false);
         closeWindow();
     }
+    //</editor-fold>
 
+
+    //<editor-fold desc="Map Page">
     @Override
     /*
      * Set choose map page
@@ -205,78 +214,105 @@ public class SagradaGUI extends Application implements UI {
         GridPane mapsgrid=new GridPane();
         mapsRoot.getChildren().add(mapsgrid);
 
-
-        String n1 = "",n2 = "",n3 = "",n4 = "";
-        int d1 = 0,d2 = 0,d3 = 0,d4 = 0;
         try
         {
-            n1= ParserXML.readWindowName(s1[0]);
-            d1 = ParserXML.readBoardDifficult(s1[0]);
-            n2 = ParserXML.readWindowName(s1[1]);
-            d2 = ParserXML.readBoardDifficult(s1[1]);
-            n3 = ParserXML.readWindowName(s2[0]);
-            d3 = ParserXML.readBoardDifficult(s2[0]);
-            n4 = ParserXML.readWindowName(s2[1]);
-            d4 = ParserXML.readBoardDifficult(s2[1]);
+            setGridGraphic(s1,mapsgrid,0);
+            setGridGraphic(s2,mapsgrid,1);
         }catch (ParserXMLException e){
             e.printStackTrace();
         }
 
-        Button map1f=new Button(n1 + "\n\nDifficoltà: " + d1);
-        Button map1r=new Button(n2 + "\n\nDifficoltà: " + d2);
-        Button map2f=new Button(n3 + "\n\nDifficoltà: " + d3);
-        Button map2r=new Button(n4 + "\n\nDifficoltà: " + d4);
+        mapsgrid.setStyle("-fx-background-color: white; -fx-grid-lines-visible: true");
 
-        mapsgrid.add(map1f,0,0);
-        mapsgrid.add(map1r,0,1);
-        mapsgrid.add(map2f,1,0);
-        mapsgrid.add(map2r,1,1);
-
-
-        map1f.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                clientPlayer.setChooseMap(s1[0]);
-            }
-        });
-
-        map1r.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                clientPlayer.setChooseMap(s1[1]);
-            }
-        });
-
-        map2f.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                clientPlayer.setChooseMap(s2[0]);
-            }
-        });
-
-        map2r.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                clientPlayer.setChooseMap(s2[1]);
-            }
-        });
         mapsRoot.setAlignment(Pos.TOP_CENTER);
         mapsgrid.setAlignment(Pos.CENTER);
         mapsgrid.setHgap(20);
         mapsgrid.setVgap(5);
         mapsgrid.setPrefSize(100,500);
-        map1f.setPrefSize(450,200);
-        map1r.setPrefSize(450,200);
-        map2f.setPrefSize(450,200);
-        map2r.setPrefSize(450,200);
 
-        //scene=new Scene(root,700,500);
         stage.getScene().setRoot(mapsRoot);
-        //stage.show();
         stage.setResizable(false);
         closeWindow();
     }
 
+
+    private void setGridGraphic (String [] maps,GridPane mapsgrid,int level) throws ParserXMLException
+    {
+        for (int i = 0 ; i < maps.length ; i++)
+        {
+            GridPane map1 = new GridPane();
+            VBox nameBox = new VBox();
+            VBox difficultBox = new VBox();
+            VBox gridBox = new VBox();
+
+            Text textName = new Text ("Vetrata: " + ParserXML.readWindowName(maps[i]));
+            Text textDifficult = new Text ("Difficoltà: " + ParserXML.readBoardDifficult(maps[i]));
+            textName.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 15));
+            textDifficult.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 15));
+
+            Pair[][] pair = new Pair[4][5];
+            pair=ParserXML.readWindowFromPath(maps[i],pair);
+            GridPane grid = new GridPane();
+            for (int k = 0; k < pair.length; k++)
+            {
+                for (int j = 0; j < pair[i].length; j++)
+                {
+                    ImageView imageView = new ImageView(GraphicDieHandler.getImageDie(pair[k][j]));
+                    imageView.setFitWidth(30);
+                    imageView.setFitHeight(30);
+
+                    imageView.setStyle("-fx-border-color: black;"
+                            + "-fx-border-width: 3;");
+
+                    grid.setMargin(imageView, new Insets(4, 4, 4, 4));
+
+                    //grid.setBorder(new Border());
+                    grid.add(imageView, j, k);
+                }
+            }
+            gridBox.getChildren().add(grid);
+            nameBox.getChildren().add(textName);
+            difficultBox.getChildren().add(textDifficult);
+            nameBox.setAlignment(Pos.CENTER);
+            difficultBox.setAlignment(Pos.CENTER);
+            gridBox.setAlignment(Pos.CENTER);
+
+            final String s = maps[i];
+            map1.setOnMousePressed(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    clientPlayer.setChooseMap(s);
+                }
+            });
+
+            map1.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(255,255,255,0.8), 10, 0, 0, 0);" +
+                    "-fx-background-color: transparent;" +
+                    "-fx-background-radius: 5;");
+
+            map1.setOnMouseEntered(actionEvent -> {
+                map1.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);" +
+                        "-fx-background-color: transparent;" +
+                        "-fx-background-radius: 5;");
+            });
+
+            map1.setOnMouseExited(actionEvent -> {
+                map1.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(255,255,255,0.8), 10, 0, 0, 0);" +
+                        "-fx-background-color: transparent;" +
+                        "-fx-background-radius: 5;");
+            });
+
+            map1.add(nameBox,0,0);
+            map1.add(difficultBox,0,1);
+            map1.add(gridBox,0,2);
+            map1.setPrefSize(450,200);
+            mapsgrid.add(map1,level,i);
+        }
+    }
+
+    //</editor-fold>
+
+
+    //<editor-fold desc="Game Page">
     @Override
     /*
      * Set game Page
@@ -349,25 +385,10 @@ public class SagradaGUI extends Application implements UI {
 
         closeWindow();
     }
+    //</editor-fold>
 
-    @Override
-    /*
-     * Set loading page
-     */
-    public void loading(){
-        GridPane loadingRoot=new GridPane();
-        Label msg=new Label("Attendere...");
-        msg.setFont(Font.font("verdana",  FontWeight.NORMAL,15));
-        ProgressIndicator pi=new ProgressIndicator();
-        loadingRoot.add(msg,0,0);
-        loadingRoot.add(pi,0,1);
-        loadingRoot.setAlignment(Pos.CENTER);
-        loadingRoot.setVgap(10);
-        stage.getScene().setRoot(loadingRoot);
-        stage.setResizable(false);
-        closeWindow();
-    }
 
+    //<editor-fold desc="End Game Page">
     @Override
     /*
      * Set disconnection page
@@ -492,7 +513,30 @@ public class SagradaGUI extends Application implements UI {
         stage.setResizable(false);
         closeWindow();
     }
+    //</editor-fold>
 
+
+
+
+    //<editor-fold desc="Loading Page">
+    @Override
+    /*
+     * Set loading page
+     */
+    public void loading(){
+        GridPane loadingRoot=new GridPane();
+        Label msg=new Label("Attendere...");
+        msg.setFont(Font.font("verdana",  FontWeight.NORMAL,15));
+        ProgressIndicator pi=new ProgressIndicator();
+        loadingRoot.add(msg,0,0);
+        loadingRoot.add(pi,0,1);
+        loadingRoot.setAlignment(Pos.CENTER);
+        loadingRoot.setVgap(10);
+        stage.getScene().setRoot(loadingRoot);
+        stage.setResizable(false);
+        closeWindow();
+    }
+    //</editor-fold>
 
     //<editor-fold desc="Popup">
     /**

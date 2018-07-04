@@ -89,8 +89,8 @@ public class PlayersGUI extends GridPane {
             onePlayer.add(l,0,0);
 
             GridPane grid = new GridPane();
-            for (int i = 0; i < 4; i++) {
-                for (int j = 0; j < 5; j++) {
+            for (int i = 0; i < pair.length; i++) {
+                for (int j = 0; j < pair[i].length; j++) {
                     ImageView imageView = new ImageView(GraphicDieHandler.getImageDie(pair[i][j]));
                     imageView.setFitWidth(20);
                     imageView.setFitHeight(20);
