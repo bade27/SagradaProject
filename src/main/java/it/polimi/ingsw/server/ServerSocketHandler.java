@@ -108,6 +108,8 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
             }
         } catch (IOException e) {
             clientDisconnection();
+        } catch (NullPointerException npe) {
+            return;
         }
     }
 
@@ -255,7 +257,8 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
             throw new ClientOutOfReachException();
         } catch (IOException e)
         {
-            e.printStackTrace();
+            log.addLog("User " + adapter.getUser() + " closed communication\n" + e.getStackTrace());
+            isAlive = false;
             throw new ClientOutOfReachException();
         }
         assertstuff();
@@ -287,7 +290,6 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
                 cards.append("\n");
                 outSocket.write(cards.toString());
                 outSocket.flush();
-                //response = waitResponse();
                 response = inSocket.readLine();
                 isAlive = true;
             } else
@@ -301,7 +303,8 @@ public class ServerSocketHandler implements ClientRemoteInterface, Runnable
             throw new ClientOutOfReachException();
         } catch (IOException e)
         {
-            e.printStackTrace();
+            log.addLog("User " + adapter.getUser() + " closed communication\n" + e.getStackTrace());
+            isAlive = false;
             throw new ClientOutOfReachException();
         }
 
