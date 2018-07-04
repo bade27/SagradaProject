@@ -364,11 +364,10 @@ public class ServerPlayer implements Runnable {
         try {
             s = stopTask(() -> communicator.updateGraphic(adapter.getDadieraPair()), PING_TIMEOUT + 10000, executor);
             if(s == null) {
-               System.out.println("excecutor");
                 throw new ClientOutOfReachException();
             }
         } catch (Exception e) {
-            System.out.println("non excecutor");
+
             log.addLog("(" + user + ") Dadiera update timeout expired");
             throw new ClientOutOfReachException();
         }
@@ -490,6 +489,7 @@ public class ServerPlayer implements Runnable {
     }
 
     public String getUser() {
+        assert user != null;
         return user;
     }
 
@@ -588,17 +588,15 @@ public class ServerPlayer implements Runnable {
         try {
             communicator.reconnect();
         } catch (RemoteException e) {
-            e.printStackTrace();
+            log.addLog("User " + user + " cannot be set back in match\n" + e.getStackTrace());
+            return;
         }
         possibleUsers.setUserGameStatus(user, true);
-        String[] toolnames = Arrays.stream(toolCards).map(t -> t.getName()).toArray(String[]::new);
-        String[] publicObjNames = Arrays.stream(publicObjectives).map(obj -> obj.getPath()).toArray(String[]::new);
         try {
-            communicator.sendCards(publicObjNames, toolnames, new String[]{privateObjCard});
-        } catch (ClientOutOfReachException e) {
-            e.printStackTrace();
-        } catch (RemoteException e) {
-            e.printStackTrace();
+            initializeCards();
+        } catch (ClientOutOfReachException|ModelException e) {
+            log.addLog("User " + user + " cannot be set back in match\n" + e.getStackTrace());
+            return;
         }
         assert inGame;
         if (inGame == true) {

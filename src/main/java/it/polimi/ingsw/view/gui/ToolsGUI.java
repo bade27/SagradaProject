@@ -3,7 +3,6 @@ package it.polimi.ingsw.view.gui;
 import it.polimi.ingsw.UI;
 import it.polimi.ingsw.utilities.FileLocator;
 import it.polimi.ingsw.utilities.ParserXML;
-import it.polimi.ingsw.view.gui.GraphButton;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
@@ -11,16 +10,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 
-import java.awt.*;
-
 public class ToolsGUI {
 
     private UI game;
     private GridPane pane;
     private GridPane t;
-    private GraphButton b1;
-    private GraphButton b2;
-    private GraphButton b3;
+    private ToolButton b1;
+    private ToolButton b2;
+    private ToolButton b3;
     boolean enable;
 
     public ToolsGUI(GridPane pane, UI game, Button useTool){
@@ -32,7 +29,6 @@ public class ToolsGUI {
         t = new GridPane();
         String [] name={"tool 1","tool 2","tool3"};
         updateTools(name);
-        DimWindows.dimWidth(t,300);
         pane.add(t,0,0);
 
         //Tool Button

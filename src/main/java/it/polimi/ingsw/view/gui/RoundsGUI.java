@@ -106,7 +106,10 @@ public class RoundsGUI extends GridPane {
 
     }
 
-
+    /**
+     * Update round trace
+     * @param allpair roundtrace from server
+     */
     public void updateRoundTrace(ArrayList<Pair> [] allpair){
         Platform.runLater(() -> {
 
@@ -185,6 +188,13 @@ public class RoundsGUI extends GridPane {
     }
     //</editor-fold>
 
+    //<editor-fold desc="Button Style">
+
+    /**
+     * Set button style dependent from current round
+     * @param b button so set style
+     * @param turn button's round
+     */
     private void setButtonStyle (Button b,int turn)
     {
         if (turn == currentTurn)
@@ -209,6 +219,10 @@ public class RoundsGUI extends GridPane {
         });
     }
 
+    /**
+     * Set button style independent from current round
+     * @param b button to set style
+     */
     private void setButtonStyle (Button b)
     {
         b.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);" +
@@ -224,6 +238,7 @@ public class RoundsGUI extends GridPane {
                         "-fx-background-color: transparent;");
         });
     }
+    //</editor-fold>
 }
 
 

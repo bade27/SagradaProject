@@ -17,6 +17,10 @@ public class GraphicDieHandler
     private static Image passButtonImage;
     private static Image useToolButtonImage;
 
+    //<editor-fold desc="Load Images">
+    /**
+     * Load all images that would be uploaded more than one time from file
+     */
     public static void loadDieImages ()
     {
         placementNumberMap.put(1 , new Image("file:resources/vetrate/Images/Placement/quad_1.jpg"));
@@ -92,12 +96,24 @@ public class GraphicDieHandler
         useToolButtonImage = new Image("file:resources/carte/tools/Images/use_tool.png");
         passButtonImage =  new Image("file:resources/carte/obbiettivi/pass_turn.png");
     }
+    //</editor-fold>
 
+    //<editor-fold desc="Retrieve Image">
+    /**
+     * Get image of number round selected
+     * @param nr number of round
+     * @return images of round selected
+     */
     public static Image getImageRound (int nr)
     {
         return roundMap.get(nr);
     }
 
+    /**
+     * Get image of relative pair passed
+     * @param p pair passed
+     * @return image of die or placement
+     */
     public static Image getImageDie (Pair p)
     {
         if (p.getValue() != 0 && p.getColor() == null)
@@ -110,11 +126,18 @@ public class GraphicDieHandler
         return new Image("file:resources/vetrate/Images/Placement/quad_bianco.jpg");
     }
 
+    /**
+     * Get image of pass button
+     */
     public static Image getPassButtonImage() {
         return passButtonImage;
     }
 
+    /**
+     * Get image of tool button
+     */
     public static Image getUseToolButtonImage() {
         return useToolButtonImage;
     }
+    //</editor-fold>
 }

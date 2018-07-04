@@ -125,14 +125,16 @@ public class MatchHandler implements Runnable
         log.addLog("Game Phase started");
         setGameStarted(true);
         token.setOnGame(true);
+
+        turnsPlayed = 1;
+        log.addLog("turn " + turnsPlayed);
+
         try{
             mixDadiera();
         }catch (Exception e){
             endGame();
             return;
         }
-
-        turnsPlayed = 0;
 
         //updateClient();
         while (true)
@@ -154,7 +156,7 @@ public class MatchHandler implements Runnable
                 if (token.isEndRound())
                 {
                     //Check if turns played are enough and close Match Handling
-                    if (turnsPlayed == TURNS - 1)
+                    if (turnsPlayed == TURNS)
                     {
                         endGame();
                         return;
@@ -169,9 +171,10 @@ public class MatchHandler implements Runnable
                         } catch (IllegalDiceException e) {
                             e.printStackTrace();
                         }
-                        roundTrace.addDice(turnsPlayed + 1, tmp);
+                        roundTrace.addDice(turnsPlayed, tmp);
                         dices.deleteDice(tmp);
                     }
+
 
                     //Increment total of turn
                     turnsPlayed++;
@@ -388,7 +391,6 @@ public class MatchHandler implements Runnable
                 cli.setMatchHandler(this);
             } catch (RemoteException e) {
                 e.printStackTrace();
-                System.out.println(u + "not accepted");
                 return false;
             }
             ServerPlayer newSP = null;
@@ -412,10 +414,8 @@ public class MatchHandler implements Runnable
                 decDisconnCounter();
                 newSP.reconnected();
             } else {
-                System.out.println(u + " not accepted");
                 return false;
             }
-            System.out.println(u + " accepted");
             addTonConn(1);
         }
         return true;
@@ -596,9 +596,12 @@ public class MatchHandler implements Runnable
                 pubObjs[i] = ObjectivesFactory.getPublicObjective(objStrings[i]);
             }
 
+            log.addLog("\npublic objectives for this game:\n" + pubObjs[0].getName() + "\n"
+                    + pubObjs[1].getName() + "\n" + pubObjs[2].getName() + "\n");
+
             //For each players initialize public objective already selected
             int n = getnConn();
-            for (int i=0;i<n/*nConn*/;i++)
+            for (int i=0;i<n;i++)
                 player.get(i).setPublicObjCard(pubObjs);
         }
         catch (Exception ex) {
@@ -638,16 +641,17 @@ public class MatchHandler implements Runnable
         {
             Tools[] tools = new Tools[3];
             //Select and create randomly 3 tool cards from list of tools
+            int[] extracted = new int[3];
             for (int i = 0; i < 3; i++)
             {
                 c = toolNum.get(i);
                 tools[i] = ToolsFactory.getTools(toolNames[c]);
+                extracted[i] = c;
             }
 
-            //Used to test tools, do not delete
-            /*tools[0] = ToolsFactory.getTools(toolNames[0]);
-            tools[1] = ToolsFactory.getTools(toolNames[1]);
-            tools[2] = ToolsFactory.getTools(toolNames[3]);*/
+
+            log.addLog("tools for this game:\n" + toolNames[extracted[0]] + "\n"
+                    + toolNames[extracted[1]] + "\n" + toolNames[extracted[1]] + "\n");
 
             //For each players initialize tool cards already selected
             int n = getnConn();

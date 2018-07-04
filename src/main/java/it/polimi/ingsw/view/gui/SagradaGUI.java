@@ -52,10 +52,12 @@ public class SagradaGUI extends Application implements UI {
     public SagradaGUI() {
         enableBoard = false;
         toolPhase = false;
-        //initailizeComunication();
     }
 
     @Override
+    /*
+     * Set Welcome page
+     */
     public void start(Stage welcomeStage){
         stage=welcomeStage;
         VBox welcomeRoot= new VBox();
@@ -87,6 +89,9 @@ public class SagradaGUI extends Application implements UI {
     }
 
     @Override
+    /*
+     * Set login page
+     */
     public void login(String s){
         VBox loginRoot=new VBox();
         GridPane login=new GridPane();
@@ -181,17 +186,17 @@ public class SagradaGUI extends Application implements UI {
         login.setAlignment(Pos.CENTER);
         loginRoot.setAlignment(Pos.CENTER);
         loginRoot.setSpacing(35);
-        //scene=new Scene(root,500,450);
-        //stage.setTitle("Sagrada");
         stage.getScene().getWindow().setWidth(500);
         stage.getScene().getWindow().setHeight(450);
         stage.getScene().setRoot(loginRoot);
-        //stage.show();
         stage.setResizable(false);
         closeWindow();
     }
 
     @Override
+    /*
+     * Set choose map page
+     */
     public void maps(String[] s1,String[] s2){
         VBox mapsRoot=new VBox();
         Label title=new Label("Seleziona mappa da voler usare");
@@ -271,7 +276,11 @@ public class SagradaGUI extends Application implements UI {
         stage.setResizable(false);
         closeWindow();
     }
+
     @Override
+    /*
+     * Set game Page
+     */
     public void game() {
 
         //root
@@ -292,10 +301,6 @@ public class SagradaGUI extends Application implements UI {
         mainContent.add(pcenter,1,0);
         mainContent.add(pright,2,0);
 
-        DimWindows.dim(mainContent);
-        DimWindows.dim(pright);
-        DimWindows.dim(pleft);
-        DimWindows.dim(pcenter);
 
         mainContent.setAlignment(Pos.CENTER);
         pcenter.setAlignment(Pos.CENTER);
@@ -346,6 +351,9 @@ public class SagradaGUI extends Application implements UI {
     }
 
     @Override
+    /*
+     * Set loading page
+     */
     public void loading(){
         GridPane loadingRoot=new GridPane();
         Label msg=new Label("Attendere...");
@@ -353,24 +361,17 @@ public class SagradaGUI extends Application implements UI {
         ProgressIndicator pi=new ProgressIndicator();
         loadingRoot.add(msg,0,0);
         loadingRoot.add(pi,0,1);
-        /*Button b=new Button();
-        root.add(b,0,2);
-        b.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                maps(new String[2],new String[2]);
-            }
-        });*/
         loadingRoot.setAlignment(Pos.CENTER);
         loadingRoot.setVgap(10);
-        //scene=new Scene(root,500,500);
-        //stage.show();
         stage.getScene().setRoot(loadingRoot);
         stage.setResizable(false);
         closeWindow();
     }
 
     @Override
+    /*
+     * Set disconnection page
+     */
     public void disconnection(String s){
         VBox discRoot= new VBox();
         VBox text=new VBox();
@@ -403,6 +404,9 @@ public class SagradaGUI extends Application implements UI {
     }
 
     @Override
+    /*
+        Set FatalDisconnection page
+     */
     public void fatalDisconnection(String s){
         VBox fatDicRoot= new VBox();
         Label title=new Label("Spiacenti");
@@ -422,6 +426,9 @@ public class SagradaGUI extends Application implements UI {
     }
 
     @Override
+    /*
+        Set end game page
+     */
     public void endGame(String [] name, int [] record){
         int max=0;
         String tempName;

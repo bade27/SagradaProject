@@ -24,8 +24,6 @@ public class PlayersGUI extends GridPane {
     private UI game;
     private GridPane players;
     private ArrayList<String> name;
-    //GridPane onePlayer=new GridPane();
-
 
 
 
@@ -51,7 +49,12 @@ public class PlayersGUI extends GridPane {
     //        |                |                |                |
     //        |________________|________________|________________|
 
-
+    /**
+     * Update opponents player graphic
+     * @param pair matrix of pair about opponents' grid
+     * @param n opponents' name
+     * @param active opponents' status
+     */
     public void updateGraphic(Pair[][] pair, String n,boolean active) {
         Platform.runLater(() -> {
 
@@ -108,6 +111,7 @@ public class PlayersGUI extends GridPane {
         });
     }
 
+    //<editor-fold desc="Player class">
     private class GridPanePlayer extends GridPane
     {
         private String user;
@@ -127,6 +131,7 @@ public class PlayersGUI extends GridPane {
             this.user = user;
         }
     }
+    //</editor-fold>
 
 }
 
