@@ -75,15 +75,16 @@ public class TargetGUI extends GridPane{
         gridPane.setVgap(10);
 
         p.add(gridPane,2,0);
-        //DimWindows.dimWidth(gridPane,250);
     }
 
-
+    /**
+     * Update private objectives
+     * @param s private objectives passed
+     */
     public void updatePrivateTarget(String []s)
     {
         Platform.runLater(() ->
         {
-            //System.out.println(s[0]);
             privateGeneralBox.getChildren().clear();
             VBox intestationBox = new VBox();
             VBox privateObjBox = new VBox();
@@ -100,7 +101,10 @@ public class TargetGUI extends GridPane{
         });
     }
 
-
+    /**
+     * Update public objectives
+     * @param s public objectives passed
+     */
     public void updatePublicTarget(String []s)
     {
         //System.out.println(s[0] + " " + s[1] + " "+ s[2]);

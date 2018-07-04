@@ -5,7 +5,7 @@
 
 	<tool1 num="1">
 		<name>Pinza Sgrossatrice</name>
-		<effect>Dopo aver scelto un dado, aumenta o diminuisci il value del dado scelto di 1 [Non puoi cambiare un 6 in1 o un 1 in 6]</effect>
+		<effect>Dopo aver scelto un dado, aumenta o diminuisci il value del dado scelto di 1 [Non puoi cambiare un 6 in 1 o un 1 in 6]</effect>
 		<class>SetDiceValue</class>
 		<image>file:resources/carte/tools/Images/tool_1.png</image>
 	</tool1>
