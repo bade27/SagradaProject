@@ -299,12 +299,20 @@ public class SagradaGUI extends Application implements UI {
 
         mainContent.setAlignment(Pos.CENTER);
         pcenter.setAlignment(Pos.CENTER);
-        //roundContent.setAlignment(Pos.CENTER);
+
+        mainContent.setBackground(new Background(new BackgroundImage(ParserXML.LoadImageXMLAtRequest.getGameBackground(),
+                BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT)));
+
+        roundContent.setBackground(new Background(new BackgroundImage(ParserXML.LoadImageXMLAtRequest.getGameBackground(),
+                BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT)));
+
 
         pleft.setMaxWidth(220);
         pright.setMaxWidth(220);
 
-        useTool = new UseToolButton("Usa il tool!", this);
+        useTool = new UseToolButton(this);
 
         //placing the different gui components
         toolsG = new ToolsGUI(mainContent, this,useTool);

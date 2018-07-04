@@ -35,8 +35,23 @@ public class ToolsGUI {
         DimWindows.dimWidth(t,300);
         pane.add(t,0,0);
 
+        //Tool Button
+        useTool.setBackground(new Background(new BackgroundImage(ParserXML.LoadImageXMLAtRequest.getToolsBackground(),
+                BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT)));
+        useTool.setGraphic(new ImageView(GraphicDieHandler.getUseToolButtonImage()));
 
+        useTool.setOnMouseEntered(actionEvent -> {
+            useTool.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);" +
+                    "-fx-background-color: transparent;" +
+                    "-fx-background-radius: 5;");
+        });
+
+        useTool.setOnMouseExited(actionEvent -> {
+            useTool.setStyle("");
+        });
         t.add(useTool,0,3);
+        //Tool Button
     }
 
     public void updateTools(String[] name){
