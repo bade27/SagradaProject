@@ -9,7 +9,13 @@ import java.io.File;
 
 public class GraphicFactory {
 
-    public static GraphButton getToolButtonFromName (String path , String name) throws ParserXMLException
+    /**
+     * Retrieve a new tool button with specified parameters
+     * @param path path of xml file
+     * @param name name of tool
+     * @return new tool button created
+     */
+    public static ToolButton getToolButtonFromName (String path , String name) throws ParserXMLException
     {
         try
         {
@@ -28,7 +34,7 @@ public class GraphicFactory {
                 String img = document.getElementsByTagName("image").item(numtool-1).getTextContent();
                 //System.out.println(img);
                 if (nm.equals(name))
-                    return new GraphButton(nm,numtool,img);
+                    return new ToolButton(nm,numtool,img);
             }
             throw new ParserXMLException("Name: " + name + " Not founded in path: " + path);
         }

@@ -32,7 +32,9 @@ public class DadieraGUI extends GridPane {
     }
 
 
-
+    /**
+     * Graphic initialization with empty dadiera
+     */
     private void initGraphic ()
     {
         Pair [] pair = new Pair[9];
@@ -41,6 +43,10 @@ public class DadieraGUI extends GridPane {
         updateGraphic(pair);
     }
 
+    /**
+     * Update dadiera with passed matrix pair
+     * @param p matrix pair
+     */
     public void updateGraphic(Pair[] p)
     {
         Platform.runLater(() -> {
@@ -91,6 +97,9 @@ public class DadieraGUI extends GridPane {
         this.tool = tool;
     }
 
+    /**
+     * Class support for graphic handling of dice
+     */
     private class DieButton extends Button
     {
         private ColorEnum color;

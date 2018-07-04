@@ -2,11 +2,12 @@ package it.polimi.ingsw.view.gui;
 
 import javafx.scene.control.Button;
 
-public class GraphButton extends Button
+
+public class ToolButton extends Button
 {
     private String nameTool,imgPath;
     private int idTool;
-    public GraphButton (String n , int i , String iP )
+    public ToolButton(String n , int i , String iP )
     {
         nameTool = n;
         idTool = i;

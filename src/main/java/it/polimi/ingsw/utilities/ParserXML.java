@@ -454,6 +454,7 @@ public class ParserXML
     }
     //</editor-fold>
 
+    //<editor-fold desc="Images XML">
     public static class LoadImageXMLAtRequest
     {
         public static Image getImageFromXMLPath (String path)
@@ -507,4 +508,5 @@ public class ParserXML
             return new Image("file:resources/vetrate/Images/back.png");
         }
     }
+    //</editor-fold>
 }

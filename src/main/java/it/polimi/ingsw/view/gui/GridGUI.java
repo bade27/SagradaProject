@@ -31,6 +31,7 @@ public class GridGUI extends GridPane{
         Pair [][] pair=new Pair[4][5];
         precPairs = new Pair[4][5];
 
+        //Creating an empty grid
         for(int i = 0 ; i < 4; i++)
             for(int j = 0 ; j < 5; j++)
             {
@@ -45,7 +46,7 @@ public class GridGUI extends GridPane{
     }
 
     /**
-     *
+     * Update grid presentation
      * @param pair grid of pairs value-color that represent the player's grid
      */
     public void updateGrid (Pair[][] pair)
@@ -112,6 +113,7 @@ public class GridGUI extends GridPane{
         this.tool = tool;
     }
 
+    //<editor-fold desc="Cell class">
     /**
      * element of the grid
      */
@@ -130,6 +132,7 @@ public class GridGUI extends GridPane{
             value = val;
         }
     }
+    //</editor-fold>
 
 
 }
