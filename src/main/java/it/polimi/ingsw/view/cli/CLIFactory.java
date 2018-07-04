@@ -10,7 +10,7 @@ import java.io.File;
 public class CLIFactory {
 
     /**
-     *
+     * Read from xml tool's pattern and return its name
      * @param path XML file location
      * @param name tool's name
      * @return tool's number
@@ -43,7 +43,7 @@ public class CLIFactory {
     }
 
     /**
-     *
+     * Read from xml tool's pattern and return its description
      * @param path XML file location
      * @param name tool's name
      * @return tool's effect
