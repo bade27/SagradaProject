@@ -488,6 +488,8 @@ public class MatchHandler implements Runnable
             return false;
         }
 
+        log.addLog("Number of window cards found: " + cards.size());
+
         int n = getnConn();
         for (int i = 0; i < n/*nConn*/ ; i++)
         {

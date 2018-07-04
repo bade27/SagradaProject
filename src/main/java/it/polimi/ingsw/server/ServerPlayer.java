@@ -129,7 +129,7 @@ public class ServerPlayer implements Runnable {
         }
 
         //////GAME PHASE//////
-        while (inGame)//Da cambiare con la condizione di fine partita
+        while (inGame)
         {
             turnInterrupted = false;
             inTurn = false;
@@ -321,6 +321,12 @@ public class ServerPlayer implements Runnable {
     //</editor-fold>
 
     //<editor-fold desc="End Game Phase">
+
+    /**
+     * Notifies the clients about the end of the game
+     * @param users list of users that have played
+     * @param points list of the scores of each player
+     */
     public void endGameCommunication(String[] users, int[] points) {
         try {
             communicator.sendResults(users, points);
@@ -330,6 +336,9 @@ public class ServerPlayer implements Runnable {
     }
 
 
+    /**
+     * @return the total score of tha player
+     */
     public int getPoints() {
         return adapter.calculatePoints();
     }
@@ -338,7 +347,26 @@ public class ServerPlayer implements Runnable {
     //<editor-fold desc="Update Client's information">
 
     /**
-     * Send to client a massage that inform about his turn
+     * updates the client with all the information he/she needs
+     * @return weather the update was successful or not
+     */
+    public boolean updateClient() {
+        boolean exit = true;
+        try {
+            updateDadiera();
+            updateRoundTrace();
+            updateWindow();
+            updateTokens();
+        } catch (Exception e) {
+            log.addLog("(" + user + ") Impossible to communicate to client");
+            exit = false;
+        }
+        return exit;
+    }
+
+
+    /**
+     * Send to client a massage that informs about his turn
      */
     private void clientTurn() throws ClientOutOfReachException {
         String u;
@@ -385,6 +413,10 @@ public class ServerPlayer implements Runnable {
         }
     }
 
+    /**
+     * updates the number of tokens left to the player
+     * @throws ClientOutOfReachException if the client is unreachable
+     */
     private void updateTokens() throws ClientOutOfReachException {
         String s;
         try {
@@ -397,6 +429,10 @@ public class ServerPlayer implements Runnable {
         }
     }
 
+    /**
+     * updates the client about the content of the round trace
+     * @throws ClientOutOfReachException if the client is unreachable
+     */
     private void updateRoundTrace() throws ClientOutOfReachException {
         String s;
         try {
@@ -410,6 +446,10 @@ public class ServerPlayer implements Runnable {
 
     }
 
+    /**
+     * updates the client about the other players' board
+     * @throws ClientOutOfReachException if the client is unreachable
+     */
     public void updateOpponents(ArrayList<String> users, ArrayList<Pair[][]> grids,ArrayList<Boolean> active) throws ClientOutOfReachException {
         for (int i = 0; i < users.size(); i++)
             updateOpponents(users.get(i), grids.get(i),active.get(i));
@@ -432,15 +472,23 @@ public class ServerPlayer implements Runnable {
     //</editor-fold>
 
     //<editor-fold desc="Utilities">
+
+    /**
+     * pings the client to see if he/she's still connected
+     * @return weather the client is still reachable or not
+     */
     public boolean isClientAlive() {
         alive = stopTask(() -> communicator.ping(), PING_TIMEOUT, executor);
-        //alive = communicator.ping();
         if(alive == null) {
             alive = false;
         }
         return alive;
     }
 
+    /**
+     * updates the client with the exit of his/hers action(s)
+     * @param s the message to be sent
+     */
     public void sendMessage(String s) {
         try {
             boolean performed;
@@ -452,6 +500,10 @@ public class ServerPlayer implements Runnable {
         }
     }
 
+    /**
+     * due to various errors (internal server errors, or end of any timeout) ends the connection with the client
+     * @param s the message to be sent
+     */
     public void closeConnection(String s) {
         try {
             boolean performed;
@@ -466,20 +518,10 @@ public class ServerPlayer implements Runnable {
 
     }
 
-    public boolean updateClient() {
-        boolean exit = true;
-        try {
-            updateDadiera();
-            updateRoundTrace();
-            updateWindow();
-            updateTokens();
-        } catch (Exception e) {
-            log.addLog("(" + user + ") Impossible to communicate to client");
-            exit = false;
-        }
-        return exit;
-    }
-
+    /**
+     * @return the board's content in form of Pair matrix
+     * (this content is about colors and numbers of the dice)
+     */
     public Pair[][] getGrid() {
         return adapter.getWindowPair();
     }
@@ -496,6 +538,22 @@ public class ServerPlayer implements Runnable {
         PING_TIMEOUT = ParserXML.SetupParserXML.getPingTimeLaps(FileLocator.getGameSettingsPath());
         SETUP_TIMEOUT = ParserXML.SetupParserXML.getSetupTimeLaps(FileLocator.getGameSettingsPath());
         TURN_TIMEOUT = ParserXML.SetupParserXML.getTurnTimeLaps(FileLocator.getGameSettingsPath());
+    }
+
+    public void setCommunicator(ClientRemoteInterface communicator) {
+        this.communicator = communicator;
+    }
+
+    public ClientRemoteInterface getCommunicator() {
+        return communicator;
+    }
+
+    /**
+     * sets the status of the client
+     * @param inGame
+     */
+    public void setInGame(boolean inGame) {
+        this.inGame = inGame;
     }
 
     //</editor-fold>
@@ -562,20 +620,45 @@ public class ServerPlayer implements Runnable {
         }
     }
 
+    /**
+     * executes the given task and retrieves the results after a fixed amount of time
+     * @param task task to be performed
+     * @param executionTime maximum time of the execution
+     * @param executor thread pool
+     * @param <T> type of the parameter returned by the task
+     * @return the result of the task
+     */
+    private <T> T stopTask(Callable<T> task, int executionTime, ExecutorService executor) {
+        Object o = null;
+        Future future = executor.submit(task);
+        try {
+            o = future.get(executionTime, TimeUnit.MILLISECONDS);
+        } catch (TimeoutException te) {
+            //System.out.println(te.getMessage());
+            //LogFile.addLog("Client too late to reply");
+            //System.out.println("too late to reply");
+        } catch (InterruptedException ie) {
+            //System.out.println(ie.getMessage());
+            Thread.currentThread().interrupt();
+        } catch (ExecutionException ee) {
+            //System.out.println(ee.getMessage());
+        } finally {
+            future.cancel(true);
+        }
+        return (T) o;
+    }
+
+    public boolean isInTurn() {
+        return inTurn;
+    }
+
+    public ServerModelAdapter getAdapter() {
+        return adapter;
+    }
+
     //</editor-fold>
 
-    //<editor-fold desc="Reconnection facilities">
-    public void setCommunicator(ClientRemoteInterface communicator) {
-        this.communicator = communicator;
-    }
-
-    public ClientRemoteInterface getCommunicator() {
-        return communicator;
-    }
-
-    public void setInGame(boolean inGame) {
-        this.inGame = inGame;
-    }
+    //<editor-fold desc="Disconnection and Reconnection facilities">
 
     /**
      * Sends to the client all the information it needs, once it's reconnected
@@ -601,35 +684,8 @@ public class ServerPlayer implements Runnable {
                 token.addPlayer(user);
         }
         log.addLog("User " + user + " back in match");
-        //System.out.println("user " + user + " riconnesso");
     }
 
-    public ServerModelAdapter getAdapter() {
-        return adapter;
-    }
     //</editor-fold>
 
-    private <T> T stopTask(Callable<T> task, int executionTime, ExecutorService executor) {
-        Object o = null;
-        Future future = executor.submit(task);
-        try {
-            o = future.get(executionTime, TimeUnit.MILLISECONDS);
-        } catch (TimeoutException te) {
-            //System.out.println(te.getMessage());
-            //LogFile.addLog("Client too late to reply");
-            //System.out.println("too late to reply");
-        } catch (InterruptedException ie) {
-            //System.out.println(ie.getMessage());
-            Thread.currentThread().interrupt();
-        } catch (ExecutionException ee) {
-            //System.out.println(ee.getMessage());
-        } finally {
-            future.cancel(true);
-        }
-        return (T) o;
-    }
-
-    public boolean isInTurn() {
-        return inTurn;
-    }
 }
