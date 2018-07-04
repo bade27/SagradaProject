@@ -2,56 +2,54 @@
 
 <list>
 
-  <numberOfCards>8</numberOfCards>
+  <numberOfCards>12</numberOfCards>
 
   <!--1-->
   <card n = "1">resources/vetrate/xml/kaleidoscopic_dream.xml</card>
   <card n = "2">resources/vetrate/xml/firmitas.xml</card>
 
-  <!--6-->
+  <!--2-->
   <card n = "3">resources/vetrate/xml/aurorae_magnificus.xml</card>
   <card n = "4">resources/vetrate/xml/aurora_sagradis.xml</card>
 
-  <!--7-->
+  <!--3-->
   <card n = "5">resources/vetrate/xml/symphony_of_light.xml</card>
   <card n = "6">resources/vetrate/xml/virtus.xml</card>
 
-  <!--12-->
+  <!--4-->
   <card n = "7">resources/vetrate/xml/via_lux.xml</card>
   <card n = "8">resources/vetrate/xml/industria.xml</card>
 
-  <!--9-->
+  <!--5-->
   <card n = "9">resources/vetrate/xml/battlo.xml</card>
   <card n = "10">resources/vetrate/xml/bellesguard.xml</card>
 
-  <!--2-->
+  <!--6-->
   <card n = "11">resources/vetrate/xml/fractal_drops.xml</card>
   <card n = "12">resources/vetrate/xml/ripples_of_light.xml</card>
 
-  <!--3-->
+  <!--7-->
   <card n = "13">resources/vetrate/xml/lux_mundi.xml</card>
   <card n = "14">resources/vetrate/xml/lux_astram.xml</card>
 
-  <!--4-->
+  <!--8-->
   <card n = "15">resources/vetrate/xml/gravitas.xml</card>
   <card n = "16">resources/vetrate/xml/water_of_life.xml</card>
 
-<!--  5
+  <!--9-->
   <card n = "17">resources/vetrate/xml/sun_catcher.xml</card>
   <card n = "18">resources/vetrate/xml/shadow_thief.xml</card>
 
-      8
+  <!--10-->
   <card n = "19">resources/vetrate/xml/firelight.xml</card>
   <card n = "20">resources/vetrate/xml/suns_glory.xml</card>
 
-      10
+  <!--11-->
   <card n = "21">resources/vetrate/xml/fulgor_del_cielo.xml</card>
   <card n = "22">resources/vetrate/xml/luz_celestial.xml</card>
-
-
-      11
+  
+  <!--12-->
   <card n = "23">resources/vetrate/xml/chromatic_splendor.xml</card>
   <card n = "24">resources/vetrate/xml/comitas.xml</card>
 
--->
 </list>
