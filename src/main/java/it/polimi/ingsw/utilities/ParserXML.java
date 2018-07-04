@@ -164,7 +164,11 @@ public class ParserXML
                 String card = cards.item(i).getTextContent();
                 names[0] = card;
                 i++;
-                card = cards.item(i).getTextContent();
+                try {
+                    card = cards.item(i).getTextContent();
+                } catch (NullPointerException npe) {
+                    return arr;
+                }
                 names[1] = card;
                 arr.add(names);
             }
