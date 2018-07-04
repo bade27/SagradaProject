@@ -299,15 +299,12 @@ public class SagradaGUI extends Application implements UI {
 
         mainContent.setAlignment(Pos.CENTER);
         pcenter.setAlignment(Pos.CENTER);
-        //roundContent.setAlignment(Pos.CENTER);
 
-        //mainContent.setStyle("-fx-background-color: #000000;");
-        mainContent.setBackground(new Background(new BackgroundImage(new Image("file:resources/back.png"),
+        mainContent.setBackground(new Background(new BackgroundImage(ParserXML.LoadImageXMLAtRequest.getGameBackground(),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT)));
 
-        //roundContent.setStyle("-fx-background-color: #000000;");
-        roundContent.setBackground(new Background(new BackgroundImage(new Image("file:resources/back.png"),
+        roundContent.setBackground(new Background(new BackgroundImage(ParserXML.LoadImageXMLAtRequest.getGameBackground(),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT)));
 

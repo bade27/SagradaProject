@@ -501,5 +501,10 @@ public class ParserXML
         {
             return new Image("file:resources/carte/tools/Images/sfondo_tool.png");
         }
+
+        public static Image getGameBackground ()
+        {
+            return new Image("file:resources/vetrate/Images/back.png");
+        }
     }
 }
