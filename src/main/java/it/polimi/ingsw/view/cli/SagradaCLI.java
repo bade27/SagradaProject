@@ -179,7 +179,7 @@ public class SagradaCLI implements UI {
                     printPair(grid4);
                     System.out.println("\n\t" + "prezzo: "+ price4 + "\n");
 
-                    System.out.println("\nSono state estratte queste mappe! Scegline una digitando il norrispettivo numero:");
+                    System.out.println("\nSono state estratte queste mappe! Scegline una digitando il corrispettivo numero:");
                     map = readFromConsole();
                         if(map==null){
                             return;
@@ -315,8 +315,18 @@ public class SagradaCLI implements UI {
     private void viewTools() {
         Color color = Color.ANSI_NOCOLOR;
         printbyFile("resources/titleCli/Strumenti.txt", color);
-        for (int i = 0; i < tools.length; i++) {
+        /*for (int i = 0; i < tools.length; i++) {
             System.out.println(tools[i]);
+        }*/
+        for (int i = 0; i < tools.length; i++) {
+            try {
+                String name = tools[i];
+                String description = CLIFactory.getTooldescriptionFromName(FileLocator.getToolsListPath(), tools[i]);
+                System.out.println("- "+name+": "+description);
+            } catch (ParserXMLException e) {
+                System.out.println("Errore nel file dei tools");
+                e.getStackTrace();
+            }
         }
     }
 
@@ -397,12 +407,12 @@ public class SagradaCLI implements UI {
             }
         }
 
-        System.out.println("\n\nObiettivi pubblici:");
+        System.out.println("\n\nObiettivi pubblici:\n");
         for (int i=0;i<publicTarget.length;i++) {
             try {
                 name = ParserXML.readObjectiveName(publicTarget[i]);
                 description = ParserXML.readObjectiveDescription(publicTarget[i]);
-                System.out.println(name+": "+description);
+                System.out.println("- "+name+": "+description);
             }catch (ParserXMLException ex){
                 ex.printStackTrace();
             }
