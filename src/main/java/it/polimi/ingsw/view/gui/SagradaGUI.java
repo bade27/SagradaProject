@@ -647,7 +647,6 @@ public class SagradaGUI extends Application implements UI {
     }
 
     public void updateTokens(int n) {
-        System.out.println("num of remaining tokens: " + n);
         tokenG.updateTockens(n);
     }
     //</editor-fold>

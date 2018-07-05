@@ -570,7 +570,7 @@ public class SagradaCLI implements UI {
     @Override
     public void setEnableBoard(boolean enableBoard) {
         this.enableBoard = enableBoard;
-        if (task.isAlive())
+        if (task != null && task.isAlive())
             task.interrupt();
         task = new Thread(new Runnable() {
             @Override
@@ -581,13 +581,15 @@ public class SagradaCLI implements UI {
         task.start();
     }
 
+    /**
+     * the turn begins, and the player can use simple movement, tools, view the game elements or pass the turn
+     * when the turn begin the player view all game elements
+     * after the move you can decide whether do an other move or pass the turn
+     **/
     private void turn() {
         String action = "";
         String end_turn;
         boolean pass = false;
-        /*if (msg.equals("My turn")||
-                msg.equals("Impossibile piazzare il dado: Dado posizionato su una cella incompatibile")||
-                        msg.equals("Move ok")){*/
         if (enableBoard == true) {
             viewMessage();
             viewTarget();
@@ -600,7 +602,9 @@ public class SagradaCLI implements UI {
             printTurn();
             do {
                 do {
-                    printStream.println("Vuoi fare una mossa [m], usare una carta strumento [c], vedere gli elementi del gioco [e] o passare il turno [p]?");
+                    printStream.println("\n"+Color.ANSI_NOCOLOR.escape()
+                            +"Vuoi fare una mossa [m], usare una carta strumento [c], " +
+                            "vedere gli elementi del gioco [e] o passare il turno [p]?");
 
                     action = readFromConsole();
                     if (action == null)
@@ -620,7 +624,7 @@ public class SagradaCLI implements UI {
                 } while (!action.equals("m") && !action.equals("c") && !action.equals("p"));
                 if (!action.equals("p")) {
                     do {
-                        printStream.println("Vuoi fare dell'altro? [S/n]");
+                        printStream.println("\nVuoi fare dell'altro? [S/n]");
                         end_turn = readFromConsole();
 
                         if (end_turn == null)
@@ -671,7 +675,7 @@ public class SagradaCLI implements UI {
         } while (!pairExist(new Pair(value, color), dadiera));
 
         MoveAction.setPair(new Pair(value, color));
-        printStream.println("Seleziona una cella della griglia: \n");
+        printStream.println("\nSeleziona una cella della griglia: ");
         do {
             printStream.println("ascissa: [crescente da sinistra verso destra]");
             try {
@@ -718,7 +722,7 @@ public class SagradaCLI implements UI {
         int round;
         //capisco quale tool vuole utilizzare
         do {
-            printStream.println("Quale strumento vuoi utilizzare? [digitare il numero corrispondente]\n[digitare 'annulla' per annullare l'operazione]");
+            printStream.println("Quale strumento vuoi utilizzare? [digitare il numero corrispondente]\n[digitare 'annulla' per annullare l'operazione]\n");
             for (int i = 0; i < tools.length; i++) {
                 try {
                     description = CLIFactory.getTooldescriptionFromName(FileLocator.getToolsListPath(), tools[i]);
@@ -873,9 +877,10 @@ public class SagradaCLI implements UI {
     private void viewElements() {
         String v;
         String response;
+        printStream.println("ELEMENTI:\n");
         do {
             do {
-                printStream.println("Quale elemento vuoi vedere?\n[d] dadiera\n[g] griglia\n[t] tracciato round\n[a] avversari\n[c] carte strumento\n[o] obiettivi\n[s] segnalini\n[tutto] tutti gli elementi\n[niente] nessuno degli elementi");
+                printStream.println("Quale elemento vuoi vedere?\n\n[d] dadiera\n[g] griglia\n[t] tracciato round\n[a] avversari\n[c] carte strumento\n[o] obiettivi\n[s] segnalini\n[tutto] tutti gli elementi\n[niente] nessuno degli elementi");
                 v = readFromConsole();
                 if (v == null||v.equals("niente"))
                     return;

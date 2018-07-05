@@ -54,6 +54,9 @@ public class ServerModelAdapter
 
     }
 
+
+    //<editor-fold desc="Turn Phase">
+
     /**
      * executes the effect of the requested tool
      * @param w array of possible parameters
@@ -158,8 +161,7 @@ public class ServerModelAdapter
         dadiera.deleteDice(d);
     }
 
-
-
+    //</editor-fold>
 
     //<editor-fold desc="Setup Phase">
     /**
@@ -314,9 +316,17 @@ public class ServerModelAdapter
 
     public synchronized void notifyClientExited () { timer.setClientDisconnection(true);}
 
+    public void setLog(LogFile log) {
+        this.log = log;
+    }
+
     //</editor-fold>
 
     //<editor-fold desc="Timer Class">
+
+    /**
+     * This is the timer which stats when the turn begins and stops when the player pass the turn
+     */
     private class TimerTurn implements Runnable {
 
         private int period;
@@ -371,8 +381,4 @@ public class ServerModelAdapter
     }
     //</editor-fold>
 
-
-    public void setLog(LogFile log) {
-        this.log = log;
-    }
 }
