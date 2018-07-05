@@ -63,6 +63,13 @@ public class SagradaCLI implements UI {
         opponents = new ArrayList<Player>();
         createMap();
         startGame();
+        Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (clientPlayer != null)
+                    clientPlayer.disconnect();
+            }
+        }, "Shutdown-thread"));
     }
 
     /**
