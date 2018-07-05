@@ -58,14 +58,18 @@ public class TargetGUI extends GridPane{
                 BackgroundSize.DEFAULT)));
         pass.setGraphic(new ImageView(GraphicDieHandler.getPassButtonImage()));
 
+        pass.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);" +
+                "-fx-background-color: transparent;" +
+                "-fx-background-radius: 5;");
+
         pass.setOnMouseEntered(actionEvent -> {
-            pass.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);" +
-                    "-fx-background-color: transparent;" +
-                    "-fx-background-radius: 5;");
+            pass.setStyle("");
         });
 
         pass.setOnMouseExited(actionEvent -> {
-            pass.setStyle("");
+            pass.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);" +
+                    "-fx-background-color: transparent;" +
+                    "-fx-background-radius: 5;");
         });
         gridPane.add(pass,0,2);
         //End Button

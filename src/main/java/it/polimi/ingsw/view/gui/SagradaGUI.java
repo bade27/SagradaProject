@@ -7,6 +7,7 @@ import it.polimi.ingsw.exceptions.ParserXMLException;
 import it.polimi.ingsw.remoteInterface.Pair;
 import it.polimi.ingsw.utilities.FileLocator;
 import it.polimi.ingsw.utilities.ParserXML;
+import it.polimi.ingsw.view.cli.SagradaCLI;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -346,6 +347,7 @@ public class SagradaGUI extends Application implements UI {
 
         mainContent.setAlignment(Pos.CENTER);
         pcenter.setAlignment(Pos.CENTER);
+
 
         mainContent.setBackground(new Background(new BackgroundImage(ParserXML.LoadImageXMLAtRequest.getGameBackground(),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
@@ -770,9 +772,22 @@ public class SagradaGUI extends Application implements UI {
     }
     //</editor-fold>
 
-    public static void main(String[] args) {
-        GraphicDieHandler.loadDieImages();
-        launch(args);
+
+    public static void main(String[] args)
+    {
+        boolean isGui = true;
+
+        for (int i = 0 ; i < args.length ; i++)
+            if (args[i].equals("cli"))
+                isGui = false;
+
+        if (isGui)
+        {
+            GraphicDieHandler.loadDieImages();
+            launch(args);
+        }else
+            new SagradaCLI();
+
     }
 
 

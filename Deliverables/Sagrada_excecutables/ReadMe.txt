@@ -1,5 +1,7 @@
-To launch game is necessary start before "Sagrada_server.jar", possibly from cmd beacuse otherwise it starts in background and you can't see it. (Command: java -jar Sagrada_Server.jar)
+To launch game is necessary configure network and game settings, in Sagrada/resources you can find these files:
+In client_settings.xml and server_settings.xml you can edit ip address and inside game_settings.xml you can change general game parameters (as number of players and number of turns) and timeout interval period.
 
-After server launching you can launch client application in gui mode (with double clicking on its icon) or in cmd mode launching it on cmd console (Command: java -jar Sagrada_CLI.jar)
+In main folder there are 3 executables files for 2 types of os (.bat for windows and .sh for linux).
 
-In next days we will fix this inconvient of starts jar on cmd console
+ATTENTION!!
+When you close with close button [X] "Sagrada_server.sh" the program stay alive in background,we will fix this drawback.
