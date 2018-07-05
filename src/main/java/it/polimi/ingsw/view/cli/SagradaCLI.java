@@ -570,7 +570,7 @@ public class SagradaCLI implements UI {
     @Override
     public void setEnableBoard(boolean enableBoard) {
         this.enableBoard = enableBoard;
-        if (task.isAlive())
+        if (task != null && task.isAlive())
             task.interrupt();
         task = new Thread(new Runnable() {
             @Override
@@ -600,7 +600,8 @@ public class SagradaCLI implements UI {
             printTurn();
             do {
                 do {
-                    printStream.println("Vuoi fare una mossa [m], usare una carta strumento [c], vedere gli elementi del gioco [e] o passare il turno [p]?");
+                    printStream.println(Color.ANSI_NOCOLOR.escape() +
+                            "Vuoi fare una mossa [m], usare una carta strumento [c], vedere gli elementi del gioco [e] o passare il turno [p]?");
 
                     action = readFromConsole();
                     if (action == null)

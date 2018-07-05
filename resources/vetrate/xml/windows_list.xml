@@ -54,5 +54,5 @@
 
   <!--13-->
   <card n= "25">resources/vetrate/xml/a_new_beginning.xml</card>
-  <!--<card n= "26">resources/vetrate/xml/the_end_of_time.xml</card>-->
+  <card n= "26">resources/vetrate/xml/the_end_of_time.xml</card>
 </list>
