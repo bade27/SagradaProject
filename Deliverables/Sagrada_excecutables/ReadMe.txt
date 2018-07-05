@@ -4,4 +4,4 @@ In client_settings.xml and server_settings.xml you can edit ip address and insid
 In main folder there are 3 executables files for 2 types of os (.bat for windows and .sh for linux).
 
 ATTENTION!!
-When you close with close button [X] "Sagrada_server.sh" the program stay alive in background,we will fix this drawback.
+When you close with close button [X] "Sagrada_server.sh" and "Sagrada_cli.sh" the program stay alive in background,we will fix this drawback.
