@@ -7,11 +7,11 @@
 		- [X] Gestione utenti con login e registrazione
 	- Grafica
 		- [X] GUI base completa (Senza caricamento immagini)
-		- [ ] CLI molto base
+		- [X] CLI molto base
 	- Rete
 		- [X] Implementazione Socket
-		- [ ] Gestione disconnessioni (testata)
-		- [ ] Gestione riconnessioni (testata)
+		- [X] Gestione disconnessioni (testata)
+		- [X] Gestione riconnessioni (testata)
 	- F.A da scegliere
 	    - [ ] Partite multiple (testata)
 	
@@ -29,21 +29,21 @@
 		- [X] Pass turn da bloccare
 		- [ ] I riconnessi in update opponents non sono aggiornati
 		- [X] Tasto riconnetti da mettere a posto
-		- [ ] Test
-            - [X] Obbiettivi
-        	- [ ] Tools
-			- [ ] Adapter
+	    - [X] Test
+                - [X] Obbiettivi
+            - [X] Tools
+		- [X] Adapter
         - [X] Creazione di <i>tutte</i> le carte su MatchHandler
-        - [ ] XML di tutte le vetrate
+        - [X] XML di tutte le vetrate
 	    - [ ] UML del progetto finito (conservere il vecchio per confronto)
 	    - [ ] Finire la traduzione in inglese del progetto (grafica esclusa)
 	
 	- Grafica (GUI)
-	    - [ ] Caricamento immagini (o almeno descrizione) di tools e obbiettivi
-		- [ ] Caricamento vetrata nella scelta
-		- [ ] Caricamento dadi da immagine
-		- [ ] Se non si riceve un up_opponent di un giocatore lo si mette in grigio
-		- [ ] Se ricevi un risultato negativo dici che si è disconnesso
+	    - [X] Caricamento immagini (o almeno descrizione) di tools e obbiettivi
+		- [X] Caricamento vetrata nella scelta
+		- [X] Caricamento dadi da immagine
+		- [X] Se non si riceve un up_opponent di un giocatore lo si mette in grigio
+		- [X] Se ricevi un risultato negativo dici che si è disconnesso
 		
 	
 - Non obbligatorio (to 30L)
