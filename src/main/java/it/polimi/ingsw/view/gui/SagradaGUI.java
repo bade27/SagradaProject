@@ -522,26 +522,6 @@ public class SagradaGUI extends Application implements UI {
     }
     //</editor-fold>
 
-    //<editor-fold desc="Loading Page">
-    @Override
-    /*
-     * Set loading page
-     */
-    public void loading(){
-        GridPane loadingRoot=new GridPane();
-        Label msg=new Label("Attendere...");
-        msg.setFont(Font.font("verdana",  FontWeight.NORMAL,15));
-        ProgressIndicator pi=new ProgressIndicator();
-        loadingRoot.add(msg,0,0);
-        loadingRoot.add(pi,0,1);
-        loadingRoot.setAlignment(Pos.CENTER);
-        loadingRoot.setVgap(10);
-        stage.getScene().setRoot(loadingRoot);
-        stage.setResizable(false);
-        closeWindow();
-    }
-    //</editor-fold>
-
     //<editor-fold desc="Popup">
     /**
      * retrieve necessary information for tools 1 and 11

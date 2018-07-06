@@ -299,7 +299,7 @@ public class SagradaCLI implements UI {
                     printStream.println(Color.ANSI_NOCOLOR.escape()+"Premi 'i' per riprovare a connetterti:"+Color.ANSI_NOCOLOR.escape());
                     i = readFromConsole();
                 } while (!i.equals("i"));
-                clientPlayer = null;
+                deletePlayer();
                 login("Ritorna in partita!");
             }
         });
@@ -316,16 +316,6 @@ public class SagradaCLI implements UI {
         printbyFile("resources/titleCli/Spiacenti.txt", color);
         reader.setCondition(false);
         printStream.println(Color.ANSI_NOCOLOR.escape()+"\n" + s+Color.ANSI_NOCOLOR.escape());
-    }
-
-    /**
-     * Creates loading disconnection screen with waiting
-     */
-    @Override
-    public void loading() {
-        Color color = Color.ANSI_BLUE;
-        printbyFile("resources/titleCli/Attendere.txt", color);
-        printStream.println(Color.ANSI_NOCOLOR.escape()+"\n\nAttendere l'arrivo di altri giocatori"+Color.ANSI_NOCOLOR.escape());
     }
 
     /**
@@ -562,7 +552,7 @@ public class SagradaCLI implements UI {
     }
 
     /**
-     * view message
+     * view string message
      */
     private void viewMessage() {
         printStream.println(Color.ANSI_NOCOLOR.escape()+msg + "\n"+Color.ANSI_NOCOLOR.escape());
@@ -650,6 +640,10 @@ public class SagradaCLI implements UI {
 
     }
 
+    /**
+     * when the player choose [m] in turn method this method allows him to choose a dadiera dice and a window cell
+     * and if the dice and cell are correct it apply the move
+     */
     private void doMovement() {
 
         String mossa;
@@ -713,6 +707,11 @@ public class SagradaCLI implements UI {
         viewMessage();
     }
 
+    /**
+     * when the player choose [c] in turn method this method allows him to choose corresponding number
+     * and the player must be set the elements that he uses for the tool (dadiera, round trace or window )
+     * when the player write 'fine' this method try to use tool and if the sets are wrong the tool is not used
+     **/
     private void doTool() {
         printStream.println(Color.ANSI_NOCOLOR.escape()+"STRUMENTO:\n"+Color.ANSI_NOCOLOR.escape());
         String t;
@@ -759,7 +758,7 @@ public class SagradaCLI implements UI {
             do {
                 do {
                     printStream.println(Color.ANSI_NOCOLOR.escape()+"\n Cosa vuoi settare?"+Color.ANSI_NOCOLOR.escape());
-                    printStream.println(Color.ANSI_NOCOLOR.escape()+"1. dado dalla dadiera\n2. cella dalla griglia\n3. dado dal tracciato round"+Color.ANSI_NOCOLOR.escape());
+                    printStream.println(Color.ANSI_NOCOLOR.escape()+"1. dado dalla dadiera\n2. cella dalla griglia\n3. dado dal tracciato round\n[fine]. terminare il settaggio dei parametri"+Color.ANSI_NOCOLOR.escape());
                     element = readFromConsole();
 
                     if (element == null)
@@ -885,6 +884,9 @@ public class SagradaCLI implements UI {
         }
     }
 
+    /**
+     * It view the elements that the player wants to see
+     */
     private void viewElements() {
         String v;
         String response;
@@ -951,22 +953,35 @@ public class SagradaCLI implements UI {
         } while (response.equals("S"));
     }
 
+    /**
+     * pass the turn
+     */
     @Override
     public void passTurn() {
         clientPlayer.pass();
         printStream.println(Color.ANSI_NOCOLOR.escape()+"\n\n\n\n\nAttendere il proprio turno\n\n\n\n"+Color.ANSI_NOCOLOR.escape());
     }
 
+    /**
+     * it send the movement to the server
+     */
     @Override
     public void makeMove() {
         clientPlayer.myMove();
     }
 
+    /**
+     * it send the tool action to the server
+     */
     @Override
     public void makeToolMove() {
         clientPlayer.useTool();
     }
 
+    /**
+     * it warn the server that the player wants to use the tool
+     * @param i tool's number
+     */
     @Override
     public void toolPermission(int i) {
         toolPhase = clientPlayer.toolPermission(i);
@@ -978,11 +993,18 @@ public class SagradaCLI implements UI {
         }
     }
 
+    /**
+     * if this is a tool phase set true else set false
+     * @param toolPhase boolean paramenter
+     */
     @Override
     public void setToolPhase(boolean toolPhase) {
         this.toolPhase = toolPhase;
     }
 
+    /**
+     * print a big title with the number of current round
+     */
     private void printTurn() {
         Color color = Color.ANSI_RED;
         if (numTurn() != -1) {
@@ -990,6 +1012,10 @@ public class SagradaCLI implements UI {
         }
     }
 
+    /**
+     * it count the not empty rounds in roundTrace and this is the number of current round
+     * @return number of current round
+     */
     private int numTurn() {
         for (int i = 0; i < trace.length; i++)
             if (trace[i].size() == 0) {
@@ -998,6 +1024,11 @@ public class SagradaCLI implements UI {
         return -1;
     }
 
+    /**
+     * verify the ip validity
+     * @param ip ip address
+     * @return false if it is not valid, else true
+     */
     private boolean isIPAddressValid(String ip) {
         if (ip.isEmpty())
             return true;
@@ -1023,14 +1054,21 @@ public class SagradaCLI implements UI {
         }
     }
 
+    /**
+     * verify the name validity
+     * @param name player name
+     * @return false if it is an empty string, else true
+     */
     private boolean isNameValid(String name) {
         if (name.isEmpty())
             return false;
-        /*if(nome esiste gia)
-            return false;*/
         return true;
     }
 
+    /**
+     * print a pairs vector
+     * @param p pairs vector
+     */
     //print pair array
     private synchronized void printPair(Pair[] p) {
         printStream.print(Color.ANSI_NOCOLOR.escape());
@@ -1062,6 +1100,10 @@ public class SagradaCLI implements UI {
         printStream.print(Color.ANSI_NOCOLOR.escape());
     }
 
+    /**
+     * print higher and lower vector part
+     * @param p pairs vector
+     */
     private void printPairArray(Pair[] p) {
         for (int i = 0; i < cellHeight / 2; i++) {
             for (int j = 0; j < p.length; j++) {
@@ -1075,6 +1117,10 @@ public class SagradaCLI implements UI {
         }
     }
 
+    /**
+     * print a pairs matrix
+     * @param mp pairs matrix
+     */
     //print pair matrix
     private synchronized void printPair(Pair[][] mp) {
 
@@ -1109,6 +1155,11 @@ public class SagradaCLI implements UI {
         printStream.print(Color.ANSI_NOCOLOR.escape());
     }
 
+    /**
+     * print higher and lower pairs matrix row part
+     * @param mp pairs matrix
+     * @param w row index
+     */
     private void printPairMatrix(Pair[][] mp, int w) {
         for (int i = 0; i < cellHeight / 2; i++) {
             for (int j = 0; j < mp[0].length; j++) {
@@ -1122,6 +1173,11 @@ public class SagradaCLI implements UI {
         }
     }
 
+    /**
+     * print a title from txt file with a specific color
+     * @param s file path
+     * @param color specific color
+     */
     private synchronized void printbyFile(String s, Color color) {
         printStream.println("\n\n");
         BufferedReader reader = null;
@@ -1163,6 +1219,12 @@ public class SagradaCLI implements UI {
         return reply;
     }
 
+    /**
+     * control pair presence in a pairs vector
+     * @param p pair
+     * @param vecPair pairs vector
+     * @return if it exist return true else false
+     */
     private boolean pairExist(Pair p, Pair[] vecPair) {
         for (int i = 0; i < vecPair.length; i++) {
             if ((vecPair[i].getValue()).equals(p.getValue()) && (vecPair[i].getColor()).equals(p.getColor()))
@@ -1171,6 +1233,12 @@ public class SagradaCLI implements UI {
         return false;
     }
 
+    /**
+     * it is a message that appear when the player use tool 1 for set value+1 or value-1 and tool 11 for set die value
+     *
+     * @param toolID tool number
+     * @param str die color selection in tool 11
+     */
     public void popUPMessage(int toolID, String str) {
         String result;
         ColorEnum color = null;
@@ -1205,15 +1273,17 @@ public class SagradaCLI implements UI {
         }
     }
 
+    /**
+     * delete player in client
+     */
     @Override
     public void deletePlayer() {
         clientPlayer = null;
     }
 
-    public static void main(String[] args) {
-        new SagradaCLI();
-    }
-
+    /**
+     * create corresponce ColorEnum-->Color with hashmap
+     */
     private void createMap() {
         hashMapEc.put(ColorEnum.RED, Color.ANSI_BACK_RED);
         hashMapEc.put(ColorEnum.BLUE, Color.ANSI_BACK_BLUE);
@@ -1224,7 +1294,11 @@ public class SagradaCLI implements UI {
         hashMapEc.put(null, Color.ANSI_NOCOLOR);
     }
 
-
+    /**
+     * if the input color is valid return corresponding ColorEnum
+     * @param s imput string
+     * @return corresponding ColorEnum. Ifinput is not valid return null
+     */
     private ColorEnum setColor(String s){
         switch (s.toUpperCase()) {
             case "RED":
@@ -1241,6 +1315,12 @@ public class SagradaCLI implements UI {
                 return null;
         }
     }
+
+    public static void main(String[] args) {
+        new SagradaCLI();
+    }
+
+
 
     private class Player {
         String name;

@@ -18,7 +18,6 @@ public interface UI {
     public void makeToolMove();
     public void game();
     public void endGame(String [] name, int [] record);
-    public void loading();
     public void disconnection(String s);
     public void fatalDisconnection(String s);
     public void login(String s);
