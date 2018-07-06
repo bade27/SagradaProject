@@ -27,11 +27,11 @@
 		- [X] Setup vetrata anche se ti scolleghi durante il setup (aggiuntivo)
 		- [X] Finita la partita rimuovere gli username usati (così quei nomi possono essere riutilizzati)
 		- [X] Pass turn da bloccare
-		- [ ] I riconnessi in update opponents non sono aggiornati
+		- [X] I riconnessi in update opponents non sono aggiornati
 		- [X] Tasto riconnetti da mettere a posto
-	    - [X] Test
+	    - Test
                 - [X] Obbiettivi
-            - [X] Tools
+            	- [X] Tools
 		- [X] Adapter
         - [X] Creazione di <i>tutte</i> le carte su MatchHandler
         - [X] XML di tutte le vetrate
