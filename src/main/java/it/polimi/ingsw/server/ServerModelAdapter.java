@@ -228,8 +228,11 @@ public class ServerModelAdapter
         for (int i = 0; i < publicObjectives.length ; i++)
             publicPoints = publicPoints + publicObjectives[i].getScore(board);
         privatePoints = myPrivateObject.getScore(board);
-        //additionalPoints = calculatePointsAdditional(); //Da decommentare
-        return privatePoints + publicPoints + additionalPoints;
+        additionalPoints = calculatePointsAdditional();
+        int points = privatePoints + publicPoints + additionalPoints;
+        if (points < 0)
+            return 0;
+        return points;
     }
 
     private int calculatePointsAdditional ()
