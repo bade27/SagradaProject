@@ -32,6 +32,7 @@ public class TokenTurn
     //ControlMatch
     private boolean fatalError;
     private boolean justDeleting;
+    private boolean endDeleting;
 
     //Object to synchronize
     private final Object synchronator = new Object();
@@ -41,6 +42,7 @@ public class TokenTurn
 
     public TokenTurn()
     {
+        endDeleting = false;
         endGame = false;
         currentTurn = 0;
         clockwise = true;
@@ -98,7 +100,14 @@ public class TokenTurn
             else
                 toolTurn();
         } else
+        {
             justDeleting = false;
+            if (!endDeleting)
+            {
+                endRound = false;
+                endDeleting = false;
+            }
+        }
 
     }
 
@@ -244,7 +253,11 @@ public class TokenTurn
                 }
 
                 if (currentTurn == 1 && !clockwise)
+                {
+                    endDeleting = true;
                     closeRound();
+                }
+
 
                 turnDel = players.get(i).getIdTurn();
                 players.remove(i);
