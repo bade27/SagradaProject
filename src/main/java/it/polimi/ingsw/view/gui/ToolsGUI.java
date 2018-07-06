@@ -37,14 +37,18 @@ public class ToolsGUI {
                 BackgroundSize.DEFAULT)));
         useTool.setGraphic(new ImageView(GraphicDieHandler.getUseToolButtonImage()));
 
+        useTool.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);" +
+                "-fx-background-color: transparent;" +
+                "-fx-background-radius: 5;");
+
         useTool.setOnMouseEntered(actionEvent -> {
-            useTool.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);" +
-                    "-fx-background-color: transparent;" +
-                    "-fx-background-radius: 5;");
+            useTool.setStyle("");
         });
 
         useTool.setOnMouseExited(actionEvent -> {
-            useTool.setStyle("");
+            useTool.setStyle("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 10, 0, 0, 0);" +
+                    "-fx-background-color: transparent;" +
+                    "-fx-background-radius: 5;");
         });
         t.add(useTool,0,3);
         //Tool Button

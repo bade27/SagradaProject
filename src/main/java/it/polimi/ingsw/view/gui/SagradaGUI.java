@@ -213,7 +213,7 @@ public class SagradaGUI extends Application implements UI {
      */
     public void maps(String[] s1,String[] s2){
         VBox mapsRoot=new VBox();
-        Label title=new Label("Seleziona mappa da voler usare");
+        Label title=new Label("Seleziona la griglia di gioco");
         title.setFont(Font.font("Verdana",  FontWeight.BOLD, FontPosture.REGULAR,25));
         mapsRoot.getChildren().add(title);
         GridPane mapsgrid=new GridPane();
@@ -227,7 +227,12 @@ public class SagradaGUI extends Application implements UI {
             e.printStackTrace();
         }
 
-        mapsgrid.setStyle("-fx-background-color: white; -fx-grid-lines-visible: true");
+        mapsgrid.setBackground(new Background(new BackgroundImage(ParserXML.LoadImageXMLAtRequest.getGameBackground(),
+                BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT)));
+        mapsRoot.setBackground(new Background(new BackgroundImage(ParserXML.LoadImageXMLAtRequest.getGameBackground(),
+                BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT)));
 
         mapsRoot.setAlignment(Pos.TOP_CENTER);
         mapsgrid.setAlignment(Pos.CENTER);
@@ -257,8 +262,8 @@ public class SagradaGUI extends Application implements UI {
 
             Text textName = new Text ("Vetrata: " + ParserXML.readWindowName(maps[i]));
             Text textDifficult = new Text ("Difficoltà: " + ParserXML.readBoardDifficult(maps[i]));
-            textName.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 15));
-            textDifficult.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 15));
+            textName.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 12));
+            textDifficult.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 12));
 
             Pair[][] pair = new Pair[4][5];
             pair=ParserXML.readWindowFromPath(maps[i],pair);
@@ -356,6 +361,7 @@ public class SagradaGUI extends Application implements UI {
         roundContent.setBackground(new Background(new BackgroundImage(ParserXML.LoadImageXMLAtRequest.getGameBackground(),
                 BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT,
                 BackgroundSize.DEFAULT)));
+
 
 
         pleft.setMaxWidth(220);
