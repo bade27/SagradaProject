@@ -1,0 +1,39 @@
+2018/07/07 16:49:36 Match Handler started
+2018/07/07 16:50:04 Number of client(s) connected:2
+2018/07/07 16:50:04 Thread ServerPlayer 0 Started
+2018/07/07 16:50:04 Thread ServerPlayer 1 Started
+2018/07/07 16:50:04 >>>Match Handler0: Connection Phase Ended
+2018/07/07 16:50:04 Number of window cards found: 13
+2018/07/07 16:50:04 
+public objectives for this game:
+Sfumature Diverse
+Colori diversi - Riga
+Sfumature Diverse - Riga
+
+2018/07/07 16:50:04 tools for this game:
+Pennello per Pasta Salda
+Taglierina circolare
+Taglierina circolare
+
+2018/07/07 16:50:04 Setup Phase started
+2018/07/07 16:50:04 User: a Added
+2018/07/07 16:50:04 User: s Added
+2018/07/07 16:50:07 User: s Window initialized 
+2018/07/07 16:50:07 User: s Tools and Objectives initialized 
+2018/07/07 16:50:09 User: a Window initialized 
+2018/07/07 16:50:09 User: a Tools and Objectives initialized 
+2018/07/07 16:50:09 Setup Phase ended
+2018/07/07 16:50:09 Game Phase started
+2018/07/07 16:50:09 turn 1
+2018/07/07 16:50:09 Dadiera Mixed
+2018/07/07 16:50:10 Turn of:a
+2018/07/07 16:50:20 Turn of:s
+2018/07/07 16:50:21 Turn of:s
+2018/07/07 16:50:21 Turn of:a
+2018/07/07 16:50:23 turn 2
+2018/07/07 16:50:23 Dadiera Mixed
+2018/07/07 16:50:23 Turn of:s
+2018/07/07 16:50:25 (User: s)player disconnected cause client late in response
+2018/07/07 16:50:25 The game is ended, count of players' point
+2018/07/07 16:50:25 (User:s) Impossible to communicate to user results of match
+2018/07/07 16:50:25 The game is ended, MatchHandler closing
