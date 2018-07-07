@@ -1,2 +1,3 @@
 cd Sagrada
-start Sagrada_Client.jar gui
+java -jar Sagrada_Client.jar gui
+exit
