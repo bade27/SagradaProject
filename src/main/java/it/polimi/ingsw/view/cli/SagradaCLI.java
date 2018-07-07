@@ -129,7 +129,7 @@ public class SagradaCLI implements UI {
     }
 
     /**
-     * Creates choose map screen, it use 4 button fot choose the map
+     * Creates choose map screen, it use 4 number for choose the map
      * @param s1 first pair of map (first card)
      * @param s2 second pair of map (second card)
      */
@@ -282,8 +282,8 @@ public class SagradaCLI implements UI {
     }
 
     /**
-     * Creates disconnection screen with reconnection button
-     * @param s string that disconnection print at the center
+     * Creates disconnection screen with reconnection possibility
+     * @param s string that disconnection print
      */
     @Override
     public void disconnection(String s) {
@@ -307,8 +307,8 @@ public class SagradaCLI implements UI {
     }
 
     /**
-     * Creates disconnection screen without reconnection button
-     * @param s string that fatalDisconnection print at the center
+     * Creates disconnection screen without reconnection possibility
+     * @param s string that fatalDisconnection print
      */
     @Override
     public void fatalDisconnection(String s) {
@@ -386,7 +386,7 @@ public class SagradaCLI implements UI {
     }
 
     /**
-     * set one Player with new player's user and pair. if active is false his name become name+(non in partita)
+     * set one Player with new player's user and corrispective grif. if active is false his name become name+(non in partita)
      * @param pair player grid
      * @param user player user
      * @param active if active is false the player is not in game
@@ -394,18 +394,17 @@ public class SagradaCLI implements UI {
     @Override
     public void updateOpponents(Pair[][] pair, String user, boolean active) {
         boolean exist = false;
-        if (!active)
-            user = user + Color.ANSI_RED.escape() + " (non in partita)" + Color.ANSI_NOCOLOR.escape();
 
         for (int i = 0; i < opponents.size() && !exist; i++) {
-
             if (((opponents.get(i)).getName()).equals(user)) {
                 exist = true;
+                (opponents.get(i)).setB(active);
                 (opponents.get(i)).setGrid(pair);
             }
         }
         if (!exist) {
             Player newOpponent = new Player();
+            newOpponent.setB(active);
             newOpponent.setName(user);
             newOpponent.setGrid(pair);
             opponents.add(newOpponent);
@@ -421,13 +420,21 @@ public class SagradaCLI implements UI {
         Color color = Color.ANSI_NOCOLOR;
         printbyFile("resources/titleCli/Avversari.txt", color);
         for (int k = 0; k < opponents.size(); k++) {
-            user = (opponents.get(k)).getName();
+            if((opponents.get(k)).isB()==true)
+                user = (opponents.get(k)).getName();
+            else
+                user = (opponents.get(k)).getName()+ " (non in partita)";
+
             pair = (opponents.get(k)).getGrid();
+
             for (int i = 0; i < ((cellWidth * 5) - (user.length()) + 4) / 2; i++)
                 printStream.print(Color.ANSI_NOCOLOR.escape()+"-"+Color.ANSI_NOCOLOR.escape());
-            printStream.print(Color.ANSI_NOCOLOR.escape()+user+Color.ANSI_NOCOLOR.escape());
+
+                printStream.print(Color.ANSI_NOCOLOR.escape()+user+Color.ANSI_NOCOLOR.escape());
+
             for (int i = 0; i < ((cellWidth * 5) - (user.length()) + 4) / 2; i++)
                 printStream.print(Color.ANSI_NOCOLOR.escape()+"-"+Color.ANSI_NOCOLOR.escape());
+
             printStream.println("\n");
             printPair(pair);
             printStream.println("\n\n");
@@ -519,7 +526,8 @@ public class SagradaCLI implements UI {
         try {
             for (int i = 0; i < trace.length; i++) {
                 if (trace[i].size() != 0) {
-                    printStream.println(Color.ANSI_NOCOLOR.escape()+"-----------------------Round" + (i + 1) + "-----------------------\n"+Color.ANSI_NOCOLOR.escape());
+                    printStream.println(Color.ANSI_NOCOLOR.escape()+"-----------------------Round" +
+                            (i + 1) + "-----------------------\n"+Color.ANSI_NOCOLOR.escape());
                     Pair[] p = new Pair[trace[i].size()];
                     for (int j = 0; j < p.length; j++) {
                         p[j] = trace[i].get(j);
@@ -1325,6 +1333,7 @@ public class SagradaCLI implements UI {
     private class Player {
         String name;
         Pair[][] grid;
+        boolean b;
 
         public void setName(String name) {
             this.name = name;
@@ -1341,6 +1350,16 @@ public class SagradaCLI implements UI {
         public String getName() {
             return name;
         }
+
+        public void setB(boolean b) {
+            this.b = b;
+        }
+
+        public boolean isB() {
+            return b;
+        }
+
+
     }
 
 

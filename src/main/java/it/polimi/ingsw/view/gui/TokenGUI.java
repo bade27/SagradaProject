@@ -23,6 +23,10 @@ public class TokenGUI{
         root.add(bp,0,4);
     }
 
+    /**
+     * update number of tokens
+     * @param num number of tokens
+     */
     public void updateTockens(int num){
         t.setText("Token:\t"+num);
     }

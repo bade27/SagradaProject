@@ -65,7 +65,7 @@ public class SagradaGUI extends Application implements UI {
 
     //<editor-fold desc="Start page">
     @Override
-    /*
+    /**
      * Set Welcome page
      */
     public void start(Stage welcomeStage){
@@ -101,8 +101,10 @@ public class SagradaGUI extends Application implements UI {
 
     //<editor-fold desc="Login Page">
     @Override
-    /*
-     * Set login page
+    /**
+     Creates login screen. Login accept name, ip and type of connection
+     * Default ip is uploaded from file and default type of connection is RMI
+     * @param s string that login print at the bottom
      */
     public void login(String s){
         VBox loginRoot=new VBox();
@@ -208,8 +210,10 @@ public class SagradaGUI extends Application implements UI {
 
     //<editor-fold desc="Map Page">
     @Override
-    /*
-     * Set choose map page
+    /**
+     * Creates choose map screen, it use 4 button for choose the map
+     * @param s1 first pair of map (first card)
+     * @param s2 second pair of map (second card)
      */
     public void maps(String[] s1,String[] s2){
         VBox mapsRoot=new VBox();
@@ -326,9 +330,9 @@ public class SagradaGUI extends Application implements UI {
 
     //<editor-fold desc="Game Page">
     @Override
-    /*
-     * Set game Page
-     */
+    /**
+    *this is the game page, with all elements
+    */
     public void game() {
 
         //root
@@ -403,8 +407,10 @@ public class SagradaGUI extends Application implements UI {
 
     //<editor-fold desc="End Game Page">
     @Override
-    /*
-     * Set disconnection page
+    /**
+     * Creates disconnection screen with reconnection button
+     * @param s string that disconnection print at the center
+     *
      */
     public void disconnection(String s){
         VBox discRoot= new VBox();
@@ -438,8 +444,9 @@ public class SagradaGUI extends Application implements UI {
     }
 
     @Override
-    /*
-        Set FatalDisconnection page
+    /**
+     * Creates disconnection screen without reconnection button
+     * @param s string that fatalDisconnection print at the center
      */
     public void fatalDisconnection(String s){
         VBox fatDicRoot= new VBox();
@@ -460,8 +467,10 @@ public class SagradaGUI extends Application implements UI {
     }
 
     @Override
-    /*
-        Set end game page
+    /**
+     *Creates end game screen with players, scores and winner. If a player is disconnected it write "ritirato"
+     * @param name  Vector with players name
+     * @param record Vector with scores
      */
     public void endGame(String [] name, int [] record){
         int max=0;
@@ -531,8 +540,8 @@ public class SagradaGUI extends Application implements UI {
     //<editor-fold desc="Popup">
     /**
      * retrieve necessary information for tools 1 and 11
-     * @param toolID
-     * @param str
+     * @param toolID tool number
+     * @param str die color selection in tool 11
      */
     public void popUPMessage(int toolID, String str) {
         switch (toolID) {
@@ -580,7 +589,7 @@ public class SagradaGUI extends Application implements UI {
     //<editor-fold desc="Update Client">
     /**
      * updates the dice displayed on dadiera
-     * @param p
+     * @param p dice
      */
     @Override
     public void updateDadiera(Pair[] p) {
@@ -590,7 +599,7 @@ public class SagradaGUI extends Application implements UI {
 
     /**
      * updates the dice on the grid
-     * @param p
+     * @param p dice
      */
     @Override
     public void updateWindow(Pair[][] p) {
@@ -600,7 +609,7 @@ public class SagradaGUI extends Application implements UI {
 
     /**
      * displays the message relative to the status of the move
-     * @param msg
+     * @param msg message
      */
     public void updateMessage(String msg) {
         if("redyellowgreenbluepurple".contains(msg)) {
@@ -612,26 +621,51 @@ public class SagradaGUI extends Application implements UI {
         msgb.updateGraphic(msg);
     }
 
+    /**
+     * update the tools that you can use
+     */
     public void updateTools(String[] toolNames) {
         toolsG.updateTools(toolNames);
     }
 
+    /**
+     * set one player with his user and corrispective grid. if active is false his name become name+(non in partita)
+     * @param pair player grid
+     * @param user player user
+     * @param b if active is false the player is not in game
+     */
     public void updateOpponents(Pair[][] pair, String user , boolean b) {
         plaG.updateGraphic(pair, user,b);
     }
 
+    /**
+     * updates the dice displayed on round trace
+     * @param trace round trace
+     */
     public void updateRoundTrace(ArrayList<Pair>[] trace) {
         roundsG.updateRoundTrace(trace);
     }
 
+    /**
+     * update public targets displayed
+     * @param s public targets
+     */
     public void updatePublicTarget(String [] s){
         targetG.updatePublicTarget(s);
     }
 
+    /**
+     * update private target displayed
+     * @param s private target
+     */
     public void updatePrivateTarget(String[] s){
         targetG.updatePrivateTarget(s);
     }
 
+    /**
+     * update number of player's token
+     * @param n number of tokens
+     */
     public void updateTokens(int n) {
         tokenG.updateTockens(n);
     }
@@ -679,6 +713,12 @@ public class SagradaGUI extends Application implements UI {
             return false;
         }
     }
+
+    /**
+     * cjeck if the name given by the user is valid
+     * @param name player name
+     * @return weather the name is valid or not
+     */
     private boolean isNameValid(String name){
         return !name.isEmpty();
     }
@@ -746,6 +786,9 @@ public class SagradaGUI extends Application implements UI {
         clientPlayer.pass();
     }
 
+    /**
+     * if the player push the x stage button the client id disconnected and the process is finished
+     */
     private void closeWindow ()
     {
         stage.setOnCloseRequest(e -> {
