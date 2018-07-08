@@ -94,14 +94,14 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
 
         }
         catch (ClientOutOfReachException e){
-            System.out.println("Impossible to connect to Host with socket");
+            System.out.println("Impossibile connettersi al server con socket");
             //e.printStackTrace();
             graph.login("Impossibile connettersi al server, riprova");
             return;
         }
         catch (RemoteException e){
             //e.printStackTrace();
-            System.out.println("Impossible to connect to Host with RMI");
+            System.out.println("\"Impossibile connettersi al server con RMI");
             graph.login("Impossibile connettersi al server, riprova");
             return;
         }
@@ -111,7 +111,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
             return;
         }
 
-        System.out.println("Client connected");
+        System.out.println("Utente connesso");
         connected = true;
         setInTurn(false);
 
@@ -536,7 +536,7 @@ public class ClientPlayer extends UnicastRemoteObject implements ClientRemoteInt
                 //e.printStackTrace();
                 return;
             }
-            closeCommunication("timeout reached");
+            closeCommunication("timeout scaduto");
         }
     }
     //</editor-fold>

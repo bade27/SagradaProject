@@ -124,6 +124,7 @@ public class SagradaCLI implements UI {
 
             clientPlayer.setClientName(name);
         } catch (Exception e) {
+            printStream.println(Color.ANSI_NOCOLOR.escape()+"Errore nella creazione del giocatore"+Color.ANSI_NOCOLOR.escape());
             e.printStackTrace();
         }
     }
@@ -160,6 +161,7 @@ public class SagradaCLI implements UI {
                     price1 = ParserXML.readBoardDifficult(s1[0]);
                     grid1 = ParserXML.readWindowFromPath(s1[0], grid1);
                 } catch (ParserXMLException e) {
+                    printStream.println(Color.ANSI_NOCOLOR.escape()+"Errore nel caricamento della mappa: "+s1[0]+Color.ANSI_NOCOLOR.escape());
                     e.printStackTrace();
                 }
 
@@ -169,6 +171,7 @@ public class SagradaCLI implements UI {
                     grid2 = ParserXML.readWindowFromPath(s1[1], grid2);
 
                 } catch (ParserXMLException e) {
+                    printStream.println(Color.ANSI_NOCOLOR.escape()+"Errore nel caricamento della mappa: "+s1[1]+Color.ANSI_NOCOLOR.escape());
                     e.printStackTrace();
                 }
 
@@ -177,6 +180,7 @@ public class SagradaCLI implements UI {
                     price3 = ParserXML.readBoardDifficult(s2[0]);
                     grid3 = ParserXML.readWindowFromPath(s2[0], grid3);
                 } catch (ParserXMLException e) {
+                    printStream.println(Color.ANSI_NOCOLOR.escape()+"Errore nel caricamento della mappa: "+s2[0]+Color.ANSI_NOCOLOR.escape());
                     e.printStackTrace();
                 }
 
@@ -185,6 +189,7 @@ public class SagradaCLI implements UI {
                     price4 = ParserXML.readBoardDifficult(s2[1]);
                     grid4 = ParserXML.readWindowFromPath(s2[1], grid4);
                 } catch (ParserXMLException e) {
+                    printStream.println(Color.ANSI_NOCOLOR.escape()+"Errore nel caricamento della mappa: "+s2[1]+Color.ANSI_NOCOLOR.escape());
                     e.printStackTrace();
                 }
 
@@ -232,7 +237,7 @@ public class SagradaCLI implements UI {
     }
 
     /**
-     * Load"il gioco comincia" text
+     * Load "il gioco comincia" text
      */
     @Override
     public void game() {
@@ -492,6 +497,7 @@ public class SagradaCLI implements UI {
                 description = ParserXML.readObjectiveDescription(privateTarget[i]);
                 printStream.println(Color.ANSI_NOCOLOR.escape()+"- " + name + ": " + description+Color.ANSI_NOCOLOR.escape());
             } catch (ParserXMLException ex) {
+                printStream.println(Color.ANSI_NOCOLOR.escape()+"Errore nel file degli obiettivi privati"+Color.ANSI_NOCOLOR.escape());
                 ex.printStackTrace();
             }
         }
@@ -503,6 +509,7 @@ public class SagradaCLI implements UI {
                 description = ParserXML.readObjectiveDescription(publicTarget[i]);
                 printStream.println(Color.ANSI_NOCOLOR.escape()+name + ": " + description+Color.ANSI_NOCOLOR.escape());
             } catch (ParserXMLException ex) {
+                printStream.println(Color.ANSI_NOCOLOR.escape()+"Errore nel file degli obiettivi pubblici"+Color.ANSI_NOCOLOR.escape());
                 ex.printStackTrace();
             }
         }
@@ -536,7 +543,7 @@ public class SagradaCLI implements UI {
                 }
             }
         } catch (Exception e) {
-            printStream.println(Color.ANSI_NOCOLOR.escape()+"problemi con il tracciato round"+Color.ANSI_NOCOLOR.escape());
+            printStream.println(Color.ANSI_NOCOLOR.escape()+"Errore nel tracciato round"+Color.ANSI_NOCOLOR.escape());
             e.printStackTrace();
         }
     }

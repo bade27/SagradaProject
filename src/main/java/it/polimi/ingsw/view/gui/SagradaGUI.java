@@ -85,6 +85,7 @@ public class SagradaGUI extends Application implements UI {
                     login("inserisci nome, indirizzo e connessione");                                       ///////////
                 }catch(Exception e){
                     e.printStackTrace();
+                    fatalDisconnection("Errore interno");
                 }
             } });
 
@@ -229,6 +230,7 @@ public class SagradaGUI extends Application implements UI {
             setGridGraphic(s2,mapsgrid,1);
         }catch (ParserXMLException e){
             e.printStackTrace();
+            fatalDisconnection("Errore interno");
         }
 
         mapsgrid.setBackground(new Background(new BackgroundImage(ParserXML.LoadImageXMLAtRequest.getGameBackground(),
